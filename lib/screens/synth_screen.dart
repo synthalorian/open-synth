@@ -3,8 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../providers/synth_providers.dart';
 import '../theme/synth_theme.dart';
+import '../widgets/computer_keyboard_listener.dart';
 import '../widgets/envelope_display.dart';
 import '../widgets/filter_panel.dart';
+import '../widgets/fx_panel.dart';
 import '../widgets/keyboard_widget.dart';
 import '../widgets/lfo_panel.dart';
 import '../widgets/oscillator_panel.dart';
@@ -19,15 +21,18 @@ class SynthScreen extends ConsumerWidget {
     final preset = ref.watch(currentPresetProvider);
     final notifier = ref.read(currentPresetProvider.notifier);
 
+    // Keep the native engine in sync with whatever preset is loaded.
+    ref.watch(livePresetSyncProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          preset.name,
+          preset.name.toUpperCase(),
           style: GoogleFonts.orbitron(
             color: SynthTheme.magenta,
             fontSize: 16,
             fontWeight: FontWeight.bold,
-            letterSpacing: 1.5,
+            letterSpacing: 2.5,
           ),
         ),
         leading: IconButton(
@@ -51,7 +56,7 @@ class SynthScreen extends ConsumerWidget {
               ref.read(presetListProvider.notifier).updatePreset(preset);
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('Preset "${preset.name}" saved'),
+                  content: Text('Preset "${preset.name}" saved to the grid'),
                   backgroundColor: SynthTheme.card,
                   behavior: SnackBarBehavior.floating,
                 ),
@@ -60,7 +65,8 @@ class SynthScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: Column(
+      body: ComputerKeyboardListener(
+        child: Column(
         children: [
           // Scrollable synth controls
           Expanded(
@@ -91,7 +97,7 @@ class SynthScreen extends ConsumerWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 12),
 
                   // ── Row 2: Filter + Amp Envelope ──
                   Row(
@@ -116,7 +122,7 @@ class SynthScreen extends ConsumerWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 12),
 
                   // ── Row 3: Filter Envelope + LFO 1 ──
                   Row(
@@ -143,9 +149,9 @@ class SynthScreen extends ConsumerWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 12),
 
-                  // ── Row 4: LFO 2 + Master Volume ──
+                  // ── Row 4: LFO 2 + Master Section ──
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -167,6 +173,14 @@ class SynthScreen extends ConsumerWidget {
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(
                               color: SynthTheme.orange.withValues(alpha: 0.3),
+                            ),
+                            gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                SynthTheme.card,
+                                SynthTheme.card.withValues(alpha: 0.8),
+                              ],
                             ),
                           ),
                           child: Column(
@@ -192,16 +206,55 @@ class SynthScreen extends ConsumerWidget {
                                     notifier.update((p) => p.copyWith(masterVolume: v)),
                                 activeColor: SynthTheme.orange,
                               ),
+                              const SizedBox(height: 8),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.red.withValues(alpha: 0.2),
+                                  foregroundColor: Colors.redAccent,
+                                  side: const BorderSide(color: Colors.redAccent),
+                                  minimumSize: const Size(double.infinity, 30),
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+                                ),
+                                onPressed: () {
+                                  ref.read(synthEngineProvider)?.reset();
+                                  ref.read(playbackStateProvider.notifier).allNotesOff();
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text('PANIC: All notes killed')),
+                                  );
+                                },
+                                child: const Text('PANIC', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
+                              ),
                             ],
                           ),
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 12),
+
+                  // ── Effects Panel ──
+                  FxPanel(
+                    chorus: preset.chorus,
+                    delay: preset.delay,
+                    reverb: preset.reverb,
+                    phaser: preset.phaser,
+                    drive: preset.drive,
+                    onChorusChanged: (c) =>
+                        notifier.update((p) => p.copyWith(chorus: c)),
+                    onDelayChanged: (d) =>
+                        notifier.update((p) => p.copyWith(delay: d)),
+                    onReverbChanged: (r) =>
+                        notifier.update((p) => p.copyWith(reverb: r)),
+                    onPhaserChanged: (ph) =>
+                        notifier.update((p) => p.copyWith(phaser: ph)),
+                    onDriveChanged: (d) =>
+                        notifier.update((p) => p.copyWith(drive: d)),
+                  ),
+                  const SizedBox(height: 16),
+
                   // DSP status indicator
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     decoration: BoxDecoration(
                       color: SynthTheme.surface,
                       borderRadius: BorderRadius.circular(8),
@@ -217,21 +270,29 @@ class SynthScreen extends ConsumerWidget {
                           height: 8,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: SynthTheme.orange.withValues(alpha: 0.6),
+                            color: SynthTheme.cyan,
+                            boxShadow: [
+                              BoxShadow(
+                                color: SynthTheme.cyan.withValues(alpha: 0.7),
+                                blurRadius: 6,
+                              ),
+                            ],
                           ),
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: 12),
                         Text(
-                          'DSP Engine: Awaiting C++ FFI Integration',
-                          style: TextStyle(
-                            color: SynthTheme.textSecondary,
-                            fontSize: 10,
-                            fontStyle: FontStyle.italic,
+                          'GRID CONNECTION: OPTIMAL  •  48kHz STEREO  •  1984 VIBES',
+                          style: GoogleFonts.orbitron(
+                            color: SynthTheme.cyan,
+                            fontSize: 9,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 1.2,
                           ),
                         ),
                       ],
                     ),
                   ),
+                  const SizedBox(height: 20),
                 ],
               ),
             ),
@@ -240,6 +301,7 @@ class SynthScreen extends ConsumerWidget {
           // ── Fixed keyboard at bottom ──
           const KeyboardWidget(),
         ],
+      ),
       ),
     );
   }
