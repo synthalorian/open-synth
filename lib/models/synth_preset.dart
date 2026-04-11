@@ -2,6 +2,7 @@ import 'package:uuid/uuid.dart';
 
 import 'envelope.dart';
 import 'filter_config.dart';
+import 'fx_config.dart';
 import 'lfo_config.dart';
 import 'oscillator.dart';
 import 'preset_category.dart';
@@ -17,6 +18,11 @@ class SynthPreset {
   final Envelope filterEnvelope;
   final LfoConfig lfo1;
   final LfoConfig lfo2;
+  final ChorusConfig chorus;
+  final DelayConfig delay;
+  final ReverbConfig reverb;
+  final PhaserConfig phaser;
+  final DriveConfig drive;
   final double masterVolume;
   final List<String> tags;
   final String author;
@@ -33,6 +39,11 @@ class SynthPreset {
     Envelope? filterEnvelope,
     LfoConfig? lfo1,
     LfoConfig? lfo2,
+    ChorusConfig? chorus,
+    DelayConfig? delay,
+    ReverbConfig? reverb,
+    PhaserConfig? phaser,
+    DriveConfig? drive,
     this.masterVolume = 0.8,
     this.tags = const [],
     this.author = 'Open Synth',
@@ -44,7 +55,12 @@ class SynthPreset {
         ampEnvelope = ampEnvelope ?? const Envelope(),
         filterEnvelope = filterEnvelope ?? const Envelope(),
         lfo1 = lfo1 ?? const LfoConfig(),
-        lfo2 = lfo2 ?? const LfoConfig();
+        lfo2 = lfo2 ?? const LfoConfig(),
+        chorus = chorus ?? const ChorusConfig(),
+        delay = delay ?? const DelayConfig(),
+        reverb = reverb ?? const ReverbConfig(),
+        phaser = phaser ?? const PhaserConfig(),
+        drive = drive ?? const DriveConfig();
 
   SynthPreset copyWith({
     String? id,
@@ -57,6 +73,11 @@ class SynthPreset {
     Envelope? filterEnvelope,
     LfoConfig? lfo1,
     LfoConfig? lfo2,
+    ChorusConfig? chorus,
+    DelayConfig? delay,
+    ReverbConfig? reverb,
+    PhaserConfig? phaser,
+    DriveConfig? drive,
     double? masterVolume,
     List<String>? tags,
     String? author,
@@ -73,6 +94,11 @@ class SynthPreset {
       filterEnvelope: filterEnvelope ?? this.filterEnvelope,
       lfo1: lfo1 ?? this.lfo1,
       lfo2: lfo2 ?? this.lfo2,
+      chorus: chorus ?? this.chorus,
+      delay: delay ?? this.delay,
+      reverb: reverb ?? this.reverb,
+      phaser: phaser ?? this.phaser,
+      drive: drive ?? this.drive,
       masterVolume: masterVolume ?? this.masterVolume,
       tags: tags ?? this.tags,
       author: author ?? this.author,
@@ -91,6 +117,11 @@ class SynthPreset {
         'filterEnvelope': filterEnvelope.toJson(),
         'lfo1': lfo1.toJson(),
         'lfo2': lfo2.toJson(),
+        'chorus': chorus.toJson(),
+        'delay': delay.toJson(),
+        'reverb': reverb.toJson(),
+        'phaser': phaser.toJson(),
+        'drive': drive.toJson(),
         'masterVolume': masterVolume,
         'tags': tags,
         'author': author,
@@ -111,6 +142,21 @@ class SynthPreset {
             Envelope.fromJson(json['filterEnvelope'] as Map<String, dynamic>),
         lfo1: LfoConfig.fromJson(json['lfo1'] as Map<String, dynamic>),
         lfo2: LfoConfig.fromJson(json['lfo2'] as Map<String, dynamic>),
+        chorus: json.containsKey('chorus') 
+            ? ChorusConfig.fromJson(json['chorus'] as Map<String, dynamic>)
+            : const ChorusConfig(),
+        delay: json.containsKey('delay')
+            ? DelayConfig.fromJson(json['delay'] as Map<String, dynamic>)
+            : const DelayConfig(),
+        reverb: json.containsKey('reverb')
+            ? ReverbConfig.fromJson(json['reverb'] as Map<String, dynamic>)
+            : const ReverbConfig(),
+        phaser: json.containsKey('phaser')
+            ? PhaserConfig.fromJson(json['phaser'] as Map<String, dynamic>)
+            : const PhaserConfig(),
+        drive: json.containsKey('drive')
+            ? DriveConfig.fromJson(json['drive'] as Map<String, dynamic>)
+            : const DriveConfig(),
         masterVolume: (json['masterVolume'] as num).toDouble(),
         tags: (json['tags'] as List).cast<String>(),
         author: json['author'] as String,

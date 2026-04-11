@@ -141,6 +141,17 @@ class OscillatorPanel extends StatelessWidget {
                 activeColor: SynthTheme.orange,
               ),
               SynthKnob(
+                label: 'PW',
+                value: oscillator.pulseWidth,
+                min: 0.05,
+                max: 0.95,
+                size: 50,
+                formatValue: (v) => '${(v * 100).round()}%',
+                onChanged: (v) =>
+                    onChanged(oscillator.copyWith(pulseWidth: v)),
+                activeColor: SynthTheme.purple,
+              ),
+              SynthKnob(
                 label: 'VOL',
                 value: oscillator.volume,
                 min: 0,

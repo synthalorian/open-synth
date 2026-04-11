@@ -1,0 +1,11 @@
+# Force serial test execution.
+#
+# The open-synth tests open real PortAudio output streams against the
+# host's default audio device. PortAudio (and most platform audio APIs)
+# does not tolerate multiple simultaneous opens of the same device from
+# the same process — running tests in parallel races on Pa_OpenStream
+# and one of them hangs / fails.
+#
+# Concurrency 1 is the entire fix; the suite is small enough that it
+# runs in ~3 seconds anyway.
+concurrency: 1
