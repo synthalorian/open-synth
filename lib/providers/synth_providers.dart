@@ -94,14 +94,16 @@ class CurrentPresetNotifier extends StateNotifier<SynthPreset> {
 /// FFI library can't be loaded (tests, web, missing native/.so) so the
 /// UI degrades gracefully.
 ///
-/// IMPORTANT: This provider also initializes the PortAudio audio system
+/// IMPORTANT: This provider also initializes the audio system
 /// via AudioSystem::init() on first access, and shuts it down on dispose.
+/// On desktop this initializes PortAudio; on Android/Oboe it is a no-op.
 /// All other audio providers depend on this one so the lifecycle is correct.
 final synthEngineProvider = Provider<OpenAmpSynth?>((ref) {
   if (!OpenAmpSynthBindings.available) return null;
 
-  // Initialize PortAudio singleton before creating any engine/stream.
-  // The AudioSystem C++ singleton ref-counts, so multiple inits are safe.
+  // Initialize audio system singleton before creating any engine/stream.
+  // On desktop this calls Pa_Init (ref-counted, safe to call multiple times).
+  // On Android/Oboe this is a no-op.
   if (OpenAmpAudioStreamBindings.available) {
     OpenAmpAudioStreamBindings.instance.init();
   }
@@ -109,8 +111,8 @@ final synthEngineProvider = Provider<OpenAmpSynth?>((ref) {
   final synth = OpenAmpSynth();
   ref.onDispose(() {
     synth.dispose();
-    // Shut down PortAudio singleton (ref-counted, so only terminates
-    // when the last init is matched by a shutdown).
+    // Shut down audio system singleton (ref-counted on desktop;
+    // no-op on Android/Oboe where there's no global shutdown).
     if (OpenAmpAudioStreamBindings.available) {
       OpenAmpAudioStreamBindings.instance.shutdown();
     }
@@ -228,12 +230,15 @@ SynthPreset _applyModulation(
 /// disposed when dependencies change or the container tears down.
 /// Watches [audioBufferSizeProvider] and [selectedAudioDeviceProvider]
 /// so changing buffer size or output device recreates the stream.
-/// Returns null when the FFI library or PortAudio device is unavailable
+/// Returns null when the FFI library or audio device is unavailable
 /// so the rest of the UI keeps working as a silent demo.
+///
+/// On mobile, [selectedAudioDeviceProvider] should remain at -1 (default)
+/// since there is only one output device.
 ///
 /// Disposal order is critical:
 ///   1. Stop the audio stream (halts the callback)
-///   2. Destroy the stream (closes PortAudio device)
+///   2. Destroy the stream (closes audio device)
 ///   3. The synth engine disposal happens after (different provider)
 final synthAudioStreamProvider = Provider<OpenAmpSynthAudioStream?>((ref) {
   final synth = ref.watch(synthEngineProvider);
@@ -277,7 +282,7 @@ final synthAudioStreamProvider = Provider<OpenAmpSynthAudioStream?>((ref) {
 
   if (!ok) {
     developer.log(
-      'PortAudio failed to start: ${stream.lastError}',
+      'Audio stream failed to start: ${stream.lastError}',
       name: 'open_synth.audio',
     );
     stream.dispose();
@@ -286,7 +291,7 @@ final synthAudioStreamProvider = Provider<OpenAmpSynthAudioStream?>((ref) {
 
   ref.onDispose(() {
     // Explicit stop-then-dispose to guarantee the callback is halted
-    // before the PortAudio stream is closed.
+    // before the audio stream is closed.
     stream!.dispose();
   });
   return stream;
@@ -342,7 +347,7 @@ String _errorMessage(int deviceIndex, List<AudioDeviceInfo>? devices) {
     return 'Audio engine unavailable — FFI library not loaded';
   }
   if (devices == null) {
-    return 'Audio device enumeration failed (PortAudio error)';
+    return 'Audio device enumeration failed';
   }
   if (devices.isEmpty) {
     return 'No audio output devices found';
@@ -350,7 +355,7 @@ String _errorMessage(int deviceIndex, List<AudioDeviceInfo>? devices) {
   if (deviceIndex >= 0 && !devices.any((d) => d.index == deviceIndex)) {
     return 'Selected device (index $deviceIndex) no longer available';
   }
-  return 'Audio stream not available (PortAudio could not open device)';
+  return 'Audio stream not available (could not open device)';
 }
 
 /// Snapshot of audio stream state for display in the UI.
@@ -382,7 +387,7 @@ class PlaybackStateNotifier extends StateNotifier<Set<int>> {
   OpenAmpSynth? get _engine => _ref.read(synthEngineProvider);
 
   /// Reading the audio-stream provider lazily creates and starts the
-  /// PortAudio output stream. We touch it on first noteOn so the audio
+  /// audio output stream. We touch it on first noteOn so the audio
   /// device only opens when the user actually wants sound.
   void _ensureAudioRunning() {
     _ref.read(synthAudioStreamProvider);

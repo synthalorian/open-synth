@@ -114,7 +114,7 @@ final synthPairProvider = Provider<OpenAmpSynthPair?>((ref) {
   return pair;
 });
 
-/// Audio stream bound to the SynthEnginePair. Only one PortAudio stream
+/// Audio stream bound to the SynthEnginePair. Only one audio stream
 /// needed — the pair handles internal mixing of both zones.
 final synthPairAudioStreamProvider = Provider<OpenAmpSynthAudioStream?>((ref) {
   final pair = ref.watch(synthPairProvider);
@@ -143,7 +143,7 @@ final synthPairAudioStreamProvider = Provider<OpenAmpSynthAudioStream?>((ref) {
   final ok = stream.start();
   if (!ok) {
     developer.log(
-      'PortAudio failed to start for synth pair: ${stream.lastError}',
+      'Audio stream failed to start for synth pair: ${stream.lastError}',
       name: 'open_synth.split',
     );
     stream.dispose();

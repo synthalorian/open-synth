@@ -1,15 +1,23 @@
 // ignore_for_file: library_private_types_in_public_api
 // Dart FFI bindings for libopenamp_dart_ffi.so audio_stream symbols.
 //
-// The native AudioStream owns a PortAudio output stream and an internal
-// process callback. We bind it to a SynthEngine via
+// The native AudioStream owns an output stream and an internal process
+// callback.  On desktop (Linux/macOS/Windows) the backend is PortAudio;
+// on Android it is Oboe — but the FFI symbol names are identical so this
+// single Dart file works on all platforms.
+//
+// We bind it to a SynthEngine via
 // `audio_stream_create_for_synth(synthRef, sr, blockSize, deviceIndex)` so
 // the audio thread renders directly from the engine — Dart never sees the
 // realtime callback, which means there's no GC / isolate latency.
 //
 // IMPORTANT: audio_system_init() must be called before any other audio
 // function. audio_system_shutdown() must be called at app exit.
+// On Android both calls are safe no-ops (the Oboe backend has no global
+// init/shutdown requirement).
 // Device enumeration reads from a cache and never calls Pa_Init/Term.
+// On mobile, enumeration returns a single "default" device — callers
+// should use deviceIndex -1 (see audio_platform.dart).
 
 import 'dart:ffi';
 
@@ -170,18 +178,21 @@ class OpenAmpAudioStreamBindings {
   final _GetDeviceChannelsDart getDeviceMaxOutputChannels;
   final _GetDeviceSampleRateDart getDeviceDefaultSampleRate;
 
-  /// Initialize the audio system (PortAudio). Must be called before any
-  /// other audio function. Safe to call multiple times (ref-counted).
+  /// Initialize the audio system (PortAudio on desktop, no-op on Android/Oboe).
+  /// Must be called before any other audio function.
+  /// Safe to call multiple times (ref-counted on desktop; idempotent on mobile).
   bool init() {
     return systemInit() != 0;
   }
 
-  /// Shutdown the audio system. Call at app exit. Safe to call multiple times.
+  /// Shutdown the audio system. Call at app exit.
+  /// Safe to call multiple times (no-op on mobile).
   void shutdown() {
     systemShutdown();
   }
 
-  /// Whether PortAudio is currently initialized.
+  /// Whether the audio system is currently initialized.
+  /// Always true on mobile (Oboe has no global init state).
   bool get isAudioSystemInitialized => systemIsInitialized() != 0;
 
   /// Enumerate all available audio output devices from cache.
@@ -217,6 +228,11 @@ class OpenAmpAudioStreamBindings {
 ///
 /// The synth engine MUST outlive this audio stream. The recommended
 /// pattern is to dispose the audio stream first, then the synth.
+///
+/// On desktop the backend is PortAudio; on Android it is Oboe.
+/// The FFI symbols are identical so this class works on both platforms.
+/// Use deviceIndex -1 for the default device (the only sensible choice
+/// on mobile).
 class OpenAmpSynthAudioStream {
   /// Create an audio stream bound to a SynthEnginePair (split/layer).
   /// [pairHandle] is the native SynthEnginePair pointer from synth_pair_create().
@@ -258,7 +274,7 @@ class OpenAmpSynthAudioStream {
     }
   }
 
-  /// Open the PortAudio device and start the audio thread. Returns
+  /// Open the audio device and start the audio thread. Returns
   /// true on success. On failure, [lastError] holds the message.
   bool start() {
     _check();
@@ -278,7 +294,7 @@ class OpenAmpSynthAudioStream {
   int get callbackCount =>
       _disposed ? 0 : _bindings.callbackCount(_handle);
 
-  /// Latest PortAudio error string, or empty if everything is fine.
+  /// Latest error string from the audio backend, or empty if everything is fine.
   String get lastError {
     if (_disposed) return '';
     final ptr = _bindings.lastError(_handle);
