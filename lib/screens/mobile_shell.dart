@@ -120,7 +120,7 @@ class MobileShell extends ConsumerWidget {
                     height: 3,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(2),
-                      gradient: const LinearGradient(
+                      gradient: LinearGradient(
                         colors: [
                           SynthTheme.magenta,
                           SynthTheme.purple,

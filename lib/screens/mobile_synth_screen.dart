@@ -1,27 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/fx_config.dart';
-import '../models/envelope.dart';
-import '../models/mod_matrix.dart';
-import '../models/mod_target.dart';
-import '../models/preset_category.dart';
-import '../models/sequencer_config.dart';
 import '../models/synth_preset.dart';
-import '../models/waveform.dart';
-import '../providers/ab_comparison_provider.dart';
 import '../providers/arpeggiator_provider.dart';
 import '../providers/clock_provider.dart';
 import '../providers/midi_recorder_provider.dart';
-import '../providers/mod_matrix_provider.dart';
 import '../providers/morph_provider.dart';
 import '../providers/randomize_lock_provider.dart';
-import '../providers/sequencer_provider.dart';
 import '../providers/synth_providers.dart';
-import '../providers/undo_redo_provider.dart';
 import '../providers/keyboard_split_provider.dart';
 import '../providers/navigation_provider.dart';
-import '../providers/favorites_provider.dart';
-import '../providers/recent_presets_provider.dart';
 import '../theme/synth_theme.dart';
 import '../widgets/arpeggiator_panel.dart';
 import '../widgets/clock_panel.dart';
@@ -43,7 +31,6 @@ import '../widgets/synth_knob.dart';
 import '../widgets/sequencer_panel.dart';
 import '../widgets/mod_matrix_panel.dart';
 import '../widgets/macro_panel.dart';
-import '../widgets/animated_section.dart';
 
 /// Mobile-optimized synth screen with split layout.
 ///
@@ -390,7 +377,7 @@ class MobileSynthScreen extends ConsumerWidget {
       ),
 
       // 5. Arpeggiator (full width)
-      const CollapsibleSection(
+      CollapsibleSection(
         title: 'ARPEGGIATOR',
         accentColor: SynthTheme.magenta,
         child: ArpeggiatorPanel(),
@@ -455,14 +442,14 @@ class MobileSynthScreen extends ConsumerWidget {
       ),
 
       // 7. Sequencer (full width)
-      const CollapsibleSection(
+      CollapsibleSection(
         title: 'SEQUENCER',
         accentColor: SynthTheme.orange,
         child: SequencerPanel(),
       ),
 
       // 8. Mod Matrix + Macros
-      const CollapsibleSection(
+      CollapsibleSection(
         title: 'MOD MATRIX + MACROS',
         accentColor: SynthTheme.purple,
         child: Column(
@@ -475,7 +462,7 @@ class MobileSynthScreen extends ConsumerWidget {
       ),
 
       // 9. Clock + MIDI
-      const CollapsibleSection(
+      CollapsibleSection(
         title: 'CLOCK + MIDI',
         accentColor: SynthTheme.cyan,
         child: Column(
@@ -488,7 +475,7 @@ class MobileSynthScreen extends ConsumerWidget {
       ),
 
       // 10. Morph
-      const CollapsibleSection(
+      CollapsibleSection(
         title: 'PRESET MORPH',
         accentColor: SynthTheme.magenta,
         child: MorphPanel(),
