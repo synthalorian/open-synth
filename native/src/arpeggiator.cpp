@@ -14,6 +14,8 @@ void Arpeggiator::noteOn(int midiNote, float velocity) {
     for (size_t i = 0; i < heldNotes_.size(); i++) {
         if (heldNotes_[i] == midiNote) {
             heldVelocities_[i] = velocity;
+            // Lock held notes when hold mode is active
+            if (hold_) heldNotesLocked_ = true;
             return;
         }
     }
@@ -31,9 +33,16 @@ void Arpeggiator::noteOn(int midiNote, float velocity) {
         heldNotes_[i] = pairs[i].first;
         heldVelocities_[i] = pairs[i].second;
     }
+    // Lock held notes when hold mode is active
+    if (hold_) heldNotesLocked_ = true;
 }
 
 void Arpeggiator::noteOff(int midiNote) {
+    // Hold/latch mode: noteOff is a no-op when hold is enabled and notes are locked.
+    // Caller must use allNotesOff() to explicitly clear (e.g., on transport stop).
+    if (hold_ && heldNotesLocked_) {
+        return;
+    }
     for (size_t i = 0; i < heldNotes_.size(); i++) {
         if (heldNotes_[i] == midiNote) {
             heldNotes_.erase(heldNotes_.begin() + i);
@@ -48,6 +57,7 @@ void Arpeggiator::allNotesOff() {
     heldVelocities_.clear();
     noteIsActive_ = false;
     lastPlayedNote_ = -1;
+    heldNotesLocked_ = false;
 }
 
 void Arpeggiator::reset() {
@@ -86,15 +96,28 @@ void Arpeggiator::process(uint32_t numSamples, double sampleRate, VoiceAllocator
         return;
     }
 
-    uint32_t stepSamples = stepLengthSamples(sampleRate);
-    if (stepSamples < 1) stepSamples = 1;
-
-    uint32_t gateSamples = static_cast<uint32_t>(stepSamples * gate_);
-    if (gateSamples < 1) gateSamples = 1;
-    if (gateSamples > stepSamples) gateSamples = stepSamples;
+    uint32_t baseStepSamples = stepLengthSamples(sampleRate);
+    if (baseStepSamples < 1) baseStepSamples = 1;
 
     for (uint32_t s = 0; s < numSamples; s++) {
         samplesSinceStep_++;
+
+        // Compute effective step length with swing:
+        // Even steps = normal length, odd steps = longer by swing * 0.33
+        uint32_t effectiveStepSamples = baseStepSamples;
+        if ((currentStep_ & 1) == 1 && swing_ > 0.0f) {
+            uint32_t swingOffset = static_cast<uint32_t>(
+                static_cast<float>(baseStepSamples) * swing_ * 0.33f);
+            effectiveStepSamples = baseStepSamples + swingOffset;
+        }
+
+        // NaN/inf guard on effective step length
+        if (effectiveStepSamples < 1) effectiveStepSamples = 1;
+
+        uint32_t gateSamples = static_cast<uint32_t>(
+            static_cast<float>(effectiveStepSamples) * gate_);
+        if (gateSamples < 1) gateSamples = 1;
+        if (gateSamples > effectiveStepSamples) gateSamples = effectiveStepSamples;
 
         // Check if current note should turn off
         if (noteIsActive_ && samplesSinceStep_ >= gateSamples) {
@@ -105,7 +128,7 @@ void Arpeggiator::process(uint32_t numSamples, double sampleRate, VoiceAllocator
         }
 
         // Check if we should advance to next step
-        if (samplesSinceStep_ >= stepSamples) {
+        if (samplesSinceStep_ >= effectiveStepSamples) {
             samplesSinceStep_ = 0;
             currentStep_++;
 
@@ -206,6 +229,17 @@ void Arpeggiator::releaseStep(VoiceAllocator& allocator) {
 unsigned int Arpeggiator::fastRand() const {
     randomState_ = randomState_ * 1103515245 + 12345;
     return (randomState_ / 65536) % 32768;
+}
+
+int Arpeggiator::totalSteps() const {
+    int numNotes = static_cast<int>(heldNotes_.size());
+    if (numNotes == 0) return 0;
+    int stepsPerCycle = numNotes * octaveRange_;
+    if (pattern_ == UP_DOWN) {
+        stepsPerCycle = stepsPerCycle * 2 - 2;
+        if (stepsPerCycle < 1) stepsPerCycle = 1;
+    }
+    return stepsPerCycle;
 }
 
 } // namespace openamp

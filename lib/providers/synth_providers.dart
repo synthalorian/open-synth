@@ -410,3 +410,7 @@ final keyboardOctaveProvider = StateProvider<int>((ref) => 4);
 
 // ── Search Query ────────────────────────────────────────
 final searchQueryProvider = StateProvider<String>((ref) => '');
+
+// ── Voice Priority ──────────────────────────────────────
+/// 0 = steal oldest, 1 = steal quietest, 2 = steal lowest
+final voicePriorityProvider = StateProvider<int>((ref) => 0);

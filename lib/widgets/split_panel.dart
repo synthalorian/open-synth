@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../models/keyboard_split.dart';
 import '../providers/keyboard_split_provider.dart';
 import '../providers/synth_providers.dart';
 import '../theme/synth_theme.dart';
@@ -48,33 +49,11 @@ class SplitPanel extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // ── Header ──
+          // ── Header + Mode Toggle ──
           Row(
             children: [
-              GestureDetector(
-                onTap: () => ref.read(keyboardSplitProvider.notifier).toggle(),
-                child: Container(
-                  width: 14,
-                  height: 14,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: split.enabled
-                        ? SynthTheme.cyan
-                        : SynthTheme.purple.withValues(alpha: 0.3),
-                    boxShadow: split.enabled
-                        ? [
-                            BoxShadow(
-                              color: SynthTheme.cyan.withValues(alpha: 0.5),
-                              blurRadius: 6,
-                            )
-                          ]
-                        : null,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 8),
               Text(
-                'KEYBOARD SPLIT',
+                'KEYBOARD',
                 style: TextStyle(
                   color: split.enabled ? SynthTheme.cyan : SynthTheme.textSecondary,
                   fontSize: 12,
@@ -82,135 +61,164 @@ class SplitPanel extends ConsumerWidget {
                   letterSpacing: 1.5,
                 ),
               ),
-              if (split.enabled) ...[
-                const SizedBox(width: 8),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                  decoration: BoxDecoration(
-                    color: SynthTheme.magenta.withValues(alpha: 0.15),
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: Text(
-                    'SPLIT AT ${_formatNote(split.splitPoint)}',
-                    style: TextStyle(
-                      color: SynthTheme.magenta,
-                      fontSize: 9,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 0.5,
-                    ),
-                  ),
-                ),
-              ],
               const Spacer(),
-              if (split.enabled)
-                GestureDetector(
-                  onTap: () => _showPresetPicker(context, ref, isZoneB: false),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: SynthTheme.surface,
-                      borderRadius: BorderRadius.circular(4),
-                      border: Border.all(color: SynthTheme.purple.withValues(alpha: 0.25)),
-                    ),
-                    child: Text(
-                      'Set Presets',
-                      style: TextStyle(
-                        color: SynthTheme.textSecondary,
-                        fontSize: 9,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ),
+              _ModeBtn(
+                label: 'NORM',
+                active: split.mode == SplitMode.normal,
+                onTap: () => ref.read(keyboardSplitProvider.notifier).setMode(SplitMode.normal),
+              ),
+              const SizedBox(width: 4),
+              _ModeBtn(
+                label: 'SPLIT',
+                active: split.mode == SplitMode.split,
+                onTap: () => ref.read(keyboardSplitProvider.notifier).setMode(SplitMode.split),
+              ),
+              const SizedBox(width: 4),
+              _ModeBtn(
+                label: 'LAYER',
+                active: split.mode == SplitMode.layer,
+                onTap: () => ref.read(keyboardSplitProvider.notifier).setMode(SplitMode.layer),
+              ),
             ],
           ),
 
-          if (split.enabled) ...[
-            const SizedBox(height: 12),
+          if (split.mode != SplitMode.normal) ...[
+            const SizedBox(height: 10),
 
-            // ── Split Point Slider ──
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      'SPLIT POINT',
-                      style: TextStyle(
-                        color: SynthTheme.textSecondary,
-                        fontSize: 9,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 1,
-                      ),
-                    ),
-                    const Spacer(),
-                    Text(
-                      _formatNote(split.splitPoint),
-                      style: TextStyle(
-                        color: SynthTheme.magenta,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: GoogleFonts.orbitron().fontFamily,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 4),
-                Row(
-                  children: [
-                    Text(
-                      'C1',
-                      style: TextStyle(
-                        color: SynthTheme.textSecondary.withValues(alpha: 0.5),
-                        fontSize: 9,
-                      ),
-                    ),
-                    Expanded(
-                      child: SliderTheme(
-                        data: SliderTheme.of(context).copyWith(
-                          activeTrackColor: SynthTheme.magenta,
-                          inactiveTrackColor: SynthTheme.purple.withValues(alpha: 0.2),
-                          thumbColor: SynthTheme.magenta,
-                          overlayColor: SynthTheme.magenta.withValues(alpha: 0.2),
-                          trackHeight: 4,
-                        ),
-                        child: Slider(
-                          value: split.splitPoint.toDouble(),
-                          min: 24,
-                          max: 96,
-                          divisions: 72,
-                          onChanged: (v) {
-                            ref.read(keyboardSplitProvider.notifier).setSplitPoint(v.round());
-                          },
+            // ── Split Point Slider (only in split mode) ──
+            if (split.mode == SplitMode.split)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        'SPLIT POINT',
+                        style: TextStyle(
+                          color: SynthTheme.textSecondary,
+                          fontSize: 9,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1,
                         ),
                       ),
-                    ),
-                    Text(
-                      'C7',
-                      style: TextStyle(
-                        color: SynthTheme.textSecondary.withValues(alpha: 0.5),
-                        fontSize: 9,
+                      const Spacer(),
+                      Text(
+                        _formatNote(split.splitPoint),
+                        style: TextStyle(
+                          color: SynthTheme.magenta,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: GoogleFonts.orbitron().fontFamily,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      Text(
+                        'C1',
+                        style: TextStyle(
+                          color: SynthTheme.textSecondary.withValues(alpha: 0.5),
+                          fontSize: 9,
+                        ),
+                      ),
+                      Expanded(
+                        child: SliderTheme(
+                          data: SliderTheme.of(context).copyWith(
+                            activeTrackColor: SynthTheme.magenta,
+                            inactiveTrackColor: SynthTheme.purple.withValues(alpha: 0.2),
+                            thumbColor: SynthTheme.magenta,
+                            overlayColor: SynthTheme.magenta.withValues(alpha: 0.2),
+                            trackHeight: 4,
+                          ),
+                          child: Slider(
+                            value: split.splitPoint.toDouble(),
+                            min: 24,
+                            max: 96,
+                            divisions: 72,
+                            onChanged: (v) {
+                              ref.read(keyboardSplitProvider.notifier).setSplitPoint(v.round());
+                            },
+                          ),
+                        ),
+                      ),
+                      Text(
+                        'C7',
+                        style: TextStyle(
+                          color: SynthTheme.textSecondary.withValues(alpha: 0.5),
+                          fontSize: 9,
+                        ),
+                      ),
+                    ],
+                  ),
+                  // Crossfade width
+                  Row(
+                    children: [
+                      Text(
+                        'XFADE',
+                        style: TextStyle(
+                          color: SynthTheme.textSecondary,
+                          fontSize: 8,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1,
+                        ),
+                      ),
+                      Expanded(
+                        child: SliderTheme(
+                          data: SliderTheme.of(context).copyWith(
+                            activeTrackColor: SynthTheme.orange,
+                            inactiveTrackColor: SynthTheme.purple.withValues(alpha: 0.15),
+                            thumbColor: SynthTheme.orange,
+                            trackHeight: 3,
+                          ),
+                          child: Slider(
+                            value: split.crossfadeWidth.toDouble(),
+                            min: 0,
+                            max: 12,
+                            divisions: 12,
+                            onChanged: (v) {
+                              ref.read(keyboardSplitProvider.notifier).setCrossfadeWidth(v.round());
+                            },
+                          ),
+                        ),
+                      ),
+                      Text(
+                        '${split.crossfadeWidth}s',
+                        style: TextStyle(
+                          color: SynthTheme.orange,
+                          fontSize: 8,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            const SizedBox(height: 10),
 
             // ── Zone A & Zone B ──
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Zone A
                 Expanded(
                   child: _ZoneCard(
                     label: 'ZONE A',
                     color: SynthTheme.cyan,
-                    noteRange: '24 — ${_formatNote(split.splitPoint - 1)}',
+                    noteRange: split.mode == SplitMode.split
+                        ? '24 — ${_formatNote(split.splitPoint - 1)}'
+                        : 'FULL RANGE',
                     presetName: split.presetA.name,
                     volume: split.volumeA,
+                    octaveShift: split.octaveShiftA,
                     onVolumeChanged: (v) {
                       ref.read(keyboardSplitProvider.notifier).setVolumeA(v);
+                    },
+                    onOctaveShift: (delta) {
+                      ref.read(keyboardSplitProvider.notifier).setOctaveShiftA(
+                        split.octaveShiftA + delta,
+                      );
                     },
                     onPresetTap: () => _showPresetPicker(context, ref, isZoneB: false),
                   ),
@@ -221,11 +229,19 @@ class SplitPanel extends ConsumerWidget {
                   child: _ZoneCard(
                     label: 'ZONE B',
                     color: SynthTheme.magenta,
-                    noteRange: '${_formatNote(split.splitPoint)} — 108',
+                    noteRange: split.mode == SplitMode.split
+                        ? '${_formatNote(split.splitPoint)} — 108'
+                        : 'FULL RANGE',
                     presetName: split.presetB.name,
                     volume: split.volumeB,
+                    octaveShift: split.octaveShiftB,
                     onVolumeChanged: (v) {
                       ref.read(keyboardSplitProvider.notifier).setVolumeB(v);
+                    },
+                    onOctaveShift: (delta) {
+                      ref.read(keyboardSplitProvider.notifier).setOctaveShiftB(
+                        split.octaveShiftB + delta,
+                      );
                     },
                     onPresetTap: () => _showPresetPicker(context, ref, isZoneB: true),
                   ),
@@ -306,13 +322,86 @@ class SplitPanel extends ConsumerWidget {
   }
 }
 
+class _OctaveBtn extends StatelessWidget {
+  final IconData icon;
+  final VoidCallback onTap;
+  final Color color;
+
+  const _OctaveBtn({
+    required this.icon,
+    required this.onTap,
+    required this.color,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 18,
+        height: 18,
+        decoration: BoxDecoration(
+          color: color.withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(3),
+          border: Border.all(color: color.withValues(alpha: 0.3)),
+        ),
+        child: Icon(
+          icon,
+          size: 10,
+          color: color,
+        ),
+      ),
+    );
+  }
+}
+
+class _ModeBtn extends StatelessWidget {
+  final String label;
+  final bool active;
+  final VoidCallback onTap;
+
+  const _ModeBtn({
+    required this.label,
+    required this.active,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+        decoration: BoxDecoration(
+          color: active ? SynthTheme.cyan.withValues(alpha: 0.15) : Colors.transparent,
+          borderRadius: BorderRadius.circular(4),
+          border: Border.all(
+            color: active ? SynthTheme.cyan.withValues(alpha: 0.5) : SynthTheme.purple.withValues(alpha: 0.2),
+          ),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            color: active ? SynthTheme.cyan : SynthTheme.textSecondary,
+            fontSize: 9,
+            fontWeight: active ? FontWeight.bold : FontWeight.w500,
+            letterSpacing: 0.5,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _ZoneCard extends StatelessWidget {
   final String label;
   final Color color;
   final String noteRange;
   final String presetName;
   final double volume;
+  final int octaveShift;
   final ValueChanged<double> onVolumeChanged;
+  final ValueChanged<int> onOctaveShift;
   final VoidCallback onPresetTap;
 
   const _ZoneCard({
@@ -321,7 +410,9 @@ class _ZoneCard extends StatelessWidget {
     required this.noteRange,
     required this.presetName,
     required this.volume,
+    this.octaveShift = 0,
     required this.onVolumeChanged,
+    required this.onOctaveShift,
     required this.onPresetTap,
   });
 
@@ -393,16 +484,61 @@ class _ZoneCard extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 6),
-          SynthKnob(
-            label: 'VOL',
-            value: volume,
-            min: 0,
-            max: 1,
-            size: 40,
-            formatValue: (v) => '${(v * 100).round()}%',
-            onChanged: onVolumeChanged,
-            activeColor: color,
+          Row(
+            children: [
+              Expanded(
+                child: SynthKnob(
+                  label: 'VOL',
+                  value: volume,
+                  min: 0,
+                  max: 1,
+                  size: 40,
+                  formatValue: (v) => '${(v * 100).round()}%',
+                  onChanged: onVolumeChanged,
+                  activeColor: color,
+                ),
+              ),
+              const SizedBox(width: 4),
+              Column(
+                children: [
+                  Text(
+                    'OCT',
+                    style: TextStyle(
+                      color: SynthTheme.textSecondary,
+                      fontSize: 7,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      _OctaveBtn(
+                        icon: Icons.remove,
+                        onTap: () => onOctaveShift(-1),
+                        color: color,
+                      ),
+                      const SizedBox(width: 2),
+                      Text(
+                        octaveShift >= 0 ? '+$octaveShift' : '$octaveShift',
+                        style: TextStyle(
+                          color: color,
+                          fontSize: 9,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(width: 2),
+                      _OctaveBtn(
+                        icon: Icons.add,
+                        onTap: () => onOctaveShift(1),
+                        color: color,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
           ),
         ],
       ),

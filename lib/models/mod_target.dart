@@ -25,7 +25,10 @@ enum FilterType {
   lowpass('Low Pass'),
   highpass('High Pass'),
   bandpass('Band Pass'),
-  notch('Notch');
+  notch('Notch'),
+  lowShelf('Low Shelf'),
+  highShelf('High Shelf'),
+  peakingEQ('Peaking EQ');
 
   const FilterType(this.displayName);
 

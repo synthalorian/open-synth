@@ -107,6 +107,11 @@ void synth_engine_set_compressor_makeup_gain(void* engine, float v);
 // Master
 void synth_engine_set_master_volume(void* engine, float v);
 int32_t synth_engine_get_active_voices(void* engine);
+float    synth_engine_get_cpu_load(void* engine);
+
+// Arpeggiator state (read-only, for UI visualization)
+int32_t synth_engine_get_arp_current_step(void* engine);
+int32_t synth_engine_get_arp_total_steps(void* engine);
 
 // ── Thread-safe parameter queue ─────────────────────────────────────────────
 // These enqueue parameters into the lock-free SPSC ring buffer.
@@ -137,6 +142,28 @@ void synth_engine_set_osc2_unison_voice_count(void* engine, int32_t v);
 void synth_engine_set_osc2_unison_detune_spread(void* engine, float v);
 void synth_engine_set_osc2_unison_stereo_spread(void* engine, float v);
 void synth_engine_set_osc2_unison_mix(void* engine, float v);
+
+// ── FX Slot Control ───────────────────────────────────────────────────────────
+// These control the multi-FX slot architecture (FxEngine).
+// slotIndex: 0 = legacy, 1 = EQ, 2 = Limiter, 3 = Rotary/Tremolo
+void  synth_engine_set_fx_slot_type(void* engine, int32_t slotIndex, int32_t fxTypeId);
+void  synth_engine_set_fx_slot_enabled(void* engine, int32_t slotIndex, int32_t enabled);
+void  synth_engine_set_fx_slot_param(void* engine, int32_t slotIndex, int32_t paramIdx, float value);
+void  synth_engine_set_fx_master_enabled(void* engine, int32_t enabled);
+void  synth_engine_set_fx_master_mix(void* engine, float mix);
+
+// ── SynthEnginePair (Zone A + Zone B mixer) ───────────────────────────────────
+void* synth_pair_create(double sampleRate, uint32_t blockSize);
+void  synth_pair_destroy(void* pair);
+void  synth_pair_process(void* pair, float* output, uint32_t numFrames);
+void* synth_pair_engine_a(void* pair);
+void* synth_pair_engine_b(void* pair);
+void  synth_pair_set_mix_a(void* pair, float mix);
+void  synth_pair_set_mix_b(void* pair, float mix);
+void  synth_pair_reset(void* pair);
+int32_t synth_pair_get_active_voices(void* pair);
+int32_t synth_pair_get_zone_a_voices(void* pair);
+int32_t synth_pair_get_zone_b_voices(void* pair);
 
 #ifdef __cplusplus
 }

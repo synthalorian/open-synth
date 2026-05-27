@@ -11,6 +11,7 @@ import 'package:path_provider/path_provider.dart';
 import '../models/synth_preset.dart';
 import '../ffi/openamp_audio_stream.dart';
 import '../providers/midi_provider.dart';
+import '../providers/recent_presets_provider.dart';
 import '../providers/settings_provider.dart';
 import '../providers/synth_providers.dart';
 import '../theme/synth_theme.dart';
@@ -75,6 +76,16 @@ class SettingsScreen extends ConsumerWidget {
             _AudioDeviceSelector(),
             const SizedBox(height: 10),
             _AudioBufferSelector(),
+            const SizedBox(height: 32),
+
+            _SectionTitle('RECENT PRESETS'),
+            const SizedBox(height: 12),
+            _ActionCard(
+              icon: Icons.delete_outline,
+              label: 'Clear Recent History',
+              color: SynthTheme.magenta,
+              onTap: () => _confirmClearRecents(context, ref),
+            ),
             const SizedBox(height: 32),
 
             _SectionTitle('APPEARANCE'),
@@ -207,6 +218,55 @@ class SettingsScreen extends ConsumerWidget {
         );
       }
     }
+  }
+
+  void _confirmClearRecents(BuildContext context, WidgetRef ref) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: SynthTheme.surface,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+          side: BorderSide(color: SynthTheme.magenta.withValues(alpha: 0.3)),
+        ),
+        title: Text(
+          'Clear Recent History?',
+          style: TextStyle(color: SynthTheme.magenta, fontWeight: FontWeight.bold),
+        ),
+        content: Text(
+          'This will erase your recently-used preset history. Your favorites and presets will not be affected.',
+          style: TextStyle(color: SynthTheme.textSecondary, fontSize: 14),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              'CANCEL',
+              style: TextStyle(color: SynthTheme.textSecondary),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              ref.read(recentPresetsProvider.notifier).clear();
+              Navigator.pop(context);
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Recent history cleared'),
+                  behavior: SnackBarBehavior.floating,
+                ),
+              );
+            },
+            child: Text(
+              'CLEAR',
+              style: TextStyle(
+                color: SynthTheme.magenta,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   void _confirmFactoryReset(BuildContext context, WidgetRef ref) {

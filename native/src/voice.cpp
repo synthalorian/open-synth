@@ -16,8 +16,11 @@ void Voice::reset() {
     }
     filterState1 = 0.0f;
     filterState2 = 0.0f;
+    lfo1Phase = 0.0;
+    lfo2Phase = 0.0;
     ampEnv.reset();
     filterEnv.reset();
+    pitchEnv.reset();
 }
 
 void Voice::noteOn(int note, float vel) {
@@ -33,12 +36,14 @@ void Voice::noteOn(int note, float vel) {
     }
     ampEnv.noteOn();
     filterEnv.noteOn();
+    pitchEnv.noteOn();
 }
 
 void Voice::noteOff() {
     sustained = false;
     ampEnv.noteOff();
     filterEnv.noteOff();
+    pitchEnv.noteOff();
 }
 
 } // namespace openamp

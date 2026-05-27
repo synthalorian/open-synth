@@ -1,6 +1,7 @@
 #pragma once
 #include <cstdint>
 #include <cmath>
+#include <algorithm>
 
 namespace openamp {
 
@@ -11,6 +12,21 @@ enum class OscWaveform : int {
     SINE = 3,
     NOISE = 4,
     PULSE = 5,
+};
+
+/// Noise color types for the NOISE waveform.
+enum class NoiseType : int {
+    WHITE = 0,
+    PINK = 1,
+    BROWN = 2,
+};
+
+/// Sub-oscillator mode.
+enum class SubOscMode : int {
+    OFF = 0,
+    SQUARE_1OCT = 1,   // Square wave, 1 octave below
+    SQUARE_2OCT = 2,   // Square wave, 2 octaves below
+    SINE_1OCT = 3,     // Sine wave, 1 octave below
 };
 
 class UnisonConfig {
@@ -30,6 +46,22 @@ public:
     void setDetune(float cents);
     void setPulseWidth(float pw);
     void setVolume(float vol);
+
+    // Noise
+    void setNoiseType(int nt);
+    int noiseType() const { return static_cast<int>(noiseType_); }
+
+    // Sub oscillator
+    void setSubOscMode(int mode);
+    void setSubOscVolume(float vol);
+    int subOscMode() const { return static_cast<int>(subOscMode_); }
+    float subOscVolume() const { return subOscVolume_; }
+
+    // FM synthesis
+    void setFmEnabled(bool e) { fmEnabled_ = e; }
+    void setFmAmount(float a) { fmAmount_ = std::clamp(a, 0.0f, 1.0f); }
+    bool fmEnabled() const { return fmEnabled_; }
+    float fmAmount() const { return fmAmount_; }
 
     // Unison
     void setUnisonVoiceCount(int count);
@@ -60,6 +92,11 @@ private:
     float detune_ = 0.0f;
     float pulseWidth_ = 0.5f;
     float volume_ = 0.8f;
+    NoiseType noiseType_ = NoiseType::WHITE;
+    SubOscMode subOscMode_ = SubOscMode::OFF;
+    float subOscVolume_ = 0.5f;
+    bool fmEnabled_ = false;
+    float fmAmount_ = 0.5f;
     UnisonConfig unison_;
 
     float generateWaveform(float phase) const;

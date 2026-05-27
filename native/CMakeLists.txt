@@ -23,6 +23,13 @@ set(SOURCES
     ${SRC_DIR}/audio_system.cpp
     ${SRC_DIR}/audio_stream.cpp
     ${SRC_DIR}/audio_stream_ffi.cpp
+    ${SRC_DIR}/synth_mixer.cpp
+    ${SRC_DIR}/fx_engine.cpp
+    ${SRC_DIR}/fx_eq.cpp
+    ${SRC_DIR}/fx_limiter.cpp
+    ${SRC_DIR}/fx_rotary.cpp
+    ${SRC_DIR}/fx_tremolo.cpp
+    ${SRC_DIR}/legacy_fx.cpp
 )
 
 add_library(openamp_dart_ffi SHARED ${SOURCES})
@@ -60,6 +67,48 @@ set_target_properties(openamp_dart_ffi PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_LIST_DIR}"
     OUTPUT_NAME "openamp_dart_ffi"
 )
+
+# ── Test executable (build only when BUILD_TESTS=ON) ──────────────────────
+option(BUILD_TESTS "Build the FX unit test executable" OFF)
+
+if(BUILD_TESTS)
+    add_executable(openamp_fx_tests
+        ${SRC_DIR}/fx_tests.cpp
+        ${SRC_DIR}/fx_eq.cpp
+        ${SRC_DIR}/fx_limiter.cpp
+        ${SRC_DIR}/fx_rotary.cpp
+        ${SRC_DIR}/fx_tremolo.cpp
+        ${SRC_DIR}/fx_engine.cpp
+        ${SRC_DIR}/legacy_fx.cpp
+    )
+
+    target_include_directories(openamp_fx_tests PRIVATE ${INC_DIR})
+
+    target_link_libraries(openamp_fx_tests PRIVATE)
+
+    set_target_properties(openamp_fx_tests PROPERTIES
+        LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_LIST_DIR}/build"
+        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_LIST_DIR}/build"
+    )
+
+    # AudioStream tests — only with PortAudio
+    if(PORTAUDIO_FOUND OR PORTAUDIO_LIB)
+        add_executable(openamp_stream_tests
+            ${SRC_DIR}/audio_stream_test.cpp
+            ${SRC_DIR}/audio_stream.cpp
+            ${SRC_DIR}/audio_system.cpp
+        )
+        target_include_directories(openamp_stream_tests PRIVATE ${INC_DIR})
+        if(PkgConfig_FOUND)
+            target_include_directories(openamp_stream_tests PRIVATE ${PORTAUDIO_INCLUDE_DIRS})
+        endif()
+        target_link_libraries(openamp_stream_tests PRIVATE ${PORTAUDIO_LIBRARIES} ${PORTAUDIO_LIB})
+        set_target_properties(openamp_stream_tests PROPERTIES
+            LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_LIST_DIR}/build"
+            RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_LIST_DIR}/build"
+        )
+    endif()
+endif()
 
 # Install target so the Flutter project can find it
 install(TARGETS openamp_dart_ffi

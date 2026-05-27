@@ -29,6 +29,11 @@ public:
         OSC1_DETUNE = 12,
         OSC1_PULSE_WIDTH = 13,
         OSC1_VOLUME = 14,
+        OSC1_NOISE_TYPE = 15,
+        OSC1_SUB_OSC_MODE = 16,
+        OSC1_SUB_OSC_VOLUME = 17,
+        OSC1_FM_ENABLED = 18,
+        OSC1_FM_AMOUNT = 19,
 
         // Osc 2
         OSC2_WAVEFORM = 20,
@@ -37,107 +42,170 @@ public:
         OSC2_PULSE_WIDTH = 23,
         OSC2_VOLUME = 24,
         OSC_MIX = 25,
+        OSC2_NOISE_TYPE = 26,
+        OSC2_SUB_OSC_MODE = 27,
+        OSC2_SUB_OSC_VOLUME = 28,
+        OSC2_FM_ENABLED = 29,
+        OSC2_FM_AMOUNT = 30,
 
         // Filter
-        FILTER_TYPE = 30,
-        FILTER_CUTOFF = 31,
-        FILTER_RESONANCE = 32,
-        FILTER_ENV_AMOUNT = 33,
+        FILTER_TYPE = 40,
+        FILTER_CUTOFF = 41,
+        FILTER_RESONANCE = 42,
+        FILTER_ENV_AMOUNT = 43,
+        FILTER_KEY_TRACKING = 44,
+        FILTER_DRIVE = 45,
 
         // Amp envelope
-        AMP_ATTACK = 40,
-        AMP_DECAY = 41,
-        AMP_SUSTAIN = 42,
-        AMP_RELEASE = 43,
+        AMP_ATTACK = 50,
+        AMP_DECAY = 51,
+        AMP_SUSTAIN = 52,
+        AMP_RELEASE = 53,
+        AMP_DELAY = 54,
+        AMP_HOLD = 55,
+        AMP_ATTACK_CURVE = 56,
+        AMP_DECAY_CURVE = 57,
+        AMP_RELEASE_CURVE = 58,
 
         // Filter envelope
-        FILTER_ATTACK = 50,
-        FILTER_DECAY = 51,
-        FILTER_SUSTAIN = 52,
-        FILTER_RELEASE = 53,
+        FILTER_ATTACK = 60,
+        FILTER_DECAY = 61,
+        FILTER_SUSTAIN = 62,
+        FILTER_RELEASE = 63,
+        FILTER_DELAY = 64,
+        FILTER_HOLD = 65,
+        FILTER_ATTACK_CURVE = 66,
+        FILTER_DECAY_CURVE = 67,
+        FILTER_RELEASE_CURVE = 68,
 
         // LFO 1
-        LFO1_WAVEFORM = 60,
-        LFO1_RATE = 61,
-        LFO1_DEPTH = 62,
-        LFO1_TARGET = 63,
+        LFO1_WAVEFORM = 70,
+        LFO1_RATE = 71,
+        LFO1_DEPTH = 72,
+        LFO1_TARGET = 73,
+        LFO1_FADE_IN = 74,
+        LFO1_TEMPO_SYNC = 75,
+        LFO1_TEMPO_DIVISION = 76,
 
         // LFO 2
-        LFO2_WAVEFORM = 70,
-        LFO2_RATE = 71,
-        LFO2_DEPTH = 72,
-        LFO2_TARGET = 73,
+        LFO2_WAVEFORM = 80,
+        LFO2_RATE = 81,
+        LFO2_DEPTH = 82,
+        LFO2_TARGET = 83,
+        LFO2_FADE_IN = 84,
+        LFO2_TEMPO_SYNC = 85,
+        LFO2_TEMPO_DIVISION = 86,
 
         // FX: Chorus
-        CHORUS_ENABLED = 80,
-        CHORUS_RATE = 81,
-        CHORUS_DEPTH = 82,
-        CHORUS_MIX = 83,
+        CHORUS_ENABLED = 90,
+        CHORUS_RATE = 91,
+        CHORUS_DEPTH = 92,
+        CHORUS_MIX = 93,
 
         // FX: Delay
-        DELAY_ENABLED = 84,
-        DELAY_TIME = 85,
-        DELAY_FEEDBACK = 86,
-        DELAY_MIX = 87,
+        DELAY_ENABLED = 94,
+        DELAY_TIME = 95,
+        DELAY_FEEDBACK = 96,
+        DELAY_MIX = 97,
 
         // FX: Reverb
-        REVERB_ENABLED = 88,
-        REVERB_SIZE = 89,
-        REVERB_DAMPING = 90,
-        REVERB_MIX = 91,
+        REVERB_ENABLED = 98,
+        REVERB_SIZE = 99,
+        REVERB_DAMPING = 100,
+        REVERB_MIX = 101,
 
         // FX: Phaser
-        PHASER_ENABLED = 92,
-        PHASER_RATE = 93,
-        PHASER_DEPTH = 94,
-        PHASER_FEEDBACK = 95,
-        PHASER_MIX = 96,
+        PHASER_ENABLED = 102,
+        PHASER_RATE = 103,
+        PHASER_DEPTH = 104,
+        PHASER_FEEDBACK = 105,
+        PHASER_MIX = 106,
 
         // FX: Drive
-        DRIVE_ENABLED = 97,
-        DRIVE_AMOUNT = 98,
-        DRIVE_TYPE = 99,
+        DRIVE_ENABLED = 107,
+        DRIVE_AMOUNT = 108,
+        DRIVE_TYPE = 109,
 
         // FX: Flanger
-        FLANGER_ENABLED = 100,
-        FLANGER_RATE = 101,
-        FLANGER_DEPTH = 102,
-        FLANGER_FEEDBACK = 103,
-        FLANGER_MIX = 104,
+        FLANGER_ENABLED = 110,
+        FLANGER_RATE = 111,
+        FLANGER_DEPTH = 112,
+        FLANGER_FEEDBACK = 113,
+        FLANGER_MIX = 114,
 
         // FX: Compressor
-        COMPRESSOR_ENABLED = 105,
-        COMPRESSOR_THRESHOLD = 106,
-        COMPRESSOR_RATIO = 107,
-        COMPRESSOR_ATTACK = 108,
-        COMPRESSOR_RELEASE = 109,
-        COMPRESSOR_MAKEUP_GAIN = 110,
+        COMPRESSOR_ENABLED = 115,
+        COMPRESSOR_THRESHOLD = 116,
+        COMPRESSOR_RATIO = 117,
+        COMPRESSOR_ATTACK = 118,
+        COMPRESSOR_RELEASE = 119,
+        COMPRESSOR_MAKEUP_GAIN = 120,
 
         // Master
-        MASTER_VOLUME = 120,
+        MASTER_VOLUME = 130,
 
         // Unison 1
-        OSC1_UNISON_VOICE_COUNT = 130,
-        OSC1_UNISON_DETUNE_SPREAD = 131,
-        OSC1_UNISON_STEREO_SPREAD = 132,
-        OSC1_UNISON_MIX = 133,
+        OSC1_UNISON_VOICE_COUNT = 140,
+        OSC1_UNISON_DETUNE_SPREAD = 141,
+        OSC1_UNISON_STEREO_SPREAD = 142,
+        OSC1_UNISON_MIX = 143,
 
         // Unison 2
-        OSC2_UNISON_VOICE_COUNT = 140,
-        OSC2_UNISON_DETUNE_SPREAD = 141,
-        OSC2_UNISON_STEREO_SPREAD = 142,
-        OSC2_UNISON_MIX = 143,
-
-        // Reset
-        RESET = 200,
+        OSC2_UNISON_VOICE_COUNT = 150,
+        OSC2_UNISON_DETUNE_SPREAD = 151,
+        OSC2_UNISON_STEREO_SPREAD = 152,
+        OSC2_UNISON_MIX = 153,
 
         // Arpeggiator
-        ARP_ENABLED = 150,
-        ARP_TEMPO = 151,
-        ARP_PATTERN = 152,
-        ARP_OCTAVE_RANGE = 153,
-        ARP_GATE = 154,
-        ARP_RESOLUTION = 155,
+        ARP_ENABLED = 160,
+        ARP_TEMPO = 161,
+        ARP_PATTERN = 162,
+        ARP_OCTAVE_RANGE = 163,
+        ARP_GATE = 164,
+        ARP_RESOLUTION = 165,
+        ARP_SWING = 166,
+        ARP_HOLD = 167,
+
+        // Voice priority
+        VOICE_PRIORITY_MODE = 170,
+
+        // New FX: EQ (slot 1)
+        FX_SLOT1_TYPE = 180,
+        FX_SLOT1_ENABLED = 181,
+        FX_SLOT1_PARAM0 = 182,
+        FX_SLOT1_PARAM1 = 183,
+        FX_SLOT1_PARAM2 = 184,
+        FX_SLOT1_PARAM3 = 185,
+        FX_SLOT1_PARAM4 = 186,
+        FX_SLOT1_PARAM5 = 187,
+        FX_SLOT1_PARAM6 = 188,
+        FX_SLOT1_PARAM7 = 189,
+
+        // New FX: Limiter (slot 2)
+        FX_SLOT2_TYPE = 190,
+        FX_SLOT2_ENABLED = 191,
+        FX_SLOT2_PARAM0 = 192,
+        FX_SLOT2_PARAM1 = 193,
+        FX_SLOT2_PARAM2 = 194,
+        FX_SLOT2_PARAM3 = 195,
+        FX_SLOT2_PARAM4 = 196,
+
+        // New FX: Rotary / Tremolo (slot 3)
+        FX_SLOT3_TYPE = 197,
+        FX_SLOT3_ENABLED = 198,
+        FX_SLOT3_PARAM0 = 199,
+        FX_SLOT3_PARAM1 = 200,
+        FX_SLOT3_PARAM2 = 201,
+        FX_SLOT3_PARAM3 = 202,
+        FX_SLOT3_PARAM4 = 203,
+        FX_SLOT3_PARAM5 = 204,
+
+        // FX Engine master
+        FX_MASTER_ENABLED = 205,
+        FX_MASTER_MIX = 206,
+
+        // Reset
+        RESET = 250,
     };
 
     struct Entry {

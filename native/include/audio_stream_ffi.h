@@ -18,6 +18,7 @@ int32_t audio_system_is_initialized();
 // ── Audio stream lifecycle ──────────────────────────────────────────────────
 
 void*  audio_stream_create_for_synth(void* synthHandle, double sampleRate, uint32_t blockSize, int32_t deviceIndex);
+void*  audio_stream_create_for_pair(void* pairHandle, double sampleRate, uint32_t blockSize, int32_t deviceIndex);
 void   audio_stream_destroy(void* stream);
 int32_t audio_stream_start(void* stream);
 void   audio_stream_stop(void* stream);

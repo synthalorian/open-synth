@@ -1,6 +1,10 @@
+import 'dart:convert';
 import 'dart:developer' as developer;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive/hive.dart';
+
+import 'dart:ffi';
 
 import '../ffi/openamp_audio_stream.dart';
 import '../ffi/openamp_synth.dart';
@@ -18,69 +22,134 @@ final keyboardSplitProvider =
 });
 
 class KeyboardSplitNotifier extends StateNotifier<KeyboardSplit> {
-  KeyboardSplitNotifier() : super(KeyboardSplit());
+  KeyboardSplitNotifier() : super(KeyboardSplit()) {
+    _load();
+  }
+
+  Box? _box;
+
+  void _load() {
+    _box = Hive.box('open_synth');
+    final stored = _box?.get('keyboard_split');
+    if (stored != null) {
+      try {
+        final json = jsonDecode(stored as String) as Map<String, dynamic>;
+        state = KeyboardSplit.fromJson(json);
+      } catch (e) {
+        developer.log('Failed to load keyboard split: $e', name: 'open_synth.split');
+      }
+    }
+  }
+
+  void _save() {
+    _box?.put('keyboard_split', jsonEncode(state.toJson()));
+  }
 
   void update(KeyboardSplit Function(KeyboardSplit) updater) {
     state = updater(state);
+    _save();
   }
 
   void setPresetA(SynthPreset preset) {
     state = state.copyWith(presetA: preset);
+    _save();
   }
 
   void setPresetB(SynthPreset preset) {
     state = state.copyWith(presetB: preset);
+    _save();
   }
 
-  void toggle() {
-    state = state.copyWith(enabled: !state.enabled);
+  void setMode(SplitMode mode) {
+    state = state.copyWith(mode: mode);
+    _save();
+  }
+
+  void cycleMode() {
+    final nextIndex = (state.mode.index + 1) % SplitMode.values.length;
+    state = state.copyWith(mode: SplitMode.values[nextIndex]);
+    _save();
   }
 
   void setSplitPoint(int note) {
     state = state.copyWith(splitPoint: note.clamp(24, 96));
+    _save();
   }
 
   void setVolumeA(double v) {
     state = state.copyWith(volumeA: v.clamp(0.0, 1.0));
+    _save();
   }
 
   void setVolumeB(double v) {
     state = state.copyWith(volumeB: v.clamp(0.0, 1.0));
+    _save();
+  }
+
+  void setOctaveShiftA(int shift) {
+    state = state.copyWith(octaveShiftA: shift.clamp(-2, 2));
+    _save();
+  }
+
+  void setOctaveShiftB(int shift) {
+    state = state.copyWith(octaveShiftB: shift.clamp(-2, 2));
+    _save();
+  }
+
+  void setCrossfadeWidth(int width) {
+    state = state.copyWith(crossfadeWidth: width.clamp(0, 12));
+    _save();
   }
 }
 
-// ── Zone B Synth Engine ───────────────────────────────────────────────────────
+// ── SynthEnginePair (Zone A + Zone B Mixer) ───────────────────────────────────
 
-/// Second native synth engine for zone B. Lazy-created, null if FFI unavailable.
-final zoneBEngineProvider = Provider<OpenAmpSynth?>((ref) {
-  if (!OpenAmpSynthBindings.available) return null;
-  final synth = OpenAmpSynth();
-  ref.onDispose(synth.dispose);
-  return synth;
+/// Combined engine pair that wraps two SynthEngine instances and mixes
+/// their audio outputs. Replaces the old separate zone B engine + stream.
+final synthPairProvider = Provider<OpenAmpSynthPair?>((ref) {
+  if (PairBindings.instance == null) return null;
+
+  final pair = OpenAmpSynthPair();
+  ref.onDispose(pair.dispose);
+  return pair;
 });
 
-/// Zone B audio output stream bound to zone B engine.
-final zoneBAudioStreamProvider = Provider<OpenAmpSynthAudioStream?>((ref) {
-  final engine = ref.watch(zoneBEngineProvider);
-  if (engine == null) return null;
+/// Audio stream bound to the SynthEnginePair. Only one PortAudio stream
+/// needed — the pair handles internal mixing of both zones.
+final synthPairAudioStreamProvider = Provider<OpenAmpSynthAudioStream?>((ref) {
+  final pair = ref.watch(synthPairProvider);
+  if (pair == null) return null;
   if (!OpenAmpAudioStreamBindings.available) return null;
 
   final bufferSize = ref.watch(audioBufferSizeProvider);
 
-  final stream = OpenAmpSynthAudioStream(
-    synthHandle: engine.nativeHandle,
-    sampleRate: 48000.0,
-    blockSize: bufferSize,
-  );
+  OpenAmpSynthAudioStream? stream;
+  try {
+    stream = OpenAmpSynthAudioStream.forPair(
+      pairHandle: pair.nativeHandle as Pointer<Void>,
+      sampleRate: 48000.0,
+      blockSize: bufferSize,
+    );
+  } catch (e, st) {
+    developer.log(
+      'Failed to create pair audio stream: $e',
+      name: 'open_synth.split',
+      error: e,
+      stackTrace: st,
+    );
+    return null;
+  }
+
   final ok = stream.start();
   if (!ok) {
     developer.log(
-      'PortAudio failed to start for zone B: ${stream.lastError}',
+      'PortAudio failed to start for synth pair: ${stream.lastError}',
       name: 'open_synth.split',
     );
     stream.dispose();
     return null;
   }
+
   ref.onDispose(stream.dispose);
   return stream;
 });
@@ -88,6 +157,7 @@ final zoneBAudioStreamProvider = Provider<OpenAmpSynthAudioStream?>((ref) {
 // ── Zone B Playback State ───────────────────────────────────────────────────
 
 /// Tracks which notes are active on zone B.
+/// Uses the pair's engine B handle to noteOn/noteOff.
 final zoneBPlaybackProvider =
     StateNotifierProvider<ZoneBPlaybackNotifier, Set<int>>((ref) {
   return ZoneBPlaybackNotifier(ref);
@@ -98,26 +168,33 @@ class ZoneBPlaybackNotifier extends StateNotifier<Set<int>> {
 
   final Ref _ref;
 
-  OpenAmpSynth? get _engine => _ref.read(zoneBEngineProvider);
+  /// Get the zone B engine handle from the pair.
+  OpenAmpSynth? get _engineB {
+    final pair = _ref.read(synthPairProvider);
+    if (pair == null) return null;
+    // Wrap the raw engine B handle in a lightweight wrapper for noteOn/noteOff
+    // We use the main OpenAmpSynthBindings to send events to engine B's handle
+    return OpenAmpSynth.fromHandle(pair.engineB);
+  }
 
   void _ensureAudioRunning() {
-    final stream = _ref.read(zoneBAudioStreamProvider);
+    final stream = _ref.read(synthPairAudioStreamProvider);
     stream?.start();
   }
 
   void noteOn(int midiNote, {double velocity = 1.0}) {
     _ensureAudioRunning();
-    _engine?.noteOn(midiNote, velocity: velocity);
+    _engineB?.noteOn(midiNote, velocity: velocity);
     state = {...state, midiNote};
   }
 
   void noteOff(int midiNote) {
-    _engine?.noteOff(midiNote);
+    _engineB?.noteOff(midiNote);
     state = {...state}..remove(midiNote);
   }
 
   void allNotesOff() {
-    _engine?.allNotesOff();
+    _engineB?.allNotesOff();
     state = {};
   }
 }
@@ -126,13 +203,26 @@ class ZoneBPlaybackNotifier extends StateNotifier<Set<int>> {
 
 /// Side-effect provider: pushes zone B's preset to zone B's engine.
 final zoneBPresetSyncProvider = Provider<void>((ref) {
-  final engine = ref.watch(zoneBEngineProvider);
+  final pair = ref.watch(synthPairProvider);
   final split = ref.watch(keyboardSplitProvider);
-  if (engine == null) return;
+  if (pair == null) return;
 
   // Zone B uses its own preset directly (no morph/mod matrix for zone B in v1)
   final preset = split.presetB;
-  applyPresetToSynth(engine, preset);
+  final engineB = OpenAmpSynth.fromHandle(pair.engineB);
+  applyPresetToSynth(engineB, preset);
+});
+
+// ── Zone B Mix Volume Sync ─────────────────────────────────────────────────────
+
+/// Syncs the keyboard split volume to the SynthEnginePair's mix controls.
+final zoneBMixSyncProvider = Provider<void>((ref) {
+  final pair = ref.watch(synthPairProvider);
+  final split = ref.watch(keyboardSplitProvider);
+  if (pair == null) return;
+
+  pair.setMixA(split.volumeA);
+  pair.setMixB(split.volumeB);
 });
 
 // ── Combined Note Router ──────────────────────────────────────────────────────

@@ -22,6 +22,11 @@ struct Voice {
     // Envelopes
     Envelope ampEnv;
     Envelope filterEnv;
+    Envelope pitchEnv;
+
+    // Per-voice LFO phase (for per-voice LFO mode)
+    double lfo1Phase = 0.0;
+    double lfo2Phase = 0.0;
 
     // Filter state (per-voice for now, could be global)
     float filterState1 = 0.0f;

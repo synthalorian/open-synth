@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../ffi/openamp_synth.dart';
 import '../models/arpeggiator_config.dart';
 import 'clock_provider.dart';
 import 'synth_providers.dart';
@@ -87,4 +90,59 @@ final arpeggiatorNativeBridgeProvider = Provider<void>((ref) {
     gate = 0.5 - config.gateVariation * 0.25;
   }
   synth.arpGate = gate.clamp(0.1, 1.0);
+
+  // Swing: 0.0 = straight timing, 1.0 = maximum swing feel.
+  synth.arpSwing = config.swing;
+
+  // Hold / latch mode: keep notes sounding after key release.
+  synth.arpHold = config.hold;
 });
+
+// ── Current-step polling ─────────────────────────────────────────────────
+
+/// Polls the native engine's current arpeggiator step at ~50 ms intervals.
+final arpStepProvider =
+    StateNotifierProvider<ArpStepNotifier, int>((ref) {
+  return ArpStepNotifier(ref);
+});
+
+/// Total number of steps in the current arpeggiator pattern (read once
+/// from the native engine; updates when the engine is recreated).
+final arpTotalStepsProvider = Provider<int>((ref) {
+  final synth = ref.watch(synthEngineProvider);
+  if (synth == null || !OpenAmpSynthBindings.available) return 0;
+  try {
+    return OpenAmpSynthBindings.instance
+        .getArpTotalSteps(synth.nativeHandle);
+  } catch (_) {
+    // Symbol may not exist in older .so builds.
+    return 0;
+  }
+});
+
+class ArpStepNotifier extends StateNotifier<int> {
+  ArpStepNotifier(this._ref) : super(0) {
+    _timer = Timer.periodic(const Duration(milliseconds: 50), (_) => _poll());
+  }
+
+  final Ref _ref;
+  late final Timer _timer;
+
+  void _poll() {
+    final synth = _ref.read(synthEngineProvider);
+    if (synth == null || !OpenAmpSynthBindings.available) return;
+    try {
+      final step = OpenAmpSynthBindings.instance
+          .getArpCurrentStep(synth.nativeHandle);
+      if (step != state) state = step;
+    } catch (_) {
+      // Symbol may not exist in older .so builds — silently ignore.
+    }
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+}

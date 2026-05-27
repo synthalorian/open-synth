@@ -1,10 +1,16 @@
 #include "synth_engine.h"
+#include "legacy_fx.h"
+#include "fx_eq.h"
+#include "fx_limiter.h"
+#include "fx_rotary.h"
+#include "fx_tremolo.h"
 #include <cmath>
 #include <cstring>
 #include <algorithm>
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <chrono>
 
 namespace openamp {
 
@@ -18,17 +24,19 @@ static float midiNoteToFreq(int note) {
 
 SynthEngine::SynthEngine(double sampleRate, uint32_t blockSize)
     : sampleRate_(sampleRate), blockSize_(blockSize) {
-    delayBuffer_ = new float[MAX_DELAY_SAMPLES]();
-    delayBufferSize_ = static_cast<uint32_t>(delayTimeMs_ * 0.001f * sampleRate_);
-    if (delayBufferSize_ < 1) delayBufferSize_ = 1;
-
     lfo1_.prepare(sampleRate_);
     lfo2_.prepare(sampleRate_);
+
+    // Initialize the legacy FX (slot 0) with all the old inline effects.
+    // New FX slots (1-3) are left empty for the user to assign via the FxEngine.
+    initLegacyFxSlot();
+
+    // Pre-register the new FX processors for slots 1-3 as available types.
+    // Users configure them via the FX panel UI; by default they're empty.
+    // Slot 1: EQ, Slot 2: Limiter, Slot 3: can be swapped at runtime.
 }
 
-SynthEngine::~SynthEngine() {
-    delete[] delayBuffer_;
-}
+SynthEngine::~SynthEngine() = default;
 
 // ── Reset ─────────────────────────────────────────────────────────────────────
 
@@ -39,24 +47,7 @@ void SynthEngine::reset() {
     filter_.reset();
     lfo1_.reset();
     lfo2_.reset();
-    std::memset(delayBuffer_, 0, MAX_DELAY_SAMPLES * sizeof(float));
-    delayWritePos_ = 0;
-    // Clear reverb state
-    for (auto& s : reverbState_) s = 0.0f;
-    for (auto& p : reverbPos_) p = 0;
-    // Clear flanger delay lines
-    std::memset(flangerDelayL_, 0, FLANGER_DELAY_SAMPLES * sizeof(float));
-    std::memset(flangerDelayR_, 0, FLANGER_DELAY_SAMPLES * sizeof(float));
-    flangerWritePos_ = 0;
-    flangerPhase_ = 0.0f;
-    // Reset compressor envelope
-    compressorEnvelope_ = 0.0f;
-    // Reset phaser state
-    phaserPhase_ = 0.0f;
-    phaserState1L_ = 0.0f; phaserState2L_ = 0.0f;
-    phaserState1R_ = 0.0f; phaserState2R_ = 0.0f;
-    // Reset chorus phase
-    chorusPhase_ = 0.0f;
+    fxEngine_.reset();
 }
 
 // ── MIDI ──────────────────────────────────────────────────────────────────────
@@ -83,6 +74,9 @@ void SynthEngine::allNotesOff() {
 // ── Process ───────────────────────────────────────────────────────────────────
 
 void SynthEngine::process(AudioBuffer& output) {
+    using Clock = std::chrono::high_resolution_clock;
+    auto blockStart = Clock::now();
+
     const uint32_t numFrames = output.numFrames;
     const bool stereo = output.numChannels >= 2;
 
@@ -96,8 +90,6 @@ void SynthEngine::process(AudioBuffer& output) {
     float lfo1Val = lfo1_.process();
     float lfo2Val = lfo2_.process();
 
-    updateDelayBufferSize();
-
     for (uint32_t frame = 0; frame < numFrames; frame++) {
         float leftOut = 0.0f;
         float rightOut = 0.0f;
@@ -110,6 +102,7 @@ void SynthEngine::process(AudioBuffer& output) {
             // Process envelopes
             float ampEnv = voice->ampEnv.process(sampleRate_);
             float filterEnv = voice->filterEnv.process(sampleRate_);
+            float pitchEnv = voice->pitchEnv.process(sampleRate_);
 
             // Check if voice is done
             if (voice->ampEnv.state() == Envelope::IDLE) {
@@ -117,10 +110,26 @@ void SynthEngine::process(AudioBuffer& output) {
                 continue;
             }
 
-            // Apply pitch LFO modulation
+            // Apply pitch modulation (LFO + pitch envelope)
             float pitchMod = 0.0f;
-            if (lfo1_.target() == LFO::Target::PITCH) pitchMod += lfo1Val;
-            if (lfo2_.target() == LFO::Target::PITCH) pitchMod += lfo2Val;
+            if (lfoPerVoice_) {
+                // Per-voice LFO: advance each voice's own LFO phase
+                if (lfo1_.target() == LFO::Target::PITCH) {
+                    voice->lfo1Phase += lfo1_.rate() / sampleRate_;
+                    if (voice->lfo1Phase >= 1.0) voice->lfo1Phase -= 1.0;
+                    pitchMod += std::sin(2.0 * M_PI * voice->lfo1Phase) * lfo1_.depth();
+                }
+                if (lfo2_.target() == LFO::Target::PITCH) {
+                    voice->lfo2Phase += lfo2_.rate() / sampleRate_;
+                    if (voice->lfo2Phase >= 1.0) voice->lfo2Phase -= 1.0;
+                    pitchMod += std::sin(2.0 * M_PI * voice->lfo2Phase) * lfo2_.depth();
+                }
+            } else {
+                if (lfo1_.target() == LFO::Target::PITCH) pitchMod += lfo1Val;
+                if (lfo2_.target() == LFO::Target::PITCH) pitchMod += lfo2Val;
+            }
+            // Apply pitch envelope (in semitones)
+            pitchMod += pitchEnv * pitchEnvAmount_;
             float modFreq = voice->baseFreq * std::pow(2.0f, pitchMod * 2.0f);
 
             // Get unison configs (they are per-oscillator and apply per-voice)
@@ -181,7 +190,7 @@ void SynthEngine::process(AudioBuffer& output) {
 
             // Mix down to mono for filter, then re-pan
             float monoMix = (voiceLeft + voiceRight) * 0.5f;
-            float filtered = filter_.process(monoMix, filterEnv + filterMod, sampleRate_);
+            float filtered = filter_.process(monoMix, filterEnv + filterMod, sampleRate_, voice->midiNote);
 
             voiceLeft = filtered * ampGain * (1.0f - voice->pan) * 0.5f;
             voiceRight = filtered * ampGain * (1.0f + voice->pan) * 0.5f;
@@ -199,8 +208,9 @@ void SynthEngine::process(AudioBuffer& output) {
         leftOut *= ampMod;
         rightOut *= ampMod;
 
-        // Apply effects
-        applyEffects(leftOut, rightOut);
+            // Apply FX engine (multi-FX slots processed in series)
+        // Slot 0 is the LegacyFxProcessor, slots 1-3 are user-assignable types
+        fxEngine_.process(leftOut, rightOut, sampleRate_);
 
         // Master volume
         leftOut *= masterVolume_;
@@ -222,6 +232,15 @@ void SynthEngine::process(AudioBuffer& output) {
             output.data[frame] = (leftOut + rightOut) * 0.5f;
         }
     }
+
+    // CPU profiling — measure block time vs. real-time budget
+    auto blockEnd = Clock::now();
+    double elapsedUs = std::chrono::duration<double, std::micro>(blockEnd - blockStart).count();
+    double budgetUs = (numFrames / sampleRate_) * 1e6;
+    float instantLoad = static_cast<float>(elapsedUs / budgetUs);
+    // Exponential moving average with ~1s time constant at 48k/256 (~187 blocks/sec)
+    float alpha = 0.005f;
+    cpuLoad_ = cpuLoad_ * (1.0f - alpha) + instantLoad * alpha;
 }
 
 // ── Parameter Queue ──────────────────────────────────────────────────────────
@@ -257,6 +276,11 @@ void SynthEngine::applyParam(const ParamQueue::Entry& e) {
     case P::OSC1_DETUNE:   osc1_.setDetune(e.floatData); break;
     case P::OSC1_PULSE_WIDTH: osc1_.setPulseWidth(e.floatData); break;
     case P::OSC1_VOLUME:   osc1_.setVolume(e.floatData); break;
+    case P::OSC1_NOISE_TYPE: osc1_.setNoiseType(e.intData); break;
+    case P::OSC1_SUB_OSC_MODE: osc1_.setSubOscMode(e.intData); break;
+    case P::OSC1_SUB_OSC_VOLUME: osc1_.setSubOscVolume(e.floatData); break;
+    case P::OSC1_FM_ENABLED: osc1_.setFmEnabled(e.intData != 0); break;
+    case P::OSC1_FM_AMOUNT: osc1_.setFmAmount(e.floatData); break;
 
     // Osc 2
     case P::OSC2_WAVEFORM: osc2_.setWaveform(e.intData); break;
@@ -264,6 +288,11 @@ void SynthEngine::applyParam(const ParamQueue::Entry& e) {
     case P::OSC2_DETUNE:   osc2_.setDetune(e.floatData); break;
     case P::OSC2_PULSE_WIDTH: osc2_.setPulseWidth(e.floatData); break;
     case P::OSC2_VOLUME:   osc2_.setVolume(e.floatData); break;
+    case P::OSC2_NOISE_TYPE: osc2_.setNoiseType(e.intData); break;
+    case P::OSC2_SUB_OSC_MODE: osc2_.setSubOscMode(e.intData); break;
+    case P::OSC2_SUB_OSC_VOLUME: osc2_.setSubOscVolume(e.floatData); break;
+    case P::OSC2_FM_ENABLED: osc2_.setFmEnabled(e.intData != 0); break;
+    case P::OSC2_FM_AMOUNT: osc2_.setFmAmount(e.floatData); break;
     case P::OSC_MIX:       oscMix_ = e.floatData; break;
 
     // Filter
@@ -271,75 +300,276 @@ void SynthEngine::applyParam(const ParamQueue::Entry& e) {
     case P::FILTER_CUTOFF:   filter_.setCutoff(e.floatData); break;
     case P::FILTER_RESONANCE: filter_.setResonance(e.floatData); break;
     case P::FILTER_ENV_AMOUNT: filter_.setEnvAmount(e.floatData); break;
+    case P::FILTER_KEY_TRACKING: filter_.setKeyTracking(e.floatData); break;
+    case P::FILTER_DRIVE: filter_.setDrive(e.floatData); break;
 
     // Amp envelope
     case P::AMP_ATTACK:  ampAttack_ = e.floatData; break;
     case P::AMP_DECAY:   ampDecay_ = e.floatData; break;
     case P::AMP_SUSTAIN: ampSustain_ = e.floatData; break;
     case P::AMP_RELEASE: ampRelease_ = e.floatData; break;
+    case P::AMP_DELAY:   ampDelay_ = e.floatData; break;
+    case P::AMP_HOLD:    ampHold_ = e.floatData; break;
+    case P::AMP_ATTACK_CURVE:  ampAttackCurve_ = e.intData; break;
+    case P::AMP_DECAY_CURVE:   ampDecayCurve_ = e.intData; break;
+    case P::AMP_RELEASE_CURVE:
+        ampReleaseCurve_ = e.intData;
+        // Apply to all active voices
+        for (int v = 0; v < VoiceAllocator::MAX_VOICES; v++) {
+            Voice* voice = allocator_.voice(v);
+            if (!voice->active) continue;
+            voice->ampEnv.setDelay(ampDelay_);
+            voice->ampEnv.setHold(ampHold_);
+            voice->ampEnv.setAttack(ampAttack_);
+            voice->ampEnv.setDecay(ampDecay_);
+            voice->ampEnv.setSustain(ampSustain_);
+            voice->ampEnv.setRelease(ampRelease_);
+        }
+        break;
 
     // Filter envelope
     case P::FILTER_ATTACK:  filterAttack_ = e.floatData; break;
     case P::FILTER_DECAY:   filterDecay_ = e.floatData; break;
     case P::FILTER_SUSTAIN: filterSustain_ = e.floatData; break;
     case P::FILTER_RELEASE: filterRelease_ = e.floatData; break;
+    case P::FILTER_DELAY:   filterDelay_ = e.floatData; break;
+    case P::FILTER_HOLD:    filterHold_ = e.floatData; break;
+    case P::FILTER_ATTACK_CURVE:  filterAttackCurve_ = e.intData; break;
+    case P::FILTER_DECAY_CURVE:   filterDecayCurve_ = e.intData; break;
+    case P::FILTER_RELEASE_CURVE:
+        filterReleaseCurve_ = e.intData;
+        // Apply to all active voices
+        for (int v = 0; v < VoiceAllocator::MAX_VOICES; v++) {
+            Voice* voice = allocator_.voice(v);
+            if (!voice->active) continue;
+            voice->filterEnv.setDelay(filterDelay_);
+            voice->filterEnv.setHold(filterHold_);
+            voice->filterEnv.setAttack(filterAttack_);
+            voice->filterEnv.setDecay(filterDecay_);
+            voice->filterEnv.setSustain(filterSustain_);
+            voice->filterEnv.setRelease(filterRelease_);
+        }
+        break;
 
     // LFO 1
     case P::LFO1_WAVEFORM: lfo1_.setWaveform(e.intData); break;
     case P::LFO1_RATE:     lfo1_.setRate(e.floatData); break;
     case P::LFO1_DEPTH:    lfo1_.setDepth(e.floatData); break;
     case P::LFO1_TARGET:   lfo1_.setTarget(e.intData); break;
+    case P::LFO1_FADE_IN:  lfo1_.setFadeIn(e.floatData); break;
+    case P::LFO1_TEMPO_SYNC: lfo1_.setTempoSync(e.intData != 0); break;
+    case P::LFO1_TEMPO_DIVISION: lfo1_.setTempoNoteDivision(e.intData); break;
 
     // LFO 2
     case P::LFO2_WAVEFORM: lfo2_.setWaveform(e.intData); break;
     case P::LFO2_RATE:     lfo2_.setRate(e.floatData); break;
     case P::LFO2_DEPTH:    lfo2_.setDepth(e.floatData); break;
     case P::LFO2_TARGET:   lfo2_.setTarget(e.intData); break;
+    case P::LFO2_FADE_IN:  lfo2_.setFadeIn(e.floatData); break;
+    case P::LFO2_TEMPO_SYNC: lfo2_.setTempoSync(e.intData != 0); break;
+    case P::LFO2_TEMPO_DIVISION: lfo2_.setTempoNoteDivision(e.intData); break;
 
-    // FX: Chorus
-    case P::CHORUS_ENABLED: chorusEnabled_ = (e.intData != 0); break;
-    case P::CHORUS_RATE:    chorusRate_ = e.floatData; break;
-    case P::CHORUS_DEPTH:   chorusDepth_ = e.floatData; break;
-    case P::CHORUS_MIX:     chorusMix_ = e.floatData; break;
+    // FX: Chorus (routed to LegacyFxProcessor slot 0)
+    case P::CHORUS_ENABLED: {
+        auto* legacy = getLegacyFx();
+        if (legacy) legacy->setChorusEnabled(e.intData != 0);
+        break;
+    }
+    case P::CHORUS_RATE: {
+        auto* legacy = getLegacyFx();
+        if (legacy) legacy->setChorusRate(e.floatData);
+        break;
+    }
+    case P::CHORUS_DEPTH: {
+        auto* legacy = getLegacyFx();
+        if (legacy) legacy->setChorusDepth(e.floatData);
+        break;
+    }
+    case P::CHORUS_MIX: {
+        auto* legacy = getLegacyFx();
+        if (legacy) legacy->setChorusMix(e.floatData);
+        break;
+    }
 
     // FX: Delay
-    case P::DELAY_ENABLED:  delayEnabled_ = (e.intData != 0); break;
-    case P::DELAY_TIME:     delayTimeMs_ = e.floatData; break;
-    case P::DELAY_FEEDBACK: delayFeedback_ = e.floatData; break;
-    case P::DELAY_MIX:      delayMix_ = e.floatData; break;
+    case P::DELAY_ENABLED: {
+        auto* legacy = getLegacyFx();
+        if (legacy) legacy->setDelayEnabled(e.intData != 0);
+        break;
+    }
+    case P::DELAY_TIME: {
+        auto* legacy = getLegacyFx();
+        if (legacy) legacy->setDelayTime(e.floatData);
+        break;
+    }
+    case P::DELAY_FEEDBACK: {
+        auto* legacy = getLegacyFx();
+        if (legacy) legacy->setDelayFeedback(e.floatData);
+        break;
+    }
+    case P::DELAY_MIX: {
+        auto* legacy = getLegacyFx();
+        if (legacy) legacy->setDelayMix(e.floatData);
+        break;
+    }
 
     // FX: Reverb
-    case P::REVERB_ENABLED: reverbEnabled_ = (e.intData != 0); break;
-    case P::REVERB_SIZE:    reverbSize_ = e.floatData; break;
-    case P::REVERB_DAMPING: reverbDamping_ = e.floatData; break;
-    case P::REVERB_MIX:     reverbMix_ = e.floatData; break;
+    case P::REVERB_ENABLED: {
+        auto* legacy = getLegacyFx();
+        if (legacy) legacy->setReverbEnabled(e.intData != 0);
+        break;
+    }
+    case P::REVERB_SIZE: {
+        auto* legacy = getLegacyFx();
+        if (legacy) legacy->setReverbSize(e.floatData);
+        break;
+    }
+    case P::REVERB_DAMPING: {
+        auto* legacy = getLegacyFx();
+        if (legacy) legacy->setReverbDamping(e.floatData);
+        break;
+    }
+    case P::REVERB_MIX: {
+        auto* legacy = getLegacyFx();
+        if (legacy) legacy->setReverbMix(e.floatData);
+        break;
+    }
 
     // FX: Phaser
-    case P::PHASER_ENABLED:  phaserEnabled_ = (e.intData != 0); break;
-    case P::PHASER_RATE:     phaserRate_ = e.floatData; break;
-    case P::PHASER_DEPTH:    phaserDepth_ = e.floatData; break;
-    case P::PHASER_FEEDBACK: phaserFeedback_ = e.floatData; break;
-    case P::PHASER_MIX:      phaserMix_ = e.floatData; break;
+    case P::PHASER_ENABLED: {
+        auto* legacy = getLegacyFx();
+        if (legacy) legacy->setPhaserEnabled(e.intData != 0);
+        break;
+    }
+    case P::PHASER_RATE: {
+        auto* legacy = getLegacyFx();
+        if (legacy) legacy->setPhaserRate(e.floatData);
+        break;
+    }
+    case P::PHASER_DEPTH: {
+        auto* legacy = getLegacyFx();
+        if (legacy) legacy->setPhaserDepth(e.floatData);
+        break;
+    }
+    case P::PHASER_FEEDBACK: {
+        auto* legacy = getLegacyFx();
+        if (legacy) legacy->setPhaserFeedback(e.floatData);
+        break;
+    }
+    case P::PHASER_MIX: {
+        auto* legacy = getLegacyFx();
+        if (legacy) legacy->setPhaserMix(e.floatData);
+        break;
+    }
 
     // FX: Drive
-    case P::DRIVE_ENABLED: driveEnabled_ = (e.intData != 0); break;
-    case P::DRIVE_AMOUNT:  driveAmount_ = e.floatData; break;
-    case P::DRIVE_TYPE:    driveType_ = e.intData; break;
+    case P::DRIVE_ENABLED: {
+        auto* legacy = getLegacyFx();
+        if (legacy) legacy->setDriveEnabled(e.intData != 0);
+        break;
+    }
+    case P::DRIVE_AMOUNT: {
+        auto* legacy = getLegacyFx();
+        if (legacy) legacy->setDriveAmount(e.floatData);
+        break;
+    }
+    case P::DRIVE_TYPE: {
+        auto* legacy = getLegacyFx();
+        if (legacy) legacy->setDriveType(e.intData);
+        break;
+    }
 
     // FX: Flanger
-    case P::FLANGER_ENABLED:  flangerEnabled_ = (e.intData != 0); break;
-    case P::FLANGER_RATE:     flangerRate_ = e.floatData; break;
-    case P::FLANGER_DEPTH:    flangerDepth_ = e.floatData; break;
-    case P::FLANGER_FEEDBACK: flangerFeedback_ = e.floatData; break;
-    case P::FLANGER_MIX:      flangerMix_ = e.floatData; break;
+    case P::FLANGER_ENABLED: {
+        auto* legacy = getLegacyFx();
+        if (legacy) legacy->setFlangerEnabled(e.intData != 0);
+        break;
+    }
+    case P::FLANGER_RATE: {
+        auto* legacy = getLegacyFx();
+        if (legacy) legacy->setFlangerRate(e.floatData);
+        break;
+    }
+    case P::FLANGER_DEPTH: {
+        auto* legacy = getLegacyFx();
+        if (legacy) legacy->setFlangerDepth(e.floatData);
+        break;
+    }
+    case P::FLANGER_FEEDBACK: {
+        auto* legacy = getLegacyFx();
+        if (legacy) legacy->setFlangerFeedback(e.floatData);
+        break;
+    }
+    case P::FLANGER_MIX: {
+        auto* legacy = getLegacyFx();
+        if (legacy) legacy->setFlangerMix(e.floatData);
+        break;
+    }
 
     // FX: Compressor
-    case P::COMPRESSOR_ENABLED:      compressorEnabled_ = (e.intData != 0); break;
-    case P::COMPRESSOR_THRESHOLD:    compressorThreshold_ = e.floatData; break;
-    case P::COMPRESSOR_RATIO:        compressorRatio_ = e.floatData; break;
-    case P::COMPRESSOR_ATTACK:       compressorAttack_ = e.floatData; break;
-    case P::COMPRESSOR_RELEASE:      compressorRelease_ = e.floatData; break;
-    case P::COMPRESSOR_MAKEUP_GAIN:  compressorMakeupGain_ = e.floatData; break;
+    case P::COMPRESSOR_ENABLED: {
+        auto* legacy = getLegacyFx();
+        if (legacy) legacy->setCompressorEnabled(e.intData != 0);
+        break;
+    }
+    case P::COMPRESSOR_THRESHOLD: {
+        auto* legacy = getLegacyFx();
+        if (legacy) legacy->setCompressorThreshold(e.floatData);
+        break;
+    }
+    case P::COMPRESSOR_RATIO: {
+        auto* legacy = getLegacyFx();
+        if (legacy) legacy->setCompressorRatio(e.floatData);
+        break;
+    }
+    case P::COMPRESSOR_ATTACK: {
+        auto* legacy = getLegacyFx();
+        if (legacy) legacy->setCompressorAttack(e.floatData);
+        break;
+    }
+    case P::COMPRESSOR_RELEASE: {
+        auto* legacy = getLegacyFx();
+        if (legacy) legacy->setCompressorRelease(e.floatData);
+        break;
+    }
+    case P::COMPRESSOR_MAKEUP_GAIN: {
+        auto* legacy = getLegacyFx();
+        if (legacy) legacy->setCompressorMakeupGain(e.floatData);
+        break;
+    }        // New FX: EQ (slot 1)
+    case P::FX_SLOT1_TYPE: fxEngine_.setSlotProcessor(1, createFxProcessor(e.intData)); break;
+    case P::FX_SLOT1_ENABLED: fxEngine_.setSlotEnabled(1, e.intData != 0); break;
+    case P::FX_SLOT1_PARAM0: fxEngine_.setSlotParam(1, 0, e.floatData); break;
+    case P::FX_SLOT1_PARAM1: fxEngine_.setSlotParam(1, 1, e.floatData); break;
+    case P::FX_SLOT1_PARAM2: fxEngine_.setSlotParam(1, 2, e.floatData); break;
+    case P::FX_SLOT1_PARAM3: fxEngine_.setSlotParam(1, 3, e.floatData); break;
+    case P::FX_SLOT1_PARAM4: fxEngine_.setSlotParam(1, 4, e.floatData); break;
+    case P::FX_SLOT1_PARAM5: fxEngine_.setSlotParam(1, 5, e.floatData); break;
+    case P::FX_SLOT1_PARAM6: fxEngine_.setSlotParam(1, 6, e.floatData); break;
+    case P::FX_SLOT1_PARAM7: fxEngine_.setSlotParam(1, 7, e.floatData); break;
+
+        // New FX: Limiter (slot 2)
+    case P::FX_SLOT2_TYPE: fxEngine_.setSlotProcessor(2, createFxProcessor(e.intData)); break;
+    case P::FX_SLOT2_ENABLED: fxEngine_.setSlotEnabled(2, e.intData != 0); break;
+    case P::FX_SLOT2_PARAM0: fxEngine_.setSlotParam(2, 0, e.floatData); break;
+    case P::FX_SLOT2_PARAM1: fxEngine_.setSlotParam(2, 1, e.floatData); break;
+    case P::FX_SLOT2_PARAM2: fxEngine_.setSlotParam(2, 2, e.floatData); break;
+    case P::FX_SLOT2_PARAM3: fxEngine_.setSlotParam(2, 3, e.floatData); break;
+    case P::FX_SLOT2_PARAM4: fxEngine_.setSlotParam(2, 4, e.floatData); break;
+
+        // New FX: Rotary (slot 3)
+    case P::FX_SLOT3_TYPE: fxEngine_.setSlotProcessor(3, createFxProcessor(e.intData)); break;
+    case P::FX_SLOT3_ENABLED: fxEngine_.setSlotEnabled(3, e.intData != 0); break;
+    case P::FX_SLOT3_PARAM0: fxEngine_.setSlotParam(3, 0, e.floatData); break;
+    case P::FX_SLOT3_PARAM1: fxEngine_.setSlotParam(3, 1, e.floatData); break;
+    case P::FX_SLOT3_PARAM2: fxEngine_.setSlotParam(3, 2, e.floatData); break;
+    case P::FX_SLOT3_PARAM3: fxEngine_.setSlotParam(3, 3, e.floatData); break;
+    case P::FX_SLOT3_PARAM4: fxEngine_.setSlotParam(3, 4, e.floatData); break;
+    case P::FX_SLOT3_PARAM5: fxEngine_.setSlotParam(3, 5, e.floatData); break;
+
+        // FX Engine master control
+    case P::FX_MASTER_ENABLED: fxEngine_.setMasterEnabled(e.intData != 0); break;
+    case P::FX_MASTER_MIX: fxEngine_.setMasterMix(e.floatData); break;
 
     // Master
     case P::MASTER_VOLUME: masterVolume_ = e.floatData; break;
@@ -363,169 +593,150 @@ void SynthEngine::applyParam(const ParamQueue::Entry& e) {
     case P::ARP_OCTAVE_RANGE:  arpeggiator_.setOctaveRange(e.intData); break;
     case P::ARP_GATE:          arpeggiator_.setGate(e.floatData); break;
     case P::ARP_RESOLUTION:    arpeggiator_.setResolution(e.intData); break;
+    case P::ARP_SWING:         arpeggiator_.setSwing(e.floatData); break;
+    case P::ARP_HOLD:          arpeggiator_.setHold(e.intData != 0); break;
+
+    // Voice priority
+    case P::VOICE_PRIORITY_MODE: allocator_.setPriorityMode(static_cast<VoicePriorityMode>(e.intData)); break;
 
     default: break; // Unknown param — ignore
     }
 }
 
-// ── Effects ───────────────────────────────────────────────────────────────────
+// ── Legacy FX slot initialization ───────────────────────────────────────────
 
-void SynthEngine::updateDelayBufferSize() {
-    uint32_t newSize = static_cast<uint32_t>(delayTimeMs_ * 0.001f * sampleRate_);
-    if (newSize < 1) newSize = 1;
-    if (newSize > MAX_DELAY_SAMPLES) newSize = MAX_DELAY_SAMPLES;
-    delayBufferSize_ = newSize;
+void SynthEngine::initLegacyFxSlot() {
+    auto* legacy = new LegacyFxProcessor();
+    fxEngine_.setSlotProcessor(0, legacy);
+    fxEngine_.setSlotEnabled(0, true);
 }
 
-float SynthEngine::applyDistortion(float sample) {
-    if (driveAmount_ < 0.01f) return sample;
-    switch (driveType_) {
-    case 0: // Soft clip
-        return std::tanh(sample * (1.0f + driveAmount_ * 4.0f)) / std::tanh(1.0f + driveAmount_ * 4.0f);
-    case 1: // Hard clip
-        return std::clamp(sample * (1.0f + driveAmount_ * 2.0f), -1.0f, 1.0f);
-    case 2: // Asymmetric
-        if (sample > 0)
-            return std::tanh(sample * (1.0f + driveAmount_ * 3.0f));
-        else
-            return std::clamp(sample * (1.0f + driveAmount_ * 1.5f), -1.0f, 0.0f);
-    default:
-        return sample;
+LegacyFxProcessor* SynthEngine::getLegacyFx() const {
+    // Slot 0 always holds the LegacyFxProcessor (type None)
+    if (fxEngine_.slot(0).processor &&
+        fxEngine_.slotType(0) == FxType::None) {
+        return static_cast<LegacyFxProcessor*>(fxEngine_.slot(0).processor);
     }
+    return nullptr;
 }
 
-void SynthEngine::applyEffects(float& left, float& right) {
-    // Drive
-    if (driveEnabled_) {
-        left = applyDistortion(left);
-        right = applyDistortion(right);
+FxProcessor* SynthEngine::createFxProcessor(int fxTypeId) {
+    FxProcessor* proc = nullptr;
+    switch (fxTypeId) {
+    case 8:  proc = new EqProcessor();       break; // Equalizer
+    case 9:  proc = new LimiterProcessor();  break; // Limiter
+    case 10: proc = new RotaryProcessor();   break; // Rotary speaker
+    case 11: proc = new TremoloProcessor();  break; // Tremolo
+    default: return nullptr;
     }
-
-    // Chorus (simple)
-    if (chorusEnabled_ && chorusMix_ > 0.0f) {
-        chorusPhase_ += chorusRate_ / sampleRate_;
-        if (chorusPhase_ >= 1.0f) chorusPhase_ -= 1.0f;
-        float chorusOffset = std::sin(2.0f * M_PI * chorusPhase_) * chorusDepth_ * 0.005f;
-        left = left * (1.0f - chorusMix_) + left * chorusMix_ * (1.0f + chorusOffset * 0.5f);
-        right = right * (1.0f - chorusMix_) + right * chorusMix_ * (1.0f - chorusOffset * 0.5f);
+    // Forward the actual sample rate so processors can pre-compute
+    // sample-rate-dependent coefficients before the first process() call.
+    if (proc) {
+        proc->setSampleRate(sampleRate_);
     }
+    return proc;
+}
 
-    // Delay
-    if (delayEnabled_ && delayMix_ > 0.0f) {
-        uint32_t readPos = (delayWritePos_ >= delayBufferSize_)
-            ? delayWritePos_ - delayBufferSize_
-            : MAX_DELAY_SAMPLES + delayWritePos_ - delayBufferSize_;
-        float delayedL = delayBuffer_[readPos];
-        float delayedR = (readPos + 1 < MAX_DELAY_SAMPLES) ? delayBuffer_[readPos + 1] : 0.0f;
+// ── Legacy FX setters ────────────────────────────────────────────────────────
 
-        // Clamp feedback input to prevent buffer runaway
-        float fbL = clamp(left + delayedL * delayFeedback_, -2.0f, 2.0f);
-        float fbR = clamp(right + delayedR * delayFeedback_, -2.0f, 2.0f);
-        delayBuffer_[delayWritePos_] = fbL;
-        delayWritePos_ = (delayWritePos_ + 1) % MAX_DELAY_SAMPLES;
-        delayBuffer_[delayWritePos_] = fbR;
-        delayWritePos_ = (delayWritePos_ + 1) % MAX_DELAY_SAMPLES;
+void SynthEngine::setChorusEnabled(bool e) {
+    if (auto* legacy = getLegacyFx()) legacy->setChorusEnabled(e);
+}
+void SynthEngine::setChorusRate(float hz) {
+    if (auto* legacy = getLegacyFx()) legacy->setChorusRate(hz);
+}
+void SynthEngine::setChorusDepth(float d) {
+    if (auto* legacy = getLegacyFx()) legacy->setChorusDepth(d);
+}
+void SynthEngine::setChorusMix(float m) {
+    if (auto* legacy = getLegacyFx()) legacy->setChorusMix(m);
+}
 
-        left = left * (1.0f - delayMix_) + clamp(delayedL, -2.0f, 2.0f) * delayMix_;
-        right = right * (1.0f - delayMix_) + clamp(delayedR, -2.0f, 2.0f) * delayMix_;
-    }
+void SynthEngine::setDelayEnabled(bool e) {
+    if (auto* legacy = getLegacyFx()) legacy->setDelayEnabled(e);
+}
+void SynthEngine::setDelayTime(float ms) {
+    if (auto* legacy = getLegacyFx()) legacy->setDelayTime(ms);
+}
+void SynthEngine::setDelayFeedback(float fb) {
+    if (auto* legacy = getLegacyFx()) legacy->setDelayFeedback(fb);
+}
+void SynthEngine::setDelayMix(float m) {
+    if (auto* legacy = getLegacyFx()) legacy->setDelayMix(m);
+}
 
-    // Reverb (simple Schroeder all-pass based)
-    if (reverbEnabled_ && reverbMix_ > 0.0f) {
-        float wetL = 0.0f, wetR = 0.0f;
-        float fb = reverbDamping_ * 0.7f;
-        for (int i = 0; i < 4; i++) {
-            uint32_t delayLen = 1200 + i * 800; // ~25-90ms at 48k
-            delayLen = std::min(delayLen, static_cast<uint32_t>(4800)); // Safety clamp
-            float in = (i == 0) ? (left + right) * 0.5f : reverbState_[i - 1];
-            // Clamp input to prevent reverb runaway
-            in = clamp(in, -2.0f, 2.0f);
-            uint32_t pos = reverbPos_[i];
-            if (pos >= delayLen) pos = 0; // Safety clamp
-            float delayed = clamp(reverbDelay_[i][pos], -2.0f, 2.0f);
-            float out = in + delayed * fb;
-            reverbDelay_[i][pos] = clamp(in - delayed * fb, -2.0f, 2.0f);
-            reverbState_[i] = clamp(out, -2.0f, 2.0f);
-            reverbPos_[i] = (pos + 1) % delayLen;
-            if (i < 2) wetL += out * 0.5f;
-            else wetR += out * 0.5f;
-        }
-        wetL *= reverbSize_ * 0.5f;
-        wetR *= reverbSize_ * 0.5f;
-        left = left * (1.0f - reverbMix_) + clamp(wetL, -2.0f, 2.0f) * reverbMix_;
-        right = right * (1.0f - reverbMix_) + clamp(wetR, -2.0f, 2.0f) * reverbMix_;
-    }
+void SynthEngine::setReverbEnabled(bool e) {
+    if (auto* legacy = getLegacyFx()) legacy->setReverbEnabled(e);
+}
+void SynthEngine::setReverbSize(float s) {
+    if (auto* legacy = getLegacyFx()) legacy->setReverbSize(s);
+}
+void SynthEngine::setReverbDamping(float d) {
+    if (auto* legacy = getLegacyFx()) legacy->setReverbDamping(d);
+}
+void SynthEngine::setReverbMix(float m) {
+    if (auto* legacy = getLegacyFx()) legacy->setReverbMix(m);
+}
 
-    // Flanger (stereo — separate L/R delay lines)
-    if (flangerEnabled_ && flangerMix_ > 0.0f) {
-        flangerPhase_ += flangerRate_ / sampleRate_;
-        if (flangerPhase_ >= 1.0f) flangerPhase_ -= 1.0f;
-        float lfo = std::sin(2.0f * M_PI * flangerPhase_);
-        float delaySamples = 1.0f + (lfo * 0.5f + 0.5f) * flangerDepth_ * FLANGER_DELAY_SAMPLES * 0.25f;
-        uint32_t readPos = (flangerWritePos_ >= static_cast<uint32_t>(delaySamples))
-            ? flangerWritePos_ - static_cast<uint32_t>(delaySamples)
-            : FLANGER_DELAY_SAMPLES + flangerWritePos_ - static_cast<uint32_t>(delaySamples);
-        if (readPos >= FLANGER_DELAY_SAMPLES) readPos = 0;
+void SynthEngine::setPhaserEnabled(bool e) {
+    if (auto* legacy = getLegacyFx()) legacy->setPhaserEnabled(e);
+}
+void SynthEngine::setPhaserRate(float hz) {
+    if (auto* legacy = getLegacyFx()) legacy->setPhaserRate(hz);
+}
+void SynthEngine::setPhaserDepth(float d) {
+    if (auto* legacy = getLegacyFx()) legacy->setPhaserDepth(d);
+}
+void SynthEngine::setPhaserFeedback(float fb) {
+    if (auto* legacy = getLegacyFx()) legacy->setPhaserFeedback(fb);
+}
+void SynthEngine::setPhaserMix(float m) {
+    if (auto* legacy = getLegacyFx()) legacy->setPhaserMix(m);
+}
 
-        float delayedL = clamp(flangerDelayL_[readPos], -2.0f, 2.0f);
-        float delayedR = clamp(flangerDelayR_[readPos], -2.0f, 2.0f);
+void SynthEngine::setDriveEnabled(bool e) {
+    if (auto* legacy = getLegacyFx()) legacy->setDriveEnabled(e);
+}
+void SynthEngine::setDriveAmount(float a) {
+    if (auto* legacy = getLegacyFx()) legacy->setDriveAmount(a);
+}
+void SynthEngine::setDriveType(int t) {
+    if (auto* legacy = getLegacyFx()) legacy->setDriveType(t);
+}
 
-        // Clamp feedback input to prevent buffer runaway
-        flangerDelayL_[flangerWritePos_] = clamp(left + delayedL * flangerFeedback_, -2.0f, 2.0f);
-        flangerDelayR_[flangerWritePos_] = clamp(right + delayedR * flangerFeedback_, -2.0f, 2.0f);
-        flangerWritePos_ = (flangerWritePos_ + 1) % FLANGER_DELAY_SAMPLES;
+void SynthEngine::setFlangerEnabled(bool e) {
+    if (auto* legacy = getLegacyFx()) legacy->setFlangerEnabled(e);
+}
+void SynthEngine::setFlangerRate(float hz) {
+    if (auto* legacy = getLegacyFx()) legacy->setFlangerRate(hz);
+}
+void SynthEngine::setFlangerDepth(float d) {
+    if (auto* legacy = getLegacyFx()) legacy->setFlangerDepth(d);
+}
+void SynthEngine::setFlangerFeedback(float fb) {
+    if (auto* legacy = getLegacyFx()) legacy->setFlangerFeedback(fb);
+}
+void SynthEngine::setFlangerMix(float m) {
+    if (auto* legacy = getLegacyFx()) legacy->setFlangerMix(m);
+}
 
-        left = left * (1.0f - flangerMix_) + delayedL * flangerMix_;
-        right = right * (1.0f - flangerMix_) + delayedR * flangerMix_;
-    }
-
-    // Compressor (stereo linked) — FIXED: makeup gain multiplies, not adds
-    if (compressorEnabled_) {
-        float inputLevel = std::max(std::abs(left), std::abs(right));
-        float gainReduction = 1.0f;
-        if (inputLevel > compressorThreshold_) {
-            float overThreshold = (inputLevel - compressorThreshold_) / (1.0f - compressorThreshold_);
-            float targetGain = 1.0f - overThreshold * (1.0f - 1.0f / compressorRatio_);
-            gainReduction = targetGain / (inputLevel + 0.0001f);
-        }
-        float attackCoeff = 1.0f - std::exp(-1.0f / (compressorAttack_ * 0.001f * sampleRate_));
-        float releaseCoeff = 1.0f - std::exp(-1.0f / (compressorRelease_ * 0.001f * sampleRate_));
-        if (gainReduction < compressorEnvelope_) {
-            compressorEnvelope_ += (gainReduction - compressorEnvelope_) * attackCoeff;
-        } else {
-            compressorEnvelope_ += (gainReduction - compressorEnvelope_) * releaseCoeff;
-        }
-        left *= compressorEnvelope_ * (1.0f + compressorMakeupGain_);
-        right *= compressorEnvelope_ * (1.0f + compressorMakeupGain_);
-    }
-
-    // Phaser
-    if (phaserEnabled_ && phaserMix_ > 0.0f) {
-        phaserPhase_ += phaserRate_ / sampleRate_;
-        if (phaserPhase_ >= 1.0f) phaserPhase_ -= 1.0f;
-        float freq = 200.0f + std::sin(2.0f * M_PI * phaserPhase_) * phaserDepth_ * 1900.0f;
-        // Clamp coeff to prevent tan() explosion at high freq/sampleRate ratios
-        float coeff = std::min(static_cast<float>(std::tan(M_PI * freq / sampleRate_)), 10.0f);
-        float damp = 1.0f / (1.0f + coeff * phaserFeedback_ * 0.5f);
-
-        // Left channel all-pass
-        float inL = left + clamp(phaserState1L_, -2.0f, 2.0f) * phaserFeedback_ * 0.3f;
-        float outL = phaserState1L_ + coeff * inL;
-        phaserState1L_ = clamp(outL - coeff * phaserState1L_ * damp, -2.0f, 2.0f);
-        inL = outL + clamp(phaserState2L_, -2.0f, 2.0f) * phaserFeedback_ * 0.3f;
-        outL = phaserState2L_ + coeff * inL;
-        phaserState2L_ = clamp(outL - coeff * phaserState2L_ * damp, -2.0f, 2.0f);
-        left = left * (1.0f - phaserMix_) + clamp(outL, -2.0f, 2.0f) * phaserMix_;
-
-        // Right channel all-pass
-        float inR = right + clamp(phaserState1R_, -2.0f, 2.0f) * phaserFeedback_ * 0.3f;
-        float outR = phaserState1R_ + coeff * inR;
-        phaserState1R_ = clamp(outR - coeff * phaserState1R_ * damp, -2.0f, 2.0f);
-        inR = outR + clamp(phaserState2R_, -2.0f, 2.0f) * phaserFeedback_ * 0.3f;
-        outR = phaserState2R_ + coeff * inR;
-        phaserState2R_ = clamp(outR - coeff * phaserState2R_ * damp, -2.0f, 2.0f);
-        right = right * (1.0f - phaserMix_) + clamp(outR, -2.0f, 2.0f) * phaserMix_;
-    }
+void SynthEngine::setCompressorEnabled(bool e) {
+    if (auto* legacy = getLegacyFx()) legacy->setCompressorEnabled(e);
+}
+void SynthEngine::setCompressorThreshold(float t) {
+    if (auto* legacy = getLegacyFx()) legacy->setCompressorThreshold(t);
+}
+void SynthEngine::setCompressorRatio(float r) {
+    if (auto* legacy = getLegacyFx()) legacy->setCompressorRatio(r);
+}
+void SynthEngine::setCompressorAttack(float a) {
+    if (auto* legacy = getLegacyFx()) legacy->setCompressorAttack(a);
+}
+void SynthEngine::setCompressorRelease(float r) {
+    if (auto* legacy = getLegacyFx()) legacy->setCompressorRelease(r);
+}
+void SynthEngine::setCompressorMakeupGain(float g) {
+    if (auto* legacy = getLegacyFx()) legacy->setCompressorMakeupGain(g);
 }
 
 // ── Preset ────────────────────────────────────────────────────────────────────

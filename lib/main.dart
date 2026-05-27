@@ -3,8 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'providers/settings_provider.dart';
-import 'screens/home_screen.dart';
-import 'screens/performance_screen.dart';
+import 'screens/main_shell.dart';
 import 'screens/splash_screen.dart';
 import 'theme/synth_theme.dart';
 
@@ -28,10 +27,7 @@ class OpenSynthApp extends ConsumerWidget {
       theme: SynthTheme.lightTheme,
       darkTheme: SynthTheme.darkTheme,
       themeMode: themeMode,
-      home: SplashScreen(nextScreen: const HomeScreen()),
-      routes: {
-        '/performance': (context) => const PerformanceScreen(),
-      },
+      home: SplashScreen(nextScreen: const MainShell()),
     );
   }
 }

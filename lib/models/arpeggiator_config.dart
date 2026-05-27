@@ -32,6 +32,8 @@ class ArpeggiatorConfig {
   final double probSkip; // 0.0 = no skips, 1.0 = every note can skip
   final bool octaveJump; // true = allow octave jumps within the sequence
   final int seed; // random seed for deterministic variations
+   final double swing; // 0.0 = straight, 1.0 = max swing
+   final bool hold; // latch mode: keep notes after key release
 
   const ArpeggiatorConfig({
     this.pattern = ArpPattern.off,
@@ -42,7 +44,9 @@ class ArpeggiatorConfig {
     this.probSkip = 0.0,
     this.octaveJump = false,
     this.seed = 0,
-  });
+    this.swing = 0.0,
+    this.hold = false,
+    });
 
   ArpeggiatorConfig copyWith({
     ArpPattern? pattern,
@@ -53,7 +57,9 @@ class ArpeggiatorConfig {
     double? probSkip,
     bool? octaveJump,
     int? seed,
-  }) {
+    double? swing,
+    bool? hold,
+    }) {
     return ArpeggiatorConfig(
       pattern: pattern ?? this.pattern,
       rate: rate ?? this.rate,
@@ -63,7 +69,9 @@ class ArpeggiatorConfig {
       probSkip: probSkip ?? this.probSkip,
       octaveJump: octaveJump ?? this.octaveJump,
       seed: seed ?? this.seed,
-    );
+      swing: swing ?? this.swing,
+      hold: hold ?? this.hold,
+      );
   }
 
   Map<String, dynamic> toJson() => {
@@ -75,7 +83,9 @@ class ArpeggiatorConfig {
         'probSkip': probSkip,
         'octaveJump': octaveJump,
         'seed': seed,
-      };
+        'swing': swing,
+        'hold': hold,
+        };
 
   factory ArpeggiatorConfig.fromJson(Map<String, dynamic> json) =>
       ArpeggiatorConfig(
@@ -87,5 +97,7 @@ class ArpeggiatorConfig {
         probSkip: (json['probSkip'] as num?)?.toDouble() ?? 0.0,
         octaveJump: json['octaveJump'] as bool? ?? false,
         seed: json['seed'] as int? ?? 0,
-      );
+        swing: (json['swing'] as num?)?.toDouble() ?? 0.0,
+        hold: json['hold'] as bool? ?? false,
+        );
 }

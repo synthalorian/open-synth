@@ -14,7 +14,10 @@ import 'dart:io';
 
 final class _SynthHandle extends Opaque {}
 
+final class _PairHandle extends Opaque {}
+
 typedef SynthEngineRef = Pointer<_SynthHandle>;
+typedef SynthPairRef = Pointer<_PairHandle>;
 
 // ── Native typedefs ──────────────────────────────────────────────────────────
 
@@ -243,6 +246,9 @@ class OpenAmpSynthBindings {
             'synth_engine_set_master_volume'),
         getActiveVoices = lib.lookupFunction<_GetIntNative, _GetIntDart>(
             'synth_engine_get_active_voices'),
+        getCpuLoad = lib.lookupFunction<
+            Float Function(SynthEngineRef),
+            double Function(SynthEngineRef)>('synth_engine_get_cpu_load'),
 
         // Thread-safe queue
         enqueueFloat = lib.lookupFunction<_SetFloatIntNative, _SetFloatIntDart>(
@@ -257,6 +263,11 @@ class OpenAmpSynthBindings {
             'synth_engine_enqueue_all_notes_off'),
         enqueueResetFn = lib.lookupFunction<_VoidNative, _VoidDart>(
             'synth_engine_enqueue_reset');
+        // Arpeggiator getters
+        getArpCurrentStep = lib.lookupFunction<_GetIntNative, _GetIntDart>(
+            'synth_engine_get_arp_current_step'),
+        getArpTotalSteps = lib.lookupFunction<_GetIntNative, _GetIntDart>(
+            'synth_engine_get_arp_total_steps');
 
   // ── Unison bindings (lazy, may not be available in older .so builds) ──
 
@@ -395,6 +406,7 @@ class OpenAmpSynthBindings {
   // Master
   final _SetFloatDart setMasterVolume;
   final _GetIntDart getActiveVoices;
+  final double Function(SynthEngineRef) getCpuLoad;
 
   // Thread-safe queue
   final _SetFloatIntDart enqueueFloat;
@@ -403,6 +415,10 @@ class OpenAmpSynthBindings {
   final _NoteOffDart enqueueNoteOffFn;
   final _VoidDart enqueueAllNotesOffFn;
   final _VoidDart enqueueResetFn;
+
+  // Arpeggiator getters
+  final _GetIntDart getArpCurrentStep;
+  final _GetIntDart getArpTotalSteps;
 }
 
 // ── Unison FFI bindings (lazy; may be absent on older .so builds) ──────
@@ -459,6 +475,133 @@ class UnisonBindings {
   final _SetFloatDart setOsc2UnisonMix;
 }
 
+// ── SynthPair FFI bindings (lazy; for Zone A + B mixer) ─────────────────
+
+/// Pair-specific FFI types.
+
+typedef _PairCreateNative = SynthPairRef Function(Double, Uint32);
+typedef _PairCreateDart = SynthPairRef Function(double, int);
+
+typedef _VoidPairNative = Void Function(SynthPairRef);
+typedef _VoidPairDart = void Function(SynthPairRef);
+
+typedef _ProcessPairNative = Void Function(SynthPairRef, Pointer<Float>, Uint32);
+typedef _ProcessPairDart = void Function(SynthPairRef, Pointer<Float>, int);
+
+typedef _PairGetEngineNative = SynthEngineRef Function(SynthPairRef);
+typedef _PairGetEngineDart = SynthEngineRef Function(SynthPairRef);
+
+typedef _PairSetMixNative = Void Function(SynthPairRef, Float);
+typedef _PairSetMixDart = void Function(SynthPairRef, double);
+
+typedef _PairGetIntNative = Int32 Function(SynthPairRef);
+typedef _PairGetIntDart = int Function(SynthPairRef);
+
+class PairBindings {
+  PairBindings._({
+    required this.create,
+    required this.destroy,
+    required this.process,
+    required this.engineA,
+    required this.engineB,
+    required this.setMixA,
+    required this.setMixB,
+    required this.reset,
+    required this.getActiveVoices,
+    required this.getZoneAVoices,
+    required this.getZoneBVoices,
+  });
+
+  static PairBindings? _instance;
+
+  static PairBindings? get instance {
+    if (_instance != null) return _instance;
+    if (!OpenAmpSynthBindings.available) return null;
+    try {
+      final lib = OpenAmpSynthBindings.instance.lib;
+      _instance = PairBindings._(
+        create: lib.lookupFunction<_PairCreateNative, _PairCreateDart>('synth_pair_create'),
+        destroy: lib.lookupFunction<_VoidPairNative, _VoidPairDart>('synth_pair_destroy'),
+        process: lib.lookupFunction<_ProcessPairNative, _ProcessPairDart>('synth_pair_process'),
+        engineA: lib.lookupFunction<_PairGetEngineNative, _PairGetEngineDart>('synth_pair_engine_a'),
+        engineB: lib.lookupFunction<_PairGetEngineNative, _PairGetEngineDart>('synth_pair_engine_b'),
+        setMixA: lib.lookupFunction<_PairSetMixNative, _PairSetMixDart>('synth_pair_set_mix_a'),
+        setMixB: lib.lookupFunction<_PairSetMixNative, _PairSetMixDart>('synth_pair_set_mix_b'),
+        reset: lib.lookupFunction<_VoidPairNative, _VoidPairDart>('synth_pair_reset'),
+        getActiveVoices: lib.lookupFunction<_PairGetIntNative, _PairGetIntDart>('synth_pair_get_active_voices'),
+        getZoneAVoices: lib.lookupFunction<_PairGetIntNative, _PairGetIntDart>('synth_pair_get_zone_a_voices'),
+        getZoneBVoices: lib.lookupFunction<_PairGetIntNative, _PairGetIntDart>('synth_pair_get_zone_b_voices'),
+      );
+      return _instance;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  bool get available => _instance != null;
+
+  final _PairCreateDart create;
+  final _VoidPairDart destroy;
+  final _ProcessPairDart process;
+  final _PairGetEngineDart engineA;
+  final _PairGetEngineDart engineB;
+  final _PairSetMixDart setMixA;
+  final _PairSetMixDart setMixB;
+  final _VoidPairDart reset;
+  final _PairGetIntDart getActiveVoices;
+  final _PairGetIntDart getZoneAVoices;
+  final _PairGetIntDart getZoneBVoices;
+}
+
+/// High-level Dart wrapper around a native SynthEnginePair.
+/// Manages two SynthEngine instances (Zone A and Zone B) that are
+/// mixed together with per-zone volume control.
+class OpenAmpSynthPair {
+  OpenAmpSynthPair({double sampleRate = 48000.0, int blockSize = 256})
+      : _bindings = PairBindings.instance!,
+        _handle = PairBindings.instance!
+            .create(sampleRate, blockSize);
+
+  final PairBindings _bindings;
+  SynthPairRef _handle;
+  bool _disposed = false;
+
+  SynthPairRef get nativeHandle => _handle;
+
+  void _check() {
+    if (_disposed) throw StateError('OpenAmpSynthPair already disposed');
+  }
+
+  /// Access individual engine handles for note routing.
+  SynthEngineRef get engineA => _bindings.engineA(_handle);
+  SynthEngineRef get engineB => _bindings.engineB(_handle);
+
+  /// Zone mix volumes (0.0-1.0).
+  void setMixA(double mix) { _check(); _bindings.setMixA(_handle, mix); }
+  void setMixB(double mix) { _check(); _bindings.setMixB(_handle, mix); }
+
+  /// Render a buffer of audio through both engines (mixed).
+  void process(Pointer<Float> output, int numFrames) {
+    _check();
+    _bindings.process(_handle, output, numFrames);
+  }
+
+  /// Reset both engines.
+  void reset() { _check(); _bindings.reset(_handle); }
+
+  /// Voice counts.
+  int get activeVoices => _disposed ? 0 : _bindings.getActiveVoices(_handle);
+  int get zoneAVoices => _disposed ? 0 : _bindings.getZoneAVoices(_handle);
+  int get zoneBVoices => _disposed ? 0 : _bindings.getZoneBVoices(_handle);
+
+  void dispose() {
+    if (_disposed) return;
+    _bindings.destroy(_handle);
+    _handle = nullptr;
+    _disposed = true;
+  }
+}
+
 // ── High-level Dart wrapper ──────────────────────────────────────────────────
 
 /// Parameter IDs matching the native ParamQueue::ParamId enum.
@@ -475,6 +618,11 @@ class ParamId {
   static const int osc1Detune = 12;
   static const int osc1PulseWidth = 13;
   static const int osc1Volume = 14;
+  static const int osc1NoiseType = 15;
+  static const int osc1SubOscMode = 16;
+  static const int osc1SubOscVolume = 17;
+  static const int osc1FmEnabled = 18;
+  static const int osc1FmAmount = 19;
 
   // Osc 2
   static const int osc2Waveform = 20;
@@ -483,107 +631,170 @@ class ParamId {
   static const int osc2PulseWidth = 23;
   static const int osc2Volume = 24;
   static const int oscMix = 25;
+  static const int osc2NoiseType = 26;
+  static const int osc2SubOscMode = 27;
+  static const int osc2SubOscVolume = 28;
+  static const int osc2FmEnabled = 29;
+  static const int osc2FmAmount = 30;
 
   // Filter
-  static const int filterType = 30;
-  static const int filterCutoff = 31;
-  static const int filterResonance = 32;
-  static const int filterEnvAmount = 33;
+  static const int filterType = 40;
+  static const int filterCutoff = 41;
+  static const int filterResonance = 42;
+  static const int filterEnvAmount = 43;
+  static const int filterKeyTracking = 44;
+  static const int filterDrive = 45;
 
   // Amp envelope
-  static const int ampAttack = 40;
-  static const int ampDecay = 41;
-  static const int ampSustain = 42;
-  static const int ampRelease = 43;
+  static const int ampAttack = 50;
+  static const int ampDecay = 51;
+  static const int ampSustain = 52;
+  static const int ampRelease = 53;
+  static const int ampDelay = 54;
+  static const int ampHold = 55;
+  static const int ampAttackCurve = 56;
+  static const int ampDecayCurve = 57;
+  static const int ampReleaseCurve = 58;
 
   // Filter envelope
-  static const int filterAttack = 50;
-  static const int filterDecay = 51;
-  static const int filterSustain = 52;
-  static const int filterRelease = 53;
+  static const int filterAttack = 60;
+  static const int filterDecay = 61;
+  static const int filterSustain = 62;
+  static const int filterRelease = 63;
+  static const int filterDelay = 64;
+  static const int filterHold = 65;
+  static const int filterAttackCurve = 66;
+  static const int filterDecayCurve = 67;
+  static const int filterReleaseCurve = 68;
 
   // LFO 1
-  static const int lfo1Waveform = 60;
-  static const int lfo1Rate = 61;
-  static const int lfo1Depth = 62;
-  static const int lfo1Target = 63;
+  static const int lfo1Waveform = 70;
+  static const int lfo1Rate = 71;
+  static const int lfo1Depth = 72;
+  static const int lfo1Target = 73;
+  static const int lfo1FadeIn = 74;
+  static const int lfo1TempoSync = 75;
+  static const int lfo1TempoDivision = 76;
 
   // LFO 2
-  static const int lfo2Waveform = 70;
-  static const int lfo2Rate = 71;
-  static const int lfo2Depth = 72;
-  static const int lfo2Target = 73;
+  static const int lfo2Waveform = 80;
+  static const int lfo2Rate = 81;
+  static const int lfo2Depth = 82;
+  static const int lfo2Target = 83;
+  static const int lfo2FadeIn = 84;
+  static const int lfo2TempoSync = 85;
+  static const int lfo2TempoDivision = 86;
 
   // FX: Chorus
-  static const int chorusEnabled = 80;
-  static const int chorusRate = 81;
-  static const int chorusDepth = 82;
-  static const int chorusMix = 83;
+  static const int chorusEnabled = 90;
+  static const int chorusRate = 91;
+  static const int chorusDepth = 92;
+  static const int chorusMix = 93;
 
   // FX: Delay
-  static const int delayEnabled = 84;
-  static const int delayTime = 85;
-  static const int delayFeedback = 86;
-  static const int delayMix = 87;
+  static const int delayEnabled = 94;
+  static const int delayTime = 95;
+  static const int delayFeedback = 96;
+  static const int delayMix = 97;
 
   // FX: Reverb
-  static const int reverbEnabled = 88;
-  static const int reverbSize = 89;
-  static const int reverbDamping = 90;
-  static const int reverbMix = 91;
+  static const int reverbEnabled = 98;
+  static const int reverbSize = 99;
+  static const int reverbDamping = 100;
+  static const int reverbMix = 101;
 
   // FX: Phaser
-  static const int phaserEnabled = 92;
-  static const int phaserRate = 93;
-  static const int phaserDepth = 94;
-  static const int phaserFeedback = 95;
-  static const int phaserMix = 96;
+  static const int phaserEnabled = 102;
+  static const int phaserRate = 103;
+  static const int phaserDepth = 104;
+  static const int phaserFeedback = 105;
+  static const int phaserMix = 106;
 
   // FX: Drive
-  static const int driveEnabled = 97;
-  static const int driveAmount = 98;
-  static const int driveType = 99;
+  static const int driveEnabled = 107;
+  static const int driveAmount = 108;
+  static const int driveType = 109;
 
   // FX: Flanger
-  static const int flangerEnabled = 100;
-  static const int flangerRate = 101;
-  static const int flangerDepth = 102;
-  static const int flangerFeedback = 103;
-  static const int flangerMix = 104;
+  static const int flangerEnabled = 110;
+  static const int flangerRate = 111;
+  static const int flangerDepth = 112;
+  static const int flangerFeedback = 113;
+  static const int flangerMix = 114;
 
   // FX: Compressor
-  static const int compressorEnabled = 105;
-  static const int compressorThreshold = 106;
-  static const int compressorRatio = 107;
-  static const int compressorAttack = 108;
-  static const int compressorRelease = 109;
-  static const int compressorMakeupGain = 110;
+  static const int compressorEnabled = 115;
+  static const int compressorThreshold = 116;
+  static const int compressorRatio = 117;
+  static const int compressorAttack = 118;
+  static const int compressorRelease = 119;
+  static const int compressorMakeupGain = 120;
 
   // Master
-  static const int masterVolume = 120;
+  static const int masterVolume = 130;
 
   // Unison 1
-  static const int osc1UnisonVoiceCount = 130;
-  static const int osc1UnisonDetuneSpread = 131;
-  static const int osc1UnisonStereoSpread = 132;
-  static const int osc1UnisonMix = 133;
+  static const int osc1UnisonVoiceCount = 140;
+  static const int osc1UnisonDetuneSpread = 141;
+  static const int osc1UnisonStereoSpread = 142;
+  static const int osc1UnisonMix = 143;
 
   // Unison 2
-  static const int osc2UnisonVoiceCount = 140;
-  static const int osc2UnisonDetuneSpread = 141;
-  static const int osc2UnisonStereoSpread = 142;
-  static const int osc2UnisonMix = 143;
+  static const int osc2UnisonVoiceCount = 150;
+  static const int osc2UnisonDetuneSpread = 151;
+  static const int osc2UnisonStereoSpread = 152;
+  static const int osc2UnisonMix = 153;
 
   // Arpeggiator
-  static const int arpEnabled = 150;
-  static const int arpTempo = 151;
-  static const int arpPattern = 152;
-  static const int arpOctaveRange = 153;
-  static const int arpGate = 154;
-  static const int arpResolution = 155;
+  static const int arpEnabled = 160;
+  static const int arpTempo = 161;
+  static const int arpPattern = 162;
+  static const int arpOctaveRange = 163;
+  static const int arpGate = 164;
+  static const int arpResolution = 165;
+  static const int arpSwing = 166;
+  static const int arpHold = 167;
+
+  // Voice priority
+  static const int voicePriorityMode = 170;
+
+  // New FX: EQ (slot 1)
+  static const int fxSlot1Type = 180;
+  static const int fxSlot1Enabled = 181;
+  static const int fxSlot1Param0 = 182;
+  static const int fxSlot1Param1 = 183;
+  static const int fxSlot1Param2 = 184;
+  static const int fxSlot1Param3 = 185;
+  static const int fxSlot1Param4 = 186;
+  static const int fxSlot1Param5 = 187;
+  static const int fxSlot1Param6 = 188;
+  static const int fxSlot1Param7 = 189;
+
+  // New FX: Limiter (slot 2)
+  static const int fxSlot2Type = 190;
+  static const int fxSlot2Enabled = 191;
+  static const int fxSlot2Param0 = 192;
+  static const int fxSlot2Param1 = 193;
+  static const int fxSlot2Param2 = 194;
+  static const int fxSlot2Param3 = 195;
+  static const int fxSlot2Param4 = 196;
+
+  // New FX: Rotary / Tremolo (slot 3)
+  static const int fxSlot3Type = 197;
+  static const int fxSlot3Enabled = 198;
+  static const int fxSlot3Param0 = 199;
+  static const int fxSlot3Param1 = 200;
+  static const int fxSlot3Param2 = 201;
+  static const int fxSlot3Param3 = 202;
+  static const int fxSlot3Param4 = 203;
+  static const int fxSlot3Param5 = 204;
+
+  // FX Engine master
+  static const int fxMasterEnabled = 205;
+  static const int fxMasterMix = 206;
 
   // Reset
-  static const int reset = 200;
+  static const int reset = 250;
 }
 
 /// Idiomatic Dart wrapper around the native SynthEngine.
@@ -593,9 +804,17 @@ class OpenAmpSynth {
         _handle =
             OpenAmpSynthBindings.instance.create(sampleRate, blockSize);
 
+  /// Create an OpenAmpSynth wrapping an existing native handle.
+  /// Used when accessing engine B from a SynthEnginePair.    /// Does NOT own the handle — dispose() will NOT destroy it.
+  OpenAmpSynth.fromHandle(SynthEngineRef handle)
+      : _bindings = OpenAmpSynthBindings.instance,
+        _handle = handle,
+        _ownsHandle = false;
+
   final OpenAmpSynthBindings _bindings;
   SynthEngineRef _handle;
   bool _disposed = false;
+  bool _ownsHandle = true;
 
   /// Raw native handle. Exposed so the audio-stream binding can bind a
   /// realtime PortAudio callback directly to this engine. Treat as
@@ -646,6 +865,11 @@ class OpenAmpSynth {
   set osc1Detune(double cents) { enqueueFloat(ParamId.osc1Detune, cents); }
   set osc1PulseWidth(double pw) { enqueueFloat(ParamId.osc1PulseWidth, pw); }
   set osc1Volume(double v) { enqueueFloat(ParamId.osc1Volume, v); }
+  set osc1NoiseType(int t) { enqueueInt(ParamId.osc1NoiseType, t); }
+  set osc1SubOscMode(int m) { enqueueInt(ParamId.osc1SubOscMode, m); }
+  set osc1SubOscVolume(double v) { enqueueFloat(ParamId.osc1SubOscVolume, v); }
+  set osc1FmEnabled(bool e) { enqueueInt(ParamId.osc1FmEnabled, e ? 1 : 0); }
+  set osc1FmAmount(double a) { enqueueFloat(ParamId.osc1FmAmount, a); }
 
   // ── Osc 2 (queue-based) ─────────────────────────────────────────────────
 
@@ -654,6 +878,11 @@ class OpenAmpSynth {
   set osc2Detune(double cents) { enqueueFloat(ParamId.osc2Detune, cents); }
   set osc2PulseWidth(double pw) { enqueueFloat(ParamId.osc2PulseWidth, pw); }
   set osc2Volume(double v) { enqueueFloat(ParamId.osc2Volume, v); }
+  set osc2NoiseType(int t) { enqueueInt(ParamId.osc2NoiseType, t); }
+  set osc2SubOscMode(int m) { enqueueInt(ParamId.osc2SubOscMode, m); }
+  set osc2SubOscVolume(double v) { enqueueFloat(ParamId.osc2SubOscVolume, v); }
+  set osc2FmEnabled(bool e) { enqueueInt(ParamId.osc2FmEnabled, e ? 1 : 0); }
+  set osc2FmAmount(double a) { enqueueFloat(ParamId.osc2FmAmount, a); }
   set oscMix(double m) { enqueueFloat(ParamId.oscMix, m); }
 
   // ── Filter (queue-based) ────────────────────────────────────────────────
@@ -662,6 +891,8 @@ class OpenAmpSynth {
   set filterCutoff(double hz) { enqueueFloat(ParamId.filterCutoff, hz); }
   set filterResonance(double q) { enqueueFloat(ParamId.filterResonance, q); }
   set filterEnvAmount(double a) { enqueueFloat(ParamId.filterEnvAmount, a); }
+  set filterKeyTracking(double k) { enqueueFloat(ParamId.filterKeyTracking, k); }
+  set filterDrive(double d) { enqueueFloat(ParamId.filterDrive, d); }
 
   // ── Amp envelope (queue-based) ──────────────────────────────────────────
 
@@ -669,6 +900,11 @@ class OpenAmpSynth {
   set ampDecay(double ms) { enqueueFloat(ParamId.ampDecay, ms); }
   set ampSustain(double level) { enqueueFloat(ParamId.ampSustain, level); }
   set ampRelease(double ms) { enqueueFloat(ParamId.ampRelease, ms); }
+  set ampDelay(double ms) { enqueueFloat(ParamId.ampDelay, ms); }
+  set ampHold(double ms) { enqueueFloat(ParamId.ampHold, ms); }
+  set ampAttackCurve(int c) { enqueueInt(ParamId.ampAttackCurve, c); }
+  set ampDecayCurve(int c) { enqueueInt(ParamId.ampDecayCurve, c); }
+  set ampReleaseCurve(int c) { enqueueInt(ParamId.ampReleaseCurve, c); }
 
   // ── Filter envelope (queue-based) ────────────────────────────────────────
 
@@ -676,6 +912,11 @@ class OpenAmpSynth {
   set filterDecay(double ms) { enqueueFloat(ParamId.filterDecay, ms); }
   set filterSustain(double level) { enqueueFloat(ParamId.filterSustain, level); }
   set filterRelease(double ms) { enqueueFloat(ParamId.filterRelease, ms); }
+  set filterDelay(double ms) { enqueueFloat(ParamId.filterDelay, ms); }
+  set filterHold(double ms) { enqueueFloat(ParamId.filterHold, ms); }
+  set filterAttackCurve(int c) { enqueueInt(ParamId.filterAttackCurve, c); }
+  set filterDecayCurve(int c) { enqueueInt(ParamId.filterDecayCurve, c); }
+  set filterReleaseCurve(int c) { enqueueInt(ParamId.filterReleaseCurve, c); }
 
   // ── LFO 1 (queue-based) ──────────────────────────────────────────────────
 
@@ -683,6 +924,9 @@ class OpenAmpSynth {
   set lfo1Rate(double hz) { enqueueFloat(ParamId.lfo1Rate, hz); }
   set lfo1Depth(double d) { enqueueFloat(ParamId.lfo1Depth, d); }
   set lfo1Target(int t) { enqueueInt(ParamId.lfo1Target, t); }
+  set lfo1FadeIn(double s) { enqueueFloat(ParamId.lfo1FadeIn, s); }
+  set lfo1TempoSync(bool e) { enqueueInt(ParamId.lfo1TempoSync, e ? 1 : 0); }
+  set lfo1TempoDivision(int d) { enqueueInt(ParamId.lfo1TempoDivision, d); }
 
   // ── LFO 2 (queue-based) ──────────────────────────────────────────────────
 
@@ -690,6 +934,9 @@ class OpenAmpSynth {
   set lfo2Rate(double hz) { enqueueFloat(ParamId.lfo2Rate, hz); }
   set lfo2Depth(double d) { enqueueFloat(ParamId.lfo2Depth, d); }
   set lfo2Target(int t) { enqueueInt(ParamId.lfo2Target, t); }
+  set lfo2FadeIn(double s) { enqueueFloat(ParamId.lfo2FadeIn, s); }
+  set lfo2TempoSync(bool e) { enqueueInt(ParamId.lfo2TempoSync, e ? 1 : 0); }
+  set lfo2TempoDivision(int d) { enqueueInt(ParamId.lfo2TempoDivision, d); }
 
   // ── FX (queue-based) ──────────────────────────────────────────────────────
 
@@ -749,6 +996,43 @@ class OpenAmpSynth {
   set osc2UnisonStereoSpread(double v) { enqueueFloat(ParamId.osc2UnisonStereoSpread, v); }
   set osc2UnisonMix(double v) { enqueueFloat(ParamId.osc2UnisonMix, v); }
 
+  // ── Voice Priority (queue-based) ─────────────────────────────────────────
+
+  set voicePriorityMode(int m) { enqueueInt(ParamId.voicePriorityMode, m); }
+
+  // ── Multi-Slot FX (queue-based) ───────────────────────────────────────────
+
+  set fxSlot1Type(int t) { enqueueInt(ParamId.fxSlot1Type, t); }
+  set fxSlot1Enabled(bool e) { enqueueInt(ParamId.fxSlot1Enabled, e ? 1 : 0); }
+  set fxSlot1Param0(double v) { enqueueFloat(ParamId.fxSlot1Param0, v); }
+  set fxSlot1Param1(double v) { enqueueFloat(ParamId.fxSlot1Param1, v); }
+  set fxSlot1Param2(double v) { enqueueFloat(ParamId.fxSlot1Param2, v); }
+  set fxSlot1Param3(double v) { enqueueFloat(ParamId.fxSlot1Param3, v); }
+  set fxSlot1Param4(double v) { enqueueFloat(ParamId.fxSlot1Param4, v); }
+  set fxSlot1Param5(double v) { enqueueFloat(ParamId.fxSlot1Param5, v); }
+  set fxSlot1Param6(double v) { enqueueFloat(ParamId.fxSlot1Param6, v); }
+  set fxSlot1Param7(double v) { enqueueFloat(ParamId.fxSlot1Param7, v); }
+
+  set fxSlot2Type(int t) { enqueueInt(ParamId.fxSlot2Type, t); }
+  set fxSlot2Enabled(bool e) { enqueueInt(ParamId.fxSlot2Enabled, e ? 1 : 0); }
+  set fxSlot2Param0(double v) { enqueueFloat(ParamId.fxSlot2Param0, v); }
+  set fxSlot2Param1(double v) { enqueueFloat(ParamId.fxSlot2Param1, v); }
+  set fxSlot2Param2(double v) { enqueueFloat(ParamId.fxSlot2Param2, v); }
+  set fxSlot2Param3(double v) { enqueueFloat(ParamId.fxSlot2Param3, v); }
+  set fxSlot2Param4(double v) { enqueueFloat(ParamId.fxSlot2Param4, v); }
+
+  set fxSlot3Type(int t) { enqueueInt(ParamId.fxSlot3Type, t); }
+  set fxSlot3Enabled(bool e) { enqueueInt(ParamId.fxSlot3Enabled, e ? 1 : 0); }
+  set fxSlot3Param0(double v) { enqueueFloat(ParamId.fxSlot3Param0, v); }
+  set fxSlot3Param1(double v) { enqueueFloat(ParamId.fxSlot3Param1, v); }
+  set fxSlot3Param2(double v) { enqueueFloat(ParamId.fxSlot3Param2, v); }
+  set fxSlot3Param3(double v) { enqueueFloat(ParamId.fxSlot3Param3, v); }
+  set fxSlot3Param4(double v) { enqueueFloat(ParamId.fxSlot3Param4, v); }
+  set fxSlot3Param5(double v) { enqueueFloat(ParamId.fxSlot3Param5, v); }
+
+  set fxMasterEnabled(bool e) { enqueueInt(ParamId.fxMasterEnabled, e ? 1 : 0); }
+  set fxMasterMix(double v) { enqueueFloat(ParamId.fxMasterMix, v); }
+
   // ── Master (queue-based) ─────────────────────────────────────────────────
 
   set masterVolume(double v) { enqueueFloat(ParamId.masterVolume, v); }
@@ -761,10 +1045,18 @@ class OpenAmpSynth {
   set arpOctaveRange(int o) { enqueueInt(ParamId.arpOctaveRange, o); }
   set arpGate(double g) { enqueueFloat(ParamId.arpGate, g); }
   set arpResolution(int r) { enqueueInt(ParamId.arpResolution, r); }
+   set arpSwing(double v) { enqueueFloat(ParamId.arpSwing, v); }
+   set arpHold(bool v) { enqueueInt(ParamId.arpHold, v ? 1 : 0); }
 
   int get activeVoices {
     if (_disposed) return 0;
     return _bindings.getActiveVoices(_handle);
+  }
+
+  /// Returns 0.0–1.0+ representing the fraction of real-time budget used.
+  double get cpuLoad {
+    if (_disposed) return 0.0;
+    return _bindings.getCpuLoad(_handle);
   }
 
   /// Render a buffer of mono audio in-place.
@@ -781,7 +1073,9 @@ class OpenAmpSynth {
 
   void dispose() {
     if (_disposed) return;
-    _bindings.destroy(_handle);
+    if (_ownsHandle) {
+      _bindings.destroy(_handle);
+    }
     _handle = nullptr;
     _disposed = true;
   }

@@ -329,5 +329,16 @@ double _sampleOscillatorPoints(
       final saw = 2 * ((f * time / (2 * pi)) % 1) - 1;
       final sq = saw >= 0 ? 1.0 : -1.0;
       return amp * ((1 - wt) * sine + wt * ((1 - wt) * saw + wt * sq));
+
+    case Waveform.wt_piano:
+    case Waveform.wt_guitar:
+    case Waveform.wt_choir:
+    case Waveform.random:
+      // Complex wavetable: blend of sine and harmonics
+      final base = sin(f * time);
+      final harm2 = sin(f * time * 2) * 0.3;
+      final harm3 = sin(f * time * 3) * 0.15;
+      final harm4 = sin(f * time * 4) * 0.08;
+      return amp * (base + harm2 + harm3 + harm4);
   }
 }

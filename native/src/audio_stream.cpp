@@ -6,9 +6,10 @@
 
 namespace openamp {
 
-AudioStream::AudioStream(openamp::SynthEngine* engine, double sampleRate,
-                         uint32_t blockSize, int deviceIndex)
-    : engine_(engine)
+AudioStream::AudioStream(void* processorContext, AudioProcessor processorFn,
+                         double sampleRate, uint32_t blockSize, int deviceIndex)
+    : processorContext_(processorContext)
+    , processorFn_(processorFn)
     , stream_(nullptr)
     , sampleRate_(sampleRate)
     , blockSize_(blockSize)
@@ -17,8 +18,8 @@ AudioStream::AudioStream(openamp::SynthEngine* engine, double sampleRate,
 {
     errorBuf_[0] = '\0';
 
-    if (engine_ == nullptr) {
-        std::strcpy(errorBuf_, "AudioStream: null engine pointer");
+    if (processorContext_ == nullptr || processorFn_ == nullptr) {
+        std::strcpy(errorBuf_, "AudioStream: null processor context or function");
         return;
     }
 
@@ -91,6 +92,7 @@ bool AudioStream::start() {
         return false;
     }
 
+    running_ = true;
     PaError err = Pa_StartStream(stream_);
     if (err != paNoError) {
         std::snprintf(errorBuf_, sizeof(errorBuf_),
@@ -101,6 +103,10 @@ bool AudioStream::start() {
 }
 
 void AudioStream::stop() {
+    // Signal the callback to bail out immediately on next invocation.
+    // This ensures Pa_StopStream() won't deadlock if a callback is stuck
+    // processing, and makes the destructor safe against race conditions.
+    running_ = false;
     if (stream_ && Pa_IsStreamActive(stream_) == 1) {
         Pa_StopStream(stream_);
     }
@@ -123,13 +129,21 @@ int AudioStream::paCallback(const void* input, void* output,
     auto* self = static_cast<AudioStream*>(userData);
     auto* out = static_cast<float*>(output);
 
-    // Zero the output buffer first
+    // Zero the output buffer first (silence if we bail early)
     std::memset(out, 0, frameCount * 2 * sizeof(float));
 
+    // Check the running_ flag before touching the processor.
+    // This is the shutdown safety guard: once stop() sets running_=false,
+    // the callback returns silence immediately, preventing use-after-free
+    // when the processor or its context is destroyed concurrently.
+    if (!self->running_.load(std::memory_order_acquire)) {
+        return paContinue;
+    }
+
     const uint32_t frames = static_cast<uint32_t>(frameCount);
-    if (self->engine_) {
+    if (self->processorContext_ && self->processorFn_) {
         AudioBuffer buf(out, frames, 2);
-        self->engine_->process(buf);
+        self->processorFn_(self->processorContext_, buf);
     }
 
     self->callbackCount_++;

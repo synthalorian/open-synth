@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../models/preset_category.dart';
 import '../models/synth_preset.dart';
 import '../providers/favorites_provider.dart';
+import '../providers/recent_presets_provider.dart';
 import '../providers/synth_providers.dart';
 import '../providers/undo_redo_provider.dart';
 import '../theme/synth_theme.dart';
@@ -228,7 +229,23 @@ Color _categoryColor(PresetCategory cat) {
     PresetCategory.arps => const Color(0xFF39FF14),
     PresetCategory.fx => const Color(0xFFFFD700),
     PresetCategory.synthwave => const Color(0xFFFF00FF),
+    PresetCategory.piano => const Color(0xFFFFFFFF),
+    PresetCategory.organ => const Color(0xFFFFA500),
+    PresetCategory.guitar => const Color(0xFF8B4513),
+    PresetCategory.strings => const Color(0xFF87CEEB),
+    PresetCategory.brass => const Color(0xFFFFD700),
+    PresetCategory.choir => const Color(0xFFE6E6FA),
+    PresetCategory.percussion => const Color(0xFF98FB98),
     PresetCategory.custom => const Color(0xFF808080),
+    PresetCategory.drums => const Color(0xFFDC143C),
+    PresetCategory.acousticGuitar => const Color(0xFFD2691E),
+    PresetCategory.electricGuitar => const Color(0xFFFF4500),
+    PresetCategory.bassGuitar => const Color(0xFF2E8B57),
+    PresetCategory.electricPiano => const Color(0xFF4169E1),
+    PresetCategory.clavinet => const Color(0xFF32CD32),
+    PresetCategory.mallets => const Color(0xFF20B2AA),
+    PresetCategory.woodwinds => const Color(0xFF4682B4),
+    PresetCategory.ethnic => const Color(0xFFDA70D6),
   };
 }
 
@@ -291,6 +308,7 @@ class _PresetCard extends ConsumerWidget {
       onTap: () {
         ref.read(undoRedoProvider.notifier).save();
         ref.read(currentPresetProvider.notifier).load(preset);
+        ref.read(recentPresetsProvider.notifier).track(preset.id);
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

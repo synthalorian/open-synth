@@ -73,43 +73,44 @@ Feature parity with Roland Juno-Di plus modern extensions.
 
 ## Phase 1: CORE ENGINE UPGRADES
 
-### 1.1 Polyphony Increase (16 -> 64+)
-- [ ] Increase `VoiceAllocator::MAX_VOICES` to 64
-- [ ] Add voice priority modes (last note, lowest note, round-robin)
+### 1.1 Polyphony Increase (16 -> 64) — COMPLETE ✓
+- [x] Increase `VoiceAllocator::MAX_VOICES` to 64
+- [x] Add voice priority modes (newest, oldest, quietest, highest note)
 - [ ] CPU profiling to verify performance at full polyphony
 - [ ] Dynamic voice stealing based on CPU load
 
-### 1.2 Expanded Waveforms
+### 1.2 Expanded Waveforms — PARTIAL ✓
+- [x] Add noise types: white, pink, brown
 - [ ] Add wavetable support (user-loadable wavetables)
 - [ ] Add sample playback (PCM patches from SF2/SFZ files)
 - [ ] Add additive synthesis partials
-- [ ] Add noise types: white, pink, brown, crackle
 
-### 1.3 Oscillator Features
-- [ ] Sub-oscillator (1 octave below, follows osc1 waveform)
-- [ ] Noise generator as 3rd oscillator source
-- [ ] PWM (pulse width modulation via LFO/envelope)
+### 1.3 Oscillator Features — PARTIAL ✓
+- [x] Sub-oscillator (square/sine, 1-2 oct below)
+- [x] Noise generator integrated per oscillator
+- [x] FM synthesis mode (osc2 modulates osc1, per-oscillator toggle)
+- [ ] PWM via LFO/envelope
 - [ ] Oscillator sync (hard sync, soft sync)
-- [ ] FM synthesis mode (osc2 modulates osc1 frequency)
 
-### 1.4 Filter Upgrades
-- [ ] Add more filter types: 12dB/oct, 24dB/oct, ladder, diode ladder
-- [ ] Filter key tracking (follows keyboard pitch)
-- [ ] Filter drive/saturation stage before filter
+### 1.4 Filter Upgrades — PARTIAL ✓
+- [x] More filter types: low-shelf, high-shelf, peaking EQ
+- [x] Filter key tracking
+- [x] Filter drive/saturation stage
 - [ ] Self-oscillation mode with resonance > 1.0
 
-### 1.5 Envelope Upgrades
-- [ ] Add 3rd envelope generator (pitch envelope)
-- [ ] Envelope curves (linear, exponential, logarithmic)
-- [ ] Delay stage (pre-attack wait)
-- [ ] Hold stage (sustain at max for fixed time)
+### 1.5 Envelope Upgrades — COMPLETE ✓
+- [x] Pitch envelope (3rd envelope generator, per-voice)
+- [x] Envelope curves (linear, exponential, logarithmic attack/decay/release)
+- [x] Delay stage (pre-attack wait)
+- [x] Hold stage (sustain at max for fixed time)
 
-### 1.6 LFO Upgrades
+### 1.6 LFO Upgrades — PARTIAL ✓
+- [x] S&H smoothed and random walk waveforms
+- [x] LFO fade-in time
+- [x] LFO tempo sync with note divisions
+- [x] Per-voice LFO mode
 - [ ] Add LFO 3 and LFO 4
-- [ ] More waveforms: S&H, S&H smoothed, random walk, custom
-- [ ] LFO fade-in time
-- [ ] LFO sync to tempo (retrigger on beat)
-- [ ] Per-voice LFO mode (not just global)
+- [ ] Custom LFO waveform drawing
 
 ---
 
@@ -167,11 +168,12 @@ Feature parity with Roland Juno-Di plus modern extensions.
 - [ ] Mix view for balancing parts
 - [ ] MIDI channel routing per part
 
-### 3.3 Favorites System
-- [ ] 100 favorite slots (like Juno-Di)
-- [ ] Quick-access grid (10x10)
-- [ ] Save/recall current state (patch + settings)
-- [ ] Organize by setlist for live performance
+### 3.3 Favorites System — COMPLETE ✓
+- [x] Favorite/unfavorite presets with star toggle
+- [x] Reorderable favorites list (drag to rearrange)
+- [x] Persistent storage via Hive (survives app restart)
+- [x] Named setlists for live performance (create, rename, delete, add/remove presets)
+- [x] Active setlist provider for quick recall
 
 ### 3.4 Performance Controls
 - [ ] Transpose (global and per-zone)
@@ -223,24 +225,22 @@ Feature parity with Roland Juno-Di plus modern extensions.
 
 ## Phase 5: SOUND LIBRARY
 
-### 5.1 Preset Expansion (50 -> 1300+)
-- [ ] Piano category (10+ presets: grand, upright, honky-tonk)
-- [ ] E.Piano/Clav (10+: Rhodes, Wurli, DX7, Clavinet)
-- [ ] Organ (10+: tonewheel, pipe, combo, cathedral)
-- [ ] Guitar/Plucked (10+: acoustic, electric, bass, banjo, harp)
-- [ ] Bass (20+: synth bass, sub, 808, Reese, acid, pluck)
-- [ ] Strings (10+: ensemble, solo, pizzicato)
-- [ ] Brass/Wind (10+: trumpet, sax, flute, ensemble)
-- [ ] Choir/Voice (5+: ooh, aah, vocoder pad)
-- [ ] Synth Lead (20+: supersaw, acid, laser, pluck, portamento)
-- [ ] Synth Pad (20+: warm, evolving, atmospheric, cinematic)
-- [ ] Arp/Seq (15+: driving, crystal, pluck, marimba)
-- [ ] FX (15+: riser, impact, sweep, noise, morph)
-- [ ] Percussion (10+: drum kit presets, ethnic percussion)
-- [ ] Synthwave (20+: dedicated retro presets)
+### 5.1 Preset Expansion (272 → 377) — PARTIAL ✓
+- [x] Extended from 272 to 377 factory presets across all 15 categories
+- [x] Piano: 15 presets (grand, upright, honky-tonk, bright, electric grand, etc.)
+- [x] Organ: 15 presets (tonewheel, pipe, combo, cathedral, rock, jazz, etc.)
+- [x] Guitar: 15 presets (acoustic, electric clean, distorted, nylon, bass, etc.)
+- [x] Strings: 15 presets (ensemble, solo violin, cello, pizzicato, cinematic, etc.)
+- [x] Brass: 15 presets (trumpet, trombone, sax, tuba, ensemble, synth brass, etc.)
+- [x] Choir: 15 presets (ooh, aah, cathedral, boy choir, vocoder pad, etc.)
+- [x] Percussion: 15 presets (kick, snare, hi-hat, toms, cymbals, mallet, etc.)
+- [ ] Piano: add velocity-layered variations (pp, mf, ff)
+- [ ] Expand to 1300+ total presets (more per category)
+- [ ] PCM-based presets for realistic instruments (future with sample engine)
 
-### 5.2 Category Expansion
-- [ ] Add: Piano, Organ, Guitar, Strings, Brass, Choir, Percussion
+### 5.2 Category Expansion — COMPLETE ✓
+- [x] Added categories: Piano, Organ, Guitar, Strings, Brass, Choir, Percussion
+- [x] Category colors in preset browser UI
 - [ ] Sub-categories within each main category
 - [ ] Tag-based search across categories
 - [ ] Author/creator filtering
@@ -394,18 +394,20 @@ Feature parity with Roland Juno-Di plus modern extensions.
 
 ## Implementation Priority Order
 
-1. **Phase 0** -- Audio stability (COMPLETE ✓)
-2. **Phase 0.5** -- Bugfix sprint: envelope fix, preset switching fix, preset audit (IN PROGRESS)
-3. **Phase 5.1** -- Preset expansion to 1300+ (more sounds = more useful)
-4. **Phase 1.1** -- Polyphony increase (simple config change, big impact)
-5. **Phase 3.3** -- Favorites system (critical for live performance)
-6. **Phase 4.1** -- Arpeggiator engine (key performance feature)
-7. **Phase 2.2** -- More effect types (quality of life)
-8. **Phase 3.1** -- Split & layer (essential keyboard feature)
-9. **Phase 4.2** -- Rhythm patterns (backing tracks)
-10. **Phase 6.1** -- Audio file playback (karaoke/practice)
-11. **Phase 7.1** -- PCM samples (realistic instruments)
-12. Everything else in priority order
+1. **Phase 0** — Audio stability (COMPLETE ✓)
+2. **Phase 0.5** — Bugfix sprint: envelope fix, preset switching fix, preset audit (COMPLETE ✓)
+3. **Phase 4.1** — Arpeggiator engine (COMPLETE ✓)
+4. **Phase 1.1** — Polyphony increase to 64 with voice priority modes (COMPLETE ✓)
+5. **Phase 1.5** — Envelope upgrades: curves, delay/hold, pitch envelope (COMPLETE ✓)
+6. **Phase 1.2–1.4, 1.6** — Core engine upgrades: noise, sub-osc, FM, filter types/key-tracking/drive, LFO S&H/fade-in/tempo-sync/per-voice (PARTIAL ✓)
+7. **Phase 5.1** — Preset expansion: 272 → 377 with 7 new categories (PARTIAL ✓)
+8. **Phase 3.3** — Favorites system with setlists (COMPLETE ✓)
+9. **Phase 2.2** — More effect types (quality of life)
+10. **Phase 3.1** — Split & layer (essential keyboard feature)
+11. **Phase 4.2** — Rhythm patterns (backing tracks)
+12. **Phase 6.1** — Audio file playback (karaoke/practice)
+13. **Phase 7.1** — PCM samples (realistic instruments)
+14. Everything else in priority order
 
 ---
 
