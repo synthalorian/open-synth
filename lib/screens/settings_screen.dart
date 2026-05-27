@@ -9,6 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../models/synth_preset.dart';
+import '../ffi/audio_platform.dart';
 import '../ffi/openamp_audio_stream.dart';
 import '../providers/midi_provider.dart';
 import '../providers/recent_presets_provider.dart';
@@ -73,9 +74,17 @@ class SettingsScreen extends ConsumerWidget {
 
             _SectionTitle('AUDIO'),
             const SizedBox(height: 12),
-            _AudioDeviceSelector(),
-            const SizedBox(height: 10),
-            _AudioBufferSelector(),
+            if (hasAudioDeviceEnumeration) ...[
+              // Desktop: show full device selector + buffer size
+              _AudioDeviceSelector(),
+              const SizedBox(height: 10),
+              _AudioBufferSelector(),
+            ] else ...[
+              // Mobile: single output device, show backend info
+              _AudioBackendInfo(),
+              const SizedBox(height: 10),
+              _AudioBufferSelector(),
+            ],
             const SizedBox(height: 32),
 
             _SectionTitle('RECENT PRESETS'),
@@ -97,6 +106,7 @@ class SettingsScreen extends ConsumerWidget {
             const SizedBox(height: 12),
             _InfoRow('Version', '1.2.0'),
             _InfoRow('Engine', 'OpenAmp DSP'),
+            _InfoRow('Audio Backend', audioBackendName),
             _AudioDiagnosticsSummary(),
             const SizedBox(height: 32),
 
@@ -661,6 +671,55 @@ class _AudioDeviceSelector extends ConsumerWidget {
                 onTap: () =>
                     ref.read(selectedAudioDeviceProvider.notifier).select(device.index),
               )),
+        ],
+      ),
+    );
+  }
+}
+
+/// Mobile-only: shows which audio backend is active (Oboe on Android,
+/// AudioUnits on iOS).  There's nothing to configure — the OS picks the
+/// output device — so we just display an informational card.
+class _AudioBackendInfo extends ConsumerWidget {
+  const _AudioBackendInfo();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: SynthTheme.card,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: SynthTheme.purple.withValues(alpha: 0.2)),
+      ),
+      child: Row(
+        children: [
+          Icon(Icons.speaker, color: SynthTheme.cyan, size: 18),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Audio Backend',
+                  style: TextStyle(
+                    color: Colors.white.withValues(alpha: 0.9),
+                    fontSize: 13,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  audioBackendName,
+                  style: TextStyle(
+                    color: SynthTheme.cyan,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Icon(Icons.check_circle, color: SynthTheme.cyan.withValues(alpha: 0.6), size: 16),
         ],
       ),
     );
