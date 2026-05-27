@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../ffi/audio_platform.dart';
 import '../providers/navigation_provider.dart';
 import '../theme/synth_theme.dart';
 import 'home_screen.dart';
+import 'mobile_shell.dart';
 import 'performance_screen.dart';
 import 'recorder_screen.dart';
 import 'split_screen.dart';
@@ -21,6 +23,9 @@ class MainShell extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Mobile uses the drawer-based shell — desktop stays here.
+    if (isMobile) return const MobileShell();
+
     final currentIndex = ref.watch(mainShellIndexProvider);
 
     return Scaffold(

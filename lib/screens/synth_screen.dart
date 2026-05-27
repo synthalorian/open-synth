@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../models/fx_config.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../ffi/audio_platform.dart';
 import '../models/envelope.dart';
 import '../models/mod_matrix.dart';
 import '../models/mod_target.dart';
@@ -52,6 +53,7 @@ import '../providers/recent_presets_provider.dart';
 import 'preset_editor_screen.dart';
 import 'settings_screen.dart';
 import 'midi_learn_screen.dart';
+import 'mobile_synth_screen.dart';
 import '../widgets/keyboard_shortcuts_overlay.dart';
 import '../widgets/ab_comparison_diff.dart';
 import '../widgets/onboarding_overlay.dart';
@@ -542,6 +544,9 @@ class SynthScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Mobile gets its own split-view layout — desktop stays here.
+    if (isMobile) return const MobileSynthScreen();
+
     final preset = ref.watch(currentPresetProvider);
     final morphed = ref.watch(morphedPresetProvider);
     final morphConfig = ref.watch(morphConfigProvider);
