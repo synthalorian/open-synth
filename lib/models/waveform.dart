@@ -5,7 +5,8 @@ enum Waveform {
   saw('Saw', Icons.signal_cellular_alt),
   square('Square', Icons.crop_square),
   triangle('Triangle', Icons.change_history),
-  noise('Noise', Icons.grain);
+  noise('Noise', Icons.grain),
+  wavetable('Wavetable', Icons.dashboard);
 
   const Waveform(this.displayName, this.icon);
 

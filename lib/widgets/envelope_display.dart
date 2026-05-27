@@ -8,6 +8,7 @@ class EnvelopeDisplay extends StatefulWidget {
   final Envelope envelope;
   final ValueChanged<Envelope> onChanged;
   final Color? accentColor;
+  final bool isLocked;
 
   const EnvelopeDisplay({
     super.key,
@@ -15,6 +16,7 @@ class EnvelopeDisplay extends StatefulWidget {
     required this.envelope,
     required this.onChanged,
     this.accentColor,
+    this.isLocked = false,
   });
 
   @override
@@ -38,14 +40,22 @@ class _EnvelopeDisplayState extends State<EnvelopeDisplay> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            widget.title,
-            style: TextStyle(
-              color: color,
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
-              letterSpacing: 1.5,
-            ),
+          Row(
+            children: [
+              Text(
+                widget.title,
+                style: TextStyle(
+                  color: color,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1.5,
+                ),
+              ),
+              if (widget.isLocked) ...[
+                const SizedBox(width: 6),
+                Icon(Icons.lock, color: SynthTheme.magenta, size: 12),
+              ],
+            ],
           ),
           const SizedBox(height: 6),
           SizedBox(

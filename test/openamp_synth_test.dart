@@ -1,5 +1,8 @@
 // Smoke tests for the OpenAmp Synth FFI binding.
 
+import 'dart:ffi' show Float, sizeOf;
+
+import 'package:ffi/ffi.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:open_synth/ffi/openamp_synth.dart';
 
@@ -30,8 +33,6 @@ void main() {
 
       synth.noteOff(60);
       synth.allNotesOff();
-      // After explicit allNotesOff, voices may still be in release stage,
-      // but the engine should not crash.
     }, skip: !OpenAmpSynthBindings.available
         ? 'native lib not available on this host'
         : false);
@@ -73,6 +74,59 @@ void main() {
       final synth = OpenAmpSynth();
       synth.dispose();
       synth.dispose();
+    }, skip: !OpenAmpSynthBindings.available
+        ? 'native lib not available on this host'
+        : false);
+
+    // ── Unison FFI ───────────────────────────────────────────────────────
+
+    test('unison FFI symbols are present in the rebuilt .so', () {
+      final bindings = OpenAmpSynthBindings.instance;
+      expect(bindings.unison, isNotNull,
+          reason:
+              'The new libopenamp_dart_ffi.so exports all 8 unison symbols');
+      expect(bindings.unisonAvailable, isTrue);
+    }, skip: !OpenAmpSynthBindings.available
+        ? 'native lib not available on this host'
+        : false);
+
+    test('unison setter properties on OpenAmpSynth work correctly', () {
+      final synth = OpenAmpSynth();
+      addTearDown(synth.dispose);
+
+      synth.osc1UnisonVoiceCount = 4;
+      synth.osc1UnisonDetuneSpread = 15.0;
+      synth.osc1UnisonStereoSpread = 0.6;
+      synth.osc1UnisonMix = 0.8;
+
+      synth.osc2UnisonVoiceCount = 2;
+      synth.osc2UnisonDetuneSpread = 10.0;
+      synth.osc2UnisonStereoSpread = 0.3;
+      synth.osc2UnisonMix = 0.7;
+
+      expect(synth.activeVoices, 0);
+    }, skip: !OpenAmpSynthBindings.available
+        ? 'native lib not available on this host'
+        : false);
+
+    test('synth processes audio buffer with unison enabled', () {
+      final synth = OpenAmpSynth(sampleRate: 48000.0, blockSize: 256);
+      addTearDown(synth.dispose);
+
+      // Configure unison
+      synth.osc1UnisonVoiceCount = 4;
+      synth.osc1UnisonDetuneSpread = 20.0;
+      synth.osc1UnisonStereoSpread = 0.7;
+      synth.osc1UnisonMix = 1.0;
+
+      // Play a note and render
+      synth.noteOn(60, velocity: 0.8);
+
+      final buffer = calloc.allocate<Float>(256 * sizeOf<Float>());
+      addTearDown(() => calloc.free(buffer));
+
+      synth.process(buffer, 256);
+      expect(synth.activeVoices, greaterThan(0));
     }, skip: !OpenAmpSynthBindings.available
         ? 'native lib not available on this host'
         : false);

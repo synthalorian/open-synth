@@ -31,7 +31,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../models/mod_matrix.dart';
+import '../providers/ab_comparison_provider.dart';
+import '../providers/arpeggiator_provider.dart';
+import '../providers/midi_recorder_provider.dart';
+import '../providers/mod_matrix_provider.dart';
+import '../providers/sequencer_provider.dart';
 import '../providers/synth_providers.dart';
+import '../providers/undo_redo_provider.dart';
 
 /// Maps a [LogicalKeyboardKey] to a semitone offset from the lower
 /// octave's C. Lower-octave row first, then upper-octave row.
@@ -100,6 +107,9 @@ class _ComputerKeyboardListenerState
   /// a held chord.
   final Map<LogicalKeyboardKey, int> _activeKeys = {};
 
+  /// Transport keys currently held to filter OS auto-repeat.
+  final Set<LogicalKeyboardKey> _transportKeysActive = {};
+
   @override
   void initState() {
     super.initState();
@@ -145,6 +155,70 @@ class _ComputerKeyboardListenerState
         _activeKeys.clear();
         return KeyEventResult.handled;
       }
+      // Sequencer transport shortcuts
+      if (key == LogicalKeyboardKey.space) {
+        if (_transportKeysActive.contains(key)) return KeyEventResult.handled;
+        _transportKeysActive.add(key);
+        final isPlaying = ref.read(sequencerPlayingProvider);
+        ref.read(sequencerPlayingProvider.notifier).state = !isPlaying;
+        if (!isPlaying) {
+          ref.read(sequencerCurrentStepProvider.notifier).state = 0;
+        }
+        return KeyEventResult.handled;
+      }
+      if (key == LogicalKeyboardKey.keyR &&
+          HardwareKeyboard.instance.isControlPressed) {
+        // Ctrl+R = toggle recording; plain R = piano key (F note)
+        if (_transportKeysActive.contains(key)) return KeyEventResult.handled;
+        _transportKeysActive.add(key);
+        final isRecording = ref.read(sequencerRecordingProvider);
+        ref.read(sequencerRecordingProvider.notifier).state = !isRecording;
+        return KeyEventResult.handled;
+      }
+      // Undo / Redo shortcuts
+      if (key == LogicalKeyboardKey.keyZ || key == LogicalKeyboardKey.keyY) {
+        final isCtrl = HardwareKeyboard.instance.isControlPressed;
+        final isShift = HardwareKeyboard.instance.isShiftPressed;
+        if (isCtrl) {
+          if (_transportKeysActive.contains(key)) return KeyEventResult.handled;
+          _transportKeysActive.add(key);
+          if (key == LogicalKeyboardKey.keyZ && isShift) {
+            ref.read(undoRedoProvider.notifier).redo();
+          } else if (key == LogicalKeyboardKey.keyZ) {
+            ref.read(undoRedoProvider.notifier).undo();
+          } else if (key == LogicalKeyboardKey.keyY) {
+            ref.read(undoRedoProvider.notifier).redo();
+          }
+          return KeyEventResult.handled;
+        }
+        // fall through to piano key handler for plain Z / plain Y
+      }
+
+      // A/B comparison capture (Shift+B to capture, Ctrl+B to toggle)
+      if (key == LogicalKeyboardKey.keyB) {
+        final isCtrl = HardwareKeyboard.instance.isControlPressed;
+        final isShift = HardwareKeyboard.instance.isShiftPressed;
+        if (isCtrl || isShift) {
+          if (_transportKeysActive.contains(key)) return KeyEventResult.handled;
+          _transportKeysActive.add(key);
+          final abNotifier = ref.read(abComparisonProvider.notifier);
+          if (isShift && !isCtrl) {
+            final preset = ref.read(currentPresetProvider);
+            final modSlots = ref.read(modMatrixProvider).slots;
+            abNotifier.captureCurrent(preset, modSlots);
+          } else if (isCtrl && !isShift) {
+            abNotifier.toggleBank();
+            final abState = ref.read(abComparisonProvider);
+            final snapshot = abState.activeSnapshot;
+            if (snapshot != null) {
+              ref.read(currentPresetProvider.notifier).load(snapshot.preset);
+              ref.read(modMatrixProvider.notifier).load(ModMatrix(slots: snapshot.modSlots));
+            }
+          }
+          return KeyEventResult.handled;
+        }
+        // plain B = piano key (G note), fall through
+      }
     }
 
     // ── Piano key ───────────────────────────────────────────────────
@@ -161,14 +235,19 @@ class _ComputerKeyboardListenerState
       if (midi < 0 || midi > 127) return KeyEventResult.handled;
 
       _activeKeys[key] = midi;
+      ref.read(arpNotesProvider.notifier).update((set) => {...set, midi});
       ref.read(playbackStateProvider.notifier).noteOn(midi);
+      recordNoteOn(ref, midi);
       return KeyEventResult.handled;
     }
 
     if (event is KeyUpEvent) {
+      _transportKeysActive.remove(key);
       final midi = _activeKeys.remove(key);
       if (midi != null) {
+        ref.read(arpNotesProvider.notifier).update((set) => {...set}..remove(midi));
         ref.read(playbackStateProvider.notifier).noteOff(midi);
+        recordNoteOff(ref, midi);
       }
       return KeyEventResult.handled;
     }

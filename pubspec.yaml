@@ -15,11 +15,22 @@ dependencies:
   google_fonts: ^6.3.3
   uuid: ^4.4.2
   ffi: ^2.1.3
+  path_provider: ^2.1.5
+  flutter_midi_command: ^0.5.4
+  file_picker: ^8.0.7
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.3
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon.png"
+  adaptive_icon_background: "#240037"
+  adaptive_icon_foreground: "assets/icon.png"
 
 flutter:
   uses-material-design: true
