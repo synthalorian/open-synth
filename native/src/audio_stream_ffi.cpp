@@ -2,6 +2,7 @@
 #include "audio_system.h"
 #include "audio_stream.h"
 #include "synth_engine.h"
+#include "synth_mixer.h"
 
 using openamp::AudioSystem;
 
@@ -26,8 +27,29 @@ void* audio_stream_create_for_synth(void* synthHandle, double sampleRate,
     auto* engine = static_cast<openamp::SynthEngine*>(synthHandle);
     if (engine == nullptr) return nullptr;
 
-    auto* stream = new openamp::AudioStream(engine, sampleRate, blockSize,
-                                            static_cast<int>(deviceIndex));
+    // Create a generic processor that calls SynthEngine::process
+    auto* stream = new openamp::AudioStream(
+        engine,
+        [](void* ctx, openamp::AudioBuffer& buf) {
+            static_cast<openamp::SynthEngine*>(ctx)->process(buf);
+        },
+        sampleRate, blockSize,
+        static_cast<int>(deviceIndex));
+    return static_cast<void*>(stream);
+}
+
+void* audio_stream_create_for_pair(void* pairHandle, double sampleRate,
+                                    uint32_t blockSize, int32_t deviceIndex) {
+    auto* pair = static_cast<openamp::SynthEnginePair*>(pairHandle);
+    if (pair == nullptr) return nullptr;
+
+    auto* stream = new openamp::AudioStream(
+        pair,
+        [](void* ctx, openamp::AudioBuffer& buf) {
+            static_cast<openamp::SynthEnginePair*>(ctx)->process(buf);
+        },
+        sampleRate, blockSize,
+        static_cast<int>(deviceIndex));
     return static_cast<void*>(stream);
 }
 

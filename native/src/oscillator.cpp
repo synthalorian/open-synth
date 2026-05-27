@@ -10,6 +10,11 @@ void Oscillator::setDetune(float cents) { detune_ = std::clamp(cents, -100.0f, 1
 void Oscillator::setPulseWidth(float pw) { pulseWidth_ = std::clamp(pw, 0.01f, 0.99f); }
 void Oscillator::setVolume(float vol) { volume_ = std::clamp(vol, 0.0f, 1.0f); }
 
+void Oscillator::setNoiseType(int nt) { noiseType_ = static_cast<NoiseType>(std::clamp(nt, 0, 2)); }
+
+void Oscillator::setSubOscMode(int mode) { subOscMode_ = static_cast<SubOscMode>(std::clamp(mode, 0, 3)); }
+void Oscillator::setSubOscVolume(float vol) { subOscVolume_ = std::clamp(vol, 0.0f, 1.0f); }
+
 void Oscillator::setUnisonVoiceCount(int count) {
     unison_.voiceCount = std::clamp(count, 1, 8);
 }
@@ -74,9 +79,36 @@ float Oscillator::generateWaveform(float phase) const {
         return std::sin(2.0f * M_PI * phase);
 
     case OscWaveform::NOISE: {
-        // Simple white noise from phase hash
-        float hash = std::sin(phase * 12453.789f) * 43758.5453f;
-        return 2.0f * (hash - std::floor(hash)) - 1.0f; // -1..1
+        // Generate noise based on type
+        switch (noiseType_) {
+        case NoiseType::WHITE: {
+            float hash = std::sin(phase * 12453.789f) * 43758.5453f;
+            return 2.0f * (hash - std::floor(hash)) - 1.0f;
+        }
+        case NoiseType::PINK: {
+            // Paul Kellet's refined pink noise approximation
+            // Uses 6 white noise generators at different octaves
+            float white = std::sin(phase * 12453.789f) * 43758.5453f;
+            white = 2.0f * (white - std::floor(white)) - 1.0f;
+            // Approximate pink by averaging with lower-frequency white noise
+            float lowFreq = std::sin(phase * 0.125f * 12453.789f) * 43758.5453f;
+            lowFreq = 2.0f * (lowFreq - std::floor(lowFreq)) - 1.0f;
+            float midFreq = std::sin(phase * 0.5f * 12453.789f) * 43758.5453f;
+            midFreq = 2.0f * (midFreq - std::floor(midFreq)) - 1.0f;
+            return std::clamp((white * 0.5f + midFreq * 0.3f + lowFreq * 0.2f) * 1.4f, -1.0f, 1.0f);
+        }
+        case NoiseType::BROWN: {
+            // Brown noise: integrate white noise (random walk approximation)
+            float white = std::sin(phase * 12453.789f) * 43758.5453f;
+            white = 2.0f * (white - std::floor(white)) - 1.0f;
+            // Leaky integrator to approximate brown noise
+            static float brownState = 0.0f;
+            brownState = brownState * 0.99f + white * 0.01f;
+            return std::clamp(brownState * 5.0f, -1.0f, 1.0f);
+        }
+        default:
+            return 0.0f;
+        }
     }
 
     case OscWaveform::PULSE:
@@ -89,6 +121,37 @@ float Oscillator::generateWaveform(float phase) const {
 float Oscillator::process(float phase, int voiceIndex, float freq, double sampleRate) const {
     (void)sampleRate;
     float sample = generateWaveform(phase);
+
+    // Sub-oscillator (square or sine below)
+    if (subOscMode_ != SubOscMode::OFF && voiceIndex == 0) {
+        float subDiv = 1.0f;
+        float subFreq = freq;
+        switch (subOscMode_) {
+        case SubOscMode::SQUARE_1OCT:
+            subDiv = 0.5f;
+            subFreq = freq * 0.5f;
+            break;
+        case SubOscMode::SQUARE_2OCT:
+            subDiv = 0.25f;
+            subFreq = freq * 0.25f;
+            break;
+        case SubOscMode::SINE_1OCT:
+            subDiv = 0.5f;
+            subFreq = freq * 0.5f;
+            break;
+        default: break;
+        }
+        // Simple sub-osc: use phase (already independent per voice)
+        float subPhase = phase * subDiv;
+        subPhase = subPhase - std::floor(subPhase);
+        float subSample = 0.0f;
+        if (subOscMode_ == SubOscMode::SINE_1OCT) {
+            subSample = std::sin(2.0f * M_PI * subPhase);
+        } else {
+            subSample = subPhase < 0.5f ? 1.0f : -1.0f;
+        }
+        sample = sample * (1.0f - subOscVolume_ * 0.7f) + subSample * subOscVolume_ * 0.7f;
+    }
 
     // Apply unison mix: for voice 0 (main), blend dry/wet
     if (unison_.voiceCount > 1 && unison_.mix < 1.0f) {

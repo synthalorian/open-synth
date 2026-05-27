@@ -25,6 +25,12 @@ class SynthPreset {
   final FlangerConfig flanger;
   final CompressorConfig compressor;
   final DriveConfig drive;
+  // ── New multi-slot FX (slots 1-3) ──
+  final List<FxSlotConfig> fxSlots;
+  final EqConfig eq;
+  final LimiterConfig limiter;
+  final RotaryConfig rotary;
+  final TremoloConfig tremolo;
   final double masterVolume;
   final List<String> tags;
   final String author;
@@ -48,6 +54,11 @@ class SynthPreset {
     FlangerConfig? flanger,
     CompressorConfig? compressor,
     DriveConfig? drive,
+    List<FxSlotConfig>? fxSlots,
+    EqConfig? eq,
+    LimiterConfig? limiter,
+    RotaryConfig? rotary,
+    TremoloConfig? tremolo,
     this.masterVolume = 0.8,
     this.tags = const [],
     this.author = 'Open Synth',
@@ -66,7 +77,12 @@ class SynthPreset {
         phaser = phaser ?? const PhaserConfig(),
         flanger = flanger ?? const FlangerConfig(),
         compressor = compressor ?? const CompressorConfig(),
-        drive = drive ?? const DriveConfig();
+        drive = drive ?? const DriveConfig(),
+        fxSlots = fxSlots ?? const [],
+        eq = eq ?? const EqConfig(),
+        limiter = limiter ?? const LimiterConfig(),
+        rotary = rotary ?? const RotaryConfig(),
+        tremolo = tremolo ?? const TremoloConfig();
 
   SynthPreset copyWith({
     String? id,
@@ -86,6 +102,11 @@ class SynthPreset {
     FlangerConfig? flanger,
     CompressorConfig? compressor,
     DriveConfig? drive,
+    List<FxSlotConfig>? fxSlots,
+    EqConfig? eq,
+    LimiterConfig? limiter,
+    RotaryConfig? rotary,
+    TremoloConfig? tremolo,
     double? masterVolume,
     List<String>? tags,
     String? author,
@@ -109,6 +130,11 @@ class SynthPreset {
       flanger: flanger ?? this.flanger,
       compressor: compressor ?? this.compressor,
       drive: drive ?? this.drive,
+      fxSlots: fxSlots ?? this.fxSlots,
+      eq: eq ?? this.eq,
+      limiter: limiter ?? this.limiter,
+      rotary: rotary ?? this.rotary,
+      tremolo: tremolo ?? this.tremolo,
       masterVolume: masterVolume ?? this.masterVolume,
       tags: tags ?? this.tags,
       author: author ?? this.author,
@@ -134,6 +160,11 @@ class SynthPreset {
         'flanger': flanger.toJson(),
         'compressor': compressor.toJson(),
         'drive': drive.toJson(),
+        'fxSlots': fxSlots.map((s) => s.toJson()).toList(),
+        'eq': eq.toJson(),
+        'limiter': limiter.toJson(),
+        'rotary': rotary.toJson(),
+        'tremolo': tremolo.toJson(),
         'masterVolume': masterVolume,
         'tags': tags,
         'author': author,
@@ -175,6 +206,21 @@ class SynthPreset {
         drive: json.containsKey('drive')
             ? DriveConfig.fromJson(json['drive'] as Map<String, dynamic>)
             : const DriveConfig(),
+        fxSlots: json.containsKey('fxSlots')
+            ? (json['fxSlots'] as List).map((e) => FxSlotConfig.fromJson(e as Map<String, dynamic>)).toList()
+            : const [],
+        eq: json.containsKey('eq')
+            ? EqConfig.fromJson(json['eq'] as Map<String, dynamic>)
+            : const EqConfig(),
+        limiter: json.containsKey('limiter')
+            ? LimiterConfig.fromJson(json['limiter'] as Map<String, dynamic>)
+            : const LimiterConfig(),
+        rotary: json.containsKey('rotary')
+            ? RotaryConfig.fromJson(json['rotary'] as Map<String, dynamic>)
+            : const RotaryConfig(),
+        tremolo: json.containsKey('tremolo')
+            ? TremoloConfig.fromJson(json['tremolo'] as Map<String, dynamic>)
+            : const TremoloConfig(),
         masterVolume: (json['masterVolume'] as num).toDouble(),
         tags: (json['tags'] as List).cast<String>(),
         author: json['author'] as String,

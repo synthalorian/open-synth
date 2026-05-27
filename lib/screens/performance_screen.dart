@@ -4,12 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../models/synth_preset.dart';
+import '../providers/favorites_provider.dart';
+import '../providers/recent_presets_provider.dart';
 import '../providers/synth_providers.dart';
 import '../theme/synth_theme.dart';
 import '../widgets/computer_keyboard_listener.dart';
 import '../widgets/crt_overlay.dart';
 import '../widgets/keyboard_widget.dart';
+import '../widgets/performance_meters.dart';
 import '../widgets/retro_grid_background.dart';
+import '../providers/navigation_provider.dart';
 
 /// Full-screen performance mode optimized for live playing.
 /// Minimal chrome, big controls, X/Y expression pad.
@@ -35,6 +40,7 @@ class _PerformanceScreenState extends ConsumerState<PerformanceScreen> {
         backgroundColor: Colors.transparent,
         body: RetroGridBackground(
           child: ComputerKeyboardListener(
+            active: ref.watch(mainShellIndexProvider) == 4,
             child: GestureDetector(
               onDoubleTap: _toggleControls,
               child: SafeArea(
@@ -49,7 +55,13 @@ class _PerformanceScreenState extends ConsumerState<PerformanceScreen> {
                             IconButton(
                               icon: const Icon(Icons.fullscreen_exit, color: Colors.white, size: 20),
                               tooltip: 'Exit Performance Mode',
-                              onPressed: () => Navigator.pop(context),
+                              onPressed: () {
+                                if (Navigator.of(context).canPop()) {
+                                  Navigator.of(context).pop();
+                                } else {
+                                  ref.read(mainShellIndexProvider.notifier).state = 1;
+                                }
+                              },
                             ),
                             Expanded(
                               child: Column(
@@ -75,11 +87,13 @@ class _PerformanceScreenState extends ConsumerState<PerformanceScreen> {
                                 ],
                               ),
                             ),
-                            IconButton(
-                              icon: const Icon(Icons.layers_outlined, color: Colors.white, size: 20),
-                              tooltip: 'Toggle controls',
-                              onPressed: _toggleControls,
-                            ),
+                          IconButton(
+                            icon: const Icon(Icons.layers_outlined, color: Colors.white, size: 20),
+                            tooltip: 'Toggle controls',
+                            onPressed: _toggleControls,
+                          ),
+                          _SetlistPicker(),
+                          _SetlistActionsMenu(),
                           ],
                         ),
                       ),
@@ -120,11 +134,17 @@ class _PerformanceScreenState extends ConsumerState<PerformanceScreen> {
 
                     const SizedBox(height: 8),
 
-                    // ── Active voices indicator ──
-                    if (_showControls)
-                      _ActiveVoicesIndicator(),
+                    // ── Performance meters (CPU + voices) ──
+                    if (_showControls) ...[
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        child: PerformanceMeters(),
+                      ),
+                      const SizedBox(height: 8),
+                    ],
 
-                    const SizedBox(height: 8),
+                    // ── Setlist Presets ──
+                    const _SetlistPresetStrip(),
 
                     // ── Keyboard ──
                     const KeyboardWidget(),
@@ -354,37 +374,445 @@ class _BigMasterVolume extends StatelessWidget {
   }
 }
 
-class _ActiveVoicesIndicator extends ConsumerWidget {
+/// Dropdown to select an active setlist for quick preset recall during live play.
+class _SetlistPicker extends ConsumerWidget {
+  const _SetlistPicker();
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final activeNotes = ref.watch(playbackStateProvider);
-    final voices = activeNotes.length;
+    final setlists = ref.watch(setlistsProvider);
+    final activeName = ref.watch(activeSetlistProvider);
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          width: 6,
-          height: 6,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: voices > 0 ? SynthTheme.cyan : SynthTheme.purple.withValues(alpha: 0.3),
-            boxShadow: voices > 0
-                ? [BoxShadow(color: SynthTheme.cyan.withValues(alpha: 0.6), blurRadius: 6)]
-                : null,
+    return Container(
+      margin: const EdgeInsets.only(left: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        color: SynthTheme.surface,
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(color: SynthTheme.purple.withValues(alpha: 0.25)),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String?>(
+          isDense: true,
+          value: activeName,
+          dropdownColor: SynthTheme.surface,
+          style: const TextStyle(color: Colors.white, fontSize: 11),
+          icon: Icon(Icons.arrow_drop_down, color: SynthTheme.cyan, size: 16),
+          hint: Text(
+            'Setlist',
+            style: TextStyle(color: SynthTheme.textSecondary.withValues(alpha: 0.6), fontSize: 11),
+          ),
+          items: [
+            const DropdownMenuItem<String?>(
+              value: null,
+              child: Text('None'),
+            ),
+            ...setlists.keys.map((name) {
+              return DropdownMenuItem<String?>(
+                value: name,
+                child: Text(name),
+              );
+            }),
+          ],
+          onChanged: (name) {
+            ref.read(activeSetlistProvider.notifier).state = name;
+          },
+        ),
+      ),
+    );
+  }
+}
+
+/// Popup menu for setlist CRUD: create, rename, delete.
+class _SetlistActionsMenu extends ConsumerWidget {
+  const _SetlistActionsMenu();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return PopupMenuButton<String>(
+      icon: Icon(Icons.more_vert, color: SynthTheme.textSecondary, size: 18),
+      color: SynthTheme.surface,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      onSelected: (value) => _handleAction(context, ref, value),
+      itemBuilder: (context) => [
+        PopupMenuItem(
+          value: 'create',
+          child: Row(
+            children: [
+              Icon(Icons.add, color: SynthTheme.cyan, size: 18),
+              SizedBox(width: 8),
+              Text('New Setlist', style: TextStyle(color: Colors.white, fontSize: 13)),
+            ],
           ),
         ),
-        const SizedBox(width: 8),
-        Text(
-          '$voices VOICES ACTIVE',
-          style: TextStyle(
-            color: voices > 0 ? SynthTheme.cyan : SynthTheme.textSecondary,
-            fontSize: 10,
-            fontWeight: FontWeight.w600,
-            letterSpacing: 1.2,
+        PopupMenuItem(
+          value: 'rename',
+          child: Row(
+            children: [
+              Icon(Icons.edit, color: SynthTheme.cyan, size: 18),
+              SizedBox(width: 8),
+              Text('Rename Setlist', style: TextStyle(color: Colors.white, fontSize: 13)),
+            ],
+          ),
+        ),
+        PopupMenuItem(
+          value: 'delete',
+          child: Row(
+            children: [
+              Icon(Icons.delete_outline, color: SynthTheme.magenta, size: 18),
+              SizedBox(width: 8),
+              Text('Delete Setlist', style: TextStyle(color: Colors.white, fontSize: 13)),
+            ],
           ),
         ),
       ],
     );
   }
+
+  void _handleAction(BuildContext context, WidgetRef ref, String action) {
+    final activeName = ref.read(activeSetlistProvider);
+    final currentPreset = ref.read(currentPresetProvider);
+
+    switch (action) {
+      case 'create':
+        _showCreateDialog(context, ref, currentPreset.id);
+        break;
+      case 'rename':
+        if (activeName != null) {
+          _showRenameDialog(context, ref, activeName);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Select a setlist to rename'),
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+        }
+        break;
+      case 'delete':
+        if (activeName != null) {
+          _confirmDelete(context, ref, activeName);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Select a setlist to delete'),
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+        }
+        break;
+    }
+  }
+
+  void _showCreateDialog(BuildContext context, WidgetRef ref, String initialPresetId) {
+    final controller = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: SynthTheme.surface,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+          side: BorderSide(color: SynthTheme.cyan.withValues(alpha: 0.3)),
+        ),
+        title: Text(
+          'New Setlist',
+          style: TextStyle(color: SynthTheme.cyan, fontWeight: FontWeight.bold),
+        ),
+        content: TextField(
+          controller: controller,
+          autofocus: true,
+          style: const TextStyle(color: Colors.white, fontSize: 14),
+          decoration: InputDecoration(
+            hintText: 'Setlist name...',
+            hintStyle: TextStyle(color: SynthTheme.textSecondary.withValues(alpha: 0.6)),
+            filled: true,
+            fillColor: SynthTheme.card,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: BorderSide(color: SynthTheme.purple.withValues(alpha: 0.2)),
+            ),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('CANCEL', style: TextStyle(color: SynthTheme.textSecondary)),
+          ),
+          TextButton(
+            onPressed: () {
+              final name = controller.text.trim();
+              if (name.isEmpty) return;
+              if (ref.read(setlistsProvider).containsKey(name)) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('A setlist named "$name" already exists'),
+                    behavior: SnackBarBehavior.floating,
+                  ),
+                );
+                return;
+              }
+              ref.read(setlistsProvider.notifier).createSetlist(name, [initialPresetId]);
+              ref.read(activeSetlistProvider.notifier).state = name;
+              Navigator.pop(context);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Created setlist "$name"'),
+                  behavior: SnackBarBehavior.floating,
+                ),
+              );
+            },
+            child: Text(
+              'CREATE',
+              style: TextStyle(color: SynthTheme.cyan, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showRenameDialog(BuildContext context, WidgetRef ref, String oldName) {
+    final controller = TextEditingController(text: oldName);
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: SynthTheme.surface,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+          side: BorderSide(color: SynthTheme.cyan.withValues(alpha: 0.3)),
+        ),
+        title: Text(
+          'Rename Setlist',
+          style: TextStyle(color: SynthTheme.cyan, fontWeight: FontWeight.bold),
+        ),
+        content: TextField(
+          controller: controller,
+          autofocus: true,
+          style: const TextStyle(color: Colors.white, fontSize: 14),
+          decoration: InputDecoration(
+            hintText: 'New name...',
+            hintStyle: TextStyle(color: SynthTheme.textSecondary.withValues(alpha: 0.6)),
+            filled: true,
+            fillColor: SynthTheme.card,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: BorderSide(color: SynthTheme.purple.withValues(alpha: 0.2)),
+            ),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('CANCEL', style: TextStyle(color: SynthTheme.textSecondary)),
+          ),
+          TextButton(
+            onPressed: () {
+              final newName = controller.text.trim();
+              if (newName.isEmpty || newName == oldName) return;
+              if (ref.read(setlistsProvider).containsKey(newName)) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('A setlist named "$newName" already exists'),
+                    behavior: SnackBarBehavior.floating,
+                  ),
+                );
+                return;
+              }
+              ref.read(setlistsProvider.notifier).renameSetlist(oldName, newName);
+              ref.read(activeSetlistProvider.notifier).state = newName;
+              Navigator.pop(context);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Renamed to "$newName"'),
+                  behavior: SnackBarBehavior.floating,
+                ),
+              );
+            },
+            child: Text(
+              'RENAME',
+              style: TextStyle(color: SynthTheme.cyan, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _confirmDelete(BuildContext context, WidgetRef ref, String name) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: SynthTheme.surface,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+          side: BorderSide(color: SynthTheme.magenta.withValues(alpha: 0.3)),
+        ),
+        title: Text(
+          'Delete Setlist?',
+          style: TextStyle(color: SynthTheme.magenta, fontWeight: FontWeight.bold),
+        ),
+        content: Text(
+          'Are you sure you want to delete "$name"? This cannot be undone.',
+          style: TextStyle(color: SynthTheme.textSecondary, fontSize: 14),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('CANCEL', style: TextStyle(color: SynthTheme.textSecondary)),
+          ),
+          TextButton(
+            onPressed: () {
+              ref.read(setlistsProvider.notifier).deleteSetlist(name);
+              ref.read(activeSetlistProvider.notifier).state = null;
+              Navigator.pop(context);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Deleted "$name"'),
+                  behavior: SnackBarBehavior.floating,
+                ),
+              );
+            },
+            child: Text(
+              'DELETE',
+              style: TextStyle(color: SynthTheme.magenta, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
+
+/// Horizontal strip of presets from the active setlist with drag reorder.
+class _SetlistPresetStrip extends ConsumerWidget {
+  const _SetlistPresetStrip();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final activeName = ref.watch(activeSetlistProvider);
+    final setlists = ref.watch(setlistsProvider);
+    final allPresets = ref.watch(presetListProvider);
+    final current = ref.watch(currentPresetProvider);
+
+    if (activeName == null || !setlists.containsKey(activeName)) {
+      return const SizedBox.shrink();
+    }
+
+    final presetIds = setlists[activeName]!.presetIds;
+    final presetMap = {for (final p in allPresets) p.id: p};
+    final presets = presetIds
+        .map((id) => presetMap[id])
+        .whereType<SynthPreset>()
+        .toList();
+
+    if (presets.isEmpty) return const SizedBox.shrink();
+
+    return Container(
+      height: 64,
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      child: ReorderableListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: presets.length,
+        onReorder: (oldIndex, newIndex) {
+          if (newIndex > oldIndex) newIndex--;
+          final reordered = [...presets];
+          final item = reordered.removeAt(oldIndex);
+          reordered.insert(newIndex, item);
+
+          // Rewrite raw presetIds: replace valid IDs in order, keep invalid IDs in place.
+          final newRawIds = [...presetIds];
+          var validIdx = 0;
+          for (int i = 0; i < newRawIds.length; i++) {
+            if (presetMap.containsKey(newRawIds[i])) {
+              newRawIds[i] = reordered[validIdx++].id;
+            }
+          }
+
+          ref.read(setlistsProvider.notifier).updateSetlistOrder(activeName, newRawIds);
+        },
+        proxyDecorator: (child, index, animation) {
+          return AnimatedBuilder(
+            animation: animation,
+            builder: (context, child) {
+              return Transform.scale(
+                scale: 1.05,
+                child: Material(
+                  color: Colors.transparent,
+                  elevation: 4,
+                  borderRadius: BorderRadius.circular(8),
+                  child: child,
+                ),
+              );
+            },
+            child: child,
+          );
+        },
+        itemBuilder: (context, index) {
+          final p = presets[index];
+          final isActive = p.id == current.id;
+          return Container(
+            key: ValueKey(p.id),
+            margin: const EdgeInsets.symmetric(horizontal: 4),
+            child: GestureDetector(
+              onTap: () {
+                ref.read(currentPresetProvider.notifier).load(p);
+                ref.read(recentPresetsProvider.notifier).track(p.id);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Loaded "${p.name}"'),
+                    duration: const Duration(seconds: 1),
+                    behavior: SnackBarBehavior.floating,
+                  ),
+                );
+              },
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 150),
+                width: 110,
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                decoration: BoxDecoration(
+                  color: isActive
+                      ? SynthTheme.magenta.withValues(alpha: 0.2)
+                      : SynthTheme.card,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: isActive
+                        ? SynthTheme.magenta.withValues(alpha: 0.6)
+                        : SynthTheme.purple.withValues(alpha: 0.2),
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      p.name,
+                      style: TextStyle(
+                        color: isActive ? SynthTheme.magenta : Colors.white.withValues(alpha: 0.9),
+                        fontSize: 10,
+                        fontWeight: isActive ? FontWeight.bold : FontWeight.w500,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      p.category.displayName.toUpperCase(),
+                      style: TextStyle(
+                        color: SynthTheme.textSecondary.withValues(alpha: 0.6),
+                        fontSize: 8,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+

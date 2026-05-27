@@ -4,12 +4,16 @@
 
 ## Features
 
-- **Dual Oscillators:** Subtractive synthesis with Saw, Square, Triangle, and Noise waveforms.
-- **Resonant Filters:** Low-pass, High-pass, and Band-pass filters with envelope modulation.
-- **Dynamic Envelopes:** ADSR controls for both amplitude and filter cutoff.
-- **LFO Modulation:** Dual LFOs with multiple targets (Pitch, Filter, Volume).
-- **Built-in FX:** Chorus, Delay, Reverb, Phaser, and Drive for that authentic retro sound.
-- **Preset Library:** A curated collection of factory presets optimized for synthwave production.
+- **Dual Oscillators:** Subtractive synthesis with Saw, Square, Triangle, Sine, Pulse, Noise (white/pink/brown), and Wavetable waveforms.
+- **Sub-Oscillator & FM:** Square/Sine sub-oscillator (1-2 octaves below) and FM synthesis mode per oscillator.
+- **Resonant Filters:** Low-pass, High-pass, Band-pass, Notch, Low-shelf, High-shelf, and Peaking EQ with key tracking, drive stage, and envelope modulation.
+- **Advanced Envelopes:** ADSR + Delay/Hold stages with exponential/linear/log curve shaping for both amplitude and filter.
+- **Dual LFOs:** Multiple waveforms including S&H smoothed and random walk, with fade-in, tempo sync, per-voice mode, and multiple targets (Pitch, Filter, Amplitude, Pan).
+- **Arpeggiator:** 5 patterns (Up, Down, Up/Down, Random, Chord) with adjustable tempo, octave range, gate, and resolution.
+- **64-Voice Polyphony:** Voice priority modes (newest, oldest, quietest, highest note) with intelligent voice stealing.
+- **Built-in FX:** Chorus, Delay, Reverb, Phaser, Flanger, Drive, and Compressor for that authentic retro sound.
+- **Preset Library:** 377 factory presets across 15 categories — Synthwave, Pads, Leads, Bass, Keys, Arps, FX, Piano, Organ, Guitar, Strings, Brass, Choir, Percussion, and Custom.
+- **Favorites & Setlists:** Star presets, reorder them, and organize into named setlists for live performance.
 - **Native Audio:** Uses the OpenAmp FFI engine for low-latency audio processing via PortAudio.
 
 ## Getting Started

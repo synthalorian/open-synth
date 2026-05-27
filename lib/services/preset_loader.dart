@@ -33,6 +33,11 @@ void applyPresetToSynth(OpenAmpSynth synth, SynthPreset preset) {
   synth.osc1Detune = preset.osc1.detune;
   synth.osc1PulseWidth = preset.osc1.pulseWidth;
   synth.osc1Volume = preset.osc1.enabled ? preset.osc1.volume : 0.0;
+  synth.osc1NoiseType = preset.osc1.noiseType;
+  synth.osc1SubOscMode = preset.osc1.subOscMode;
+  synth.osc1SubOscVolume = preset.osc1.subOscVolume;
+  synth.osc1FmEnabled = preset.osc1.fmEnabled;
+  synth.osc1FmAmount = preset.osc1.fmAmount;
   // Wavetable position is an extension — if the native engine doesn't
   // support wavetable, the waveform maps to index 5 which is a no-op
   // on older builds. The UI parameter still travels faithfully.
@@ -46,6 +51,11 @@ void applyPresetToSynth(OpenAmpSynth synth, SynthPreset preset) {
   synth.osc2Detune = preset.osc2.detune;
   synth.osc2PulseWidth = preset.osc2.pulseWidth;
   synth.osc2Volume = preset.osc2.enabled ? preset.osc2.volume : 0.0;
+  synth.osc2NoiseType = preset.osc2.noiseType;
+  synth.osc2SubOscMode = preset.osc2.subOscMode;
+  synth.osc2SubOscVolume = preset.osc2.subOscVolume;
+  synth.osc2FmEnabled = preset.osc2.fmEnabled;
+  synth.osc2FmAmount = preset.osc2.fmAmount;
   if (preset.osc2.waveform == Waveform.wavetable) {
     synth.osc2PulseWidth = preset.osc2.wavetablePosition;
   }
@@ -75,30 +85,48 @@ void applyPresetToSynth(OpenAmpSynth synth, SynthPreset preset) {
   synth.filterCutoff = preset.filter.cutoff;
   synth.filterResonance = preset.filter.resonance;
   synth.filterEnvAmount = preset.filter.envelopeAmount;
+  synth.filterKeyTracking = preset.filter.keyTracking;
+  synth.filterDrive = preset.filter.drive;
 
   // ── Amp envelope ────────────────────────────────────────────────────────
   synth.ampAttack = preset.ampEnvelope.attack;
   synth.ampDecay = preset.ampEnvelope.decay;
   synth.ampSustain = preset.ampEnvelope.sustain;
   synth.ampRelease = preset.ampEnvelope.release;
+  synth.ampDelay = preset.ampEnvelope.delay;
+  synth.ampHold = preset.ampEnvelope.hold;
+  synth.ampAttackCurve = preset.ampEnvelope.attackCurve;
+  synth.ampDecayCurve = preset.ampEnvelope.decayCurve;
+  synth.ampReleaseCurve = preset.ampEnvelope.releaseCurve;
 
   // ── Filter envelope ─────────────────────────────────────────────────────
   synth.filterAttack = preset.filterEnvelope.attack;
   synth.filterDecay = preset.filterEnvelope.decay;
   synth.filterSustain = preset.filterEnvelope.sustain;
   synth.filterRelease = preset.filterEnvelope.release;
+  synth.filterDelay = preset.filterEnvelope.delay;
+  synth.filterHold = preset.filterEnvelope.hold;
+  synth.filterAttackCurve = preset.filterEnvelope.attackCurve;
+  synth.filterDecayCurve = preset.filterEnvelope.decayCurve;
+  synth.filterReleaseCurve = preset.filterEnvelope.releaseCurve;
 
   // ── LFO 1 ───────────────────────────────────────────────────────────────
   synth.lfo1Waveform = _waveformToInt(preset.lfo1.waveform);
   synth.lfo1Rate = preset.lfo1.rate;
   synth.lfo1Depth = preset.lfo1.depth;
   synth.lfo1Target = _lfoTargetToInt(preset.lfo1.target);
+  synth.lfo1FadeIn = preset.lfo1.fadeIn;
+  synth.lfo1TempoSync = preset.lfo1.tempoSync;
+  synth.lfo1TempoDivision = preset.lfo1.tempoDivision;
 
   // ── LFO 2 ───────────────────────────────────────────────────────────────
   synth.lfo2Waveform = _waveformToInt(preset.lfo2.waveform);
   synth.lfo2Rate = preset.lfo2.rate;
   synth.lfo2Depth = preset.lfo2.depth;
   synth.lfo2Target = _lfoTargetToInt(preset.lfo2.target);
+  synth.lfo2FadeIn = preset.lfo2.fadeIn;
+  synth.lfo2TempoSync = preset.lfo2.tempoSync;
+  synth.lfo2TempoDivision = preset.lfo2.tempoDivision;
 
   // ── FX ──────────────────────────────────────────────────────────────────
   synth.chorusEnabled = preset.chorus.enabled;
@@ -141,6 +169,81 @@ void applyPresetToSynth(OpenAmpSynth synth, SynthPreset preset) {
   synth.driveAmount = preset.drive.amount;
   synth.driveType = preset.drive.type.index;
 
+  // ── Multi-Slot FX (slots 1-3) ───────────────────────────────────────────
+  // Slot 1 is typically EQ, Slot 2 is Limiter, Slot 3 is Rotary/Tremolo.
+  // Each slot can be configured to any type via the FxSlotConfig model.
+  // Slot 0 is always the LegacyFxProcessor (handled above).
+  //
+  // Note: uses direct switch/assign rather than referencing setters as values
+  // because Dart setters aren't first-class (can't do `fn = synth.fxSlot1Type`).
+  if (preset.fxSlots.isNotEmpty) {
+    for (int i = 0; i < preset.fxSlots.length && i < 3; i++) {
+      final slot = preset.fxSlots[i];
+      final slotIndex = i + 1; // slots 1, 2, 3
+
+      // ── Set slot type & enabled ────────────────────────────────────────
+      switch (slotIndex) {
+        case 1:
+          synth.fxSlot1Type = slot.type;
+          synth.fxSlot1Enabled = slot.enabled;
+        case 2:
+          synth.fxSlot2Type = slot.type;
+          synth.fxSlot2Enabled = slot.enabled;
+        case 3:
+          synth.fxSlot3Type = slot.type;
+          synth.fxSlot3Enabled = slot.enabled;
+      }
+
+      // ── Set per-slot params ───────────────────────────────────────────
+      // Each slot type has a fixed number of params. Slot 1 (EQ) = 8,
+      // slot 2 (Limiter) = 5, slot 3 (Rotary/Tremolo) = 6.
+      final maxParams = switch (slotIndex) {
+        1 => 8,
+        2 => 5,
+        3 => 6,
+        _ => 0,
+      };
+      for (int p = 0; p < slot.params.length && p < maxParams; p++) {
+        final value = slot.params[p];
+        if (slotIndex == 1) {
+          switch (p) {
+            case 0: synth.fxSlot1Param0 = value;
+            case 1: synth.fxSlot1Param1 = value;
+            case 2: synth.fxSlot1Param2 = value;
+            case 3: synth.fxSlot1Param3 = value;
+            case 4: synth.fxSlot1Param4 = value;
+            case 5: synth.fxSlot1Param5 = value;
+            case 6: synth.fxSlot1Param6 = value;
+            case 7: synth.fxSlot1Param7 = value;
+          }
+        } else if (slotIndex == 2) {
+          switch (p) {
+            case 0: synth.fxSlot2Param0 = value;
+            case 1: synth.fxSlot2Param1 = value;
+            case 2: synth.fxSlot2Param2 = value;
+            case 3: synth.fxSlot2Param3 = value;
+            case 4: synth.fxSlot2Param4 = value;
+          }
+        } else if (slotIndex == 3) {
+          switch (p) {
+            case 0: synth.fxSlot3Param0 = value;
+            case 1: synth.fxSlot3Param1 = value;
+            case 2: synth.fxSlot3Param2 = value;
+            case 3: synth.fxSlot3Param3 = value;
+            case 4: synth.fxSlot3Param4 = value;
+            case 5: synth.fxSlot3Param5 = value;
+          }
+        }
+      }
+    }
+  }
+
+  // Also push standalone EQ/Limiter/Rotary/Tremolo configs (for UI panels
+  // that map directly to specific slot types). These are synced to the
+  // appropriate slot when the FxPanel changes the slot type.
+  synth.fxMasterEnabled = true;
+  synth.fxMasterMix = 1.0;
+
   // ── Master ──────────────────────────────────────────────────────────────
   synth.masterVolume = preset.masterVolume;
 }
@@ -165,6 +268,11 @@ int _waveformToInt(Waveform w) {
       return 4;
     case Waveform.wavetable:
       return 5;
+    case Waveform.wt_piano:
+    case Waveform.wt_guitar:
+    case Waveform.wt_choir:
+    case Waveform.random:
+      return 5; // Map to wavetable slot
   }
 }
 

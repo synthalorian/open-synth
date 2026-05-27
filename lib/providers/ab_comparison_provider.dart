@@ -139,6 +139,19 @@ class ABComparisonNotifier extends StateNotifier<ABComparisonState> {
   /// Select bank B.
   void selectBankB() => state = state.copyWith(isBankA: false);
 
+  /// Capture into a specific bank (A or B) without switching the active bank.
+  void captureToBank(SynthPreset preset, List<ModMatrixSlot> modSlots, bool bankA) {
+    final snapshot = PatchSnapshot(
+      preset: preset,
+      modSlots: modSlots,
+      createdAt: DateTime.now(),
+    );
+    state = bankA
+        ? state.copyWith(snapshotA: snapshot)
+        : state.copyWith(snapshotB: snapshot);
+    _save();
+  }
+
   /// Clear both snapshots.
   void clear() {
     state = const ABComparisonState();

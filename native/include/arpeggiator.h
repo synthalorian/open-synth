@@ -41,6 +41,12 @@ public:
     void setGate(float g) { gate_ = std::clamp(g, 0.0f, 1.0f); }
     float gate() const { return gate_; }
 
+    void setSwing(float s) { swing_ = std::clamp(s, 0.0f, 1.0f); }
+    float swing() const { return swing_; }
+
+    void setHold(bool h) { hold_ = h; if (!h) heldNotesLocked_ = false; }
+    bool hold() const { return hold_; }
+
     void setResolution(int r) { resolution_ = std::clamp(r, 0, 3); }
     int resolution() const { return resolution_; }
 
@@ -59,6 +65,9 @@ public:
     /// Get the current step (0-indexed) for UI display.
     int currentStep() const { return currentStep_; }
 
+    /// Get total steps in one arp cycle (notes * octaveRange, or 2x-2 for up_down).
+    int totalSteps() const;
+
 private:
     bool enabled_ = false;
     float tempo_ = 120.0f;
@@ -66,6 +75,13 @@ private:
     int octaveRange_ = 1;
     float gate_ = 0.5f;
     int resolution_ = SIXTEENTH;
+
+    // Swing timing (0.0 = straight, 1.0 = max ~67/33)
+    float swing_ = 0.0f;
+
+    // Hold/latch mode
+    bool hold_ = false;
+    bool heldNotesLocked_ = false;
 
     // Held notes (sorted by pitch for pattern generation)
     std::vector<int> heldNotes_;

@@ -38,6 +38,11 @@ typedef _CreateForSynthNative = AudioStreamRef Function(
 typedef _CreateForSynthDart = AudioStreamRef Function(
     SynthEngineRef, double, int, int);
 
+typedef _CreateForPairNative = AudioStreamRef Function(
+    Pointer<Void>, Double, Uint32, Int32);
+typedef _CreateForPairDart = AudioStreamRef Function(
+    Pointer<Void>, double, int, int);
+
 typedef _VoidStreamNative = Void Function(AudioStreamRef);
 typedef _VoidStreamDart = void Function(AudioStreamRef);
 
@@ -98,6 +103,9 @@ class OpenAmpAudioStreamBindings {
         createForSynth =
             lib.lookupFunction<_CreateForSynthNative, _CreateForSynthDart>(
                 'audio_stream_create_for_synth'),
+        createForPair =
+            lib.lookupFunction<_CreateForPairNative, _CreateForPairDart>(
+                'audio_stream_create_for_pair'),
         destroy =
             lib.lookupFunction<_VoidStreamNative, _VoidStreamDart>('audio_stream_destroy'),
         start = lib.lookupFunction<_IntStreamNative, _IntStreamDart>('audio_stream_start'),
@@ -147,6 +155,7 @@ class OpenAmpAudioStreamBindings {
 
   // Audio stream lifecycle
   final _CreateForSynthDart createForSynth;
+  final _CreateForPairDart createForPair;
   final _VoidStreamDart destroy;
   final _IntStreamDart start;
   final _VoidStreamDart stop;
@@ -209,6 +218,22 @@ class OpenAmpAudioStreamBindings {
 /// The synth engine MUST outlive this audio stream. The recommended
 /// pattern is to dispose the audio stream first, then the synth.
 class OpenAmpSynthAudioStream {
+  /// Create an audio stream bound to a SynthEnginePair (split/layer).
+  /// [pairHandle] is the native SynthEnginePair pointer from synth_pair_create().
+  /// Use this instead of the single-engine constructor when keyboard split is active.
+  OpenAmpSynthAudioStream.forPair({
+    required Pointer<Void> pairHandle,
+    double sampleRate = 48000.0,
+    int blockSize = 256,
+    int deviceIndex = -1,
+  })  : _bindings = OpenAmpAudioStreamBindings.instance,
+        _handle = OpenAmpAudioStreamBindings.instance
+            .createForPair(pairHandle, sampleRate, blockSize, deviceIndex) {
+    if (_handle == nullptr) {
+      throw StateError(
+          'audio_stream_create_for_pair returned null — out of memory or null pair handle');
+    }
+  }
   OpenAmpSynthAudioStream({
     required SynthEngineRef synthHandle,
     double sampleRate = 48000.0,

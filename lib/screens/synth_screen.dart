@@ -1,6 +1,8 @@
 import 'dart:math';
 
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
+import '../models/fx_config.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/envelope.dart';
@@ -31,7 +33,6 @@ import '../widgets/filter_panel.dart';
 import '../widgets/fx_panel.dart';
 import '../widgets/keyboard_widget.dart';
 import '../providers/keyboard_split_provider.dart';
-import '../widgets/split_panel.dart';
 import '../widgets/lfo_panel.dart';
 import '../widgets/oscillator_panel.dart';
 import '../widgets/midi_panel.dart';
@@ -43,16 +44,18 @@ import '../widgets/spectrum_analyzer.dart';
 import '../widgets/synth_knob.dart';
 import '../widgets/sequencer_panel.dart';
 import '../widgets/mod_matrix_panel.dart';
-import '../widgets/recorder_panel.dart';
 import '../widgets/macro_panel.dart';
 import '../widgets/animated_section.dart';
-import 'performance_screen.dart';
+import '../providers/favorites_provider.dart';
+import '../providers/navigation_provider.dart';
+import '../providers/recent_presets_provider.dart';
 import 'preset_editor_screen.dart';
 import 'settings_screen.dart';
 import 'midi_learn_screen.dart';
 import '../widgets/keyboard_shortcuts_overlay.dart';
 import '../widgets/ab_comparison_diff.dart';
 import '../widgets/onboarding_overlay.dart';
+import '../widgets/quick_preset_context_menu.dart';
 
 /// Tracks whether onboarding has been shown once per screen instance.
 final _onboardingShownProvider = StateProvider<bool>((ref) => false);
@@ -516,6 +519,8 @@ class SynthScreen extends ConsumerWidget {
     );
   }
 
+
+
   void _initPatch(BuildContext context, WidgetRef ref) {
     ref.read(undoRedoProvider.notifier).save();
     ref.read(currentPresetProvider.notifier).load(
@@ -528,6 +533,12 @@ class SynthScreen extends ConsumerWidget {
       ),
     );
   }
+
+  void _showAddToSetlist(BuildContext context, WidgetRef ref) {
+    showAddToSetlistForPreset(context, ref, ref.read(currentPresetProvider));
+  }
+
+
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -548,7 +559,7 @@ class SynthScreen extends ConsumerWidget {
     ref.watch(midiClockEngineProvider);
 
     // Keep zone B engine + preset sync alive (for keyboard split).
-    ref.watch(zoneBEngineProvider);
+    ref.watch(synthPairProvider);
     ref.watch(zoneBPresetSyncProvider);
 
     // Show onboarding if not yet completed — one-shot via Future.microtask.
@@ -574,6 +585,14 @@ class SynthScreen extends ConsumerWidget {
       }
     });
 
+    // Auto-clear quick-strip search when leaving the Synth tab.
+    ref.listen<int>(mainShellIndexProvider, (prev, next) {
+      if (prev == 1 && next != 1) {
+        ref.read(_quickStripSearchProvider.notifier).state = '';
+        ref.read(_quickStripCategoryFilterProvider.notifier).state = null;
+      }
+    });
+
     return CrtOverlay(
       child: Scaffold(
         appBar: AppBar(
@@ -587,8 +606,10 @@ class SynthScreen extends ConsumerWidget {
             ),
           ),
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.white),
-            onPressed: () => Navigator.pop(context),
+            icon: const Icon(Icons.menu, color: Colors.white),
+            onPressed: () {
+              ref.read(mainShellIndexProvider.notifier).state = 0;
+            },
           ),
           actions: [
             SingleChildScrollView(
@@ -743,14 +764,17 @@ class SynthScreen extends ConsumerWidget {
                   ),
                   IconButton(
                     icon: Icon(Icons.fullscreen, color: SynthTheme.magenta, size: 20),
-                    tooltip: 'Performance Mode',
+                    tooltip: 'Performance Tab',
                     onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => const PerformanceScreen()),
-                      );
+                      ref.read(mainShellIndexProvider.notifier).state = 4;
                     },
                   ),
                   _AbComparisonButton(),
+                  IconButton(
+                    icon: Icon(Icons.queue_music, color: SynthTheme.cyan, size: 20),
+                    tooltip: 'Add to Setlist',
+                    onPressed: () => _showAddToSetlist(context, ref),
+                  ),
                 ],
               ),
             ),
@@ -759,6 +783,7 @@ class SynthScreen extends ConsumerWidget {
         backgroundColor: Colors.transparent,
         body: RetroGridBackground(
           child: ComputerKeyboardListener(
+            active: ref.watch(mainShellIndexProvider) == 1,
             child: Column(
               children: [
                 // ── Oscilloscope ──
@@ -781,6 +806,9 @@ class SynthScreen extends ConsumerWidget {
                     ),
                   ),
                 ),
+                const SizedBox(height: 6),
+                // ── Quick Preset Strip ──
+                _QuickPresetStrip(),
                 const SizedBox(height: 6),
                 // ── Spectrum Analyzer ──
                 Container(
@@ -1018,7 +1046,7 @@ class SynthScreen extends ConsumerWidget {
                         const ArpeggiatorPanel(),
                         const SizedBox(height: 12),
 
-                        // ── Effects Panel ──
+                        // ── Effects Panel (Legacy + Multi-Slot) ──
                         FxPanel(
                           chorus: effectivePreset.chorus,
                           delay: effectivePreset.delay,
@@ -1048,6 +1076,29 @@ class SynthScreen extends ConsumerWidget {
                               notifier.update((p) => p.copyWith(compressor: c)),
                           onDriveChanged: (d) =>
                               notifier.update((p) => p.copyWith(drive: d)),
+                          // ── Multi-Slot FX ──
+                          slotConfigs: effectivePreset.fxSlots,
+                          onSlotChanged: (slotIndex, slot) =>
+                              notifier.update((p) {
+                                final slots = List<FxSlotConfig>.from(p.fxSlots);
+                                while (slots.length <= slotIndex) {
+                                  slots.add(const FxSlotConfig());
+                                }
+                                slots[slotIndex] = slot;
+                                return p.copyWith(fxSlots: slots);
+                              }),
+                          eq: effectivePreset.eq,
+                          onEqChanged: (e) =>
+                              notifier.update((p) => p.copyWith(eq: e)),
+                          limiter: effectivePreset.limiter,
+                          onLimiterChanged: (l) =>
+                              notifier.update((p) => p.copyWith(limiter: l)),
+                          rotary: effectivePreset.rotary,
+                          onRotaryChanged: (r) =>
+                              notifier.update((p) => p.copyWith(rotary: r)),
+                          tremolo: effectivePreset.tremolo,
+                          onTremoloChanged: (t) =>
+                              notifier.update((p) => p.copyWith(tremolo: t)),
                         ),
                         const SizedBox(height: 12),
 
@@ -1069,14 +1120,6 @@ class SynthScreen extends ConsumerWidget {
 
                         // ── MIDI Clock / Sync ──
                         const ClockPanel(),
-                        const SizedBox(height: 12),
-
-                        // ── Keyboard Split ──
-                        const SplitPanel(),
-                        const SizedBox(height: 12),
-
-                        // ── MIDI Recorder ──
-                        const RecorderPanel(),
                         const SizedBox(height: 12),
 
                         // ── MIDI Input ──
@@ -1139,3 +1182,691 @@ class SynthScreen extends ConsumerWidget {
     );
   }
 }
+
+/// Local provider for the quick-strip search query.
+final _quickStripSearchProvider = StateProvider<String>((ref) => '');
+
+/// Local provider for the quick-strip category filter.
+final _quickStripCategoryFilterProvider = StateProvider<PresetCategory?>((ref) => null);
+
+/// Horizontal scrollable strip of quick-access presets shown just below
+/// the oscilloscope / spectrum analyser on the Synth tab.
+class _QuickPresetStrip extends ConsumerStatefulWidget {
+  const _QuickPresetStrip();
+
+  @override
+  ConsumerState<_QuickPresetStrip> createState() => _QuickPresetStripState();
+}
+
+class _QuickPresetStripState extends ConsumerState<_QuickPresetStrip> {
+  final _searchController = TextEditingController();
+  final _searchFocus = FocusNode();
+  final _scrollController = ScrollController();
+  final _activeTileKey = GlobalKey();
+  bool _searchFocused = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _searchFocus.addListener(() {
+      setState(() => _searchFocused = _searchFocus.hasFocus);
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    _searchFocus.dispose();
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  List<SynthPreset> _buildQuickList(
+    List<SynthPreset> allPresets,
+    Set<String> favorites,
+    List<String> orderedFavorites,
+    List<String> recentIds,
+    String query,
+    PresetCategory? categoryFilter,
+  ) {
+    final seen = <String>{};
+    final result = <SynthPreset>[];
+
+    SynthPreset? findPreset(String id) {
+      for (final p in allPresets) {
+        if (p.id == id) return p;
+      }
+      return null;
+    }
+
+    // 1. Favorites (in user-defined order)
+    for (final id in orderedFavorites) {
+      if (!favorites.contains(id)) continue;
+      final preset = findPreset(id);
+      if (preset != null && seen.add(preset.id)) {
+        result.add(preset);
+      }
+    }
+
+    // 2. Recently-used (most recent first, excluding already-seen)
+    for (final id in recentIds.reversed) {
+      final preset = findPreset(id);
+      if (preset != null && seen.add(preset.id)) {
+        result.add(preset);
+      }
+    }
+
+    // 3. Fill remainder with any presets
+    for (final p in allPresets) {
+      if (seen.add(p.id)) {
+        result.add(p);
+      }
+    }
+
+    var list = result;
+
+    // 4. Apply category filter
+    if (categoryFilter != null) {
+      list = list.where((p) => p.category == categoryFilter).toList();
+    }
+
+    // 5. Apply search filter
+    if (query.isNotEmpty) {
+      final q = query.toLowerCase();
+      list = list.where((p) {
+        return p.name.toLowerCase().contains(q) ||
+            p.category.displayName.toLowerCase().contains(q) ||
+            p.tags.any((t) => t.toLowerCase().contains(q));
+      }).toList();
+    }
+
+    return list.take(20).toList();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final presets = ref.watch(presetListProvider);
+    final current = ref.watch(currentPresetProvider);
+    final favorites = ref.watch(favoritesProvider);
+    final favoritesNotifier = ref.watch(favoritesProvider.notifier);
+    final orderedFavorites = favoritesNotifier.orderedFavorites;
+    final recentIds = ref.watch(recentPresetsProvider);
+    final query = ref.watch(_quickStripSearchProvider);
+
+    // Sync controller when provider is cleared externally (e.g. tab switch).
+    ref.listen<String>(_quickStripSearchProvider, (prev, next) {
+      if (next.isEmpty && _searchController.text.isNotEmpty) {
+        _searchController.clear();
+      }
+    });
+
+    // Auto-scroll to active preset when it changes externally.
+    ref.listen<SynthPreset>(currentPresetProvider, (prev, next) {
+      if (prev?.id != next.id) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (_activeTileKey.currentContext != null) {
+            Scrollable.ensureVisible(
+              _activeTileKey.currentContext!,
+              alignment: 0.5,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+            );
+          }
+        });
+      }
+    });
+
+    final selectedCategory = ref.watch(_quickStripCategoryFilterProvider);
+
+    final quickPresets = _buildQuickList(
+      presets,
+      favorites,
+      orderedFavorites,
+      recentIds,
+      query,
+      selectedCategory,
+    );
+
+    final categories = presets.map((p) => p.category).toSet().toList()
+      ..sort((a, b) => a.displayName.compareTo(b.displayName));
+
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 12),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (categories.isNotEmpty)
+            Container(
+              height: 22,
+              margin: const EdgeInsets.only(bottom: 4),
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                itemCount: categories.length,
+                separatorBuilder: (_, __) => const SizedBox(width: 6),
+                itemBuilder: (context, idx) {
+                  final cat = categories[idx];
+                  final isSelected = cat == selectedCategory;
+                  return GestureDetector(
+                    onTap: () {
+                      if (isSelected) {
+                        ref.read(_quickStripCategoryFilterProvider.notifier).state = null;
+                      } else {
+                        ref.read(_quickStripCategoryFilterProvider.notifier).state = cat;
+                      }
+                    },
+                    onLongPress: () {
+                      ref.read(_quickStripCategoryFilterProvider.notifier).state = null;
+                    },
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 150),
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: isSelected
+                            ? SynthTheme.cyan.withValues(alpha: 0.25)
+                            : SynthTheme.surface,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: isSelected
+                              ? SynthTheme.cyan
+                              : SynthTheme.purple.withValues(alpha: 0.2),
+                        ),
+                      ),
+                      child: Text(
+                        cat.displayName,
+                        style: TextStyle(
+                          color: isSelected ? SynthTheme.cyan : Colors.white70,
+                          fontSize: 9,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),            SizedBox(
+            height: 52,
+            child: ListView.separated(
+              controller: _scrollController,
+              scrollDirection: Axis.horizontal,
+              itemCount: quickPresets.isEmpty ? 4 : quickPresets.length + 3,
+              separatorBuilder: (_, _) => const SizedBox(width: 8),
+              itemBuilder: (context, index) {
+          // ── Paste button ──
+          if (index == 0) {
+            return GestureDetector(
+              onTap: () async {
+                HapticFeedback.lightImpact();
+                await pastePresetFromClipboard(context, ref);
+              },
+              child: Container(
+                width: 44,
+                padding: const EdgeInsets.symmetric(vertical: 6),
+                decoration: BoxDecoration(
+                  color: SynthTheme.purple.withValues(alpha: 0.15),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: SynthTheme.purple.withValues(alpha: 0.4),
+                  ),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.content_paste,
+                      color: SynthTheme.purple,
+                      size: 16,
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      'PASTE',
+                      style: TextStyle(
+                        color: SynthTheme.purple,
+                        fontSize: 7,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
+
+          // ── Dice button ──
+          if (index == 1) {
+            return GestureDetector(
+              onTap: () {
+                HapticFeedback.lightImpact();
+                if (quickPresets.isEmpty) return;
+                final rng = Random();
+                final randomPreset = quickPresets[rng.nextInt(quickPresets.length)];
+                ref.read(currentPresetProvider.notifier).load(randomPreset);
+                ref.read(recentPresetsProvider.notifier).track(randomPreset.id);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Surprise! Loaded "${randomPreset.name}"'),
+                    duration: const Duration(seconds: 1),
+                    behavior: SnackBarBehavior.floating,
+                  ),
+                );
+              },
+              child: Container(
+                width: 56,
+                padding: const EdgeInsets.symmetric(vertical: 6),
+                decoration: BoxDecoration(
+                  color: SynthTheme.cyan.withValues(alpha: 0.15),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: SynthTheme.cyan.withValues(alpha: 0.4),
+                  ),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.casino,
+                      color: SynthTheme.cyan,
+                      size: 18,
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      'RANDOM',
+                      style: TextStyle(
+                        color: SynthTheme.cyan,
+                        fontSize: 7,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
+
+          // ── Search field ──
+          if (index == 2) {
+            final hasRecents = recentIds.isNotEmpty;
+            return AnimatedContainer(
+              duration: const Duration(milliseconds: 250),
+              curve: Curves.easeInOutCubic,
+              width: _searchFocused ? 172 : 100,
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                color: SynthTheme.card,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: _searchFocused
+                      ? SynthTheme.magenta.withValues(alpha: 0.5)
+                      : SynthTheme.purple.withValues(alpha: 0.2),
+                ),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.search,
+                    color: SynthTheme.textSecondary.withValues(alpha: 0.5),
+                    size: 14,
+                  ),
+                  const SizedBox(width: 6),
+                  Expanded(
+                    child: TextField(
+                      controller: _searchController,
+                      focusNode: _searchFocus,
+                      textAlignVertical: TextAlignVertical.center,
+                      style: const TextStyle(color: Colors.white, fontSize: 11),
+                      decoration: InputDecoration(
+                        hintText: 'Search...',
+                        hintStyle: TextStyle(
+                          color: SynthTheme.textSecondary.withValues(alpha: 0.4),
+                          fontSize: 11,
+                        ),
+                        isDense: true,
+                        contentPadding: EdgeInsets.zero,
+                        border: InputBorder.none,
+                      ),
+                      onChanged: (v) {
+                        ref.read(_quickStripSearchProvider.notifier).state = v;
+                      },
+                    ),
+                  ),
+                  if (query.isNotEmpty)
+                    GestureDetector(
+                      onTap: () {
+                        _searchController.clear();
+                        ref.read(_quickStripSearchProvider.notifier).state = '';
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 4),
+                        child: Icon(
+                          Icons.close,
+                          color: SynthTheme.textSecondary.withValues(alpha: 0.5),
+                          size: 14,
+                        ),
+                      ),
+                    )
+                  else if (hasRecents)
+                    GestureDetector(
+                      onTap: () {
+                        ref.read(recentPresetsProvider.notifier).clear();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Recent history cleared'),
+                            duration: Duration(seconds: 1),
+                            behavior: SnackBarBehavior.floating,
+                          ),
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 4),
+                        child: Icon(
+                          Icons.delete_outline,
+                          color: SynthTheme.textSecondary.withValues(alpha: 0.35),
+                          size: 14,
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            );
+          }
+
+          // ── Empty state ──
+          if (index == 3 && quickPresets.isEmpty) {
+            return Container(
+              width: 160,
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                color: SynthTheme.surface,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: SynthTheme.purple.withValues(alpha: 0.2),
+                ),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.filter_list_off,
+                    color: SynthTheme.textSecondary.withValues(alpha: 0.4),
+                    size: 16,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'No presets',
+                          style: TextStyle(
+                            color: SynthTheme.textSecondary.withValues(alpha: 0.7),
+                            fontSize: 10,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        if (query.isNotEmpty || selectedCategory != null)
+                          GestureDetector(
+                            onTap: () {
+                              _searchController.clear();
+                              ref.read(_quickStripSearchProvider.notifier).state = '';
+                              ref.read(_quickStripCategoryFilterProvider.notifier).state = null;
+                            },
+                            child: Text(
+                              'Clear filters',
+                              style: TextStyle(
+                                color: SynthTheme.cyan,
+                                fontSize: 8,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+
+          // ── Preset tile ──
+          final p = quickPresets[index - 3];
+          final isActive = p.id == current.id;
+          final isFav = favorites.contains(p.id);
+          final favIdx = orderedFavorites.indexOf(p.id);
+          final inRecents = recentIds.contains(p.id);
+          final tile = GestureDetector(
+            key: isActive ? _activeTileKey : null,
+            onTap: () {
+              HapticFeedback.lightImpact();
+              ref.read(currentPresetProvider.notifier).load(p);
+              ref.read(recentPresetsProvider.notifier).track(p.id);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Loaded "${p.name}"'),
+                  duration: const Duration(seconds: 1),
+                  behavior: SnackBarBehavior.floating,
+                ),
+              );
+            },
+            onDoubleTap: () {
+              HapticFeedback.lightImpact();
+              ref.read(favoritesProvider.notifier).toggle(p.id);
+            },
+            onLongPress: () {
+              HapticFeedback.mediumImpact();
+              showQuickPresetContextMenu(context, ref, p);
+            },
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 150),
+              width: isFav ? 132 : 110,
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              decoration: BoxDecoration(
+                color: isActive
+                    ? SynthTheme.magenta.withValues(alpha: 0.2)
+                    : isFav
+                        ? SynthTheme.orange.withValues(alpha: 0.1)
+                        : SynthTheme.card,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: isActive
+                      ? SynthTheme.magenta.withValues(alpha: 0.6)
+                      : isFav
+                          ? SynthTheme.orange.withValues(alpha: 0.4)
+                          : SynthTheme.purple.withValues(alpha: 0.2),
+                ),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          p.name,
+                          style: TextStyle(
+                            color: isActive ? SynthTheme.magenta : Colors.white.withValues(alpha: 0.9),
+                            fontSize: 10,
+                            fontWeight: isActive ? FontWeight.bold : FontWeight.w500,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          p.category.displayName.toUpperCase(),
+                          style: TextStyle(
+                            color: SynthTheme.textSecondary.withValues(alpha: 0.6),
+                            fontSize: 8,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 0.5,
+                          ),
+                        ),
+                        if (p.tags.isNotEmpty)
+                          Container(
+                            margin: const EdgeInsets.only(top: 2),
+                            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+                            decoration: BoxDecoration(
+                              color: SynthTheme.purple.withValues(alpha: 0.2),
+                              borderRadius: BorderRadius.circular(3),
+                            ),
+                            child: Text(
+                              p.tags.first.toUpperCase(),
+                              style: TextStyle(
+                                color: SynthTheme.purple.withValues(alpha: 0.9),
+                                fontSize: 6,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 0.5,
+                              ),
+                            ),
+                          ),
+                        // Pitch-offset indicator
+                        Container(
+                          margin: const EdgeInsets.only(top: 2),
+                          child: Text(
+                            '${p.osc1.octave >= 0 ? '+' : ''}${p.osc1.octave} • ${p.osc1.detune >= 0 ? '+' : ''}${p.osc1.detune.round()}¢',
+                            style: TextStyle(
+                              color: SynthTheme.textSecondary.withValues(alpha: 0.5),
+                              fontSize: 7,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  // Waveform cycle button
+                  GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onLongPress: () {
+                      HapticFeedback.mediumImpact();
+                      final nextIndex = (p.osc1.waveform.index + 1) % Waveform.values.length;
+                      final nextWave = Waveform.values[nextIndex];
+                      final updated = p.copyWith(osc1: p.osc1.copyWith(waveform: nextWave));
+                      ref.read(presetListProvider.notifier).updatePreset(updated);
+                      if (current.id == p.id) {
+                        ref.read(currentPresetProvider.notifier).update((preset) => preset.copyWith(osc1: updated.osc1));
+                      }
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('${p.name} → ${nextWave.displayName}'),
+                          duration: const Duration(seconds: 1),
+                          behavior: SnackBarBehavior.floating,
+                        ),
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 6, right: 2),
+                      child: Icon(
+                        p.osc1.waveform.icon,
+                        color: isActive
+                            ? SynthTheme.magenta.withValues(alpha: 0.8)
+                            : SynthTheme.cyan.withValues(alpha: 0.6),
+                        size: 14,
+                      ),
+                    ),
+                  ),
+                  if (isFav) ...[
+                    GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () {
+                        if (favIdx > 0) {
+                          ref.read(favoritesProvider.notifier).reorder(favIdx, favIdx - 1);
+                        }
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(2),
+                        child: Icon(
+                          Icons.chevron_left,
+                          color: favIdx > 0
+                              ? SynthTheme.textSecondary.withValues(alpha: 0.5)
+                              : SynthTheme.textSecondary.withValues(alpha: 0.15),
+                          size: 12,
+                        ),
+                      ),
+                    ),
+                  ],
+                  GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () {
+                      HapticFeedback.lightImpact();
+                      ref.read(favoritesProvider.notifier).toggle(p.id);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(4),
+                      child: Icon(
+                        isFav ? Icons.star : Icons.star_border,
+                        color: isFav ? SynthTheme.orange : SynthTheme.textSecondary.withValues(alpha: 0.4),
+                        size: 14,
+                      ),
+                    ),
+                  ),
+                  if (isFav) ...[
+                    GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () {
+                        if (favIdx >= 0 && favIdx < orderedFavorites.length - 1) {
+                          HapticFeedback.lightImpact();
+                          ref.read(favoritesProvider.notifier).reorder(favIdx, favIdx + 2);
+                        }
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(2),
+                        child: Icon(
+                          Icons.chevron_right,
+                          color: (favIdx >= 0 && favIdx < orderedFavorites.length - 1)
+                              ? SynthTheme.textSecondary.withValues(alpha: 0.5)
+                              : SynthTheme.textSecondary.withValues(alpha: 0.15),
+                          size: 12,
+                        ),
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          );
+
+          if (inRecents && !isFav) {
+            return Dismissible(
+              key: ValueKey(p.id),
+              direction: DismissDirection.up,
+              onDismissed: (_) {
+                ref.read(recentPresetsProvider.notifier).untrack(p.id);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Removed "${p.name}" from recents'),
+                    duration: const Duration(seconds: 3),
+                    behavior: SnackBarBehavior.floating,
+                    action: SnackBarAction(
+                      label: 'UNDO',
+                      onPressed: () {
+                        ref.read(recentPresetsProvider.notifier).track(p.id);
+                      },
+                    ),
+                  ),
+                );
+              },
+              background: Container(
+                decoration: BoxDecoration(
+                  color: Colors.red.withValues(alpha: 0.3),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Center(
+                  child: Icon(Icons.delete, color: Colors.red, size: 16),
+                ),
+              ),
+              child: tile,
+            );
+          }
+          return tile;
+        },
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+  }

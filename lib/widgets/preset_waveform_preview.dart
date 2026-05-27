@@ -121,6 +121,25 @@ class _WaveformMiniPainter extends CustomPainter {
           }
         }
         break;
+
+      case Waveform.wt_piano:
+      case Waveform.wt_guitar:
+      case Waveform.wt_choir:
+      case Waveform.random:
+        // Fall back to wavetable-like rendering
+        for (double x = 0; x <= w; x += 1) {
+          final t = x / w;
+          final wave1 = sin(t * 2 * pi + sin(t * pi * 4) * 0.5);
+          final wave2 = 2 * (t * 1.5 - (t * 1.5).floor()) - 1;
+          final blend = 0.5 + 0.5 * sin(t * pi);
+          final y = midY - amp * (blend * wave1 + (1 - blend) * wave2 * 0.3);
+          if (x == 0) {
+            path.moveTo(0, y);
+          } else {
+            path.lineTo(x, y);
+          }
+        }
+        break;
     }
 
     canvas.drawPath(path, paint);

@@ -1,5 +1,6 @@
 #include "synth_ffi.h"
 #include "synth_engine.h"
+#include "synth_mixer.h"
 #include "audio_buffer.h"
 #include <cstring>
 #include <string>
@@ -279,6 +280,20 @@ int32_t synth_engine_get_active_voices(void* engine) {
     return static_cast<int32_t>(static_cast<SynthEngine*>(engine)->getActiveVoiceCount());
 }
 
+float synth_engine_get_cpu_load(void* engine) {
+    return static_cast<SynthEngine*>(engine)->getCpuLoad();
+}
+
+// ── Arpeggiator state ───────────────────────────────────────────────────────
+
+int32_t synth_engine_get_arp_current_step(void* engine) {
+    return static_cast<int32_t>(static_cast<SynthEngine*>(engine)->getArpCurrentStep());
+}
+
+int32_t synth_engine_get_arp_total_steps(void* engine) {
+    return static_cast<int32_t>(static_cast<SynthEngine*>(engine)->getArpTotalSteps());
+}
+
 // ── Preset ────────────────────────────────────────────────────────────────────
 
 int32_t synth_engine_load_preset(void* engine, const char* path) {
@@ -350,4 +365,109 @@ void synth_engine_enqueue_all_notes_off(void* engine) {
 void synth_engine_enqueue_reset(void* engine) {
     auto* e = static_cast<SynthEngine*>(engine);
     e->paramQueue().enqueueInt(ParamQueue::RESET, 0);
+}
+
+// ── FX Slot Control ──────────────────────────────────────────────────────────
+
+void synth_engine_set_fx_slot_type(void* engine, int32_t slotIndex, int32_t fxTypeId) {
+    auto* e = static_cast<SynthEngine*>(engine);
+    // Delegate to SynthEngine which knows how to create FX processors
+    // For now, just pass through as a param queue entry
+    // The actual FX creation happens via createFxProcessor which is called
+    // through the applyParam path
+    if (e) {
+        e->paramQueue().enqueueInt(
+            static_cast<ParamQueue::ParamId>(180 + slotIndex * 10), // FX_SLOT1_TYPE = 180
+            static_cast<int16_t>(fxTypeId));
+    }
+}
+
+void synth_engine_set_fx_slot_enabled(void* engine, int32_t slotIndex, int32_t enabled) {
+    auto* e = static_cast<SynthEngine*>(engine);
+    if (e) {
+        e->paramQueue().enqueueInt(
+            static_cast<ParamQueue::ParamId>(181 + slotIndex * 10), // FX_SLOT1_ENABLED = 181
+            static_cast<int16_t>(enabled));
+    }
+}
+
+void synth_engine_set_fx_slot_param(void* engine, int32_t slotIndex, int32_t paramIdx, float value) {
+    auto* e = static_cast<SynthEngine*>(engine);
+    if (e) {
+        e->paramQueue().enqueue(
+            static_cast<ParamQueue::ParamId>(182 + slotIndex * 10 + paramIdx),
+            value);
+    }
+}
+
+void synth_engine_set_fx_master_enabled(void* engine, int32_t enabled) {
+    auto* e = static_cast<SynthEngine*>(engine);
+    if (e) {
+        e->paramQueue().enqueueInt(ParamQueue::FX_MASTER_ENABLED,
+                                    static_cast<int16_t>(enabled));
+    }
+}
+
+void synth_engine_set_fx_master_mix(void* engine, float mix) {
+    auto* e = static_cast<SynthEngine*>(engine);
+    if (e) {
+        e->paramQueue().enqueue(ParamQueue::FX_MASTER_MIX, mix);
+    }
+}
+
+// ── SynthEnginePair (Zone A + Zone B mixer) ──────────────────────────────────
+
+void* synth_pair_create(double sampleRate, uint32_t blockSize) {
+    auto* pair = new SynthEnginePair(sampleRate, blockSize);
+    return static_cast<void*>(pair);
+}
+
+void synth_pair_destroy(void* pair) {
+    delete static_cast<SynthEnginePair*>(pair);
+}
+
+void synth_pair_process(void* pair, float* output, uint32_t numFrames) {
+    auto* p = static_cast<SynthEnginePair*>(pair);
+    AudioBuffer buf(output, numFrames, 2); // stereo
+    p->process(buf);
+}
+
+void* synth_pair_engine_a(void* pair) {
+    auto* p = static_cast<SynthEnginePair*>(pair);
+    return static_cast<void*>(&p->engineA());
+}
+
+void* synth_pair_engine_b(void* pair) {
+    auto* p = static_cast<SynthEnginePair*>(pair);
+    return static_cast<void*>(&p->engineB());
+}
+
+void synth_pair_set_mix_a(void* pair, float mix) {
+    auto* p = static_cast<SynthEnginePair*>(pair);
+    p->setMixA(mix);
+}
+
+void synth_pair_set_mix_b(void* pair, float mix) {
+    auto* p = static_cast<SynthEnginePair*>(pair);
+    p->setMixB(mix);
+}
+
+void synth_pair_reset(void* pair) {
+    auto* p = static_cast<SynthEnginePair*>(pair);
+    p->reset();
+}
+
+int32_t synth_pair_get_active_voices(void* pair) {
+    auto* p = static_cast<SynthEnginePair*>(pair);
+    return static_cast<int32_t>(p->getActiveVoiceCount());
+}
+
+int32_t synth_pair_get_zone_a_voices(void* pair) {
+    auto* p = static_cast<SynthEnginePair*>(pair);
+    return static_cast<int32_t>(p->getZoneAVoiceCount());
+}
+
+int32_t synth_pair_get_zone_b_voices(void* pair) {
+    auto* p = static_cast<SynthEnginePair*>(pair);
+    return static_cast<int32_t>(p->getZoneBVoiceCount());
 }

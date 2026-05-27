@@ -89,9 +89,14 @@ class ComputerKeyboardListener extends ConsumerStatefulWidget {
   const ComputerKeyboardListener({
     super.key,
     required this.child,
+    this.active = true,
   });
 
   final Widget child;
+
+  /// When false, all key events are ignored. Use this in an [IndexedStack]
+  /// so only the visible tab's listener actually handles physical keys.
+  final bool active;
 
   @override
   ConsumerState<ComputerKeyboardListener> createState() =>
@@ -132,6 +137,7 @@ class _ComputerKeyboardListenerState
   }
 
   KeyEventResult _handleKey(FocusNode node, KeyEvent event) {
+    if (!widget.active) return KeyEventResult.ignored;
     final key = event.logicalKey;
 
     // ── Octave shift / panic — independent of the piano map ─────────

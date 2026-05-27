@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/arpeggiator_provider.dart';
+import '../models/keyboard_split.dart';
 import '../providers/keyboard_split_provider.dart';
 import '../providers/midi_recorder_provider.dart';
 import '../providers/synth_providers.dart';
@@ -66,13 +67,17 @@ class KeyboardWidget extends ConsumerWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
                   decoration: BoxDecoration(
-                    color: SynthTheme.magenta.withValues(alpha: 0.15),
+                    color: split.mode == SplitMode.layer
+                        ? SynthTheme.orange.withValues(alpha: 0.15)
+                        : SynthTheme.magenta.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: Text(
-                    'SPLIT',
+                    split.mode == SplitMode.layer ? 'LAYER' : 'SPLIT',
                     style: TextStyle(
-                      color: SynthTheme.magenta,
+                      color: split.mode == SplitMode.layer
+                          ? SynthTheme.orange
+                          : SynthTheme.magenta,
                       fontSize: 9,
                       fontWeight: FontWeight.bold,
                       letterSpacing: 1,
@@ -166,31 +171,35 @@ class KeyboardWidget extends ConsumerWidget {
 
   void _noteOn(WidgetRef ref, int midiNote) {
     final split = ref.read(keyboardSplitProvider);
-    final zone = split.zoneForNote(midiNote);
+    final zones = split.zonesForNote(midiNote);
 
     // Update arp notes regardless of zone
     ref.read(arpNotesProvider.notifier).update((set) => {...set, midiNote});
 
-    if (zone == 1) {
-      // Zone B
-      ref.read(zoneBPlaybackProvider.notifier).noteOn(midiNote);
-    } else {
-      // Zone A or split disabled
-      ref.read(playbackStateProvider.notifier).noteOn(midiNote);
+    for (final zone in zones) {
+      final shiftedNote = split.shiftedNote(midiNote, zone);
+      if (zone == 1) {
+        ref.read(zoneBPlaybackProvider.notifier).noteOn(shiftedNote);
+      } else {
+        ref.read(playbackStateProvider.notifier).noteOn(shiftedNote);
+      }
     }
     recordNoteOn(ref, midiNote);
   }
 
   void _noteOff(WidgetRef ref, int midiNote) {
     final split = ref.read(keyboardSplitProvider);
-    final zone = split.zoneForNote(midiNote);
+    final zones = split.zonesForNote(midiNote);
 
     ref.read(arpNotesProvider.notifier).update((set) => {...set}..remove(midiNote));
 
-    if (zone == 1) {
-      ref.read(zoneBPlaybackProvider.notifier).noteOff(midiNote);
-    } else {
-      ref.read(playbackStateProvider.notifier).noteOff(midiNote);
+    for (final zone in zones) {
+      final shiftedNote = split.shiftedNote(midiNote, zone);
+      if (zone == 1) {
+        ref.read(zoneBPlaybackProvider.notifier).noteOff(shiftedNote);
+      } else {
+        ref.read(playbackStateProvider.notifier).noteOff(shiftedNote);
+      }
     }
     recordNoteOff(ref, midiNote);
   }

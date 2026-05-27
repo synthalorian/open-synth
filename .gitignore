@@ -43,3 +43,10 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Native build artifacts
+native/build/
+native/build_check/
+native/build_test/
+*.o
+*.o.d
