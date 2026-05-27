@@ -262,7 +262,7 @@ class OpenAmpSynthBindings {
         enqueueAllNotesOffFn = lib.lookupFunction<_VoidNative, _VoidDart>(
             'synth_engine_enqueue_all_notes_off'),
         enqueueResetFn = lib.lookupFunction<_VoidNative, _VoidDart>(
-            'synth_engine_enqueue_reset');
+            'synth_engine_enqueue_reset'),
         // Arpeggiator getters
         getArpCurrentStep = lib.lookupFunction<_GetIntNative, _GetIntDart>(
             'synth_engine_get_arp_current_step'),
