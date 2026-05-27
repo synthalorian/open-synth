@@ -15,18 +15,30 @@ import '../models/waveform.dart';
 
 /// Apply every parameter from [preset] to [synth] in one shot.
 ///
-/// Order matters: oscillators / mix first, then filter, then envelopes,
-/// then LFOs, then master volume. The engine will use the new values
-/// from the next sample on, but if the preset turns the master volume
-/// down we want that to land before any oscillator settings perturb
-/// active voices.
+/// Order matters: clears engine state first, then pushes oscillators / mix
+/// first, then filter, then envelopes, then LFOs, then master volume.
+///
+/// Clearing state before applying ensures old voices, stale FX delay buffers,
+/// and leftover envelope states from the previous preset don't bleed through.
 void applyPresetToSynth(OpenAmpSynth synth, SynthPreset preset) {
+  // ── Clear engine state ─────────────────────────────────────────────────────
+  // All active voices release and FX delay buffers zero. Goes through the
+  // thread-safe param queue so the audio callback drains them at the next
+  // block boundary, BEFORE any of the new param changes below.
+  synth.allNotesOff();
+  synth.enqueueInt(ParamId.reset, 1);
   // ── Oscillator 1 ────────────────────────────────────────────────────────
   synth.osc1Waveform = _waveformToInt(preset.osc1.waveform);
   synth.osc1Octave = preset.osc1.octave;
   synth.osc1Detune = preset.osc1.detune;
   synth.osc1PulseWidth = preset.osc1.pulseWidth;
   synth.osc1Volume = preset.osc1.enabled ? preset.osc1.volume : 0.0;
+  // Wavetable position is an extension — if the native engine doesn't
+  // support wavetable, the waveform maps to index 5 which is a no-op
+  // on older builds. The UI parameter still travels faithfully.
+  if (preset.osc1.waveform == Waveform.wavetable) {
+    synth.osc1PulseWidth = preset.osc1.wavetablePosition;
+  }
 
   // ── Oscillator 2 ────────────────────────────────────────────────────────
   synth.osc2Waveform = _waveformToInt(preset.osc2.waveform);
@@ -34,6 +46,23 @@ void applyPresetToSynth(OpenAmpSynth synth, SynthPreset preset) {
   synth.osc2Detune = preset.osc2.detune;
   synth.osc2PulseWidth = preset.osc2.pulseWidth;
   synth.osc2Volume = preset.osc2.enabled ? preset.osc2.volume : 0.0;
+  if (preset.osc2.waveform == Waveform.wavetable) {
+    synth.osc2PulseWidth = preset.osc2.wavetablePosition;
+  }
+
+  // ── Unison ────────────────────────────────────────────────────────────────
+  // Pushes unison parameters to the native engine. The FFI bindings use
+  // lazy lookup — if the native .so doesn't have the unison symbols yet
+  // (older build), the calls are safely skipped.
+  synth.osc1UnisonVoiceCount   = preset.osc1.unisonVoiceCount;
+  synth.osc1UnisonDetuneSpread = preset.osc1.unisonDetuneSpread;
+  synth.osc1UnisonStereoSpread = preset.osc1.unisonStereoSpread;
+  synth.osc1UnisonMix          = preset.osc1.unisonMix;
+
+  synth.osc2UnisonVoiceCount   = preset.osc2.unisonVoiceCount;
+  synth.osc2UnisonDetuneSpread = preset.osc2.unisonDetuneSpread;
+  synth.osc2UnisonStereoSpread = preset.osc2.unisonStereoSpread;
+  synth.osc2UnisonMix          = preset.osc2.unisonMix;
 
   // OSC mix is implicit in the per-oscillator volumes (the engine
   // sums osc1 + osc2 at full level). Push 0.5 as a stable default
@@ -93,6 +122,21 @@ void applyPresetToSynth(OpenAmpSynth synth, SynthPreset preset) {
   synth.phaserFeedback = preset.phaser.feedback;
   synth.phaserMix = preset.phaser.mix;
 
+  // ── Flanger ────────────────────────────────────────────────────────────────
+  synth.flangerEnabled   = preset.flanger.enabled;
+  synth.flangerRate      = preset.flanger.rate;
+  synth.flangerDepth     = preset.flanger.depth;
+  synth.flangerFeedback  = preset.flanger.feedback;
+  synth.flangerMix       = preset.flanger.mix;
+
+  // ── Compressor ─────────────────────────────────────────────────────────────
+  synth.compressorEnabled    = preset.compressor.enabled;
+  synth.compressorThreshold  = preset.compressor.threshold;
+  synth.compressorRatio      = preset.compressor.ratio;
+  synth.compressorAttack     = preset.compressor.attack;
+  synth.compressorRelease    = preset.compressor.release;
+  synth.compressorMakeupGain = preset.compressor.makeupGain;
+
   synth.driveEnabled = preset.drive.enabled;
   synth.driveAmount = preset.drive.amount;
   synth.driveType = preset.drive.type.index;
@@ -119,6 +163,8 @@ int _waveformToInt(Waveform w) {
       return 3;
     case Waveform.noise:
       return 4;
+    case Waveform.wavetable:
+      return 5;
   }
 }
 

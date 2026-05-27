@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 class WaveformIconPainter extends CustomPainter {
-  final String type; // sine, saw, square, triangle, noise
+  final String type; // sine, saw, square, triangle, noise, wavetable
   final Color color;
   final double strokeWidth;
 
@@ -74,6 +74,43 @@ class WaveformIconPainter extends CustomPainter {
         for (double x = 0; x <= w; x += 3) {
           path.lineTo(x, midY + (rng.nextDouble() * 2 - 1) * amp);
         }
+        break;
+
+      case 'wavetable':
+        // Draw multiple stacked harmonic waveforms to suggest wavetable morphing
+        final layers = 3;
+        for (int layer = 0; layer < layers; layer++) {
+          final layerPaint = Paint()
+            ..color = color.withValues(alpha: 0.4 + 0.3 * (1 - layer / layers))
+            ..strokeWidth = strokeWidth * (1 - layer * 0.3)
+            ..style = PaintingStyle.stroke
+            ..strokeCap = StrokeCap.round
+            ..strokeJoin = StrokeJoin.round;
+          final layerPath = Path();
+          final freq = 1 + layer * 0.5;
+          final layerAmp = amp * (1 - layer * 0.2);
+          final phase = layer * 0.4;
+          layerPath.moveTo(0, midY - layerAmp * sin(phase) * 0.3);
+          for (double x = 0; x <= w; x += 1.0) {
+            final t = x / w;
+            // Blend between sine, saw, and square morph
+            final sineC = sin(t * 2 * pi * freq + phase);
+            final sawC = 2 * (t * freq - (t * freq).floor()) - 1;
+            final blend = 0.5 + 0.5 * sin(t * pi * 2 + phase);
+            final y = midY - layerAmp * (blend * sineC + (1 - blend) * sawC * 0.6);
+            layerPath.lineTo(x, y);
+          }
+          canvas.drawPath(layerPath, layerPaint);
+        }
+        // Draw a small arrow indicator suggesting morph-able
+        final arrowPaint = Paint()
+          ..color = color.withValues(alpha: 0.5)
+          ..strokeWidth = 1.5
+          ..style = PaintingStyle.stroke
+          ..strokeCap = StrokeCap.round;
+        canvas.drawLine(Offset(w * 0.15, h * 0.15), Offset(w * 0.85, h * 0.15), arrowPaint);
+        canvas.drawLine(Offset(w * 0.70, h * 0.10), Offset(w * 0.85, h * 0.15), arrowPaint);
+        canvas.drawLine(Offset(w * 0.70, h * 0.20), Offset(w * 0.85, h * 0.15), arrowPaint);
         break;
     }
 

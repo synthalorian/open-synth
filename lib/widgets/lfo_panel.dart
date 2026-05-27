@@ -10,6 +10,7 @@ class LfoPanel extends StatelessWidget {
   final LfoConfig lfo;
   final ValueChanged<LfoConfig> onChanged;
   final Color? accentColor;
+  final bool isLocked;
 
   const LfoPanel({
     super.key,
@@ -17,6 +18,7 @@ class LfoPanel extends StatelessWidget {
     required this.lfo,
     required this.onChanged,
     this.accentColor,
+    this.isLocked = false,
   });
 
   @override
@@ -45,6 +47,10 @@ class LfoPanel extends StatelessWidget {
                   letterSpacing: 1.5,
                 ),
               ),
+              if (isLocked) ...[
+                const SizedBox(width: 6),
+                Icon(Icons.lock, color: SynthTheme.magenta, size: 12),
+              ],
               const Spacer(),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 6),

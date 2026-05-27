@@ -42,6 +42,13 @@ typedef _SetFloatDart = void Function(SynthEngineRef, double);
 typedef _GetIntNative = Int32 Function(SynthEngineRef);
 typedef _GetIntDart = int Function(SynthEngineRef);
 
+// Queue FFI types
+typedef _SetFloatIntNative = Void Function(SynthEngineRef, Int32, Float);
+typedef _SetFloatIntDart = void Function(SynthEngineRef, int, double);
+
+typedef _SetInt2Native = Void Function(SynthEngineRef, Int32, Int32);
+typedef _SetInt2Dart = void Function(SynthEngineRef, int, int);
+
 // ── Library loader ───────────────────────────────────────────────────────────
 
 DynamicLibrary _openLibrary() {
@@ -207,11 +214,64 @@ class OpenAmpSynthBindings {
             'synth_engine_set_drive_amount'),
         setDriveType = lib.lookupFunction<_SetIntNative, _SetIntDart>(
             'synth_engine_set_drive_type'),
+        // FX: Flanger
+        setFlangerEnabled = lib.lookupFunction<_SetIntNative, _SetIntDart>(
+            'synth_engine_set_flanger_enabled'),
+        setFlangerRate = lib.lookupFunction<_SetFloatNative, _SetFloatDart>(
+            'synth_engine_set_flanger_rate'),
+        setFlangerDepth = lib.lookupFunction<_SetFloatNative, _SetFloatDart>(
+            'synth_engine_set_flanger_depth'),
+        setFlangerFeedback = lib.lookupFunction<_SetFloatNative, _SetFloatDart>(
+            'synth_engine_set_flanger_feedback'),
+        setFlangerMix = lib.lookupFunction<_SetFloatNative, _SetFloatDart>(
+            'synth_engine_set_flanger_mix'),
+        // FX: Compressor
+        setCompressorEnabled = lib.lookupFunction<_SetIntNative, _SetIntDart>(
+            'synth_engine_set_compressor_enabled'),
+        setCompressorThreshold = lib.lookupFunction<_SetFloatNative, _SetFloatDart>(
+            'synth_engine_set_compressor_threshold'),
+        setCompressorRatio = lib.lookupFunction<_SetFloatNative, _SetFloatDart>(
+            'synth_engine_set_compressor_ratio'),
+        setCompressorAttack = lib.lookupFunction<_SetFloatNative, _SetFloatDart>(
+            'synth_engine_set_compressor_attack'),
+        setCompressorRelease = lib.lookupFunction<_SetFloatNative, _SetFloatDart>(
+            'synth_engine_set_compressor_release'),
+        setCompressorMakeupGain = lib.lookupFunction<_SetFloatNative, _SetFloatDart>(
+            'synth_engine_set_compressor_makeup_gain'),
         // Master
         setMasterVolume = lib.lookupFunction<_SetFloatNative, _SetFloatDart>(
             'synth_engine_set_master_volume'),
         getActiveVoices = lib.lookupFunction<_GetIntNative, _GetIntDart>(
-            'synth_engine_get_active_voices');
+            'synth_engine_get_active_voices'),
+
+        // Thread-safe queue
+        enqueueFloat = lib.lookupFunction<_SetFloatIntNative, _SetFloatIntDart>(
+            'synth_engine_enqueue_float'),
+        enqueueInt = lib.lookupFunction<_SetInt2Native, _SetInt2Dart>(
+            'synth_engine_enqueue_int'),
+        enqueueNoteOnFn = lib.lookupFunction<_NoteOnNative, _NoteOnDart>(
+            'synth_engine_enqueue_note_on'),
+        enqueueNoteOffFn = lib.lookupFunction<_NoteOffNative, _NoteOffDart>(
+            'synth_engine_enqueue_note_off'),
+        enqueueAllNotesOffFn = lib.lookupFunction<_VoidNative, _VoidDart>(
+            'synth_engine_enqueue_all_notes_off'),
+        enqueueResetFn = lib.lookupFunction<_VoidNative, _VoidDart>(
+            'synth_engine_enqueue_reset');
+
+  // ── Unison bindings (lazy, may not be available in older .so builds) ──
+
+  UnisonBindings? _unisonBindings;
+
+  /// Returns the unison bindings if available, or null if the native .so
+  /// doesn't export the unison symbols yet. Callers should null-check
+  /// before accessing methods on the returned value.
+  UnisonBindings? get unison {
+    _unisonBindings ??= UnisonBindings._tryLookup(lib);
+    return _unisonBindings;
+  }
+
+  /// Whether the unison FFI symbols are present in the loaded .so.
+  bool get unisonAvailable => _unisonBindings != null;
 
   static OpenAmpSynthBindings? _instance;
   static OpenAmpSynthBindings get instance =>
@@ -317,12 +377,214 @@ class OpenAmpSynthBindings {
   final _SetFloatDart setDriveAmount;
   final _SetIntDart setDriveType;
 
+  // FX: Flanger
+  final _SetIntDart setFlangerEnabled;
+  final _SetFloatDart setFlangerRate;
+  final _SetFloatDart setFlangerDepth;
+  final _SetFloatDart setFlangerFeedback;
+  final _SetFloatDart setFlangerMix;
+
+  // FX: Compressor
+  final _SetIntDart setCompressorEnabled;
+  final _SetFloatDart setCompressorThreshold;
+  final _SetFloatDart setCompressorRatio;
+  final _SetFloatDart setCompressorAttack;
+  final _SetFloatDart setCompressorRelease;
+  final _SetFloatDart setCompressorMakeupGain;
+
   // Master
   final _SetFloatDart setMasterVolume;
   final _GetIntDart getActiveVoices;
+
+  // Thread-safe queue
+  final _SetFloatIntDart enqueueFloat;
+  final _SetInt2Dart enqueueInt;
+  final _NoteOnDart enqueueNoteOnFn;
+  final _NoteOffDart enqueueNoteOffFn;
+  final _VoidDart enqueueAllNotesOffFn;
+  final _VoidDart enqueueResetFn;
+}
+
+// ── Unison FFI bindings (lazy; may be absent on older .so builds) ──────
+
+class UnisonBindings {
+  UnisonBindings._({
+    required this.setOsc1UnisonVoiceCount,
+    required this.setOsc1UnisonDetuneSpread,
+    required this.setOsc1UnisonStereoSpread,
+    required this.setOsc1UnisonMix,
+    required this.setOsc2UnisonVoiceCount,
+    required this.setOsc2UnisonDetuneSpread,
+    required this.setOsc2UnisonStereoSpread,
+    required this.setOsc2UnisonMix,
+  });
+
+  /// Try to look up all 8 unison FFI symbols. Returns null if any are
+  /// missing — the caller should check [available] before calling them.
+  static UnisonBindings? _tryLookup(DynamicLibrary lib) {
+    try {
+      return UnisonBindings._(
+        setOsc1UnisonVoiceCount: lib.lookupFunction<_SetIntNative, _SetIntDart>(
+            'synth_engine_set_osc1_unison_voice_count'),
+        setOsc1UnisonDetuneSpread: lib.lookupFunction<_SetFloatNative, _SetFloatDart>(
+            'synth_engine_set_osc1_unison_detune_spread'),
+        setOsc1UnisonStereoSpread: lib.lookupFunction<_SetFloatNative, _SetFloatDart>(
+            'synth_engine_set_osc1_unison_stereo_spread'),
+        setOsc1UnisonMix: lib.lookupFunction<_SetFloatNative, _SetFloatDart>(
+            'synth_engine_set_osc1_unison_mix'),
+        setOsc2UnisonVoiceCount: lib.lookupFunction<_SetIntNative, _SetIntDart>(
+            'synth_engine_set_osc2_unison_voice_count'),
+        setOsc2UnisonDetuneSpread: lib.lookupFunction<_SetFloatNative, _SetFloatDart>(
+            'synth_engine_set_osc2_unison_detune_spread'),
+        setOsc2UnisonStereoSpread: lib.lookupFunction<_SetFloatNative, _SetFloatDart>(
+            'synth_engine_set_osc2_unison_stereo_spread'),
+        setOsc2UnisonMix: lib.lookupFunction<_SetFloatNative, _SetFloatDart>(
+            'synth_engine_set_osc2_unison_mix'),
+      );
+    } catch (_) {
+      return null;
+    }
+  }
+
+  bool get available => true; // non-null if construction succeeded
+
+  final _SetIntDart setOsc1UnisonVoiceCount;
+  final _SetFloatDart setOsc1UnisonDetuneSpread;
+  final _SetFloatDart setOsc1UnisonStereoSpread;
+  final _SetFloatDart setOsc1UnisonMix;
+
+  final _SetIntDart setOsc2UnisonVoiceCount;
+  final _SetFloatDart setOsc2UnisonDetuneSpread;
+  final _SetFloatDart setOsc2UnisonStereoSpread;
+  final _SetFloatDart setOsc2UnisonMix;
 }
 
 // ── High-level Dart wrapper ──────────────────────────────────────────────────
+
+/// Parameter IDs matching the native ParamQueue::ParamId enum.
+/// Used for thread-safe parameter changes via the lock-free queue.
+class ParamId {
+  // MIDI
+  static const int noteOn = 0;
+  static const int noteOff = 1;
+  static const int allNotesOff = 2;
+
+  // Osc 1
+  static const int osc1Waveform = 10;
+  static const int osc1Octave = 11;
+  static const int osc1Detune = 12;
+  static const int osc1PulseWidth = 13;
+  static const int osc1Volume = 14;
+
+  // Osc 2
+  static const int osc2Waveform = 20;
+  static const int osc2Octave = 21;
+  static const int osc2Detune = 22;
+  static const int osc2PulseWidth = 23;
+  static const int osc2Volume = 24;
+  static const int oscMix = 25;
+
+  // Filter
+  static const int filterType = 30;
+  static const int filterCutoff = 31;
+  static const int filterResonance = 32;
+  static const int filterEnvAmount = 33;
+
+  // Amp envelope
+  static const int ampAttack = 40;
+  static const int ampDecay = 41;
+  static const int ampSustain = 42;
+  static const int ampRelease = 43;
+
+  // Filter envelope
+  static const int filterAttack = 50;
+  static const int filterDecay = 51;
+  static const int filterSustain = 52;
+  static const int filterRelease = 53;
+
+  // LFO 1
+  static const int lfo1Waveform = 60;
+  static const int lfo1Rate = 61;
+  static const int lfo1Depth = 62;
+  static const int lfo1Target = 63;
+
+  // LFO 2
+  static const int lfo2Waveform = 70;
+  static const int lfo2Rate = 71;
+  static const int lfo2Depth = 72;
+  static const int lfo2Target = 73;
+
+  // FX: Chorus
+  static const int chorusEnabled = 80;
+  static const int chorusRate = 81;
+  static const int chorusDepth = 82;
+  static const int chorusMix = 83;
+
+  // FX: Delay
+  static const int delayEnabled = 84;
+  static const int delayTime = 85;
+  static const int delayFeedback = 86;
+  static const int delayMix = 87;
+
+  // FX: Reverb
+  static const int reverbEnabled = 88;
+  static const int reverbSize = 89;
+  static const int reverbDamping = 90;
+  static const int reverbMix = 91;
+
+  // FX: Phaser
+  static const int phaserEnabled = 92;
+  static const int phaserRate = 93;
+  static const int phaserDepth = 94;
+  static const int phaserFeedback = 95;
+  static const int phaserMix = 96;
+
+  // FX: Drive
+  static const int driveEnabled = 97;
+  static const int driveAmount = 98;
+  static const int driveType = 99;
+
+  // FX: Flanger
+  static const int flangerEnabled = 100;
+  static const int flangerRate = 101;
+  static const int flangerDepth = 102;
+  static const int flangerFeedback = 103;
+  static const int flangerMix = 104;
+
+  // FX: Compressor
+  static const int compressorEnabled = 105;
+  static const int compressorThreshold = 106;
+  static const int compressorRatio = 107;
+  static const int compressorAttack = 108;
+  static const int compressorRelease = 109;
+  static const int compressorMakeupGain = 110;
+
+  // Master
+  static const int masterVolume = 120;
+
+  // Unison 1
+  static const int osc1UnisonVoiceCount = 130;
+  static const int osc1UnisonDetuneSpread = 131;
+  static const int osc1UnisonStereoSpread = 132;
+  static const int osc1UnisonMix = 133;
+
+  // Unison 2
+  static const int osc2UnisonVoiceCount = 140;
+  static const int osc2UnisonDetuneSpread = 141;
+  static const int osc2UnisonStereoSpread = 142;
+  static const int osc2UnisonMix = 143;
+
+  // Arpeggiator
+  static const int arpEnabled = 150;
+  static const int arpTempo = 151;
+  static const int arpPattern = 152;
+  static const int arpOctaveRange = 153;
+  static const int arpGate = 154;
+  static const int arpResolution = 155;
+
+  // Reset
+  static const int reset = 200;
+}
 
 /// Idiomatic Dart wrapper around the native SynthEngine.
 class OpenAmpSynth {
@@ -346,107 +608,159 @@ class OpenAmpSynth {
     }
   }
 
-  // ── MIDI ───────────────────────────────────────────────────────────────────
+  // ── MIDI (thread-safe via queue) ──────────────────────────────────────────
 
   void noteOn(int midiNote, {double velocity = 1.0}) {
     _check();
-    _bindings.noteOn(_handle, midiNote, velocity);
+    _bindings.enqueueNoteOnFn(_handle, midiNote, velocity);
   }
 
   void noteOff(int midiNote) {
     _check();
-    _bindings.noteOff(_handle, midiNote);
+    _bindings.enqueueNoteOffFn(_handle, midiNote);
   }
 
   void allNotesOff() {
     _check();
-    _bindings.allNotesOff(_handle);
+    _bindings.enqueueAllNotesOffFn(_handle);
   }
 
-  // ── Osc 1 ──────────────────────────────────────────────────────────────────
+  // ── Thread-safe parameter enqueue ───────────────────────────────────────
 
-  set osc1Waveform(int w) { _check(); _bindings.setOsc1Waveform(_handle, w); }
-  set osc1Octave(int o) { _check(); _bindings.setOsc1Octave(_handle, o); }
-  set osc1Detune(double cents) { _check(); _bindings.setOsc1Detune(_handle, cents); }
-  set osc1PulseWidth(double pw) { _check(); _bindings.setOsc1PulseWidth(_handle, pw); }
-  set osc1Volume(double v) { _check(); _bindings.setOsc1Volume(_handle, v); }
+  /// Enqueue a float parameter change. Takes effect at next block boundary.
+  void enqueueFloat(int paramId, double value) {
+    _check();
+    _bindings.enqueueFloat(_handle, paramId, value);
+  }
 
-  // ── Osc 2 ──────────────────────────────────────────────────────────────────
+  /// Enqueue an int parameter change. Takes effect at next block boundary.
+  void enqueueInt(int paramId, int value) {
+    _check();
+    _bindings.enqueueInt(_handle, paramId, value);
+  }
 
-  set osc2Waveform(int w) { _check(); _bindings.setOsc2Waveform(_handle, w); }
-  set osc2Octave(int o) { _check(); _bindings.setOsc2Octave(_handle, o); }
-  set osc2Detune(double cents) { _check(); _bindings.setOsc2Detune(_handle, cents); }
-  set osc2PulseWidth(double pw) { _check(); _bindings.setOsc2PulseWidth(_handle, pw); }
-  set osc2Volume(double v) { _check(); _bindings.setOsc2Volume(_handle, v); }
-  set oscMix(double m) { _check(); _bindings.setOscMix(_handle, m); }
+  // ── Osc 1 (queue-based) ─────────────────────────────────────────────────
 
-  // ── Filter ─────────────────────────────────────────────────────────────────
+  set osc1Waveform(int w) { enqueueInt(ParamId.osc1Waveform, w); }
+  set osc1Octave(int o) { enqueueInt(ParamId.osc1Octave, o); }
+  set osc1Detune(double cents) { enqueueFloat(ParamId.osc1Detune, cents); }
+  set osc1PulseWidth(double pw) { enqueueFloat(ParamId.osc1PulseWidth, pw); }
+  set osc1Volume(double v) { enqueueFloat(ParamId.osc1Volume, v); }
 
-  set filterType(int t) { _check(); _bindings.setFilterType(_handle, t); }
-  set filterCutoff(double hz) { _check(); _bindings.setFilterCutoff(_handle, hz); }
-  set filterResonance(double q) { _check(); _bindings.setFilterResonance(_handle, q); }
-  set filterEnvAmount(double a) { _check(); _bindings.setFilterEnvAmount(_handle, a); }
+  // ── Osc 2 (queue-based) ─────────────────────────────────────────────────
 
-  // ── Amp envelope ───────────────────────────────────────────────────────────
+  set osc2Waveform(int w) { enqueueInt(ParamId.osc2Waveform, w); }
+  set osc2Octave(int o) { enqueueInt(ParamId.osc2Octave, o); }
+  set osc2Detune(double cents) { enqueueFloat(ParamId.osc2Detune, cents); }
+  set osc2PulseWidth(double pw) { enqueueFloat(ParamId.osc2PulseWidth, pw); }
+  set osc2Volume(double v) { enqueueFloat(ParamId.osc2Volume, v); }
+  set oscMix(double m) { enqueueFloat(ParamId.oscMix, m); }
 
-  set ampAttack(double ms) { _check(); _bindings.setAmpAttack(_handle, ms); }
-  set ampDecay(double ms) { _check(); _bindings.setAmpDecay(_handle, ms); }
-  set ampSustain(double level) { _check(); _bindings.setAmpSustain(_handle, level); }
-  set ampRelease(double ms) { _check(); _bindings.setAmpRelease(_handle, ms); }
+  // ── Filter (queue-based) ────────────────────────────────────────────────
 
-  // ── Filter envelope ────────────────────────────────────────────────────────
+  set filterType(int t) { enqueueInt(ParamId.filterType, t); }
+  set filterCutoff(double hz) { enqueueFloat(ParamId.filterCutoff, hz); }
+  set filterResonance(double q) { enqueueFloat(ParamId.filterResonance, q); }
+  set filterEnvAmount(double a) { enqueueFloat(ParamId.filterEnvAmount, a); }
 
-  set filterAttack(double ms) { _check(); _bindings.setFilterAttack(_handle, ms); }
-  set filterDecay(double ms) { _check(); _bindings.setFilterDecay(_handle, ms); }
-  set filterSustain(double level) { _check(); _bindings.setFilterSustain(_handle, level); }
-  set filterRelease(double ms) { _check(); _bindings.setFilterRelease(_handle, ms); }
+  // ── Amp envelope (queue-based) ──────────────────────────────────────────
 
-  // ── LFO 1 ──────────────────────────────────────────────────────────────────
+  set ampAttack(double ms) { enqueueFloat(ParamId.ampAttack, ms); }
+  set ampDecay(double ms) { enqueueFloat(ParamId.ampDecay, ms); }
+  set ampSustain(double level) { enqueueFloat(ParamId.ampSustain, level); }
+  set ampRelease(double ms) { enqueueFloat(ParamId.ampRelease, ms); }
 
-  set lfo1Waveform(int w) { _check(); _bindings.setLfo1Waveform(_handle, w); }
-  set lfo1Rate(double hz) { _check(); _bindings.setLfo1Rate(_handle, hz); }
-  set lfo1Depth(double d) { _check(); _bindings.setLfo1Depth(_handle, d); }
-  set lfo1Target(int t) { _check(); _bindings.setLfo1Target(_handle, t); }
+  // ── Filter envelope (queue-based) ────────────────────────────────────────
 
-  // ── LFO 2 ──────────────────────────────────────────────────────────────────
+  set filterAttack(double ms) { enqueueFloat(ParamId.filterAttack, ms); }
+  set filterDecay(double ms) { enqueueFloat(ParamId.filterDecay, ms); }
+  set filterSustain(double level) { enqueueFloat(ParamId.filterSustain, level); }
+  set filterRelease(double ms) { enqueueFloat(ParamId.filterRelease, ms); }
 
-  set lfo2Waveform(int w) { _check(); _bindings.setLfo2Waveform(_handle, w); }
-  set lfo2Rate(double hz) { _check(); _bindings.setLfo2Rate(_handle, hz); }
-  set lfo2Depth(double d) { _check(); _bindings.setLfo2Depth(_handle, d); }
-  set lfo2Target(int t) { _check(); _bindings.setLfo2Target(_handle, t); }
+  // ── LFO 1 (queue-based) ──────────────────────────────────────────────────
 
-  // ── FX ─────────────────────────────────────────────────────────────────────
+  set lfo1Waveform(int w) { enqueueInt(ParamId.lfo1Waveform, w); }
+  set lfo1Rate(double hz) { enqueueFloat(ParamId.lfo1Rate, hz); }
+  set lfo1Depth(double d) { enqueueFloat(ParamId.lfo1Depth, d); }
+  set lfo1Target(int t) { enqueueInt(ParamId.lfo1Target, t); }
 
-  set chorusEnabled(bool e) { _check(); _bindings.setChorusEnabled(_handle, e ? 1 : 0); }
-  set chorusRate(double hz) { _check(); _bindings.setChorusRate(_handle, hz); }
-  set chorusDepth(double d) { _check(); _bindings.setChorusDepth(_handle, d); }
-  set chorusMix(double m) { _check(); _bindings.setChorusMix(_handle, m); }
+  // ── LFO 2 (queue-based) ──────────────────────────────────────────────────
 
-  set delayEnabled(bool e) { _check(); _bindings.setDelayEnabled(_handle, e ? 1 : 0); }
-  set delayTime(double ms) { _check(); _bindings.setDelayTime(_handle, ms); }
-  set delayFeedback(double fb) { _check(); _bindings.setDelayFeedback(_handle, fb); }
-  set delayMix(double m) { _check(); _bindings.setDelayMix(_handle, m); }
+  set lfo2Waveform(int w) { enqueueInt(ParamId.lfo2Waveform, w); }
+  set lfo2Rate(double hz) { enqueueFloat(ParamId.lfo2Rate, hz); }
+  set lfo2Depth(double d) { enqueueFloat(ParamId.lfo2Depth, d); }
+  set lfo2Target(int t) { enqueueInt(ParamId.lfo2Target, t); }
 
-  set reverbEnabled(bool e) { _check(); _bindings.setReverbEnabled(_handle, e ? 1 : 0); }
-  set reverbSize(double s) { _check(); _bindings.setReverbSize(_handle, s); }
-  set reverbDamping(double d) { _check(); _bindings.setReverbDamping(_handle, d); }
-  set reverbMix(double m) { _check(); _bindings.setReverbMix(_handle, m); }
+  // ── FX (queue-based) ──────────────────────────────────────────────────────
 
-  set phaserEnabled(bool e) { _check(); _bindings.setPhaserEnabled(_handle, e ? 1 : 0); }
-  set phaserRate(double hz) { _check(); _bindings.setPhaserRate(_handle, hz); }
-  set phaserDepth(double d) { _check(); _bindings.setPhaserDepth(_handle, d); }
-  set phaserFeedback(double fb) { _check(); _bindings.setPhaserFeedback(_handle, fb); }
-  set phaserMix(double m) { _check(); _bindings.setPhaserMix(_handle, m); }
+  set chorusEnabled(bool e) { enqueueInt(ParamId.chorusEnabled, e ? 1 : 0); }
+  set chorusRate(double hz) { enqueueFloat(ParamId.chorusRate, hz); }
+  set chorusDepth(double d) { enqueueFloat(ParamId.chorusDepth, d); }
+  set chorusMix(double m) { enqueueFloat(ParamId.chorusMix, m); }
 
-  // ── Drive ──────────────────────────────────────────────────────────────────
+  set delayEnabled(bool e) { enqueueInt(ParamId.delayEnabled, e ? 1 : 0); }
+  set delayTime(double ms) { enqueueFloat(ParamId.delayTime, ms); }
+  set delayFeedback(double fb) { enqueueFloat(ParamId.delayFeedback, fb); }
+  set delayMix(double m) { enqueueFloat(ParamId.delayMix, m); }
 
-  set driveEnabled(bool e) { _check(); _bindings.setDriveEnabled(_handle, e ? 1 : 0); }
-  set driveAmount(double a) { _check(); _bindings.setDriveAmount(_handle, a); }
-  set driveType(int t) { _check(); _bindings.setDriveType(_handle, t); }
+  set reverbEnabled(bool e) { enqueueInt(ParamId.reverbEnabled, e ? 1 : 0); }
+  set reverbSize(double s) { enqueueFloat(ParamId.reverbSize, s); }
+  set reverbDamping(double d) { enqueueFloat(ParamId.reverbDamping, d); }
+  set reverbMix(double m) { enqueueFloat(ParamId.reverbMix, m); }
 
-  // ── Master ─────────────────────────────────────────────────────────────────
+  set phaserEnabled(bool e) { enqueueInt(ParamId.phaserEnabled, e ? 1 : 0); }
+  set phaserRate(double hz) { enqueueFloat(ParamId.phaserRate, hz); }
+  set phaserDepth(double d) { enqueueFloat(ParamId.phaserDepth, d); }
+  set phaserFeedback(double fb) { enqueueFloat(ParamId.phaserFeedback, fb); }
+  set phaserMix(double m) { enqueueFloat(ParamId.phaserMix, m); }
 
-  set masterVolume(double v) { _check(); _bindings.setMasterVolume(_handle, v); }
+  // ── Drive (queue-based) ──────────────────────────────────────────────────
+
+  set driveEnabled(bool e) { enqueueInt(ParamId.driveEnabled, e ? 1 : 0); }
+  set driveAmount(double a) { enqueueFloat(ParamId.driveAmount, a); }
+  set driveType(int t) { enqueueInt(ParamId.driveType, t); }
+
+  // ── Flanger (queue-based) ────────────────────────────────────────────────
+
+  set flangerEnabled(bool e) { enqueueInt(ParamId.flangerEnabled, e ? 1 : 0); }
+  set flangerRate(double hz) { enqueueFloat(ParamId.flangerRate, hz); }
+  set flangerDepth(double d) { enqueueFloat(ParamId.flangerDepth, d); }
+  set flangerFeedback(double fb) { enqueueFloat(ParamId.flangerFeedback, fb); }
+  set flangerMix(double m) { enqueueFloat(ParamId.flangerMix, m); }
+
+  // ── Compressor (queue-based) ─────────────────────────────────────────────
+
+  set compressorEnabled(bool e) { enqueueInt(ParamId.compressorEnabled, e ? 1 : 0); }
+  set compressorThreshold(double t) { enqueueFloat(ParamId.compressorThreshold, t); }
+  set compressorRatio(double r) { enqueueFloat(ParamId.compressorRatio, r); }
+  set compressorAttack(double a) { enqueueFloat(ParamId.compressorAttack, a); }
+  set compressorRelease(double r) { enqueueFloat(ParamId.compressorRelease, r); }
+  set compressorMakeupGain(double g) { enqueueFloat(ParamId.compressorMakeupGain, g); }
+
+  // ── Unison (queue-based) ─────────────────────────────────────────────────
+
+  set osc1UnisonVoiceCount(int v) { enqueueInt(ParamId.osc1UnisonVoiceCount, v); }
+  set osc1UnisonDetuneSpread(double v) { enqueueFloat(ParamId.osc1UnisonDetuneSpread, v); }
+  set osc1UnisonStereoSpread(double v) { enqueueFloat(ParamId.osc1UnisonStereoSpread, v); }
+  set osc1UnisonMix(double v) { enqueueFloat(ParamId.osc1UnisonMix, v); }
+
+  set osc2UnisonVoiceCount(int v) { enqueueInt(ParamId.osc2UnisonVoiceCount, v); }
+  set osc2UnisonDetuneSpread(double v) { enqueueFloat(ParamId.osc2UnisonDetuneSpread, v); }
+  set osc2UnisonStereoSpread(double v) { enqueueFloat(ParamId.osc2UnisonStereoSpread, v); }
+  set osc2UnisonMix(double v) { enqueueFloat(ParamId.osc2UnisonMix, v); }
+
+  // ── Master (queue-based) ─────────────────────────────────────────────────
+
+  set masterVolume(double v) { enqueueFloat(ParamId.masterVolume, v); }
+
+  // ── Arpeggiator (queue-based) ──────────────────────────────────────────────
+
+  set arpEnabled(bool e) { enqueueInt(ParamId.arpEnabled, e ? 1 : 0); }
+  set arpTempo(double bpm) { enqueueFloat(ParamId.arpTempo, bpm); }
+  set arpPattern(int p) { enqueueInt(ParamId.arpPattern, p); }
+  set arpOctaveRange(int o) { enqueueInt(ParamId.arpOctaveRange, o); }
+  set arpGate(double g) { enqueueFloat(ParamId.arpGate, g); }
+  set arpResolution(int r) { enqueueInt(ParamId.arpResolution, r); }
 
   int get activeVoices {
     if (_disposed) return 0;

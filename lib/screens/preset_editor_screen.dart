@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/preset_category.dart';
 import '../providers/synth_providers.dart';
+import '../providers/undo_redo_provider.dart';
 import '../theme/synth_theme.dart';
 
 class PresetEditorScreen extends ConsumerStatefulWidget {
@@ -57,6 +58,7 @@ class _PresetEditorScreenState extends ConsumerState<PresetEditorScreen> {
         actions: [
           TextButton(
             onPressed: () {
+              ref.read(undoRedoProvider.notifier).save();
               // Save changes
               final tags = _tagsController.text
                   .split(',')

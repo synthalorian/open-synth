@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/oscillator.dart';
+import '../models/waveform.dart';
 import '../theme/synth_theme.dart';
 import 'synth_knob.dart';
 import 'waveform_selector.dart';
@@ -8,12 +9,14 @@ class OscillatorPanel extends StatelessWidget {
   final String title;
   final Oscillator oscillator;
   final ValueChanged<Oscillator> onChanged;
+  final bool isLocked;
 
   const OscillatorPanel({
     super.key,
     required this.title,
     required this.oscillator,
     required this.onChanged,
+    this.isLocked = false,
   });
 
   @override
@@ -67,6 +70,10 @@ class OscillatorPanel extends StatelessWidget {
                   letterSpacing: 1.5,
                 ),
               ),
+              if (isLocked) ...[
+                const SizedBox(width: 6),
+                Icon(Icons.lock, color: SynthTheme.magenta, size: 12),
+              ],
             ],
           ),
           const SizedBox(height: 8),
@@ -162,9 +169,185 @@ class OscillatorPanel extends StatelessWidget {
                     onChanged(oscillator.copyWith(volume: v)),
                 activeColor: SynthTheme.cyan,
               ),
+              if (oscillator.waveform == Waveform.wavetable)
+                SynthKnob(
+                  label: 'WT POS',
+                  value: oscillator.wavetablePosition,
+                  min: 0,
+                  max: 1,
+                  size: 50,
+                  formatValue: (v) => '${(v * 100).round()}%',
+                  onChanged: (v) =>
+                      onChanged(oscillator.copyWith(wavetablePosition: v)),
+                  activeColor: SynthTheme.purple,
+                ),
+            ],
+          ),
+          const SizedBox(height: 10),
+
+          // ── Unison section ──
+          if (oscillator.unisonVoiceCount > 1)
+            _buildUnisonSection(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildUnisonSection() {
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: SynthTheme.surface.withValues(alpha: 0.5),
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(
+          color: SynthTheme.cyan.withValues(alpha: 0.2),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.layers, color: SynthTheme.cyan, size: 12),
+              const SizedBox(width: 4),
+              Text(
+                'UNISON',
+                style: TextStyle(
+                  color: SynthTheme.cyan,
+                  fontSize: 9,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1.2,
+                ),
+              ),
+              const Spacer(),
+              // Voice count selector
+              _buildUnisonVoiceSelector(),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              SynthKnob(
+                label: 'SPREAD',
+                value: oscillator.unisonDetuneSpread,
+                min: 0,
+                max: 50,
+                size: 40,
+                formatValue: (v) => '${v.round()}c',
+                onChanged: (v) => onChanged(
+                  oscillator.copyWith(unisonDetuneSpread: v),
+                ),
+                activeColor: SynthTheme.cyan,
+              ),
+              SynthKnob(
+                label: 'STEREO',
+                value: oscillator.unisonStereoSpread,
+                min: 0,
+                max: 1,
+                size: 40,
+                formatValue: (v) => '${(v * 100).round()}%',
+                onChanged: (v) => onChanged(
+                  oscillator.copyWith(unisonStereoSpread: v),
+                ),
+                activeColor: SynthTheme.purple,
+              ),
+              SynthKnob(
+                label: 'MIX',
+                value: oscillator.unisonMix,
+                min: 0,
+                max: 1,
+                size: 40,
+                formatValue: (v) => '${(v * 100).round()}%',
+                onChanged: (v) => onChanged(
+                  oscillator.copyWith(unisonMix: v),
+                ),
+                activeColor: SynthTheme.magenta,
+              ),
             ],
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildUnisonVoiceSelector() {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        _UnisonChip(
+          label: '1',
+          selected: oscillator.unisonVoiceCount == 1,
+          onTap: () => onChanged(
+            oscillator.copyWith(unisonVoiceCount: 1),
+          ),
+        ),
+        _UnisonChip(
+          label: '2',
+          selected: oscillator.unisonVoiceCount == 2,
+          onTap: () => onChanged(
+            oscillator.copyWith(unisonVoiceCount: 2),
+          ),
+        ),
+        _UnisonChip(
+          label: '4',
+          selected: oscillator.unisonVoiceCount == 4,
+          onTap: () => onChanged(
+            oscillator.copyWith(unisonVoiceCount: 4),
+          ),
+        ),
+        _UnisonChip(
+          label: '8',
+          selected: oscillator.unisonVoiceCount == 8,
+          onTap: () => onChanged(
+            oscillator.copyWith(unisonVoiceCount: 8),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _UnisonChip extends StatelessWidget {
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
+
+  const _UnisonChip({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 150),
+        width: 26,
+        height: 22,
+        margin: const EdgeInsets.only(left: 2),
+        decoration: BoxDecoration(
+          color: selected
+              ? SynthTheme.cyan.withValues(alpha: 0.25)
+              : SynthTheme.surface,
+          borderRadius: BorderRadius.circular(3),
+          border: Border.all(
+            color: selected
+                ? SynthTheme.cyan
+                : SynthTheme.purple.withValues(alpha: 0.2),
+          ),
+        ),
+        alignment: Alignment.center,
+        child: Text(
+          label,
+          style: TextStyle(
+            color: selected ? SynthTheme.cyan : SynthTheme.textSecondary,
+            fontSize: 10,
+            fontWeight: selected ? FontWeight.bold : FontWeight.w500,
+          ),
+        ),
       ),
     );
   }

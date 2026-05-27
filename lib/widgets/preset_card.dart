@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/synth_preset.dart';
+import '../providers/favorites_provider.dart';
 import '../theme/synth_theme.dart';
+import 'preset_waveform_preview.dart';
 
-class PresetCard extends StatelessWidget {
+class PresetCard extends ConsumerWidget {
   final SynthPreset preset;
   final bool isSelected;
   final VoidCallback onTap;
@@ -17,7 +20,8 @@ class PresetCard extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isFavorite = ref.watch(favoritesProvider).contains(preset.id);
     return GestureDetector(
       onTap: onTap,
       onLongPress: onLongPress,
@@ -46,6 +50,15 @@ class PresetCard extends StatelessWidget {
         ),
         child: Row(
           children: [
+            // Waveform preview
+            Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: PresetWaveformPreview(
+                waveform: preset.osc1.waveform,
+                dualOsc: preset.osc2.enabled,
+                size: 28,
+              ),
+            ),
             // Preset name
             Expanded(
               child: Column(
@@ -75,6 +88,17 @@ class PresetCard extends StatelessWidget {
                 ],
               ),
             ),
+
+            // Favorite star
+            GestureDetector(
+              onTap: () => ref.read(favoritesProvider.notifier).toggle(preset.id),
+              child: Icon(
+                isFavorite ? Icons.star : Icons.star_border,
+                color: isFavorite ? SynthTheme.orange : SynthTheme.textSecondary.withValues(alpha: 0.3),
+                size: 18,
+              ),
+            ),
+            const SizedBox(width: 6),
 
             // Category badge
             Container(

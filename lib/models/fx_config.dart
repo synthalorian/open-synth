@@ -180,6 +180,108 @@ class PhaserConfig {
       );
 }
 
+class FlangerConfig {
+  final bool enabled;
+  final double rate;
+  final double depth;
+  final double feedback;
+  final double mix;
+
+  const FlangerConfig({
+    this.enabled = false,
+    this.rate = 0.3,
+    this.depth = 0.6,
+    this.feedback = 0.4,
+    this.mix = 0.5,
+  });
+
+  FlangerConfig copyWith({
+    bool? enabled,
+    double? rate,
+    double? depth,
+    double? feedback,
+    double? mix,
+  }) {
+    return FlangerConfig(
+      enabled: enabled ?? this.enabled,
+      rate: rate ?? this.rate,
+      depth: depth ?? this.depth,
+      feedback: feedback ?? this.feedback,
+      mix: mix ?? this.mix,
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        'enabled': enabled,
+        'rate': rate,
+        'depth': depth,
+        'feedback': feedback,
+        'mix': mix,
+      };
+
+  factory FlangerConfig.fromJson(Map<String, dynamic> json) => FlangerConfig(
+        enabled: json['enabled'] as bool? ?? false,
+        rate: (json['rate'] as num? ?? 0.3).toDouble(),
+        depth: (json['depth'] as num? ?? 0.6).toDouble(),
+        feedback: (json['feedback'] as num? ?? 0.4).toDouble(),
+        mix: (json['mix'] as num? ?? 0.5).toDouble(),
+      );
+}
+
+class CompressorConfig {
+  final bool enabled;
+  final double threshold;
+  final double ratio;
+  final double attack;
+  final double release;
+  final double makeupGain;
+
+  const CompressorConfig({
+    this.enabled = false,
+    this.threshold = 0.5,
+    this.ratio = 4.0,
+    this.attack = 10.0,
+    this.release = 100.0,
+    this.makeupGain = 0.0,
+  });
+
+  CompressorConfig copyWith({
+    bool? enabled,
+    double? threshold,
+    double? ratio,
+    double? attack,
+    double? release,
+    double? makeupGain,
+  }) {
+    return CompressorConfig(
+      enabled: enabled ?? this.enabled,
+      threshold: threshold ?? this.threshold,
+      ratio: ratio ?? this.ratio,
+      attack: attack ?? this.attack,
+      release: release ?? this.release,
+      makeupGain: makeupGain ?? this.makeupGain,
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        'enabled': enabled,
+        'threshold': threshold,
+        'ratio': ratio,
+        'attack': attack,
+        'release': release,
+        'makeupGain': makeupGain,
+      };
+
+  factory CompressorConfig.fromJson(Map<String, dynamic> json) => CompressorConfig(
+        enabled: json['enabled'] as bool? ?? false,
+        threshold: (json['threshold'] as num? ?? 0.5).toDouble(),
+        ratio: (json['ratio'] as num? ?? 4.0).toDouble(),
+        attack: (json['attack'] as num? ?? 10.0).toDouble(),
+        release: (json['release'] as num? ?? 100.0).toDouble(),
+        makeupGain: (json['makeupGain'] as num? ?? 0.0).toDouble(),
+      );
+}
+
 class DriveConfig {
   final bool enabled;
   final double amount;

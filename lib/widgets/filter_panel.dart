@@ -7,11 +7,13 @@ import 'synth_knob.dart';
 class FilterPanel extends StatelessWidget {
   final FilterConfig filter;
   final ValueChanged<FilterConfig> onChanged;
+  final bool isLocked;
 
   const FilterPanel({
     super.key,
     required this.filter,
     required this.onChanged,
+    this.isLocked = false,
   });
 
   @override
@@ -38,6 +40,10 @@ class FilterPanel extends StatelessWidget {
                   letterSpacing: 1.5,
                 ),
               ),
+              if (isLocked) ...[
+                const SizedBox(width: 6),
+                Icon(Icons.lock, color: SynthTheme.magenta, size: 12),
+              ],
               const Spacer(),
               ...FilterType.values.map((ft) {
                 final isSelected = ft == filter.type;

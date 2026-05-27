@@ -3,10 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/preset_category.dart';
 import '../models/synth_preset.dart';
+import '../providers/favorites_provider.dart';
 import '../providers/synth_providers.dart';
+import '../providers/undo_redo_provider.dart';
 import '../theme/synth_theme.dart';
 import '../widgets/preset_card.dart';
 import 'preset_editor_screen.dart';
+import 'settings_screen.dart';
 import 'synth_screen.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -19,7 +22,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  final _categories = [null, ...PresetCategory.values]; // null = "All"
+  final _categories = [null, ...PresetCategory.values, 'favorites']; // null = "All", 'favorites' = special
 
   @override
   void initState() {
@@ -51,6 +54,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
           ),
         ),
         actions: [
+          IconButton(
+            icon: Icon(Icons.settings, color: SynthTheme.cyan),
+            tooltip: 'Settings',
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const SettingsScreen()),
+              );
+            },
+          ),
           IconButton(
             icon: Icon(Icons.add, color: SynthTheme.cyan),
             tooltip: 'New Preset',
@@ -101,8 +113,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                 indicatorColor: SynthTheme.magenta,
                 indicatorSize: TabBarIndicatorSize.label,
                 labelStyle: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1),
-                tabs: _categories.map((c) {
-                  return Tab(text: c?.displayName ?? 'All');
+                tabs: _categories.map<Tab>((c) {
+                  if (c == 'favorites') return const Tab(text: '★ Favs');
+                  if (c is PresetCategory) return Tab(text: c.displayName);
+                  return const Tab(text: 'All');
                 }).toList(),
               ),
             ],
@@ -112,9 +126,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
       body: TabBarView(
         controller: _tabController,
         children: _categories.map((category) {
-          var filtered = category == null
-              ? presets
-              : presets.where((p) => p.category == category).toList();
+          late List<SynthPreset> filtered;
+          if (category == 'favorites') {
+            final favs = ref.watch(favoritesProvider);
+            filtered = presets.where((p) => favs.contains(p.id)).toList();
+          } else {
+            filtered = category == null
+                ? presets
+                : presets.where((p) => p.category == category).toList();
+          }
 
           if (searchQuery.isNotEmpty) {
             final q = searchQuery.toLowerCase();
@@ -151,6 +171,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                 preset: preset,
                 isSelected: preset.id == currentPreset.id,
                 onTap: () {
+                  ref.read(undoRedoProvider.notifier).save();
                   ref.read(currentPresetProvider.notifier).load(preset);
                   Navigator.of(context).push(
                     MaterialPageRoute(

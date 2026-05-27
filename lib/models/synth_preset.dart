@@ -22,6 +22,8 @@ class SynthPreset {
   final DelayConfig delay;
   final ReverbConfig reverb;
   final PhaserConfig phaser;
+  final FlangerConfig flanger;
+  final CompressorConfig compressor;
   final DriveConfig drive;
   final double masterVolume;
   final List<String> tags;
@@ -43,6 +45,8 @@ class SynthPreset {
     DelayConfig? delay,
     ReverbConfig? reverb,
     PhaserConfig? phaser,
+    FlangerConfig? flanger,
+    CompressorConfig? compressor,
     DriveConfig? drive,
     this.masterVolume = 0.8,
     this.tags = const [],
@@ -60,6 +64,8 @@ class SynthPreset {
         delay = delay ?? const DelayConfig(),
         reverb = reverb ?? const ReverbConfig(),
         phaser = phaser ?? const PhaserConfig(),
+        flanger = flanger ?? const FlangerConfig(),
+        compressor = compressor ?? const CompressorConfig(),
         drive = drive ?? const DriveConfig();
 
   SynthPreset copyWith({
@@ -77,6 +83,8 @@ class SynthPreset {
     DelayConfig? delay,
     ReverbConfig? reverb,
     PhaserConfig? phaser,
+    FlangerConfig? flanger,
+    CompressorConfig? compressor,
     DriveConfig? drive,
     double? masterVolume,
     List<String>? tags,
@@ -98,6 +106,8 @@ class SynthPreset {
       delay: delay ?? this.delay,
       reverb: reverb ?? this.reverb,
       phaser: phaser ?? this.phaser,
+      flanger: flanger ?? this.flanger,
+      compressor: compressor ?? this.compressor,
       drive: drive ?? this.drive,
       masterVolume: masterVolume ?? this.masterVolume,
       tags: tags ?? this.tags,
@@ -121,6 +131,8 @@ class SynthPreset {
         'delay': delay.toJson(),
         'reverb': reverb.toJson(),
         'phaser': phaser.toJson(),
+        'flanger': flanger.toJson(),
+        'compressor': compressor.toJson(),
         'drive': drive.toJson(),
         'masterVolume': masterVolume,
         'tags': tags,
@@ -154,6 +166,12 @@ class SynthPreset {
         phaser: json.containsKey('phaser')
             ? PhaserConfig.fromJson(json['phaser'] as Map<String, dynamic>)
             : const PhaserConfig(),
+        flanger: json.containsKey('flanger')
+            ? FlangerConfig.fromJson(json['flanger'] as Map<String, dynamic>)
+            : const FlangerConfig(),
+        compressor: json.containsKey('compressor')
+            ? CompressorConfig.fromJson(json['compressor'] as Map<String, dynamic>)
+            : const CompressorConfig(),
         drive: json.containsKey('drive')
             ? DriveConfig.fromJson(json['drive'] as Map<String, dynamic>)
             : const DriveConfig(),

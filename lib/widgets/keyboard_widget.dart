@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../providers/arpeggiator_provider.dart';
+import '../providers/keyboard_split_provider.dart';
+import '../providers/midi_recorder_provider.dart';
 import '../providers/synth_providers.dart';
 import '../theme/synth_theme.dart';
 
@@ -13,7 +16,12 @@ class KeyboardWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final octave = ref.watch(keyboardOctaveProvider);
+    final split = ref.watch(keyboardSplitProvider);
     final activeNotes = ref.watch(playbackStateProvider);
+    final zoneBActive = ref.watch(zoneBPlaybackProvider);
+
+    // Combined active notes for both zones
+    final allActive = {...activeNotes, ...zoneBActive};
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
@@ -26,7 +34,7 @@ class KeyboardWidget extends ConsumerWidget {
       ),
       child: Column(
         children: [
-          // Octave controls
+          // Octave controls + split indicator
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -53,6 +61,25 @@ class KeyboardWidget extends ConsumerWidget {
                     ? () => ref.read(keyboardOctaveProvider.notifier).state = octave + 1
                     : null,
               ),
+              if (split.enabled) ...[
+                const SizedBox(width: 12),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                  decoration: BoxDecoration(
+                    color: SynthTheme.magenta.withValues(alpha: 0.15),
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: Text(
+                    'SPLIT',
+                    style: TextStyle(
+                      color: SynthTheme.magenta,
+                      fontSize: 9,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1,
+                    ),
+                  ),
+                ),
+              ],
             ],
           ),
           const SizedBox(height: 6),
@@ -75,7 +102,9 @@ class KeyboardWidget extends ConsumerWidget {
                 for (int octIdx = 0; octIdx < 2; octIdx++) {
                   for (int i = 0; i < 12; i++) {
                     final midiNote = (octave + octIdx) * 12 + i;
-                    final isActive = activeNotes.contains(midiNote);
+                    final isActive = allActive.contains(midiNote);
+                    final isSplitPoint = split.enabled && midiNote == split.splitPoint;
+                    final isZoneB = split.enabled && midiNote >= split.splitPoint;
 
                     if (!_isBlack[i]) {
                       // White key
@@ -89,10 +118,14 @@ class KeyboardWidget extends ConsumerWidget {
                             height: 100,
                             label: _noteNames[i],
                             isActive: isActive,
-                            onTapDown: () =>
-                                ref.read(playbackStateProvider.notifier).noteOn(midiNote),
-                            onTapUp: () =>
-                                ref.read(playbackStateProvider.notifier).noteOff(midiNote),
+                            isSplitPoint: isSplitPoint,
+                            isZoneB: isZoneB,
+                            onTapDown: () {
+                              _noteOn(ref, midiNote);
+                            },
+                            onTapUp: () {
+                              _noteOff(ref, midiNote);
+                            },
                           ),
                         ),
                       );
@@ -108,10 +141,13 @@ class KeyboardWidget extends ConsumerWidget {
                             width: blackKeyWidth,
                             height: 60,
                             isActive: isActive,
-                            onTapDown: () =>
-                                ref.read(playbackStateProvider.notifier).noteOn(midiNote),
-                            onTapUp: () =>
-                                ref.read(playbackStateProvider.notifier).noteOff(midiNote),
+                            isZoneB: isZoneB,
+                            onTapDown: () {
+                              _noteOn(ref, midiNote);
+                            },
+                            onTapUp: () {
+                              _noteOff(ref, midiNote);
+                            },
                           ),
                         ),
                       );
@@ -126,6 +162,37 @@ class KeyboardWidget extends ConsumerWidget {
         ],
       ),
     );
+  }
+
+  void _noteOn(WidgetRef ref, int midiNote) {
+    final split = ref.read(keyboardSplitProvider);
+    final zone = split.zoneForNote(midiNote);
+
+    // Update arp notes regardless of zone
+    ref.read(arpNotesProvider.notifier).update((set) => {...set, midiNote});
+
+    if (zone == 1) {
+      // Zone B
+      ref.read(zoneBPlaybackProvider.notifier).noteOn(midiNote);
+    } else {
+      // Zone A or split disabled
+      ref.read(playbackStateProvider.notifier).noteOn(midiNote);
+    }
+    recordNoteOn(ref, midiNote);
+  }
+
+  void _noteOff(WidgetRef ref, int midiNote) {
+    final split = ref.read(keyboardSplitProvider);
+    final zone = split.zoneForNote(midiNote);
+
+    ref.read(arpNotesProvider.notifier).update((set) => {...set}..remove(midiNote));
+
+    if (zone == 1) {
+      ref.read(zoneBPlaybackProvider.notifier).noteOff(midiNote);
+    } else {
+      ref.read(playbackStateProvider.notifier).noteOff(midiNote);
+    }
+    recordNoteOff(ref, midiNote);
   }
 }
 
@@ -165,6 +232,8 @@ class _WhiteKey extends StatelessWidget {
   final double height;
   final String label;
   final bool isActive;
+  final bool isSplitPoint;
+  final bool isZoneB;
   final VoidCallback onTapDown;
   final VoidCallback onTapUp;
 
@@ -173,6 +242,8 @@ class _WhiteKey extends StatelessWidget {
     required this.height,
     required this.label,
     required this.isActive,
+    required this.isSplitPoint,
+    required this.isZoneB,
     required this.onTapDown,
     required this.onTapUp,
   });
@@ -192,40 +263,89 @@ class _WhiteKey extends StatelessWidget {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: isActive
-                ? [
-                    SynthTheme.magenta.withValues(alpha: 0.4),
-                    Colors.white.withValues(alpha: 0.95),
-                  ]
+                ? (isZoneB
+                    ? [
+                        SynthTheme.magenta.withValues(alpha: 0.4),
+                        Colors.white.withValues(alpha: 0.95),
+                      ]
+                    : [
+                        SynthTheme.cyan.withValues(alpha: 0.4),
+                        Colors.white.withValues(alpha: 0.95),
+                      ])
                 : [
                     Colors.white.withValues(alpha: 0.95),
                     Colors.white.withValues(alpha: 0.85),
                   ],
           ),
           borderRadius: const BorderRadius.vertical(bottom: Radius.circular(4)),
-          border: Border.all(
-            color: isActive
-                ? SynthTheme.magenta.withValues(alpha: 0.6)
-                : Colors.black.withValues(alpha: 0.2),
-            width: 0.5,
+          border: Border(
+            left: isSplitPoint
+                ? BorderSide(color: SynthTheme.magenta, width: 3)
+                : BorderSide(
+                    color: isActive
+                        ? (isZoneB
+                            ? SynthTheme.magenta.withValues(alpha: 0.6)
+                            : SynthTheme.cyan.withValues(alpha: 0.6))
+                        : Colors.black.withValues(alpha: 0.2),
+                    width: 0.5,
+                  ),
+            right: BorderSide(
+              color: Colors.black.withValues(alpha: 0.2),
+              width: 0.5,
+            ),
+            top: BorderSide(
+              color: isSplitPoint
+                  ? SynthTheme.magenta
+                  : Colors.black.withValues(alpha: 0.2),
+              width: isSplitPoint ? 3 : 0.5,
+            ),
+            bottom: BorderSide(
+              color: Colors.black.withValues(alpha: 0.2),
+              width: 0.5,
+            ),
           ),
           boxShadow: isActive
               ? [
                   BoxShadow(
-                    color: SynthTheme.magenta.withValues(alpha: 0.4),
+                    color: isZoneB
+                        ? SynthTheme.magenta.withValues(alpha: 0.4)
+                        : SynthTheme.cyan.withValues(alpha: 0.4),
                     blurRadius: 8,
-                  )
+                  ),
                 ]
-              : null,
+              : isSplitPoint
+                  ? [
+                      BoxShadow(
+                        color: SynthTheme.magenta.withValues(alpha: 0.3),
+                        blurRadius: 4,
+                      ),
+                    ]
+                  : null,
         ),
         alignment: Alignment.bottomCenter,
         padding: const EdgeInsets.only(bottom: 6),
-        child: Text(
-          label,
-          style: TextStyle(
-            color: isActive ? SynthTheme.magenta : Colors.black.withValues(alpha: 0.4),
-            fontSize: 8,
-            fontWeight: FontWeight.w600,
-          ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              label,
+              style: TextStyle(
+                color: isActive
+                    ? (isZoneB ? SynthTheme.magenta : SynthTheme.cyan)
+                    : Colors.black.withValues(alpha: 0.4),
+                fontSize: 8,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            if (isSplitPoint) ...[
+              const SizedBox(width: 4),
+              Icon(
+                Icons.swap_horiz,
+                size: 10,
+                color: SynthTheme.magenta.withValues(alpha: 0.8),
+              ),
+            ],
+          ],
         ),
       ),
     );
@@ -236,6 +356,7 @@ class _BlackKey extends StatelessWidget {
   final double width;
   final double height;
   final bool isActive;
+  final bool isZoneB;
   final VoidCallback onTapDown;
   final VoidCallback onTapUp;
 
@@ -243,6 +364,7 @@ class _BlackKey extends StatelessWidget {
     required this.width,
     required this.height,
     required this.isActive,
+    required this.isZoneB,
     required this.onTapDown,
     required this.onTapUp,
   });
@@ -262,10 +384,15 @@ class _BlackKey extends StatelessWidget {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: isActive
-                ? [
-                    SynthTheme.magenta,
-                    SynthTheme.magenta.withValues(alpha: 0.7),
-                  ]
+                ? (isZoneB
+                    ? [
+                        SynthTheme.magenta,
+                        SynthTheme.magenta.withValues(alpha: 0.7),
+                      ]
+                    : [
+                        SynthTheme.cyan,
+                        SynthTheme.cyan.withValues(alpha: 0.7),
+                      ])
                 : [
                     const Color(0xFF1A1A2E),
                     const Color(0xFF0F0F1A),
@@ -275,7 +402,9 @@ class _BlackKey extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: isActive
-                  ? SynthTheme.magenta.withValues(alpha: 0.5)
+                  ? (isZoneB
+                      ? SynthTheme.magenta.withValues(alpha: 0.5)
+                      : SynthTheme.cyan.withValues(alpha: 0.5))
                   : Colors.black.withValues(alpha: 0.5),
               blurRadius: isActive ? 8 : 3,
               offset: const Offset(0, 2),
