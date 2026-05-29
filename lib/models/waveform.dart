@@ -7,9 +7,9 @@ enum Waveform {
   triangle('Triangle', Icons.change_history),
   noise('Noise', Icons.grain),
   wavetable('Wavetable', Icons.dashboard),
-  wt_piano('Piano WT', Icons.keyboard),
-  wt_guitar('Guitar WT', Icons.music_note),
-  wt_choir('Choir WT', Icons.people),
+  wtPiano('Piano WT', Icons.keyboard),
+  wtGuitar('Guitar WT', Icons.music_note),
+  wtChoir('Choir WT', Icons.people),
   random('S&H', Icons.shuffle);
 
   const Waveform(this.displayName, this.icon);

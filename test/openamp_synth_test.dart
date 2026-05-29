@@ -29,6 +29,12 @@ void main() {
 
       expect(synth.activeVoices, 0);
       synth.noteOn(60, velocity: 0.9); // Middle C
+
+      // noteOn uses the thread-safe param queue — drain it via process()
+      // so the engine actually allocates voices.
+      final buffer = calloc.allocate<Float>(256 * sizeOf<Float>());
+      addTearDown(() => calloc.free(buffer));
+      synth.process(buffer, 256);
       expect(synth.activeVoices, greaterThan(0));
 
       synth.noteOff(60);

@@ -3,10 +3,9 @@
 #include <cmath>
 #include "envelope.h"
 #include "oscillator.h"
+#include "filter.h"
 
 namespace openamp {
-
-class Filter;
 
 struct Voice {
     bool active = false;
@@ -28,9 +27,11 @@ struct Voice {
     double lfo1Phase = 0.0;
     double lfo2Phase = 0.0;
 
-    // Filter state (per-voice for now, could be global)
-    float filterState1 = 0.0f;
-    float filterState2 = 0.0f;
+    // Per-voice filter state (prevents NaN poisoning across voices)
+    FilterState filterState;
+
+    // Per-voice note age (seconds since note-on, for hammer transients etc.)
+    float noteAge = 0.0f;
 
     // Pan
     float pan = 0.0f;

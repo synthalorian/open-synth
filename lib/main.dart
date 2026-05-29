@@ -6,9 +6,15 @@ import 'providers/settings_provider.dart';
 import 'screens/main_shell.dart';
 import 'screens/splash_screen.dart';
 import 'theme/synth_theme.dart';
+import 'utils/error_handler.dart';
+import 'utils/logger.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  configureLogging();
+  installGlobalErrorHandlers();
+
   await Hive.initFlutter();
   await Hive.openBox('open_synth');
   runApp(const ProviderScope(child: OpenSynthApp()));

@@ -31,14 +31,15 @@ import '../widgets/synth_knob.dart';
 import '../widgets/sequencer_panel.dart';
 import '../widgets/mod_matrix_panel.dart';
 import '../widgets/macro_panel.dart';
+import '../widgets/drum_panel.dart';
 
-/// Mobile-optimized synth screen with split layout.
+/// Mobile-optimized synth screen — full-width keyboard at bottom,
+/// compact options bar at top, scrollable panels in the middle.
 ///
-/// Landscape: left panel (~60%) with scrollable collapsible controls +
-/// right panel (~40%) with a fixed keyboard.
-///
-/// Portrait: stacked layout with compact oscilloscope, scrollable panels,
-/// and a fixed keyboard at the bottom.
+/// Both landscape and portrait use the same Column-based structure:
+///   1. Compact top bar (preset, octave, volume, panic)
+///   2. Expanded scrollable collapsible panels
+///   3. Full-width keyboard spanning the bottom
 class MobileSynthScreen extends ConsumerWidget {
   const MobileSynthScreen({super.key});
 
@@ -58,92 +59,76 @@ class MobileSynthScreen extends ConsumerWidget {
     ref.watch(synthPairProvider);
     ref.watch(zoneBPresetSyncProvider);
 
-    final orientation = MediaQuery.of(context).orientation;
-
     return CrtOverlay(
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        body: orientation == Orientation.landscape
-            ? _buildLandscape(context, ref, effectivePreset, notifier, locks)
-            : _buildPortrait(context, ref, effectivePreset, notifier, locks),
+        body: _buildLayout(context, ref, effectivePreset, notifier, locks),
       ),
     );
   }
 
-  // ─────────────────────────────────────────────────────
-  // LANDSCAPE: split view — left controls + right keyboard
-  // ─────────────────────────────────────────────────────
-  Widget _buildLandscape(
+  // ─────────────────────────────────────────
+  // Unified layout: top bar → panels → keyboard
+  // ─────────────────────────────────────────
+  Widget _buildLayout(
     BuildContext context,
     WidgetRef ref,
     SynthPreset effectivePreset,
     CurrentPresetNotifier notifier,
     Set<LockableParam> locks,
   ) {
+    final orientation = MediaQuery.of(context).orientation;
+    final isLandscape = orientation == Orientation.landscape;
+    // Aggressive keyboard height — keys should DOMINATE the bottom of the screen.
+    // On tall phones (20:9 ratio) at 412dp wide, 250dp gives ~2.5 octaves of playable keys.
+    final keyboardHeight = isLandscape ? 200.0 : 250.0;
+
     return RetroGridBackground(
       child: ComputerKeyboardListener(
         active: ref.watch(mainShellIndexProvider) == 1,
-        child: Row(
+        child: Column(
           children: [
-            // ── Left panel: ~60% ──
-            Expanded(
-              flex: 6,
-              child: Column(
+            // ── Top bar ──
+            _buildTopBar(context, ref, effectivePreset, notifier),
+
+            // ── Oscilloscope + Spectrum row (compact) ──
+            SizedBox(
+              height: isLandscape ? 40 : 44,
+              child: Row(
                 children: [
-                  // Compact oscilloscope + spectrum row
-                  SizedBox(
-                    height: 50,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Container(
-                            margin: const EdgeInsets.fromLTRB(6, 4, 3, 2),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF0A0118),
-                              borderRadius: BorderRadius.circular(6),
-                              border: Border.all(
-                                color: SynthTheme.cyan.withValues(alpha: 0.15),
-                              ),
-                            ),
-                            clipBehavior: Clip.antiAlias,
-                            child: Oscilloscope(
-                              osc1: effectivePreset.osc1,
-                              osc2: effectivePreset.osc2,
-                              masterVolume: effectivePreset.masterVolume,
-                            ),
-                          ),
+                  Expanded(
+                    child: Container(
+                      margin: const EdgeInsets.fromLTRB(6, 2, 3, 2),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF0A0118),
+                        borderRadius: BorderRadius.circular(6),
+                        border: Border.all(
+                          color: SynthTheme.cyan.withValues(alpha: 0.15),
                         ),
-                        Expanded(
-                          child: Container(
-                            margin: const EdgeInsets.fromLTRB(3, 4, 6, 2),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF0A0118),
-                              borderRadius: BorderRadius.circular(6),
-                              border: Border.all(
-                                color: SynthTheme.magenta.withValues(alpha: 0.15),
-                              ),
-                            ),
-                            clipBehavior: Clip.antiAlias,
-                            child: SpectrumAnalyzer(
-                              osc1: effectivePreset.osc1,
-                              osc2: effectivePreset.osc2,
-                              masterVolume: effectivePreset.masterVolume,
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
+                      clipBehavior: Clip.antiAlias,
+                      child: Oscilloscope(
+                        osc1: effectivePreset.osc1,
+                        osc2: effectivePreset.osc2,
+                        masterVolume: effectivePreset.masterVolume,
+                      ),
                     ),
                   ),
-                  // Scrollable collapsible panels
                   Expanded(
-                    child: ListView(
-                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                      children: _buildCollapsiblePanels(
-                        ref,
-                        effectivePreset,
-                        notifier,
-                        locks,
-                        isCompact: true,
+                    child: Container(
+                      margin: const EdgeInsets.fromLTRB(3, 2, 6, 2),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF0A0118),
+                        borderRadius: BorderRadius.circular(6),
+                        border: Border.all(
+                          color: SynthTheme.magenta.withValues(alpha: 0.15),
+                        ),
+                      ),
+                      clipBehavior: Clip.antiAlias,
+                      child: SpectrumAnalyzer(
+                        osc1: effectivePreset.osc1,
+                        osc2: effectivePreset.osc2,
+                        masterVolume: effectivePreset.masterVolume,
                       ),
                     ),
                   ),
@@ -151,59 +136,7 @@ class MobileSynthScreen extends ConsumerWidget {
               ),
             ),
 
-            // ── Divider ──
-            Container(
-              width: 1,
-              color: SynthTheme.purple.withValues(alpha: 0.2),
-            ),
-
-            // ── Right panel: ~40% — fixed keyboard ──
-            Expanded(
-              flex: 4,
-              child: const KeyboardWidget(),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  // ─────────────────────────────────────────────────
-  // PORTRAIT: stacked — controls on top, keyboard bottom
-  // ─────────────────────────────────────────────────
-  Widget _buildPortrait(
-    BuildContext context,
-    WidgetRef ref,
-    SynthPreset effectivePreset,
-    CurrentPresetNotifier notifier,
-    Set<LockableParam> locks,
-  ) {
-    return RetroGridBackground(
-      child: ComputerKeyboardListener(
-        active: ref.watch(mainShellIndexProvider) == 1,
-        child: Column(
-          children: [
-            // Compact oscilloscope bar
-            SizedBox(
-              height: 40,
-              child: Container(
-                margin: const EdgeInsets.fromLTRB(8, 4, 8, 2),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF0A0118),
-                  borderRadius: BorderRadius.circular(6),
-                  border: Border.all(
-                    color: SynthTheme.cyan.withValues(alpha: 0.15),
-                  ),
-                ),
-                clipBehavior: Clip.antiAlias,
-                child: Oscilloscope(
-                  osc1: effectivePreset.osc1,
-                  osc2: effectivePreset.osc2,
-                  masterVolume: effectivePreset.masterVolume,
-                ),
-              ),
-            ),
-            // Scrollable panels
+            // ── Scrollable collapsible panels ──
             Expanded(
               child: ListView(
                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
@@ -212,14 +145,228 @@ class MobileSynthScreen extends ConsumerWidget {
                   effectivePreset,
                   notifier,
                   locks,
-                  isCompact: false,
+                  isCompact: isLandscape,
                 ),
               ),
             ),
-            // Fixed keyboard at bottom
-            const KeyboardWidget(),
+
+            // ── Full-width keyboard at bottom ──
+            SizedBox(
+              height: keyboardHeight,
+              width: double.infinity,
+              child: const KeyboardWidget(),
+            ),
           ],
         ),
+      ),
+    );
+  }
+
+  // ─────────────────────────────────────────
+  // Compact top options bar
+  // ─────────────────────────────────────────
+  Widget _buildTopBar(
+    BuildContext context,
+    WidgetRef ref,
+    SynthPreset effectivePreset,
+    CurrentPresetNotifier notifier,
+  ) {
+    final presetList = ref.watch(presetListProvider);
+    final currentOctave = ref.watch(keyboardOctaveProvider);
+    final masterVolume = effectivePreset.masterVolume;
+
+    return Container(
+      height: 48,
+      decoration: BoxDecoration(
+        color: SynthTheme.card.withValues(alpha: 0.85),
+        border: Border(
+          bottom: BorderSide(
+            color: SynthTheme.purple.withValues(alpha: 0.3),
+            width: 1,
+          ),
+        ),
+      ),
+      child: Row(
+        children: [
+          // ── Preset name (tap to cycle) ──
+          GestureDetector(
+            onTap: () {
+              if (presetList.isEmpty) return;
+              final idx = presetList.indexWhere((p) => p.id == effectivePreset.id);
+              final next = (idx + 1) % presetList.length;
+              notifier.load(presetList[next]);
+            },
+            onLongPress: () {
+              // Cycle backwards on long press
+              if (presetList.isEmpty) return;
+              final idx = presetList.indexWhere((p) => p.id == effectivePreset.id);
+              final prev = (idx - 1 + presetList.length) % presetList.length;
+              notifier.load(presetList[prev]);
+            },
+            child: Container(
+              constraints: const BoxConstraints(maxWidth: 120),
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.music_note, color: SynthTheme.magenta, size: 14),
+                  const SizedBox(width: 4),
+                  Flexible(
+                    child: Text(
+                      effectivePreset.name,
+                      style: TextStyle(
+                        color: SynthTheme.cyan,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 0.5,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                  ),
+                  const SizedBox(width: 2),
+                  Icon(Icons.swap_horiz, color: SynthTheme.purple, size: 12),
+                ],
+              ),
+            ),
+          ),
+
+          // ── Separator ──
+          Container(
+            width: 1,
+            height: 24,
+            color: SynthTheme.purple.withValues(alpha: 0.25),
+          ),
+
+          // ── Octave controls ──
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _TopBarButton(
+                  icon: Icons.remove,
+                  color: SynthTheme.cyan,
+                  onTap: () {
+                    final octave = ref.read(keyboardOctaveProvider);
+                    ref.read(keyboardOctaveProvider.notifier).state =
+                        (octave - 1).clamp(0, 8);
+                  },
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'OCT',
+                        style: TextStyle(
+                          color: SynthTheme.purple.withValues(alpha: 0.6),
+                          fontSize: 8,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1,
+                        ),
+                      ),
+                      Text(
+                        '$currentOctave',
+                        style: TextStyle(
+                          color: SynthTheme.cyan,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                _TopBarButton(
+                  icon: Icons.add,
+                  color: SynthTheme.cyan,
+                  onTap: () {
+                    final octave = ref.read(keyboardOctaveProvider);
+                    ref.read(keyboardOctaveProvider.notifier).state =
+                        (octave + 1).clamp(0, 8);
+                  },
+                ),
+              ],
+            ),
+          ),
+
+          // ── Separator ──
+          Container(
+            width: 1,
+            height: 24,
+            color: SynthTheme.purple.withValues(alpha: 0.25),
+          ),
+
+          // ── Master volume (compact slider) ──
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Row(
+                children: [
+                  Icon(Icons.volume_up, color: SynthTheme.orange, size: 14),
+                  const SizedBox(width: 4),
+                  Expanded(
+                    child: SliderTheme(
+                      data: SliderThemeData(
+                        activeTrackColor: SynthTheme.orange,
+                        inactiveTrackColor: SynthTheme.orange.withValues(alpha: 0.2),
+                        thumbColor: SynthTheme.orange,
+                        trackHeight: 3,
+                        thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 6),
+                        overlayShape: const RoundSliderOverlayShape(overlayRadius: 12),
+                      ),
+                      child: Slider(
+                        value: masterVolume,
+                        min: 0,
+                        max: 1,
+                        onChanged: (v) {
+                          notifier.update((p) => p.copyWith(masterVolume: v));
+                        },
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 28,
+                    child: Text(
+                      '${(masterVolume * 100).round()}',
+                      style: TextStyle(
+                        color: SynthTheme.orange,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.right,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          // ── Separator ──
+          Container(
+            width: 1,
+            height: 24,
+            color: SynthTheme.purple.withValues(alpha: 0.25),
+          ),
+
+          // ── Panic button ──
+          _TopBarButton(
+            icon: Icons.warning_amber_rounded,
+            label: 'PANIC',
+            color: SynthTheme.magenta,
+            onTap: () {
+              ref.read(playbackStateProvider.notifier).allNotesOff();
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('PANIC: All notes killed'),
+                  duration: Duration(milliseconds: 800),
+                ),
+              );
+            },
+          ),
+          const SizedBox(width: 4),
+        ],
       ),
     );
   }
@@ -481,9 +628,59 @@ class MobileSynthScreen extends ConsumerWidget {
         child: MorphPanel(),
       ),
 
+      // 11. Drum Kit
+      const CollapsibleSection(
+        title: 'DRUM KIT',
+        accentColor: Color(0xFFFF3355),
+        child: DrumPanel(),
+      ),
+
       // Bottom padding
       const SizedBox(height: 16),
     ];
+  }
+}
+
+// ─────────────────────────────────────────
+// Compact button for the top bar
+// ─────────────────────────────────────────
+class _TopBarButton extends StatelessWidget {
+  final IconData icon;
+  final String? label;
+  final Color color;
+  final VoidCallback onTap;
+
+  const _TopBarButton({
+    required this.icon,
+    this.label,
+    required this.color,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, color: color, size: 16),
+            if (label != null)
+              Text(
+                label!,
+                style: TextStyle(
+                  color: color,
+                  fontSize: 7,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 0.5,
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
   }
 }
 

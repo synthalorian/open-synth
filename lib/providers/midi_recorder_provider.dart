@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'dart:developer' as developer;
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../utils/logger.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -163,10 +163,10 @@ Future<String?> exportRecordingToMidi(WidgetRef ref, {double bpm = 120.0}) async
     final timestamp = DateTime.now().toIso8601String().replaceAll(':', '-');
     final path = '${dir.path}/open_synth_session_$timestamp.mid';
     MidiFileWriter.write(path, events, bpm: bpm);
-    developer.log('MIDI exported to $path', name: 'open_synth.recorder');
+    appLogger.info('MIDI exported to $path');
     return path;
   } catch (e, st) {
-    developer.log('MIDI export failed', error: e, stackTrace: st, name: 'open_synth.recorder');
+    appLogger.severe('MIDI export failed', e, st);
     return null;
   }
 }

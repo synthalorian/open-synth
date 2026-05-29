@@ -7,7 +7,7 @@
 //   - Zone B engine (via SynthEnginePair) handles FX slot params correctly
 //   - Thread-safe param queue delivers FX slot changes without crashes
 
-import 'dart:ffi' show Float, Pointer, sizeOf;
+import 'dart:ffi' show Float, sizeOf;
 
 import 'package:ffi/ffi.dart';
 import 'package:flutter_test/flutter_test.dart';

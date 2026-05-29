@@ -15,6 +15,12 @@ enum class FilterType : int {
     PEAKING_EQ = 6,
 };
 
+struct FilterState {
+    float lp = 0.0f;
+    float bp = 0.0f;
+    float hp = 0.0f;
+};
+
 class StateVariableFilter {
 public:
     StateVariableFilter() = default;
@@ -33,8 +39,10 @@ public:
     float keyTracking() const { return keyTracking_; }
     float drive() const { return drive_; }
 
+    float process(float input, float envMod, double sampleRate, int midiNote, FilterState& state);
     float process(float input, float envMod, double sampleRate, int midiNote = 69);
 
+    void reset(FilterState& state);
     void reset();
 
 private:

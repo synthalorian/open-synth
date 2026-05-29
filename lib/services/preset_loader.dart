@@ -12,6 +12,7 @@ import '../ffi/openamp_synth.dart';
 import '../models/mod_target.dart';
 import '../models/synth_preset.dart';
 import '../models/waveform.dart';
+import '../utils/logger.dart';
 
 /// Apply every parameter from [preset] to [synth] in one shot.
 ///
@@ -21,6 +22,7 @@ import '../models/waveform.dart';
 /// Clearing state before applying ensures old voices, stale FX delay buffers,
 /// and leftover envelope states from the previous preset don't bleed through.
 void applyPresetToSynth(OpenAmpSynth synth, SynthPreset preset) {
+  appLogger.info('Applying preset "${preset.name}" (${preset.id}) to synth engine');
   // ── Clear engine state ─────────────────────────────────────────────────────
   // All active voices release and FX delay buffers zero. Goes through the
   // thread-safe param queue so the audio callback drains them at the next
@@ -41,8 +43,14 @@ void applyPresetToSynth(OpenAmpSynth synth, SynthPreset preset) {
   // Wavetable position is an extension — if the native engine doesn't
   // support wavetable, the waveform maps to index 5 which is a no-op
   // on older builds. The UI parameter still travels faithfully.
-  if (preset.osc1.waveform == Waveform.wavetable) {
-    synth.osc1PulseWidth = preset.osc1.wavetablePosition;
+  // Instrument-specific wavetable variants get a default position so
+  // piano / guitar / choir presets don't all sound identical.
+  final wtPos1 = _resolveWavetablePosition(preset.osc1.waveform, preset.osc1.wavetablePosition);
+  if (preset.osc1.waveform == Waveform.wavetable ||
+      preset.osc1.waveform == Waveform.wtPiano ||
+      preset.osc1.waveform == Waveform.wtGuitar ||
+      preset.osc1.waveform == Waveform.wtChoir) {
+    synth.osc1PulseWidth = wtPos1;
   }
 
   // ── Oscillator 2 ────────────────────────────────────────────────────────
@@ -56,8 +64,12 @@ void applyPresetToSynth(OpenAmpSynth synth, SynthPreset preset) {
   synth.osc2SubOscVolume = preset.osc2.subOscVolume;
   synth.osc2FmEnabled = preset.osc2.fmEnabled;
   synth.osc2FmAmount = preset.osc2.fmAmount;
-  if (preset.osc2.waveform == Waveform.wavetable) {
-    synth.osc2PulseWidth = preset.osc2.wavetablePosition;
+  final wtPos2 = _resolveWavetablePosition(preset.osc2.waveform, preset.osc2.wavetablePosition);
+  if (preset.osc2.waveform == Waveform.wavetable ||
+      preset.osc2.waveform == Waveform.wtPiano ||
+      preset.osc2.waveform == Waveform.wtGuitar ||
+      preset.osc2.waveform == Waveform.wtChoir) {
+    synth.osc2PulseWidth = wtPos2;
   }
 
   // ── Unison ────────────────────────────────────────────────────────────────
@@ -268,11 +280,33 @@ int _waveformToInt(Waveform w) {
       return 4;
     case Waveform.wavetable:
       return 5;
-    case Waveform.wt_piano:
-    case Waveform.wt_guitar:
-    case Waveform.wt_choir:
+    case Waveform.wtPiano:
+      return 5; // Wavetable slot with position 0.1
+    case Waveform.wtGuitar:
+      return 5; // Wavetable slot with position 0.5
+    case Waveform.wtChoir:
+      return 5; // Wavetable slot with position 0.9
     case Waveform.random:
       return 5; // Map to wavetable slot
+  }
+}
+
+/// Returns a stable default wavetable position for instrument-specific
+/// waveforms so the engine can differentiate piano / guitar / choir.
+/// If the preset already sets a non-zero position, that value is respected.
+double _resolveWavetablePosition(Waveform waveform, double presetPosition) {
+  if (presetPosition != 0.0) return presetPosition;
+  switch (waveform) {
+    case Waveform.wtPiano:
+      return 0.10;
+    case Waveform.wtGuitar:
+      return 0.50;
+    case Waveform.wtChoir:
+      return 0.90;
+    case Waveform.wavetable:
+      return 0.0;
+    default:
+      return 0.0;
   }
 }
 

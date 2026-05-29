@@ -1,10 +1,45 @@
 #include "oscillator.h"
+#include "wavetable_bank.h"
 #include <cstdlib>
 #include <algorithm>
 
 namespace openamp {
 
-void Oscillator::setWaveform(int w) { waveform_ = std::clamp(w, 0, 5); }
+void Oscillator::setWaveform(int w) {
+    // Map from Dart Waveform enum to internal OscWaveform enum.
+    // Dart: sine(0), saw(1), square(2), triangle(3), noise(4), wavetable(5),
+    //       wt_piano(6), wt_guitar(7), wt_choir(8)
+    // Internal: SAW(0), SQUARE(1), TRIANGLE(2), SINE(3), NOISE(4), PULSE(5),
+    //           WT_PIANO(6), WT_GUITAR(7), WT_CHOIR(8)
+    static constexpr int dartToInternal[] = {
+        3,  // Dart sine(0) → SINE
+        0,  // Dart saw(1) → SAW
+        1,  // Dart square(2) → SQUARE
+        2,  // Dart triangle(3) → TRIANGLE
+        4,  // Dart noise(4) → NOISE
+        5,  // Dart wavetable(5) → PULSE (placeholder; use wavetable for 6-8)
+        6,  // Dart wt_piano(6) → WT_PIANO
+        7,  // Dart wt_guitar(7) → WT_GUITAR
+        8,  // Dart wt_choir(8) → WT_CHOIR
+    };
+
+    int mapped;
+    if (w >= 0 && w <= 8) {
+        mapped = dartToInternal[w];
+    } else {
+        mapped = 3; // default to SINE
+    }
+
+    waveform_ = std::clamp(mapped, 0, 8);
+
+    // Configure wavetable oscillator for wavetable types
+    auto wf = static_cast<OscWaveform>(waveform_);
+    if (wf == OscWaveform::WT_PIANO || wf == OscWaveform::WT_GUITAR || wf == OscWaveform::WT_CHOIR) {
+        int wtType = waveform_ - 6; // 0=piano, 1=guitar, 2=choir
+        const Wavetable* wt = getBuiltinWavetable(wtType);
+        wtOsc_.setWavetable(wt);
+    }
+}
 void Oscillator::setOctave(int oct) { octave_ = std::clamp(oct, -2, 2); }
 void Oscillator::setDetune(float cents) { detune_ = std::clamp(cents, -100.0f, 100.0f); }
 void Oscillator::setPulseWidth(float pw) { pulseWidth_ = std::clamp(pw, 0.01f, 0.99f); }
@@ -113,6 +148,26 @@ float Oscillator::generateWaveform(float phase) const {
 
     case OscWaveform::PULSE:
         return phase < pulseWidth_ ? 1.0f : -1.0f;
+
+    case OscWaveform::WT_GUITAR:
+    case OscWaveform::WT_CHOIR: {
+        float sample = wtOsc_.getSampleAtPhase(phase);
+        return sample;
+    }
+
+    case OscWaveform::WT_PIANO: {
+        float base = wtOsc_.getSampleAtPhase(phase);
+        // Inharmonicity: real piano strings are stiff, so overtones are slightly sharp.
+        // Add a second partial at ~2.01x the fundamental with lower amplitude.
+        float inharmonicPhase = phase * 2.01f;
+        inharmonicPhase = inharmonicPhase - std::floor(inharmonicPhase);
+        float overtone = wtOsc_.getSampleAtPhase(inharmonicPhase) * 0.18f;
+        // Add a 3rd partial (slightly sharp as well)
+        float overtone3Phase = phase * 3.02f;
+        overtone3Phase = overtone3Phase - std::floor(overtone3Phase);
+        float overtone3 = wtOsc_.getSampleAtPhase(overtone3Phase) * 0.08f;
+        return base + overtone + overtone3;
+    }
     }
 
     return 0.0f;

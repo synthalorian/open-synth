@@ -148,7 +148,7 @@ class RecorderScreen extends ConsumerWidget {
           ),
 
           // Fixed keyboard at bottom
-          const KeyboardWidget(),
+          const SizedBox(height: 120, child: KeyboardWidget()),
         ],
       ),
     );

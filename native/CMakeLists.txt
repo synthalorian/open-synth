@@ -22,6 +22,12 @@ set(COMMON_SOURCES
     ${SRC_DIR}/synth_preset.cpp
     ${SRC_DIR}/synth_ffi.cpp
     ${SRC_DIR}/synth_mixer.cpp
+    ${SRC_DIR}/drum_synth.cpp
+    ${SRC_DIR}/drum_kit_mapping.cpp
+    ${SRC_DIR}/drum_ffi.cpp
+    ${SRC_DIR}/wavetable_oscillator.cpp
+    ${SRC_DIR}/wavetable_data.cpp
+    ${SRC_DIR}/wavetable_bank.cpp
     ${SRC_DIR}/fx_engine.cpp
     ${SRC_DIR}/fx_eq.cpp
     ${SRC_DIR}/fx_limiter.cpp
@@ -32,14 +38,25 @@ set(COMMON_SOURCES
 
 # ── Platform-specific audio backend ────────────────────────────────────────
 if(ANDROID)
-    # ── Android: Oboe backend ─────────────────────────────────────────────
-    include(FetchContent)
-    FetchContent_Declare(
-        oboe
-        GIT_REPOSITORY https://github.com/google/oboe.git
-        GIT_TAG        v1.8.0
+    # ── Android: Oboe backend (vendored) ────────────────────────────────
+    set(OBOE_DIR ${CMAKE_CURRENT_LIST_DIR}/oboe)
+
+    file(GLOB_RECURSE OBOE_SOURCES
+        "${OBOE_DIR}/src/aaudio/*.cpp"
+        "${OBOE_DIR}/src/common/*.cpp"
+        "${OBOE_DIR}/src/fifo/*.cpp"
+        "${OBOE_DIR}/src/flowgraph/*.cpp"
+        "${OBOE_DIR}/src/opensles/*.cpp"
     )
-    FetchContent_MakeAvailable(oboe)
+
+    add_library(oboe STATIC ${OBOE_SOURCES})
+
+    target_include_directories(oboe
+        PUBLIC
+            ${OBOE_DIR}/include
+        PRIVATE
+            ${OBOE_DIR}/src
+    )
 
     set(PLATFORM_SOURCES
         ${SRC_DIR}/oboe_audio_stream.cpp
@@ -58,7 +75,7 @@ if(ANDROID)
             ${SRC_DIR}
     )
 
-    target_link_libraries(openamp_dart_ffi PRIVATE oboe log)
+    target_link_libraries(openamp_dart_ffi PRIVATE oboe log OpenSLES)
 
 else()
     # ── Desktop: PortAudio backend ────────────────────────────────────────
@@ -104,10 +121,16 @@ else()
 endif()
 
 # Set output name
-set_target_properties(openamp_dart_ffi PROPERTIES
-    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_LIST_DIR}"
-    OUTPUT_NAME "openamp_dart_ffi"
-)
+if(NOT ANDROID)
+    set_target_properties(openamp_dart_ffi PROPERTIES
+        LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_LIST_DIR}"
+        OUTPUT_NAME "openamp_dart_ffi"
+    )
+else()
+    set_target_properties(openamp_dart_ffi PROPERTIES
+        OUTPUT_NAME "openamp_dart_ffi"
+    )
+endif()
 
 # ── Test executable (build only when BUILD_TESTS=ON) ──────────────────────
 option(BUILD_TESTS "Build the FX unit test executable" OFF)

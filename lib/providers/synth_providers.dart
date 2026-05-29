@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'dart:developer' as developer;
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../utils/logger.dart';
 import 'package:hive/hive.dart';
 import '../data/factory_presets.dart';
 import '../ffi/openamp_audio_stream.dart';
@@ -28,16 +28,21 @@ class PresetListNotifier extends StateNotifier<List<SynthPreset>> {
 
   Future<void> _load() async {
     _box = Hive.box('open_synth');
+    final storedVersion = _box?.get('factoryPresetVersion') as int?;
     final stored = _box?.get('presets') as List?;
-    if (stored != null && stored.isNotEmpty) {
-      state = stored
-          .map((e) => SynthPreset.fromJson(
-              Map<String, dynamic>.from(jsonDecode(e as String))))
-          .toList();
-    } else {
+
+    // Reload from factory if version changed or no stored presets
+    if (stored == null || stored.isEmpty || storedVersion != factoryPresetVersion) {
       state = List.from(factoryPresets);
+      _box?.put('factoryPresetVersion', factoryPresetVersion);
       _save();
+      return;
     }
+
+    state = stored
+        .map((e) => SynthPreset.fromJson(
+            Map<String, dynamic>.from(jsonDecode(e as String))))
+        .toList();
   }
 
   void _save() {
@@ -256,12 +261,10 @@ final synthAudioStreamProvider = Provider<OpenAmpSynthAudioStream?>((ref) {
       blockSize: bufferSize,
       deviceIndex: deviceIndex,
     );
-  } catch (e, st) {
-    developer.log(
+  } catch (e, st) {      appLogger.severe(
       'Failed to create audio stream: $e',
-      name: 'open_synth.audio',
-      error: e,
-      stackTrace: st,
+      e,
+      st,
     );
     return null;
   }
@@ -269,21 +272,17 @@ final synthAudioStreamProvider = Provider<OpenAmpSynthAudioStream?>((ref) {
   bool ok;
   try {
     ok = stream.start();
-  } catch (e, st) {
-    developer.log(
+  } catch (e, st) {      appLogger.severe(
       'Failed to start audio stream: $e',
-      name: 'open_synth.audio',
-      error: e,
-      stackTrace: st,
+      e,
+      st,
     );
     stream.dispose();
     return null;
   }
 
-  if (!ok) {
-    developer.log(
+  if (!ok) {      appLogger.warning(
       'Audio stream failed to start: ${stream.lastError}',
-      name: 'open_synth.audio',
     );
     stream.dispose();
     return null;
@@ -305,12 +304,10 @@ final audioDevicesProvider = Provider<List<AudioDeviceInfo>?>((ref) {
   try {
     final bindings = OpenAmpAudioStreamBindings.instance;
     return bindings.enumerateDevices();
-  } catch (e, st) {
-    developer.log(
+  } catch (e, st) {      appLogger.severe(
       'Audio device enumeration failed: $e',
-      name: 'open_synth.audio',
-      error: e,
-      stackTrace: st,
+      e,
+      st,
     );
     return null;
   }

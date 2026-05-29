@@ -200,7 +200,7 @@ class _SpectrumPainter extends CustomPainter {
         }
         break;
 
-      case Waveform.wt_piano:
+      case Waveform.wtPiano:
         energies[bin] += 0.4 * osc.volume;
         for (int h = 2; h <= 12; h += 2) {
           final idx = (bin * h).clamp(0, binCount - 1);
@@ -208,8 +208,8 @@ class _SpectrumPainter extends CustomPainter {
         }
         break;
 
-      case Waveform.wt_guitar:
-      case Waveform.wt_choir:
+      case Waveform.wtGuitar:
+      case Waveform.wtChoir:
       case Waveform.random:
         energies[bin] += 0.45 * osc.volume;
         for (int h = 2; h <= 10; h++) {

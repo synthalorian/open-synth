@@ -45,7 +45,7 @@ class FilterPanel extends StatelessWidget {
                 Icon(Icons.lock, color: SynthTheme.magenta, size: 12),
               ],
               const Spacer(),
-              ...FilterType.values.map((ft) {
+              ...FilterType.values.take(4).map((ft) {
                 final isSelected = ft == filter.type;
                 return GestureDetector(
                   onTap: () => onChanged(filter.copyWith(type: ft)),

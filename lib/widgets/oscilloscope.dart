@@ -330,9 +330,9 @@ double _sampleOscillatorPoints(
       final sq = saw >= 0 ? 1.0 : -1.0;
       return amp * ((1 - wt) * sine + wt * ((1 - wt) * saw + wt * sq));
 
-    case Waveform.wt_piano:
-    case Waveform.wt_guitar:
-    case Waveform.wt_choir:
+    case Waveform.wtPiano:
+    case Waveform.wtGuitar:
+    case Waveform.wtChoir:
     case Waveform.random:
       // Complex wavetable: blend of sine and harmonics
       final base = sin(f * time);

@@ -42,6 +42,15 @@ static float applyDrive(float sample, float amount) {
 }
 
 float StateVariableFilter::process(float input, float envMod, double sampleRate, int midiNote) {
+    FilterState tmp{lp_, bp_, hp_};
+    float out = process(input, envMod, sampleRate, midiNote, tmp);
+    lp_ = tmp.lp;
+    bp_ = tmp.bp;
+    hp_ = tmp.hp;
+    return out;
+}
+
+float StateVariableFilter::process(float input, float envMod, double sampleRate, int midiNote, FilterState& state) {
     // Apply key tracking: cutoff shifts with MIDI note
     float keyOffset = 0.0f;
     if (keyTracking_ > 0.0f) {
@@ -56,24 +65,47 @@ float StateVariableFilter::process(float input, float envMod, double sampleRate,
     // Pre-filter drive
     float sample = applyDrive(input, drive_);
 
+    // Compute f and clamp to stable region
     float f = 2.0f * std::sin(M_PI * cutoff / (float)sampleRate);
+    // Clamp f to prevent instability near Nyquist (safety margin < 2.0)
+    f = std::min(f, 1.95f);
     float q = 1.0f - std::clamp(resonance_, 0.0f, 0.99f);
 
+    // NaN/inf guard — if state is corrupted, reset it before processing
+    if (!std::isfinite(state.lp) || !std::isfinite(state.bp) || !std::isfinite(state.hp)) {
+        state.lp = 0.0f;
+        state.bp = 0.0f;
+        state.hp = 0.0f;
+    }
+
     // State-variable filter
-    hp_ = sample - lp_ - q * bp_;
-    bp_ = bp_ + f * hp_;
-    lp_ = lp_ + f * bp_;
+    state.hp = sample - state.lp - q * state.bp;
+    state.bp = state.bp + f * state.hp;
+    state.lp = state.lp + f * state.bp;
+
+    // NaN/inf guard after update
+    if (!std::isfinite(state.lp) || !std::isfinite(state.bp) || !std::isfinite(state.hp)) {
+        state.lp = 0.0f;
+        state.bp = 0.0f;
+        state.hp = 0.0f;
+    }
 
     switch (static_cast<FilterType>(type_)) {
-    case FilterType::LOW_PASS:   return lp_;
-    case FilterType::HIGH_PASS:  return hp_;
-    case FilterType::BAND_PASS:  return bp_;
-    case FilterType::NOTCH:      return lp_ + hp_;
-    case FilterType::LOW_SHELF:  return input + (lp_ - input) * resonance_; // simple shelf approximation
-    case FilterType::HIGH_SHELF: return input + (hp_ - input) * resonance_;
-    case FilterType::PEAKING_EQ: return input + bp_ * resonance_;
+    case FilterType::LOW_PASS:   return state.lp;
+    case FilterType::HIGH_PASS:  return state.hp;
+    case FilterType::BAND_PASS:  return state.bp;
+    case FilterType::NOTCH:      return state.lp + state.hp;
+    case FilterType::LOW_SHELF:  return input + (state.lp - input) * resonance_; // simple shelf approximation
+    case FilterType::HIGH_SHELF: return input + (state.hp - input) * resonance_;
+    case FilterType::PEAKING_EQ: return input + state.bp * resonance_;
     }
-    return lp_;
+    return state.lp;
+}
+
+void StateVariableFilter::reset(FilterState& state) {
+    state.lp = 0.0f;
+    state.bp = 0.0f;
+    state.hp = 0.0f;
 }
 
 } // namespace openamp

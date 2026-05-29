@@ -206,6 +206,12 @@ public:
 
         // Reset
         RESET = 250,
+
+        // Drum Kit
+        DRUM_KIT_PRESET = 260,
+        DRUM_LEVEL = 261,
+        DRUM_NOTE_ON = 262,
+        DRUM_NOTE_OFF = 263,
     };
 
     struct Entry {

@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer' as developer;
 import 'dart:io';
+
+import '../utils/logger.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
@@ -11,6 +12,7 @@ import '../models/midi_event.dart';
 import '../models/recording_layer.dart';
 import '../models/synth_preset.dart';
 import '../utils/audio_renderer.dart';
+import '../utils/error_handler.dart';
 
 // ── Recording Layers ─────────────────────────────────────────────────────────
 
@@ -131,8 +133,7 @@ class RecordingLayersNotifier extends StateNotifier<List<RecordingLayer>> {
                 Map<String, dynamic>.from(jsonDecode(e as String))))
             .toList();
       } catch (e) {
-        developer.log('Failed to load recording layers',
-            error: e, name: 'open_synth.layers');
+        appLogger.severe('Failed to load recording layers', e);
         state = [];
       }
     }
@@ -217,7 +218,10 @@ Future<String?> exportLayersAsMixedWav({
   required List<RecordingLayer> layers,
   String defaultName = 'full_mix',
 }) async {
-  if (layers.isEmpty) return null;
+  if (layers.isEmpty) {
+    appLogger.warning('exportLayersAsMixedWav: no layers to export');
+    return null;
+  }
 
   final result = await FilePicker.platform.saveFile(
     dialogTitle: 'Export Mixed WAV',
@@ -227,58 +231,61 @@ Future<String?> exportLayersAsMixedWav({
   );
   if (result == null) return null;
 
-  final tempDir = Directory.systemTemp.createTempSync('open_synth_mix_');
-  try {
-    // Render each layer to a temp WAV
-    final tempFiles = <String>[];
-    for (final layer in layers) {
-      if (layer.events.isEmpty) continue;
-      final tempPath = '${tempDir.path}/${layer.id}.wav';
-      final rendered = await renderMidiToWav(
-        preset: layer.preset,
-        events: layer.events,
-        outputPath: tempPath,
-      );
-      if (rendered != null) {
-        tempFiles.add(rendered);
-      }
-    }
-
-    if (tempFiles.isEmpty) return null;
-
-    // Read all WAVs and find the longest
-    final buffers = <List<double>>[];
-    int maxLen = 0;
-    for (final f in tempFiles) {
-      final buf = await _readWavAsFloats(f);
-      buffers.add(buf);
-      if (buf.length > maxLen) maxLen = buf.length;
-    }
-
-    // Mix with per-layer normalization
-    final mixed = List<double>.filled(maxLen, 0.0);
-    final numLayers = buffers.length;
-    for (int li = 0; li < numLayers; li++) {
-      final buf = buffers[li];
-      final gain = 1.0 / numLayers;
-      for (int i = 0; i < buf.length; i++) {
-        mixed[i] += buf[i] * gain;
-      }
-    }
-
-    // Write mixed WAV
-    await _writeFloatsAsWav(mixed, result, sampleRate: 44100);
-    return result;
-  } catch (e, st) {
-    developer.log('Mixed WAV export failed',
-        error: e, stackTrace: st, name: 'open_synth.layers');
-    return null;
-  } finally {
-    // Cleanup temp dir
+  return guard<String?>(() async {
+    final tempDir = Directory.systemTemp.createTempSync('open_synth_mix_');
     try {
-      tempDir.deleteSync(recursive: true);
-    } catch (_) {}
-  }
+      appLogger.info('Exporting ${layers.length} layers as mixed WAV to $result');
+
+      // Render each layer to a temp WAV
+      final tempFiles = <String>[];
+      for (final layer in layers) {
+        if (layer.events.isEmpty) continue;
+        final tempPath = '${tempDir.path}/${layer.id}.wav';
+        final rendered = await renderMidiToWav(
+          preset: layer.preset,
+          events: layer.events,
+          outputPath: tempPath,
+        );
+        if (rendered != null) {
+          tempFiles.add(rendered);
+        }
+      }
+
+      if (tempFiles.isEmpty) {
+        throw Exception('No layers rendered successfully');
+      }
+
+      // Read all WAVs and find the longest
+      final buffers = <List<double>>[];
+      int maxLen = 0;
+      for (final f in tempFiles) {
+        final buf = await _readWavAsFloats(f);
+        buffers.add(buf);
+        if (buf.length > maxLen) maxLen = buf.length;
+      }
+
+      // Mix with per-layer normalization
+      final mixed = List<double>.filled(maxLen, 0.0);
+      final numLayers = buffers.length;
+      for (int li = 0; li < numLayers; li++) {
+        final buf = buffers[li];
+        final gain = 1.0 / numLayers;
+        for (int i = 0; i < buf.length; i++) {
+          mixed[i] += buf[i] * gain;
+        }
+      }
+
+      // Write mixed WAV
+      await _writeFloatsAsWav(mixed, result, sampleRate: 44100);
+      appLogger.info('Mixed WAV export complete: $result');
+      return result;
+    } finally {
+      // Cleanup temp dir
+      try {
+        tempDir.deleteSync(recursive: true);
+      } catch (_) {}
+    }
+  }, context: 'exportLayersAsMixedWav');
 }
 
 /// Read a 16-bit mono WAV file into a list of float samples (-1..1).

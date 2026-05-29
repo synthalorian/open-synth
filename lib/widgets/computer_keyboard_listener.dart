@@ -37,6 +37,7 @@ import '../providers/arpeggiator_provider.dart';
 import '../providers/midi_recorder_provider.dart';
 import '../providers/mod_matrix_provider.dart';
 import '../providers/sequencer_provider.dart';
+import '../providers/keyboard_split_provider.dart';
 import '../providers/synth_providers.dart';
 import '../providers/undo_redo_provider.dart';
 
@@ -130,6 +131,7 @@ class _ComputerKeyboardListenerState
     // keys still in the down state.
     if (_activeKeys.isNotEmpty) {
       ref.read(playbackStateProvider.notifier).allNotesOff();
+      ref.read(zoneBPlaybackProvider.notifier).allNotesOff();
       _activeKeys.clear();
     }
     _focusNode.dispose();
@@ -242,7 +244,7 @@ class _ComputerKeyboardListenerState
 
       _activeKeys[key] = midi;
       ref.read(arpNotesProvider.notifier).update((set) => {...set, midi});
-      ref.read(playbackStateProvider.notifier).noteOn(midi);
+      ref.read(noteRouterProvider).noteOn(midi);
       recordNoteOn(ref, midi);
       return KeyEventResult.handled;
     }
@@ -252,7 +254,7 @@ class _ComputerKeyboardListenerState
       final midi = _activeKeys.remove(key);
       if (midi != null) {
         ref.read(arpNotesProvider.notifier).update((set) => {...set}..remove(midi));
-        ref.read(playbackStateProvider.notifier).noteOff(midi);
+        ref.read(noteRouterProvider).noteOff(midi);
         recordNoteOff(ref, midi);
       }
       return KeyEventResult.handled;
