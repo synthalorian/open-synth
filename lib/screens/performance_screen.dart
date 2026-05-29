@@ -147,7 +147,7 @@ class _PerformanceScreenState extends ConsumerState<PerformanceScreen> {
                     const _SetlistPresetStrip(),
 
                     // ── Keyboard ──
-                    const KeyboardWidget(),
+                    const SizedBox(height: 120, child: KeyboardWidget()),
                   ],
                 ),
               ),

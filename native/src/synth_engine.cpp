@@ -23,7 +23,7 @@ static float midiNoteToFreq(int note) {
 // ── Construction / destruction ────────────────────────────────────────────────
 
 SynthEngine::SynthEngine(double sampleRate, uint32_t blockSize)
-    : sampleRate_(sampleRate), blockSize_(blockSize) {
+    : sampleRate_(sampleRate), blockSize_(blockSize), drumKit_(sampleRate) {
     lfo1_.prepare(sampleRate_);
     lfo2_.prepare(sampleRate_);
 
@@ -42,12 +42,23 @@ SynthEngine::~SynthEngine() = default;
 
 void SynthEngine::reset() {
     allocator_.allNotesOff();
+    drumKit_.allNotesOff();
     osc1_.reset();
     osc2_.reset();
     filter_.reset();
     lfo1_.reset();
     lfo2_.reset();
     fxEngine_.reset();
+    // Reset per-voice filter states
+    for (int v = 0; v < VoiceAllocator::MAX_VOICES; v++) {
+        Voice* voice = allocator_.voice(v);
+        if (voice) {
+            voice->filterState.lp = 0.0f;
+            voice->filterState.bp = 0.0f;
+            voice->filterState.hp = 0.0f;
+            voice->noteAge = 0.0f;
+        }
+    }
 }
 
 // ── MIDI ──────────────────────────────────────────────────────────────────────
@@ -190,13 +201,28 @@ void SynthEngine::process(AudioBuffer& output) {
 
             // Mix down to mono for filter, then re-pan
             float monoMix = (voiceLeft + voiceRight) * 0.5f;
-            float filtered = filter_.process(monoMix, filterEnv + filterMod, sampleRate_, voice->midiNote);
+
+            // Piano hammer transient: brief noise burst + high click at note start
+            float filtered = filter_.process(monoMix, filterEnv + filterMod, sampleRate_, voice->midiNote, voice->filterState);
+
+            // Piano hammer transient: brief bright click added AFTER filter so it stays sharp
+            bool isPiano = (osc1_.waveform() == 6) || (osc2_.waveform() == 6);
+            if (isPiano && voice->noteAge < 0.015f) {
+                float clickDecay = std::exp(-voice->noteAge * 300.0f);
+                float clickAmt = clickDecay * 0.25f * voice->velocity;
+                float hammerNoise = (std::sin(voice->noteAge * 12000.0f) * 0.7f +
+                                     std::sin(voice->noteAge * 18432.0f) * 0.3f) * clickAmt;
+                filtered += hammerNoise;
+            }
 
             voiceLeft = filtered * ampGain * (1.0f - voice->pan) * 0.5f;
             voiceRight = filtered * ampGain * (1.0f + voice->pan) * 0.5f;
 
             leftOut += voiceLeft;
             rightOut += voiceRight;
+
+            // Advance note age
+            voice->noteAge += 1.0f / static_cast<float>(sampleRate_);
         }
 
         // Apply LFO amplitude modulation
@@ -241,6 +267,25 @@ void SynthEngine::process(AudioBuffer& output) {
     // Exponential moving average with ~1s time constant at 48k/256 (~187 blocks/sec)
     float alpha = 0.005f;
     cpuLoad_ = cpuLoad_ * (1.0f - alpha) + instantLoad * alpha;
+
+    // ── Drum Kit ── process block of drum audio and mix into output
+    static constexpr uint32_t kDrumBufMax = 2048;
+    float drumLeft[kDrumBufMax] = {};
+    float drumRight[kDrumBufMax] = {};
+    uint32_t nf = numFrames < kDrumBufMax ? numFrames : kDrumBufMax;
+    drumKit_.process(drumLeft, drumRight, nf);
+    for (uint32_t frame = 0; frame < nf; frame++) {
+        float dl = drumLeft[frame];
+        float dr = drumRight[frame];
+        if (!std::isfinite(dl)) dl = 0.0f;
+        if (!std::isfinite(dr)) dr = 0.0f;
+        if (stereo) {
+            output.data[frame * 2] = std::tanh(output.data[frame * 2] + dl);
+            output.data[frame * 2 + 1] = std::tanh(output.data[frame * 2 + 1] + dr);
+        } else {
+            output.data[frame] = std::tanh(output.data[frame] + (dl + dr) * 0.5f);
+        }
+    }
 }
 
 // ── Parameter Queue ──────────────────────────────────────────────────────────
@@ -268,6 +313,25 @@ void SynthEngine::applyParam(const ParamQueue::Entry& e) {
         break;
     case P::RESET:
         reset();
+        break;
+
+    // ── Drum Kit ──
+    case P::DRUM_KIT_PRESET:
+        drumKit_.setKitPreset(static_cast<int>(e.floatData));
+        break;
+    case P::DRUM_LEVEL:
+        drumKit_.setLevel(e.floatData);
+        break;
+    case P::DRUM_NOTE_ON: {
+        // floatData encoding: midiNote in upper 16 bits, velocity in lower
+        int midiNote = static_cast<int>(e.floatData);
+        float velocity = e.floatData - static_cast<float>(midiNote);
+        if (velocity <= 0.0f) velocity = 0.8f;
+        drumKit_.noteOn(midiNote, velocity);
+        break;
+    }
+    case P::DRUM_NOTE_OFF:
+        drumKit_.noteOff(static_cast<int>(e.floatData));
         break;
 
     // Osc 1

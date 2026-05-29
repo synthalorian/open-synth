@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'dart:developer' as developer;
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../utils/logger.dart';
 import 'package:hive/hive.dart';
 
 import 'dart:ffi';
@@ -36,7 +36,7 @@ class KeyboardSplitNotifier extends StateNotifier<KeyboardSplit> {
         final json = jsonDecode(stored as String) as Map<String, dynamic>;
         state = KeyboardSplit.fromJson(json);
       } catch (e) {
-        developer.log('Failed to load keyboard split: $e', name: 'open_synth.split');
+        appLogger.warning('Failed to load keyboard split: $e');
       }
     }
   }
@@ -131,20 +131,18 @@ final synthPairAudioStreamProvider = Provider<OpenAmpSynthAudioStream?>((ref) {
       blockSize: bufferSize,
     );
   } catch (e, st) {
-    developer.log(
+    appLogger.severe(
       'Failed to create pair audio stream: $e',
-      name: 'open_synth.split',
-      error: e,
-      stackTrace: st,
+      e,
+      st,
     );
     return null;
   }
 
   final ok = stream.start();
   if (!ok) {
-    developer.log(
+    appLogger.warning(
       'Audio stream failed to start for synth pair: ${stream.lastError}',
-      name: 'open_synth.split',
     );
     stream.dispose();
     return null;
@@ -227,6 +225,9 @@ final zoneBMixSyncProvider = Provider<void>((ref) {
 
 // ── Combined Note Router ──────────────────────────────────────────────────────
 
+/// Riverpod provider exposing the [NoteRouter] instance.
+final noteRouterProvider = Provider<NoteRouter>((ref) => NoteRouter(ref));
+
 /// Converts a MIDI note into a (zone, noteOn, noteOff) triple based on
 /// the current keyboard split configuration.
 ///
@@ -236,6 +237,11 @@ class NoteRouter {
 
   final Ref _ref;
 
+  /// Tracks which zone each active note was routed to so note-off
+  /// always targets the same engine, even if split config changes
+  /// while the key is held.
+  final Map<int, int> _activeNoteZones = {};
+
   int resolveZone(int midiNote) {
     final split = _ref.read(keyboardSplitProvider);
     return split.zoneForNote(midiNote);
@@ -243,6 +249,8 @@ class NoteRouter {
 
   void noteOn(int midiNote, {double velocity = 1.0}) {
     final zone = resolveZone(midiNote);
+    _activeNoteZones[midiNote] = zone;
+
     if (zone == 0) {
       // Zone A — use main playback
       _ref.read(playbackStateProvider.notifier).noteOn(midiNote, velocity: velocity);
@@ -256,7 +264,10 @@ class NoteRouter {
   }
 
   void noteOff(int midiNote) {
-    final zone = resolveZone(midiNote);
+    // Use the *original* zone from note-on so the release goes to the
+    // same engine even if the split point shifted while the key was held.
+    final zone = _activeNoteZones.remove(midiNote) ?? resolveZone(midiNote);
+
     if (zone == 0) {
       _ref.read(playbackStateProvider.notifier).noteOff(midiNote);
     } else if (zone == 1) {
@@ -264,6 +275,22 @@ class NoteRouter {
     } else {
       _ref.read(playbackStateProvider.notifier).noteOff(midiNote);
     }
+  }
+
+  /// Release every tracked note (e.g. on panic / split mode change).
+  void allNotesOff() {
+    for (final entry in _activeNoteZones.entries) {
+      final midiNote = entry.key;
+      final zone = entry.value;
+      if (zone == 0) {
+        _ref.read(playbackStateProvider.notifier).noteOff(midiNote);
+      } else if (zone == 1) {
+        _ref.read(zoneBPlaybackProvider.notifier).noteOff(midiNote);
+      } else {
+        _ref.read(playbackStateProvider.notifier).noteOff(midiNote);
+      }
+    }
+    _activeNoteZones.clear();
   }
 
   /// Returns the active notes across both zones (for UI display).

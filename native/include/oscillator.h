@@ -2,6 +2,7 @@
 #include <cstdint>
 #include <cmath>
 #include <algorithm>
+#include "wavetable_oscillator.h"
 
 namespace openamp {
 
@@ -12,6 +13,9 @@ enum class OscWaveform : int {
     SINE = 3,
     NOISE = 4,
     PULSE = 5,
+    WT_PIANO = 6,
+    WT_GUITAR = 7,
+    WT_CHOIR = 8,
 };
 
 /// Noise color types for the NOISE waveform.
@@ -98,6 +102,8 @@ private:
     bool fmEnabled_ = false;
     float fmAmount_ = 0.5f;
     UnisonConfig unison_;
+
+    mutable WavetableOscillator wtOsc_;
 
     float generateWaveform(float phase) const;
 };

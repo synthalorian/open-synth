@@ -1,4 +1,4 @@
-# Open Synth 🎹🦞
+# Open Synth 🎹🦈
 
 **Open Synth** is a high-performance software synthesizer built with Flutter and the **OpenAmp** DSP engine. Designed for the neon-soaked aesthetics of 1984, it features a library of rich synthwave presets, a low-latency native audio backend, and a fully customizable synthesis engine.
 
@@ -71,4 +71,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - Developed by **synth (synthalorian)**.
 - Audio engine powered by **OpenAmp**.
-- Special thanks to the 1984 synthesis engine for the inspiration. 🎹🦞
+- Special thanks to the 1984 synthesis engine for the inspiration. 🎹🦈

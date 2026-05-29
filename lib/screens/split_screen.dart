@@ -94,7 +94,7 @@ class SplitScreen extends ConsumerWidget {
           ),
 
           // Fixed keyboard at bottom
-          const KeyboardWidget(),
+          const SizedBox(height: 120, child: KeyboardWidget()),
         ],
       ),
     );
@@ -129,7 +129,7 @@ class SplitScreen extends ConsumerWidget {
                   height: 300,
                   child: ListView.separated(
                     itemCount: allPresets.length,
-                    separatorBuilder: (_, _) => const Divider(height: 1, color: Colors.transparent),
+                    separatorBuilder: (_, index) => const Divider(height: 1, color: Colors.transparent),
                     itemBuilder: (_, i) {
                       final p = allPresets[i];
                       return ListTile(
@@ -269,7 +269,7 @@ class _ZonePresetGrid extends ConsumerWidget {
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             itemCount: presets.length.clamp(0, 60),
-              separatorBuilder: (_, __) => const SizedBox(width: 6),
+              separatorBuilder: (_, index) => const SizedBox(width: 6),
               itemBuilder: (context, index) {
                 final p = presets[index];
                 final isSelected = p.id == selectedPreset.id;

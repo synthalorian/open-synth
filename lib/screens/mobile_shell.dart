@@ -191,7 +191,7 @@ class MobileShell extends ConsumerWidget {
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    'v1.0 • ${audioBackendName}',
+                    'v1.0 • $audioBackendName',
                     style: TextStyle(
                       color: SynthTheme.textSecondary.withValues(alpha: 0.4),
                       fontSize: 9,

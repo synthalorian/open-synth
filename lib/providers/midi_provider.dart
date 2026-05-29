@@ -1,6 +1,7 @@
 import 'dart:async';
-import 'dart:developer' as developer;
 import 'dart:typed_data';
+
+import '../utils/logger.dart';
 
 import 'package:flutter_midi_command/flutter_midi_command.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -27,7 +28,7 @@ final midiDevicesProvider = StreamProvider.autoDispose<List<MidiDevice>>((ref) {
       final devices = await command.devices ?? <MidiDevice>[];
       controller.add(List.unmodifiable(devices));
     } catch (e, st) {
-      developer.log('MIDI device scan failed', error: e, stackTrace: st, name: 'open_synth.midi');
+      appLogger.warning('MIDI device scan failed', e, st);
       controller.add(<MidiDevice>[]);
     }
   }
@@ -73,9 +74,9 @@ final midiListenerProvider = Provider<void>((ref) {
     try {
       await command.connectToDevice(device);
       ref.read(midiConnectionStatusProvider.notifier).state = true;
-      developer.log('MIDI connected: ${device.name}', name: 'open_synth.midi');
+      appLogger.info('MIDI connected: ${device.name}');
     } catch (e, st) {
-      developer.log('MIDI connect failed', error: e, stackTrace: st, name: 'open_synth.midi');
+      appLogger.severe('MIDI connect failed', e, st);
       ref.read(midiConnectionStatusProvider.notifier).state = false;
     }
   }
@@ -89,7 +90,7 @@ final midiListenerProvider = Provider<void>((ref) {
       _handleMidiPacket(packet, ref);
     });
   } catch (e, st) {
-    developer.log('MIDI data stream failed', error: e, stackTrace: st, name: 'open_synth.midi');
+    appLogger.severe('MIDI data stream failed', e, st);
   }
 
   ref.onDispose(() {
@@ -262,6 +263,6 @@ void sendMidiCc(dynamic ref, int channel, int ccNumber, int value) {
     MidiCommand().sendData(data, deviceId: device.id);
     _logEvent(ref, 'OUT CC ch${channel + 1}  CC $clampedCc  val $clampedValue');
   } catch (e, st) {
-    developer.log('MIDI send failed', error: e, stackTrace: st, name: 'open_synth.midi');
+    appLogger.warning('MIDI send failed', e, st);
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:async';
-import 'dart:developer' as developer;
 import 'dart:typed_data';
+
+import '../utils/logger.dart';
 
 import 'package:flutter_midi_command/flutter_midi_command.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -141,7 +142,7 @@ void _sendMidiByte(int byte, Ref ref) {
     final command = MidiCommand();
     command.sendData(Uint8List.fromList([byte]), deviceId: device.id);
   } catch (e, st) {
-    developer.log('MIDI clock send failed', error: e, stackTrace: st, name: 'open_synth.clock');
+    appLogger.warning('MIDI clock send failed', e, st);
   }
 }
 

@@ -1,6 +1,7 @@
 import 'dart:convert';
-import 'dart:developer' as developer;
 import 'dart:io';
+
+import '../utils/logger.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_midi_command/flutter_midi_command.dart';
@@ -155,7 +156,7 @@ class SettingsScreen extends ConsumerWidget {
         );
       }
     } catch (e, st) {
-      developer.log('Export failed', error: e, stackTrace: st, name: 'open_synth.settings');
+      appLogger.severe('Export failed', e, st);
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -217,7 +218,7 @@ class SettingsScreen extends ConsumerWidget {
         );
       }
     } catch (e, st) {
-      developer.log('Import failed', error: e, stackTrace: st, name: 'open_synth.settings');
+      appLogger.severe('Import failed', e, st);
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

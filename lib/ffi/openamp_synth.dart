@@ -795,6 +795,12 @@ class ParamId {
 
   // Reset
   static const int reset = 250;
+
+  // Drum Kit
+  static const int drumKitPreset = 260;
+  static const int drumLevel = 261;
+  static const int drumNoteOn = 262;
+  static const int drumNoteOff = 263;
 }
 
 /// Idiomatic Dart wrapper around the native SynthEngine.
@@ -1047,6 +1053,17 @@ class OpenAmpSynth {
   set arpResolution(int r) { enqueueInt(ParamId.arpResolution, r); }
    set arpSwing(double v) { enqueueFloat(ParamId.arpSwing, v); }
    set arpHold(bool v) { enqueueInt(ParamId.arpHold, v ? 1 : 0); }
+
+  // ── Drum Kit (queue-based, drumKit_ is inside SynthEngine) ──────────────────
+
+  set drumKitPreset(int index) { enqueueInt(ParamId.drumKitPreset, index); }
+  set drumLevel(double level) { enqueueFloat(ParamId.drumLevel, level); }
+  void drumNoteOn(int midiNote, double velocity) {
+    enqueueFloat(ParamId.drumNoteOn, midiNote + velocity);
+  }
+  void drumNoteOff(int midiNote) {
+    enqueueFloat(ParamId.drumNoteOff, midiNote.toDouble());
+  }
 
   int get activeVoices {
     if (_disposed) return 0;

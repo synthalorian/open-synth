@@ -14,8 +14,10 @@ void Voice::reset() {
         osc1Phase[i] = 0.0f;
         osc2Phase[i] = 0.0f;
     }
-    filterState1 = 0.0f;
-    filterState2 = 0.0f;
+    filterState.lp = 0.0f;
+    filterState.bp = 0.0f;
+    filterState.hp = 0.0f;
+    noteAge = 0.0f;
     lfo1Phase = 0.0;
     lfo2Phase = 0.0;
     ampEnv.reset();
@@ -30,6 +32,7 @@ void Voice::noteOn(int note, float vel) {
     baseFreq = 440.0f * std::pow(2.0f, (note - 69) / 12.0f);
     active = true;
     sustained = false;
+    noteAge = 0.0f;
     for (int i = 0; i < 8; i++) {
         osc1Phase[i] = 0.0f;
         osc2Phase[i] = 0.0f;

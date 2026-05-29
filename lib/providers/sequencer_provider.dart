@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer' as developer;
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../utils/logger.dart';
 import 'package:hive/hive.dart';
 
 import '../models/sequencer_config.dart';
@@ -109,7 +109,7 @@ class SequencerPatternsNotifier extends StateNotifier<List<SequencerPattern>> {
                 Map<String, dynamic>.from(jsonDecode(e as String))))
             .toList();
       } catch (e, st) {
-        developer.log('Failed to load sequencer patterns', error: e, stackTrace: st);
+        appLogger.severe('Failed to load sequencer patterns', e, st);
         state = [];
       }
     }

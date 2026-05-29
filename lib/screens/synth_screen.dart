@@ -1178,7 +1178,10 @@ class SynthScreen extends ConsumerWidget {
                 ),
 
                 // ── Fixed keyboard at bottom ──
-                const KeyboardWidget(),
+                const SizedBox(
+                  height: 120,
+                  child: KeyboardWidget(),
+                ),
               ],
             ),
           ),
@@ -1342,12 +1345,12 @@ class _QuickPresetStripState extends ConsumerState<_QuickPresetStrip> {
         children: [
           if (categories.isNotEmpty)
             Container(
-              height: 22,
-              margin: const EdgeInsets.only(bottom: 4),
+              height: 28,
+              margin: const EdgeInsets.only(bottom: 6),
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,
                 itemCount: categories.length,
-                separatorBuilder: (_, __) => const SizedBox(width: 6),
+                separatorBuilder: (_, index) => const SizedBox(width: 8),
                 itemBuilder: (context, idx) {
                   final cat = categories[idx];
                   final isSelected = cat == selectedCategory;
@@ -1364,12 +1367,12 @@ class _QuickPresetStripState extends ConsumerState<_QuickPresetStrip> {
                     },
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 150),
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                       decoration: BoxDecoration(
                         color: isSelected
                             ? SynthTheme.cyan.withValues(alpha: 0.25)
                             : SynthTheme.surface,
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(14),
                         border: Border.all(
                           color: isSelected
                               ? SynthTheme.cyan
@@ -1380,7 +1383,7 @@ class _QuickPresetStripState extends ConsumerState<_QuickPresetStrip> {
                         cat.displayName,
                         style: TextStyle(
                           color: isSelected ? SynthTheme.cyan : Colors.white70,
-                          fontSize: 9,
+                          fontSize: 11,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -1389,12 +1392,12 @@ class _QuickPresetStripState extends ConsumerState<_QuickPresetStrip> {
                 },
               ),
             ),            SizedBox(
-            height: 52,
+            height: 108,
             child: ListView.separated(
               controller: _scrollController,
               scrollDirection: Axis.horizontal,
               itemCount: quickPresets.isEmpty ? 4 : quickPresets.length + 3,
-              separatorBuilder: (_, _) => const SizedBox(width: 8),
+              separatorBuilder: (_, index) => const SizedBox(width: 8),
               itemBuilder: (context, index) {
           // ── Paste button ──
           if (index == 0) {
@@ -1404,29 +1407,30 @@ class _QuickPresetStripState extends ConsumerState<_QuickPresetStrip> {
                 await pastePresetFromClipboard(context, ref);
               },
               child: Container(
-                width: 44,
+                width: 56,
                 padding: const EdgeInsets.symmetric(vertical: 6),
                 decoration: BoxDecoration(
                   color: SynthTheme.purple.withValues(alpha: 0.15),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(10),
                   border: Border.all(
                     color: SynthTheme.purple.withValues(alpha: 0.4),
                   ),
                 ),
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(
                       Icons.content_paste,
                       color: SynthTheme.purple,
-                      size: 16,
+                      size: 18,
                     ),
-                    const SizedBox(height: 2),
+                    const SizedBox(height: 4),
                     Text(
                       'PASTE',
                       style: TextStyle(
                         color: SynthTheme.purple,
-                        fontSize: 7,
+                        fontSize: 9,
                         fontWeight: FontWeight.bold,
                         letterSpacing: 0.5,
                       ),
@@ -1456,11 +1460,11 @@ class _QuickPresetStripState extends ConsumerState<_QuickPresetStrip> {
                 );
               },
               child: Container(
-                width: 56,
-                padding: const EdgeInsets.symmetric(vertical: 6),
+                width: 64,
+                padding: const EdgeInsets.symmetric(vertical: 8),
                 decoration: BoxDecoration(
                   color: SynthTheme.cyan.withValues(alpha: 0.15),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(10),
                   border: Border.all(
                     color: SynthTheme.cyan.withValues(alpha: 0.4),
                   ),
@@ -1471,14 +1475,14 @@ class _QuickPresetStripState extends ConsumerState<_QuickPresetStrip> {
                     Icon(
                       Icons.casino,
                       color: SynthTheme.cyan,
-                      size: 18,
+                      size: 22,
                     ),
-                    const SizedBox(height: 2),
+                    const SizedBox(height: 4),
                     Text(
                       'RANDOM',
                       style: TextStyle(
                         color: SynthTheme.cyan,
-                        fontSize: 7,
+                        fontSize: 9,
                         fontWeight: FontWeight.bold,
                         letterSpacing: 0.5,
                       ),
@@ -1663,15 +1667,15 @@ class _QuickPresetStripState extends ConsumerState<_QuickPresetStrip> {
             },
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 150),
-              width: isFav ? 132 : 110,
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              width: isFav ? 152 : 128,
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               decoration: BoxDecoration(
                 color: isActive
                     ? SynthTheme.magenta.withValues(alpha: 0.2)
                     : isFav
                         ? SynthTheme.orange.withValues(alpha: 0.1)
                         : SynthTheme.card,
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(10),
                 border: Border.all(
                   color: isActive
                       ? SynthTheme.magenta.withValues(alpha: 0.6)
@@ -1691,35 +1695,35 @@ class _QuickPresetStripState extends ConsumerState<_QuickPresetStrip> {
                           p.name,
                           style: TextStyle(
                             color: isActive ? SynthTheme.magenta : Colors.white.withValues(alpha: 0.9),
-                            fontSize: 10,
+                            fontSize: 12,
                             fontWeight: isActive ? FontWeight.bold : FontWeight.w500,
                           ),
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                         ),
-                        const SizedBox(height: 2),
+                        const SizedBox(height: 3),
                         Text(
                           p.category.displayName.toUpperCase(),
                           style: TextStyle(
                             color: SynthTheme.textSecondary.withValues(alpha: 0.6),
-                            fontSize: 8,
+                            fontSize: 9,
                             fontWeight: FontWeight.w600,
                             letterSpacing: 0.5,
                           ),
                         ),
                         if (p.tags.isNotEmpty)
                           Container(
-                            margin: const EdgeInsets.only(top: 2),
-                            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+                            margin: const EdgeInsets.only(top: 3),
+                            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
                             decoration: BoxDecoration(
                               color: SynthTheme.purple.withValues(alpha: 0.2),
-                              borderRadius: BorderRadius.circular(3),
+                              borderRadius: BorderRadius.circular(4),
                             ),
                             child: Text(
                               p.tags.first.toUpperCase(),
                               style: TextStyle(
                                 color: SynthTheme.purple.withValues(alpha: 0.9),
-                                fontSize: 6,
+                                fontSize: 7,
                                 fontWeight: FontWeight.bold,
                                 letterSpacing: 0.5,
                               ),
@@ -1727,12 +1731,12 @@ class _QuickPresetStripState extends ConsumerState<_QuickPresetStrip> {
                           ),
                         // Pitch-offset indicator
                         Container(
-                          margin: const EdgeInsets.only(top: 2),
+                          margin: const EdgeInsets.only(top: 3),
                           child: Text(
                             '${p.osc1.octave >= 0 ? '+' : ''}${p.osc1.octave} • ${p.osc1.detune >= 0 ? '+' : ''}${p.osc1.detune.round()}¢',
                             style: TextStyle(
                               color: SynthTheme.textSecondary.withValues(alpha: 0.5),
-                              fontSize: 7,
+                              fontSize: 8,
                               fontWeight: FontWeight.w600,
                             ),
                             overflow: TextOverflow.ellipsis,
@@ -1763,13 +1767,13 @@ class _QuickPresetStripState extends ConsumerState<_QuickPresetStrip> {
                       );
                     },
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 6, right: 2),
+                      padding: const EdgeInsets.only(left: 8, right: 2),
                       child: Icon(
                         p.osc1.waveform.icon,
                         color: isActive
                             ? SynthTheme.magenta.withValues(alpha: 0.8)
                             : SynthTheme.cyan.withValues(alpha: 0.6),
-                        size: 14,
+                        size: 16,
                       ),
                     ),
                   ),
@@ -1788,7 +1792,7 @@ class _QuickPresetStripState extends ConsumerState<_QuickPresetStrip> {
                           color: favIdx > 0
                               ? SynthTheme.textSecondary.withValues(alpha: 0.5)
                               : SynthTheme.textSecondary.withValues(alpha: 0.15),
-                          size: 12,
+                          size: 14,
                         ),
                       ),
                     ),
@@ -1804,7 +1808,7 @@ class _QuickPresetStripState extends ConsumerState<_QuickPresetStrip> {
                       child: Icon(
                         isFav ? Icons.star : Icons.star_border,
                         color: isFav ? SynthTheme.orange : SynthTheme.textSecondary.withValues(alpha: 0.4),
-                        size: 14,
+                        size: 16,
                       ),
                     ),
                   ),
@@ -1824,7 +1828,7 @@ class _QuickPresetStripState extends ConsumerState<_QuickPresetStrip> {
                           color: (favIdx >= 0 && favIdx < orderedFavorites.length - 1)
                               ? SynthTheme.textSecondary.withValues(alpha: 0.5)
                               : SynthTheme.textSecondary.withValues(alpha: 0.15),
-                          size: 12,
+                          size: 14,
                         ),
                       ),
                     ),

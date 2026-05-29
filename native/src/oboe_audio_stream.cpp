@@ -18,17 +18,18 @@ OboeAudioStream::OboeAudioStream(void* processorContext, AudioProcessor processo
         return;
     }
 
-    oboe::Result result = oboe::AudioStreamBuilder()
+    oboe::AudioStreamBuilder builder;
+    oboe::Result result = builder
         .setDirection(oboe::Direction::Output)
-        .setPerformanceMode(oboe::PerformanceMode::LowLatency)
-        .setSharingMode(oboe::SharingMode::Exclusive)
-        .setFormat(oboe::AudioFormat::Float)
-        .setChannelCount(2)  // stereo
-        .setSampleRate(static_cast<int32_t>(sampleRate_))
-        .setBufferCapacityInFrames(static_cast<int32_t>(blockSize_ * 2))
-        .setFramesPerDataCallback(static_cast<int32_t>(blockSize_))
-        .setDataCallback(this)
-        .openStream(stream_);
+        ->setPerformanceMode(oboe::PerformanceMode::LowLatency)
+        ->setSharingMode(oboe::SharingMode::Exclusive)
+        ->setFormat(oboe::AudioFormat::Float)
+        ->setChannelCount(2)  // stereo
+        ->setSampleRate(static_cast<int32_t>(sampleRate_))
+        ->setBufferCapacityInFrames(static_cast<int32_t>(blockSize_ * 2))
+        ->setFramesPerDataCallback(static_cast<int32_t>(blockSize_))
+        ->setDataCallback(this)
+        ->openStream(stream_);
 
     if (result != oboe::Result::OK) {
         std::snprintf(errorBuf_, sizeof(errorBuf_),

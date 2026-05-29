@@ -8,6 +8,7 @@
 #include "voice_allocator.h"
 #include "param_queue.h"
 #include "arpeggiator.h"
+#include "drum_synth.h"
 #include "fx_engine.h"
 
 namespace openamp {
@@ -256,6 +257,17 @@ private:
 
     // Arpeggiator
     Arpeggiator arpeggiator_;
+
+    // Drum Kit — dedicated drum synthesis engine
+    DrumKit drumKit_;
+
+    // Public drum API
+    DrumKit& drumKit() { return drumKit_; }
+    const DrumKit& drumKit() const { return drumKit_; }
+    void drumNoteOn(int midiNote, float velocity) { drumKit_.noteOn(midiNote, velocity); }
+    void drumNoteOff(int midiNote) { drumKit_.noteOff(midiNote); }
+    void setDrumKitPreset(int index) { drumKit_.setKitPreset(index); }
+    void setDrumKitLevel(float level) { drumKit_.setLevel(level); }
 
     // Legacy FX accessor — retrieves the LegacyFxProcessor from slot 0
     LegacyFxProcessor* getLegacyFx() const;

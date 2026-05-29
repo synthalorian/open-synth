@@ -15,9 +15,11 @@ class WaveformSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: Waveform.values.map((wf) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: Waveform.values.map((wf) {
         final isSelected = wf == selected;
         return GestureDetector(
           onTap: () => onChanged(wf),
@@ -54,6 +56,7 @@ class WaveformSelector extends StatelessWidget {
           ),
         );
       }).toList(),
+      ),
     );
   }
 }
