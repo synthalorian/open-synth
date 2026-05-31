@@ -267,7 +267,26 @@ class OpenAmpSynthBindings {
         getArpCurrentStep = lib.lookupFunction<_GetIntNative, _GetIntDart>(
             'synth_engine_get_arp_current_step'),
         getArpTotalSteps = lib.lookupFunction<_GetIntNative, _GetIntDart>(
-            'synth_engine_get_arp_total_steps');
+            'synth_engine_get_arp_total_steps'),
+        // Rhythm pattern player
+        rhythmPlay = lib.lookupFunction<_VoidNative, _VoidDart>(
+            'synth_engine_rhythm_play'),
+        rhythmStop = lib.lookupFunction<_VoidNative, _VoidDart>(
+            'synth_engine_rhythm_stop'),
+        rhythmSetPattern = lib.lookupFunction<_SetIntNative, _SetIntDart>(
+            'synth_engine_rhythm_set_pattern'),
+        rhythmSetTempo = lib.lookupFunction<_SetFloatNative, _SetFloatDart>(
+            'synth_engine_rhythm_set_tempo'),
+        rhythmSetVolume = lib.lookupFunction<_SetFloatNative, _SetFloatDart>(
+            'synth_engine_rhythm_set_volume'),
+        rhythmSetVariation = lib.lookupFunction<_SetIntNative, _SetIntDart>(
+            'synth_engine_rhythm_set_variation'),
+        rhythmSetSongMode = lib.lookupFunction<_SetIntNative, _SetIntDart>(
+            'synth_engine_rhythm_set_song_mode'),
+        getRhythmCurrentStep = lib.lookupFunction<_GetIntNative, _GetIntDart>(
+            'synth_engine_get_rhythm_current_step'),
+        getRhythmTotalSteps = lib.lookupFunction<_GetIntNative, _GetIntDart>(
+            'synth_engine_get_rhythm_total_steps');
 
   // ── Unison bindings (lazy, may not be available in older .so builds) ──
 
@@ -419,6 +438,17 @@ class OpenAmpSynthBindings {
   // Arpeggiator getters
   final _GetIntDart getArpCurrentStep;
   final _GetIntDart getArpTotalSteps;
+
+  // Rhythm pattern player
+  final _VoidDart rhythmPlay;
+  final _VoidDart rhythmStop;
+  final _SetIntDart rhythmSetPattern;
+  final _SetFloatDart rhythmSetTempo;
+  final _SetFloatDart rhythmSetVolume;
+  final _SetIntDart rhythmSetVariation;
+  final _SetIntDart rhythmSetSongMode;
+  final _GetIntDart getRhythmCurrentStep;
+  final _GetIntDart getRhythmTotalSteps;
 }
 
 // ── Unison FFI bindings (lazy; may be absent on older .so builds) ──────
@@ -801,6 +831,15 @@ class ParamId {
   static const int drumLevel = 261;
   static const int drumNoteOn = 262;
   static const int drumNoteOff = 263;
+
+  // Rhythm Pattern Player
+  static const int rhythmPattern = 270;
+  static const int rhythmPlay = 271;
+  static const int rhythmStop = 272;
+  static const int rhythmTempo = 273;
+  static const int rhythmVolume = 274;
+  static const int rhythmVariation = 275;
+  static const int rhythmSongMode = 276;
 }
 
 /// Idiomatic Dart wrapper around the native SynthEngine.
@@ -1064,6 +1103,18 @@ class OpenAmpSynth {
   void drumNoteOff(int midiNote) {
     enqueueFloat(ParamId.drumNoteOff, midiNote.toDouble());
   }
+
+  // ── Rhythm Pattern Player (queue-based) ────────────────────────────────────
+
+  void rhythmPlay() { _bindings.rhythmPlay(_handle); }
+  void rhythmStop() { _bindings.rhythmStop(_handle); }
+  void rhythmSetPattern(int index) { _bindings.rhythmSetPattern(_handle, index); }
+  void rhythmSetTempo(double bpm) { _bindings.rhythmSetTempo(_handle, bpm); }
+  void rhythmSetVolume(double vol) { _bindings.rhythmSetVolume(_handle, vol); }
+  void rhythmSetVariation(int variation) { _bindings.rhythmSetVariation(_handle, variation); }
+  void rhythmSetSongMode(bool enabled) { _bindings.rhythmSetSongMode(_handle, enabled ? 1 : 0); }
+  int get rhythmCurrentStep => _bindings.getRhythmCurrentStep(_handle);
+  int get rhythmTotalSteps => _bindings.getRhythmTotalSteps(_handle);
 
   int get activeVoices {
     if (_disposed) return 0;

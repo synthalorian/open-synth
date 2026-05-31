@@ -71,37 +71,17 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
   }
 
   void _noteOn(WidgetRef ref, int midiNote) {
-    final split = ref.read(keyboardSplitProvider);
-    final zones = split.zonesForNote(midiNote);
-
-    // Update arp notes regardless of zone
+    // Use NoteRouter for proper split/layer routing and zone tracking.
+    // This ensures note-off always hits the same zones even if split
+    // config changes while the key is held.
     ref.read(arpNotesProvider.notifier).update((set) => {...set, midiNote});
-
-    for (final zone in zones) {
-      final shiftedNote = split.shiftedNote(midiNote, zone);
-      if (zone == 1) {
-        ref.read(zoneBPlaybackProvider.notifier).noteOn(shiftedNote);
-      } else {
-        ref.read(playbackStateProvider.notifier).noteOn(shiftedNote);
-      }
-    }
+    ref.read(noteRouterProvider).noteOn(midiNote);
     recordNoteOn(ref, midiNote);
   }
 
   void _noteOff(WidgetRef ref, int midiNote) {
-    final split = ref.read(keyboardSplitProvider);
-    final zones = split.zonesForNote(midiNote);
-
     ref.read(arpNotesProvider.notifier).update((set) => {...set}..remove(midiNote));
-
-    for (final zone in zones) {
-      final shiftedNote = split.shiftedNote(midiNote, zone);
-      if (zone == 1) {
-        ref.read(zoneBPlaybackProvider.notifier).noteOff(shiftedNote);
-      } else {
-        ref.read(playbackStateProvider.notifier).noteOff(shiftedNote);
-      }
-    }
+    ref.read(noteRouterProvider).noteOff(midiNote);
     recordNoteOff(ref, midiNote);
   }
 

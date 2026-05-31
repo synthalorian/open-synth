@@ -4,14 +4,18 @@
 namespace openamp {
 
 VoiceAllocator::VoiceAllocator() {
-    for (auto& v : voices_) v.reset();
+    for (auto& v : voices_) {
+        v.reset();
+        v.physicalModel.init(48000.0, 4096);
+    }
 }
 
-Voice* VoiceAllocator::noteOn(int midiNote, float velocity) {
-    // Check if note already active — retrigger
+Voice* VoiceAllocator::noteOn(int midiNote, float velocity, int partIndex) {
+    // Check if note already active on this part — retrigger
     for (auto& v : voices_) {
-        if (v.active && v.midiNote == midiNote) {
+        if (v.active && v.midiNote == midiNote && v.partIndex == partIndex) {
             v.noteOn(midiNote, velocity);
+            v.partIndex = partIndex;
             return &v;
         }
     }
@@ -21,16 +25,19 @@ Voice* VoiceAllocator::noteOn(int midiNote, float velocity) {
     if (idx < 0) {
         Voice* stolen = stealVoice();
         stolen->noteOn(midiNote, velocity);
+        stolen->partIndex = partIndex;
         return stolen;
     }
 
     voices_[idx].noteOn(midiNote, velocity);
+    voices_[idx].partIndex = partIndex;
     return &voices_[idx];
 }
 
-void VoiceAllocator::noteOff(int midiNote) {
+void VoiceAllocator::noteOff(int midiNote, int partIndex) {
     for (auto& v : voices_) {
         if (v.active && v.midiNote == midiNote) {
+            if (partIndex >= 0 && v.partIndex != partIndex) continue;
             if (sustain_) {
                 v.sustained = true;
             } else {
@@ -41,11 +48,14 @@ void VoiceAllocator::noteOff(int midiNote) {
     }
 }
 
-void VoiceAllocator::allNotesOff() {
+void VoiceAllocator::allNotesOff(int partIndex) {
     for (auto& v : voices_) {
-        if (v.active) v.noteOff();
+        if (v.active) {
+            if (partIndex >= 0 && v.partIndex != partIndex) continue;
+            v.noteOff();
+        }
     }
-    sustain_ = false;
+    if (partIndex < 0) sustain_ = false;
 }
 
 void VoiceAllocator::sustain(bool on) {

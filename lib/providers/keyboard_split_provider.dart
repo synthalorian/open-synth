@@ -228,66 +228,67 @@ final zoneBMixSyncProvider = Provider<void>((ref) {
 /// Riverpod provider exposing the [NoteRouter] instance.
 final noteRouterProvider = Provider<NoteRouter>((ref) => NoteRouter(ref));
 
-/// Converts a MIDI note into a (zone, noteOn, noteOff) triple based on
-/// the current keyboard split configuration.
+/// Routes MIDI notes to the correct engine(s) based on keyboard split config.
 ///
-/// Returns -1 for zone when split is disabled (notes go to main engine).
+/// In layer mode or split crossfade regions, notes are routed to BOTH
+/// zones, each with its own octave shift applied. The router tracks
+/// which zones each note was sent to so note-off always targets the
+/// same engines, even if split config changes while the key is held.
 class NoteRouter {
   NoteRouter(this._ref);
 
   final Ref _ref;
 
-  /// Tracks which zone each active note was routed to so note-off
-  /// always targets the same engine, even if split config changes
+  /// Tracks which zone(s) each active note was routed to so note-off
+  /// always targets the same engine(s), even if split config changes
   /// while the key is held.
-  final Map<int, int> _activeNoteZones = {};
-
-  int resolveZone(int midiNote) {
-    final split = _ref.read(keyboardSplitProvider);
-    return split.zoneForNote(midiNote);
-  }
+  final Map<int, Set<int>> _activeNoteZones = {};
 
   void noteOn(int midiNote, {double velocity = 1.0}) {
-    final zone = resolveZone(midiNote);
-    _activeNoteZones[midiNote] = zone;
+    final split = _ref.read(keyboardSplitProvider);
+    final zones = split.zonesForNote(midiNote);
+    _activeNoteZones[midiNote] = zones.toSet();
 
-    if (zone == 0) {
-      // Zone A — use main playback
-      _ref.read(playbackStateProvider.notifier).noteOn(midiNote, velocity: velocity);
-    } else if (zone == 1) {
-      // Zone B — use zone B playback
-      _ref.read(zoneBPlaybackProvider.notifier).noteOn(midiNote, velocity: velocity);
-    } else {
-      // Split disabled — main playback as usual
-      _ref.read(playbackStateProvider.notifier).noteOn(midiNote, velocity: velocity);
+    for (final zone in zones) {
+      final shiftedNote = split.shiftedNote(midiNote, zone);
+      if (zone == 0) {
+        _ref.read(playbackStateProvider.notifier).noteOn(shiftedNote, velocity: velocity);
+      } else {
+        _ref.read(zoneBPlaybackProvider.notifier).noteOn(shiftedNote, velocity: velocity);
+      }
     }
   }
 
   void noteOff(int midiNote) {
-    // Use the *original* zone from note-on so the release goes to the
-    // same engine even if the split point shifted while the key was held.
-    final zone = _activeNoteZones.remove(midiNote) ?? resolveZone(midiNote);
+    // Use the *original* zones from note-on so the release goes to the
+    // same engine(s) even if the split point shifted while the key was held.
+    final zones = _activeNoteZones.remove(midiNote);
+    if (zones == null) return;
 
-    if (zone == 0) {
-      _ref.read(playbackStateProvider.notifier).noteOff(midiNote);
-    } else if (zone == 1) {
-      _ref.read(zoneBPlaybackProvider.notifier).noteOff(midiNote);
-    } else {
-      _ref.read(playbackStateProvider.notifier).noteOff(midiNote);
+    final split = _ref.read(keyboardSplitProvider);
+    for (final zone in zones) {
+      final shiftedNote = split.shiftedNote(midiNote, zone);
+      if (zone == 0) {
+        _ref.read(playbackStateProvider.notifier).noteOff(shiftedNote);
+      } else {
+        _ref.read(zoneBPlaybackProvider.notifier).noteOff(shiftedNote);
+      }
     }
   }
 
   /// Release every tracked note (e.g. on panic / split mode change).
   void allNotesOff() {
+    final split = _ref.read(keyboardSplitProvider);
     for (final entry in _activeNoteZones.entries) {
       final midiNote = entry.key;
-      final zone = entry.value;
-      if (zone == 0) {
-        _ref.read(playbackStateProvider.notifier).noteOff(midiNote);
-      } else if (zone == 1) {
-        _ref.read(zoneBPlaybackProvider.notifier).noteOff(midiNote);
-      } else {
-        _ref.read(playbackStateProvider.notifier).noteOff(midiNote);
+      final zones = entry.value;
+      for (final zone in zones) {
+        final shiftedNote = split.shiftedNote(midiNote, zone);
+        if (zone == 0) {
+          _ref.read(playbackStateProvider.notifier).noteOff(shiftedNote);
+        } else {
+          _ref.read(zoneBPlaybackProvider.notifier).noteOff(shiftedNote);
+        }
       }
     }
     _activeNoteZones.clear();

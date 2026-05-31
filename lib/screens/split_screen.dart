@@ -4,9 +4,11 @@ import 'package:google_fonts/google_fonts.dart';
 import '../models/keyboard_split.dart';
 import '../models/synth_preset.dart';
 import '../providers/keyboard_split_provider.dart';
+import '../providers/navigation_provider.dart';
 import '../providers/recent_presets_provider.dart';
 import '../providers/synth_providers.dart';
 import '../theme/synth_theme.dart';
+import '../widgets/computer_keyboard_listener.dart';
 import '../widgets/keyboard_widget.dart';
 import '../widgets/split_panel.dart';
 
@@ -49,53 +51,56 @@ class SplitScreen extends ConsumerWidget {
           const SizedBox(width: 12),
         ],
       ),
-      body: Column(
-        children: [
-          // Scrollable controls
-          Expanded(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(12),
-              child: Column(
-                children: [
-                  // Main split panel
-                  const SplitPanel(),
-                  const SizedBox(height: 12),
-
-                  // Quick preset grid for Zone A
-                  if (split.mode != SplitMode.normal) ...[
-                    _ZonePresetGrid(
-                      title: 'ZONE A PRESETS',
-                      color: SynthTheme.cyan,
-                      selectedPreset: split.presetA,
-                      presets: allPresets,
-                      onSelect: (p) {
-                        ref.read(keyboardSplitProvider.notifier).setPresetA(p);
-                        ref.read(recentPresetsProvider.notifier).track(p.id);
-                      },
-                    ),
+      body: ComputerKeyboardListener(
+        active: ref.watch(mainShellIndexProvider) == 2,
+        child: Column(
+          children: [
+            // Scrollable controls
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(12),
+                child: Column(
+                  children: [
+                    // Main split panel
+                    const SplitPanel(),
                     const SizedBox(height: 12),
 
-                    // Quick preset grid for Zone B
-                    _ZonePresetGrid(
-                      title: 'ZONE B PRESETS',
-                      color: SynthTheme.magenta,
-                      selectedPreset: split.presetB,
-                      presets: allPresets,
-                      onSelect: (p) {
-                        ref.read(keyboardSplitProvider.notifier).setPresetB(p);
-                        ref.read(recentPresetsProvider.notifier).track(p.id);
-                      },
-                    ),
-                    const SizedBox(height: 12),
+                    // Quick preset grid for Zone A
+                    if (split.mode != SplitMode.normal) ...[
+                      _ZonePresetGrid(
+                        title: 'ZONE A PRESETS',
+                        color: SynthTheme.cyan,
+                        selectedPreset: split.presetA,
+                        presets: allPresets,
+                        onSelect: (p) {
+                          ref.read(keyboardSplitProvider.notifier).setPresetA(p);
+                          ref.read(recentPresetsProvider.notifier).track(p.id);
+                        },
+                      ),
+                      const SizedBox(height: 12),
+
+                      // Quick preset grid for Zone B
+                      _ZonePresetGrid(
+                        title: 'ZONE B PRESETS',
+                        color: SynthTheme.magenta,
+                        selectedPreset: split.presetB,
+                        presets: allPresets,
+                        onSelect: (p) {
+                          ref.read(keyboardSplitProvider.notifier).setPresetB(p);
+                          ref.read(recentPresetsProvider.notifier).track(p.id);
+                        },
+                      ),
+                      const SizedBox(height: 12),
+                    ],
                   ],
-                ],
+                ),
               ),
             ),
-          ),
 
-          // Fixed keyboard at bottom
-          const SizedBox(height: 120, child: KeyboardWidget()),
-        ],
+            // Fixed keyboard at bottom
+            const SizedBox(height: 120, child: KeyboardWidget()),
+          ],
+        ),
       ),
     );
   }

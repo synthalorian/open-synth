@@ -4,17 +4,22 @@
 
 ## Features
 
-- **Dual Oscillators:** Subtractive synthesis with Saw, Square, Triangle, Sine, Pulse, Noise (white/pink/brown), and Wavetable waveforms.
+- **Dual Oscillators:** Subtractive synthesis with Saw, Square, Triangle, Sine, Pulse, Noise (white/pink/brown), Wavetable, and Physical Modeling waveforms.
 - **Sub-Oscillator & FM:** Square/Sine sub-oscillator (1-2 octaves below) and FM synthesis mode per oscillator.
+- **Physical Modeling:** Karplus-Strong (guitar, bass, bright) and Modal synthesis (mallet, vibraphone, steel) for realistic acoustic instruments.
 - **Resonant Filters:** Low-pass, High-pass, Band-pass, Notch, Low-shelf, High-shelf, and Peaking EQ with key tracking, drive stage, and envelope modulation.
 - **Advanced Envelopes:** ADSR + Delay/Hold stages with exponential/linear/log curve shaping for both amplitude and filter.
 - **Dual LFOs:** Multiple waveforms including S&H smoothed and random walk, with fade-in, tempo sync, per-voice mode, and multiple targets (Pitch, Filter, Amplitude, Pan).
 - **Arpeggiator:** 5 patterns (Up, Down, Up/Down, Random, Chord) with adjustable tempo, octave range, gate, and resolution.
+- **Rhythm Pattern Player:** 24 preset drum patterns across 9 genres with variations, song mode, and swing control.
 - **64-Voice Polyphony:** Voice priority modes (newest, oldest, quietest, highest note) with intelligent voice stealing.
+- **Multitimbral Engine:** 16-part multitimbral with per-part MIDI channel routing, volume, pan, mute, and solo.
 - **Built-in FX:** Chorus, Delay, Reverb, Phaser, Flanger, Drive, and Compressor for that authentic retro sound.
-- **Preset Library:** 377 factory presets across 15 categories — Synthwave, Pads, Leads, Bass, Keys, Arps, FX, Piano, Organ, Guitar, Strings, Brass, Choir, Percussion, and Custom.
+- **Preset Library:** 1,415 factory presets across 15 categories — Synthwave, Pads, Leads, Bass, Keys, Arps, FX, Piano, Organ, Guitar, Strings, Brass, Choir, Percussion, and Custom.
 - **Favorites & Setlists:** Star presets, reorder them, and organize into named setlists for live performance.
-- **Native Audio:** Uses the OpenAmp FFI engine for low-latency audio processing via PortAudio.
+- **Recording:** WAV export with 16/24/32-bit depth, stereo output.
+- **MIDI File I/O:** Import and export Standard MIDI Files (SMF) with tempo control.
+- **Native Audio:** Uses the OpenAmp FFI engine for low-latency audio processing via PortAudio (desktop) or Oboe (Android).
 
 ## Getting Started
 

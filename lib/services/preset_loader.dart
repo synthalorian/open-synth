@@ -47,9 +47,7 @@ void applyPresetToSynth(OpenAmpSynth synth, SynthPreset preset) {
   // piano / guitar / choir presets don't all sound identical.
   final wtPos1 = _resolveWavetablePosition(preset.osc1.waveform, preset.osc1.wavetablePosition);
   if (preset.osc1.waveform == Waveform.wavetable ||
-      preset.osc1.waveform == Waveform.wtPiano ||
-      preset.osc1.waveform == Waveform.wtGuitar ||
-      preset.osc1.waveform == Waveform.wtChoir) {
+      preset.osc1.waveform.index >= Waveform.wtPiano.index) {
     synth.osc1PulseWidth = wtPos1;
   }
 
@@ -66,9 +64,7 @@ void applyPresetToSynth(OpenAmpSynth synth, SynthPreset preset) {
   synth.osc2FmAmount = preset.osc2.fmAmount;
   final wtPos2 = _resolveWavetablePosition(preset.osc2.waveform, preset.osc2.wavetablePosition);
   if (preset.osc2.waveform == Waveform.wavetable ||
-      preset.osc2.waveform == Waveform.wtPiano ||
-      preset.osc2.waveform == Waveform.wtGuitar ||
-      preset.osc2.waveform == Waveform.wtChoir) {
+      preset.osc2.waveform.index >= Waveform.wtPiano.index) {
     synth.osc2PulseWidth = wtPos2;
   }
 
@@ -281,28 +277,83 @@ int _waveformToInt(Waveform w) {
     case Waveform.wavetable:
       return 5;
     case Waveform.wtPiano:
-      return 5; // Wavetable slot with position 0.1
+      return 6;
     case Waveform.wtGuitar:
-      return 5; // Wavetable slot with position 0.5
+      return 7;
     case Waveform.wtChoir:
-      return 5; // Wavetable slot with position 0.9
+      return 8;
+    case Waveform.wtBrass:
+      return 9;
+    case Waveform.wtStrings:
+      return 10;
+    case Waveform.wtWoodwind:
+      return 11;
+    case Waveform.wtOrgan:
+      return 12;
+    case Waveform.wtBell:
+      return 13;
+    case Waveform.wtSynthBass:
+      return 14;
+    case Waveform.wtSynthLead:
+      return 15;
+    case Waveform.wtPad:
+      return 16;
+    case Waveform.wtEPiano:
+      return 17;
+    case Waveform.pmKarplus:
+      return 18;
+    case Waveform.pmKarplusBright:
+      return 19;
+    case Waveform.pmKarplusBass:
+      return 20;
+    case Waveform.pmModalMallet:
+      return 21;
+    case Waveform.pmModalVibraphone:
+      return 22;
+    case Waveform.pmModalSteel:
+      return 23;
     case Waveform.random:
-      return 5; // Map to wavetable slot
+      return 5;
   }
 }
 
 /// Returns a stable default wavetable position for instrument-specific
-/// waveforms so the engine can differentiate piano / guitar / choir.
+/// waveforms so the engine can differentiate them.
 /// If the preset already sets a non-zero position, that value is respected.
 double _resolveWavetablePosition(Waveform waveform, double presetPosition) {
   if (presetPosition != 0.0) return presetPosition;
   switch (waveform) {
     case Waveform.wtPiano:
-      return 0.10;
+      return 0.08;
     case Waveform.wtGuitar:
-      return 0.50;
+      return 0.16;
     case Waveform.wtChoir:
-      return 0.90;
+      return 0.24;
+    case Waveform.wtBrass:
+      return 0.32;
+    case Waveform.wtStrings:
+      return 0.40;
+    case Waveform.wtWoodwind:
+      return 0.48;
+    case Waveform.wtOrgan:
+      return 0.56;
+    case Waveform.wtBell:
+      return 0.64;
+    case Waveform.wtSynthBass:
+      return 0.72;
+    case Waveform.wtSynthLead:
+      return 0.80;
+    case Waveform.wtPad:
+      return 0.88;
+    case Waveform.wtEPiano:
+      return 0.96;
+    case Waveform.pmKarplus:
+    case Waveform.pmKarplusBright:
+    case Waveform.pmKarplusBass:
+    case Waveform.pmModalMallet:
+    case Waveform.pmModalVibraphone:
+    case Waveform.pmModalSteel:
+      return 0.0;
     case Waveform.wavetable:
       return 0.0;
     default:

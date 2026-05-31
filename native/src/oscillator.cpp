@@ -8,38 +8,52 @@ namespace openamp {
 void Oscillator::setWaveform(int w) {
     // Map from Dart Waveform enum to internal OscWaveform enum.
     // Dart: sine(0), saw(1), square(2), triangle(3), noise(4), wavetable(5),
-    //       wt_piano(6), wt_guitar(7), wt_choir(8)
+    //       wt_piano(6), wt_guitar(7), wt_choir(8), wt_brass(9), wt_strings(10),
+    //       wt_woodwind(11), wt_organ(12), wt_bell(13), wt_synth_bass(14),
+    //       wt_synth_lead(15), wt_pad(16), wt_epiano(17)
     // Internal: SAW(0), SQUARE(1), TRIANGLE(2), SINE(3), NOISE(4), PULSE(5),
-    //           WT_PIANO(6), WT_GUITAR(7), WT_CHOIR(8)
+    //           WT_PIANO(6), WT_GUITAR(7), WT_CHOIR(8), WT_BRASS(9), WT_STRINGS(10),
+    //           WT_WOODWIND(11), WT_ORGAN(12), WT_BELL(13), WT_SYNTH_BASS(14),
+    //           WT_SYNTH_LEAD(15), WT_PAD(16), WT_EPIANO(17)
     static constexpr int dartToInternal[] = {
         3,  // Dart sine(0) → SINE
         0,  // Dart saw(1) → SAW
         1,  // Dart square(2) → SQUARE
         2,  // Dart triangle(3) → TRIANGLE
         4,  // Dart noise(4) → NOISE
-        5,  // Dart wavetable(5) → PULSE (placeholder; use wavetable for 6-8)
+        5,  // Dart wavetable(5) → PULSE (placeholder; use wavetable for 6+)
         6,  // Dart wt_piano(6) → WT_PIANO
         7,  // Dart wt_guitar(7) → WT_GUITAR
         8,  // Dart wt_choir(8) → WT_CHOIR
+        9,  // Dart wt_brass(9) → WT_BRASS
+        10, // Dart wt_strings(10) → WT_STRINGS
+        11, // Dart wt_woodwind(11) → WT_WOODWIND
+        12, // Dart wt_organ(12) → WT_ORGAN
+        13, // Dart wt_bell(13) → WT_BELL
+        14, // Dart wt_synth_bass(14) → WT_SYNTH_BASS
+        15, // Dart wt_synth_lead(15) → WT_SYNTH_LEAD
+        16, // Dart wt_pad(16) → WT_PAD
+        17, // Dart wt_epiano(17) → WT_EPIANO
     };
 
     int mapped;
-    if (w >= 0 && w <= 8) {
+    if (w >= 0 && w <= 17) {
         mapped = dartToInternal[w];
     } else {
         mapped = 3; // default to SINE
     }
 
-    waveform_ = std::clamp(mapped, 0, 8);
+    waveform_ = std::clamp(mapped, 0, 17);
 
     // Configure wavetable oscillator for wavetable types
     auto wf = static_cast<OscWaveform>(waveform_);
-    if (wf == OscWaveform::WT_PIANO || wf == OscWaveform::WT_GUITAR || wf == OscWaveform::WT_CHOIR) {
-        int wtType = waveform_ - 6; // 0=piano, 1=guitar, 2=choir
+    if (wf >= OscWaveform::WT_PIANO && wf <= OscWaveform::WT_EPIANO) {
+        int wtType = waveform_ - 6; // 0=piano, 1=guitar, ..., 11=epiano
         const Wavetable* wt = getBuiltinWavetable(wtType);
         wtOsc_.setWavetable(wt);
     }
 }
+
 void Oscillator::setOctave(int oct) { octave_ = std::clamp(oct, -2, 2); }
 void Oscillator::setDetune(float cents) { detune_ = std::clamp(cents, -100.0f, 100.0f); }
 void Oscillator::setPulseWidth(float pw) { pulseWidth_ = std::clamp(pw, 0.01f, 0.99f); }
@@ -150,7 +164,16 @@ float Oscillator::generateWaveform(float phase) const {
         return phase < pulseWidth_ ? 1.0f : -1.0f;
 
     case OscWaveform::WT_GUITAR:
-    case OscWaveform::WT_CHOIR: {
+    case OscWaveform::WT_CHOIR:
+    case OscWaveform::WT_BRASS:
+    case OscWaveform::WT_STRINGS:
+    case OscWaveform::WT_WOODWIND:
+    case OscWaveform::WT_ORGAN:
+    case OscWaveform::WT_BELL:
+    case OscWaveform::WT_SYNTH_BASS:
+    case OscWaveform::WT_SYNTH_LEAD:
+    case OscWaveform::WT_PAD:
+    case OscWaveform::WT_EPIANO: {
         float sample = wtOsc_.getSampleAtPhase(phase);
         return sample;
     }
@@ -161,11 +184,11 @@ float Oscillator::generateWaveform(float phase) const {
         // Add a second partial at ~2.01x the fundamental with lower amplitude.
         float inharmonicPhase = phase * 2.01f;
         inharmonicPhase = inharmonicPhase - std::floor(inharmonicPhase);
-        float overtone = wtOsc_.getSampleAtPhase(inharmonicPhase) * 0.18f;
+        float overtone = wtOsc_.getSampleAtPhase(inharmonicPhase) * 0.25f;
         // Add a 3rd partial (slightly sharp as well)
         float overtone3Phase = phase * 3.02f;
         overtone3Phase = overtone3Phase - std::floor(overtone3Phase);
-        float overtone3 = wtOsc_.getSampleAtPhase(overtone3Phase) * 0.08f;
+        float overtone3 = wtOsc_.getSampleAtPhase(overtone3Phase) * 0.12f;
         return base + overtone + overtone3;
     }
     }

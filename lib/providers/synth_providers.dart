@@ -12,6 +12,7 @@ import '../services/preset_loader.dart';
 import 'mod_matrix_provider.dart';
 import 'morph_provider.dart';
 import 'settings_provider.dart';
+import 'keyboard_split_provider.dart';
 
 // ── Preset Library ──────────────────────────────────────
 final presetListProvider =
@@ -381,13 +382,29 @@ class PlaybackStateNotifier extends StateNotifier<Set<int>> {
 
   final Ref _ref;
 
-  OpenAmpSynth? get _engine => _ref.read(synthEngineProvider);
+  /// When keyboard split is active, zone A routes through the SynthEnginePair
+  /// (engine A) so both zones mix through the same audio stream. When split is
+  /// off, we use the standalone single engine.
+  OpenAmpSynth? get _engine {
+    final split = _ref.read(keyboardSplitProvider);
+    if (split.enabled) {
+      final pair = _ref.read(synthPairProvider);
+      if (pair != null) {
+        return OpenAmpSynth.fromHandle(pair.engineA);
+      }
+    }
+    return _ref.read(synthEngineProvider);
+  }
 
-  /// Reading the audio-stream provider lazily creates and starts the
-  /// audio output stream. We touch it on first noteOn so the audio
-  /// device only opens when the user actually wants sound.
+  /// Ensure the correct audio stream is running. When split is active, the
+  /// pair stream must be started; otherwise the single-engine stream.
   void _ensureAudioRunning() {
-    _ref.read(synthAudioStreamProvider);
+    final split = _ref.read(keyboardSplitProvider);
+    if (split.enabled) {
+      _ref.read(synthPairAudioStreamProvider);
+    } else {
+      _ref.read(synthAudioStreamProvider);
+    }
   }
 
   void noteOn(int midiNote, {double velocity = 1.0}) {
