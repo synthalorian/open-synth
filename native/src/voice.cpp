@@ -10,6 +10,7 @@ void Voice::reset() {
     velocity = 1.0f;
     baseFreq = 440.0f;
     pan = 0.0f;
+    partIndex = 0;
     for (int i = 0; i < 8; i++) {
         osc1Phase[i] = 0.0f;
         osc2Phase[i] = 0.0f;

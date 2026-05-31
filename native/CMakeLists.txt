@@ -25,10 +25,15 @@ set(COMMON_SOURCES
     ${SRC_DIR}/drum_synth.cpp
     ${SRC_DIR}/drum_kit_mapping.cpp
     ${SRC_DIR}/drum_ffi.cpp
+    ${SRC_DIR}/rhythm_pattern_player.cpp
     ${SRC_DIR}/wavetable_oscillator.cpp
     ${SRC_DIR}/wavetable_data.cpp
     ${SRC_DIR}/wavetable_bank.cpp
     ${SRC_DIR}/fx_engine.cpp
+    ${SRC_DIR}/physical_model.cpp
+    ${SRC_DIR}/synth_part.cpp
+    ${SRC_DIR}/recorder.cpp
+    ${SRC_DIR}/midi_file.cpp
     ${SRC_DIR}/fx_eq.cpp
     ${SRC_DIR}/fx_limiter.cpp
     ${SRC_DIR}/fx_rotary.cpp

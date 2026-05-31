@@ -47,11 +47,20 @@ struct DrumVoice {
     float burstTimer = 0.0f;      // for clap burst pattern
     int burstCount = 0;
     float detune = 0.0f;          // for cowbell dual-osc detune
-    float phase2 = 0.0f;          // second oscillator phase (cowbell)
+    float phase2 = 0.0f;          // second oscillator phase (cowbell, crash bell, ride)
+    float subPhase = 0.0f;        // independent sub-oscillator phase (kick)
     int midiNote = 0;
     // For hi-hat choke
     float tuning = 1.0f;          // pitch tuning multiplier from preset
     float chokeLevel = 1.0f;      // 1.0 = unchoked, ramps to 0 when choked
+
+    // Pink noise filter states (Paul Kellet's method)
+    float pinkB0 = 0.0f, pinkB1 = 0.0f, pinkB2 = 0.0f, pinkB3 = 0.0f;
+    float pinkB4 = 0.0f, pinkB5 = 0.0f, pinkB6 = 0.0f;
+
+    // Multi-mode oscillator phases (for cymbals, drumheads)
+    float modePhases[8] = {};
+    int modeCount = 0;
 };
 
 // ── Per-drum-type sound configuration ──────────────────────────────────────

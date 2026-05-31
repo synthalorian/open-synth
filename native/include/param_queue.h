@@ -212,6 +212,15 @@ public:
         DRUM_LEVEL = 261,
         DRUM_NOTE_ON = 262,
         DRUM_NOTE_OFF = 263,
+
+        // Rhythm Pattern Player
+        RHYTHM_PATTERN = 270,
+        RHYTHM_PLAY = 271,
+        RHYTHM_STOP = 272,
+        RHYTHM_TEMPO = 273,
+        RHYTHM_VOLUME = 274,
+        RHYTHM_VARIATION = 275,
+        RHYTHM_SONG_MODE = 276,
     };
 
     struct Entry {

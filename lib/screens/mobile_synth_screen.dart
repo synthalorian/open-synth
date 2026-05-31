@@ -57,7 +57,9 @@ class MobileSynthScreen extends ConsumerWidget {
     ref.watch(arpeggiatorNativeBridgeProvider);
     ref.watch(midiClockEngineProvider);
     ref.watch(synthPairProvider);
+    ref.watch(synthPairAudioStreamProvider);
     ref.watch(zoneBPresetSyncProvider);
+    ref.watch(zoneBMixSyncProvider);
 
     return CrtOverlay(
       child: Scaffold(
@@ -356,7 +358,7 @@ class MobileSynthScreen extends ConsumerWidget {
             label: 'PANIC',
             color: SynthTheme.magenta,
             onTap: () {
-              ref.read(playbackStateProvider.notifier).allNotesOff();
+              ref.read(noteRouterProvider).allNotesOff();
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text('PANIC: All notes killed'),

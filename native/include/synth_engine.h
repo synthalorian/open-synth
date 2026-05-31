@@ -9,7 +9,10 @@
 #include "param_queue.h"
 #include "arpeggiator.h"
 #include "drum_synth.h"
+#include "rhythm_pattern_player.h"
 #include "fx_engine.h"
+#include "synth_part.h"
+#include "recorder.h"
 
 namespace openamp {
 
@@ -18,6 +21,8 @@ class LegacyFxProcessor;
 
 class SynthEngine {
 public:
+    static constexpr int MAX_PARTS = 16;
+
     SynthEngine(double sampleRate, uint32_t blockSize);
     ~SynthEngine();
 
@@ -29,11 +34,11 @@ public:
     void reset();
 
     // MIDI (thread-safe via queue)
-    void noteOn(int midiNote, float velocity);
-    void noteOff(int midiNote);
-    void allNotesOff();
+    void noteOn(int midiNote, float velocity, int channel = 0);
+    void noteOff(int midiNote, int channel = 0);
+    void allNotesOff(int channel = -1);
 
-    // Arpeggiator
+    // Arpeggiator (global, operates on current active part)
     Arpeggiator& arpeggiator() { return arpeggiator_; }
     void setArpEnabled(bool e) { arpeggiator_.setEnabled(e); }
     void setArpTempo(float bpm) { arpeggiator_.setTempo(bpm); }
@@ -50,110 +55,106 @@ public:
     VoiceAllocator& allocator() { return allocator_; }
     void setVoicePriorityMode(int m) { allocator_.setPriorityMode(static_cast<VoicePriorityMode>(m)); }
 
-    // Thread-safe parameter queue — UI thread enqueues, audio thread drains.
+    // Thread-safe parameter queue
     ParamQueue& paramQueue() { return paramQueue_; }
 
-    // Direct parameter setters (DEPRECATED — prefer queue for thread safety).
-    // These still exist for the FFI layer but should eventually all go through
-    // the queue. For now they directly modify parameters (unsafe if audio is
-    // running; use queue instead).
+    // ── Part access ──
+    SynthPart& part(int index) { return parts_[index]; }
+    const SynthPart& part(int index) const { return parts_[index]; }
+    void setPartMidiChannel(int partIndex, int channel);  // -1=off, 0-15=ch1-16
+    void setPartVolume(int partIndex, float vol);
+    void setPartPan(int partIndex, float pan);
+    void setPartMute(int partIndex, bool mute);
+    void setPartSolo(int partIndex, bool solo);
 
-    // Osc 1
-    void setOsc1Waveform(int w) { osc1_.setWaveform(w); }
-    void setOsc1Octave(int oct) { osc1_.setOctave(oct); }
-    void setOsc1Detune(float cents) { osc1_.setDetune(cents); }
-    void setOsc1PulseWidth(float pw) { osc1_.setPulseWidth(pw); }
-    void setOsc1Volume(float vol) { osc1_.setVolume(vol); }
-    void setOsc1NoiseType(int nt) { osc1_.setNoiseType(nt); }
-    void setOsc1SubOscMode(int m) { osc1_.setSubOscMode(m); }
-    void setOsc1SubOscVolume(float v) { osc1_.setSubOscVolume(v); }
-    void setOsc1FmEnabled(bool e) { osc1_.setFmEnabled(e); }
-    void setOsc1FmAmount(float a) { osc1_.setFmAmount(a); }
+    // ── Legacy direct setters (operate on part 0 for backward compat) ──
+    void setOsc1Waveform(int w) { parts_[0].osc1.setWaveform(w); }
+    void setOsc1Octave(int oct) { parts_[0].osc1.setOctave(oct); }
+    void setOsc1Detune(float cents) { parts_[0].osc1.setDetune(cents); }
+    void setOsc1PulseWidth(float pw) { parts_[0].osc1.setPulseWidth(pw); }
+    void setOsc1Volume(float vol) { parts_[0].osc1.setVolume(vol); }
+    void setOsc1NoiseType(int nt) { parts_[0].osc1.setNoiseType(nt); }
+    void setOsc1SubOscMode(int m) { parts_[0].osc1.setSubOscMode(m); }
+    void setOsc1SubOscVolume(float v) { parts_[0].osc1.setSubOscVolume(v); }
+    void setOsc1FmEnabled(bool e) { parts_[0].osc1.setFmEnabled(e); }
+    void setOsc1FmAmount(float a) { parts_[0].osc1.setFmAmount(a); }
 
-    // Osc 2
-    void setOsc2Waveform(int w) { osc2_.setWaveform(w); }
-    void setOsc2Octave(int oct) { osc2_.setOctave(oct); }
-    void setOsc2Detune(float cents) { osc2_.setDetune(cents); }
-    void setOsc2PulseWidth(float pw) { osc2_.setPulseWidth(pw); }
-    void setOsc2Volume(float vol) { osc2_.setVolume(vol); }
-    void setOsc2NoiseType(int nt) { osc2_.setNoiseType(nt); }
-    void setOsc2SubOscMode(int m) { osc2_.setSubOscMode(m); }
-    void setOsc2SubOscVolume(float v) { osc2_.setSubOscVolume(v); }
-    void setOsc2FmEnabled(bool e) { osc2_.setFmEnabled(e); }
-    void setOsc2FmAmount(float a) { osc2_.setFmAmount(a); }
-    void setOscMix(float mix) { oscMix_ = mix; }
+    void setOsc2Waveform(int w) { parts_[0].osc2.setWaveform(w); }
+    void setOsc2Octave(int oct) { parts_[0].osc2.setOctave(oct); }
+    void setOsc2Detune(float cents) { parts_[0].osc2.setDetune(cents); }
+    void setOsc2PulseWidth(float pw) { parts_[0].osc2.setPulseWidth(pw); }
+    void setOsc2Volume(float vol) { parts_[0].osc2.setVolume(vol); }
+    void setOsc2NoiseType(int nt) { parts_[0].osc2.setNoiseType(nt); }
+    void setOsc2SubOscMode(int m) { parts_[0].osc2.setSubOscMode(m); }
+    void setOsc2SubOscVolume(float v) { parts_[0].osc2.setSubOscVolume(v); }
+    void setOsc2FmEnabled(bool e) { parts_[0].osc2.setFmEnabled(e); }
+    void setOsc2FmAmount(float a) { parts_[0].osc2.setFmAmount(a); }
+    void setOscMix(float mix) { parts_[0].oscMix = mix; }
 
-    // Unison
-    void setOsc1UnisonVoiceCount(int c) { osc1_.setUnisonVoiceCount(c); }
-    void setOsc1UnisonDetuneSpread(float s) { osc1_.setUnisonDetuneSpread(s); }
-    void setOsc1UnisonStereoSpread(float s) { osc1_.setUnisonStereoSpread(s); }
-    void setOsc1UnisonMix(float m) { osc1_.setUnisonMix(m); }
+    void setOsc1UnisonVoiceCount(int c) { parts_[0].osc1.setUnisonVoiceCount(c); }
+    void setOsc1UnisonDetuneSpread(float s) { parts_[0].osc1.setUnisonDetuneSpread(s); }
+    void setOsc1UnisonStereoSpread(float s) { parts_[0].osc1.setUnisonStereoSpread(s); }
+    void setOsc1UnisonMix(float m) { parts_[0].osc1.setUnisonMix(m); }
 
-    void setOsc2UnisonVoiceCount(int c) { osc2_.setUnisonVoiceCount(c); }
-    void setOsc2UnisonDetuneSpread(float s) { osc2_.setUnisonDetuneSpread(s); }
-    void setOsc2UnisonStereoSpread(float s) { osc2_.setUnisonStereoSpread(s); }
-    void setOsc2UnisonMix(float m) { osc2_.setUnisonMix(m); }
+    void setOsc2UnisonVoiceCount(int c) { parts_[0].osc2.setUnisonVoiceCount(c); }
+    void setOsc2UnisonDetuneSpread(float s) { parts_[0].osc2.setUnisonDetuneSpread(s); }
+    void setOsc2UnisonStereoSpread(float s) { parts_[0].osc2.setUnisonStereoSpread(s); }
+    void setOsc2UnisonMix(float m) { parts_[0].osc2.setUnisonMix(m); }
 
-    // Filter
-    void setFilterType(int t) { filter_.setType(t); }
-    void setFilterCutoff(float hz) { filter_.setCutoff(hz); }
-    void setFilterResonance(float q) { filter_.setResonance(q); }
-    void setFilterEnvAmount(float a) { filter_.setEnvAmount(a); }
-    void setFilterKeyTracking(float kt) { filter_.setKeyTracking(kt); }
-    void setFilterDrive(float d) { filter_.setDrive(d); }
+    void setFilterType(int t) { parts_[0].filter.setType(t); }
+    void setFilterCutoff(float hz) { parts_[0].filter.setCutoff(hz); }
+    void setFilterResonance(float q) { parts_[0].filter.setResonance(q); }
+    void setFilterEnvAmount(float a) { parts_[0].filter.setEnvAmount(a); }
+    void setFilterKeyTracking(float kt) { parts_[0].filter.setKeyTracking(kt); }
+    void setFilterDrive(float d) { parts_[0].filter.setDrive(d); }
 
-    // Amp envelope
-    void setAmpAttack(float ms) { ampAttack_ = ms; }
-    void setAmpDecay(float ms) { ampDecay_ = ms; }
-    void setAmpSustain(float level) { ampSustain_ = level; }
-    void setAmpRelease(float ms) { ampRelease_ = ms; }
-    void setAmpDelay(float ms) { ampDelay_ = ms; }
-    void setAmpHold(float ms) { ampHold_ = ms; }
-    void setAmpAttackCurve(int c) { ampAttackCurve_ = c; }
-    void setAmpDecayCurve(int c) { ampDecayCurve_ = c; }
-    void setAmpReleaseCurve(int c) { ampReleaseCurve_ = c; }
+    void setAmpAttack(float ms) { parts_[0].ampAttack = ms; }
+    void setAmpDecay(float ms) { parts_[0].ampDecay = ms; }
+    void setAmpSustain(float level) { parts_[0].ampSustain = level; }
+    void setAmpRelease(float ms) { parts_[0].ampRelease = ms; }
+    void setAmpDelay(float ms) { parts_[0].ampDelay = ms; }
+    void setAmpHold(float ms) { parts_[0].ampHold = ms; }
+    void setAmpAttackCurve(int c) { parts_[0].ampAttackCurve = c; }
+    void setAmpDecayCurve(int c) { parts_[0].ampDecayCurve = c; }
+    void setAmpReleaseCurve(int c) { parts_[0].ampReleaseCurve = c; }
 
-    // Filter envelope
-    void setFilterAttack(float ms) { filterAttack_ = ms; }
-    void setFilterDecay(float ms) { filterDecay_ = ms; }
-    void setFilterSustain(float level) { filterSustain_ = level; }
-    void setFilterRelease(float ms) { filterRelease_ = ms; }
-    void setFilterDelay(float ms) { filterDelay_ = ms; }
-    void setFilterHold(float ms) { filterHold_ = ms; }
-    void setFilterAttackCurve(int c) { filterAttackCurve_ = c; }
-    void setFilterDecayCurve(int c) { filterDecayCurve_ = c; }
-    void setFilterReleaseCurve(int c) { filterReleaseCurve_ = c; }
+    void setFilterAttack(float ms) { parts_[0].filterAttack = ms; }
+    void setFilterDecay(float ms) { parts_[0].filterDecay = ms; }
+    void setFilterSustain(float level) { parts_[0].filterSustain = level; }
+    void setFilterRelease(float ms) { parts_[0].filterRelease = ms; }
+    void setFilterDelay(float ms) { parts_[0].filterDelay = ms; }
+    void setFilterHold(float ms) { parts_[0].filterHold = ms; }
+    void setFilterAttackCurve(int c) { parts_[0].filterAttackCurve = c; }
+    void setFilterDecayCurve(int c) { parts_[0].filterDecayCurve = c; }
+    void setFilterReleaseCurve(int c) { parts_[0].filterReleaseCurve = c; }
 
-    // Pitch envelope
-    void setPitchEnvAttack(float ms) { pitchEnvAttack_ = ms; }
-    void setPitchEnvDecay(float ms) { pitchEnvDecay_ = ms; }
-    void setPitchEnvSustain(float level) { pitchEnvSustain_ = level; }
-    void setPitchEnvRelease(float ms) { pitchEnvRelease_ = ms; }
-    void setPitchEnvAmount(float a) { pitchEnvAmount_ = a; }
+    void setPitchEnvAttack(float ms) { parts_[0].pitchEnvAttack = ms; }
+    void setPitchEnvDecay(float ms) { parts_[0].pitchEnvDecay = ms; }
+    void setPitchEnvSustain(float level) { parts_[0].pitchEnvSustain = level; }
+    void setPitchEnvRelease(float ms) { parts_[0].pitchEnvRelease = ms; }
+    void setPitchEnvAmount(float a) { parts_[0].pitchEnvAmount = a; }
 
-    // LFO 1
-    void setLfo1Waveform(int w) { lfo1_.setWaveform(w); }
-    void setLfo1Rate(float hz) { lfo1_.setRate(hz); }
-    void setLfo1Depth(float d) { lfo1_.setDepth(d); }
-    void setLfo1Target(int t) { lfo1_.setTarget(t); }
-    void setLfo1FadeIn(float s) { lfo1_.setFadeIn(s); }
-    void setLfo1TempoSync(bool e) { lfo1_.setTempoSync(e); }
-    void setLfo1TempoDivision(int d) { lfo1_.setTempoNoteDivision(d); }
+    void setLfo1Waveform(int w) { parts_[0].lfo1.setWaveform(w); }
+    void setLfo1Rate(float hz) { parts_[0].lfo1.setRate(hz); }
+    void setLfo1Depth(float d) { parts_[0].lfo1.setDepth(d); }
+    void setLfo1Target(int t) { parts_[0].lfo1.setTarget(t); }
+    void setLfo1FadeIn(float s) { parts_[0].lfo1.setFadeIn(s); }
+    void setLfo1TempoSync(bool e) { parts_[0].lfo1.setTempoSync(e); }
+    void setLfo1TempoDivision(int d) { parts_[0].lfo1.setTempoNoteDivision(d); }
 
-    // LFO 2
-    void setLfo2Waveform(int w) { lfo2_.setWaveform(w); }
-    void setLfo2Rate(float hz) { lfo2_.setRate(hz); }
-    void setLfo2Depth(float d) { lfo2_.setDepth(d); }
-    void setLfo2Target(int t) { lfo2_.setTarget(t); }
-    void setLfo2FadeIn(float s) { lfo2_.setFadeIn(s); }
-    void setLfo2TempoSync(bool e) { lfo2_.setTempoSync(e); }
-    void setLfo2TempoDivision(int d) { lfo2_.setTempoNoteDivision(d); }
+    void setLfo2Waveform(int w) { parts_[0].lfo2.setWaveform(w); }
+    void setLfo2Rate(float hz) { parts_[0].lfo2.setRate(hz); }
+    void setLfo2Depth(float d) { parts_[0].lfo2.setDepth(d); }
+    void setLfo2Target(int t) { parts_[0].lfo2.setTarget(t); }
+    void setLfo2FadeIn(float s) { parts_[0].lfo2.setFadeIn(s); }
+    void setLfo2TempoSync(bool e) { parts_[0].lfo2.setTempoSync(e); }
+    void setLfo2TempoDivision(int d) { parts_[0].lfo2.setTempoNoteDivision(d); }
 
-    // FX Engine — access to the multi-FX slot architecture
+    // FX Engine
     FxEngine& fxEngine() { return fxEngine_; }
     const FxEngine& fxEngine() const { return fxEngine_; }
 
-    // Legacy FX setters — forward to the legacy fx slot (slot 0)
+    // Legacy FX setters
     void setChorusEnabled(bool e);
     void setChorusRate(float hz);
     void setChorusDepth(float d);
@@ -196,7 +197,7 @@ public:
     void setMasterVolume(float vol) { masterVolume_ = vol; }
     int getActiveVoiceCount() const { return allocator_.activeVoiceCount(); }
 
-    // CPU profiling — returns % of real-time budget used (0.0–1.0+)
+    // CPU profiling
     float getCpuLoad() const { return cpuLoad_; }
     void resetCpuLoad() { cpuLoad_ = 0.0f; cpuLoadAlpha_ = 0.0f; }
 
@@ -206,62 +207,44 @@ public:
 
     // Info
     const char* getName() const { return "OpenAmp Synth Engine"; }
-    const char* getVersion() const { return "2.0.0"; }
+    const char* getVersion() const { return "2.1.0"; }
+
+    // Recording
+    void startRecording(const char* path) { recorder_.startRecording(path); }
+    void stopRecording() { recorder_.stop(); }
+    bool isRecording() const { return recorder_.state() == TransportState::RECORDING; }
+    double recordedSeconds() const { return recorder_.recordedSeconds(); }
 
 private:
     double sampleRate_;
     uint32_t blockSize_;
 
-    // Lock-free parameter queue (UI thread -> audio thread)
     ParamQueue paramQueue_;
 
-    Oscillator osc1_;
-    Oscillator osc2_;
-    float oscMix_ = 0.5f;
+    // 16-part multitimbral configuration
+    std::array<SynthPart, MAX_PARTS> parts_;
+    int activePart_ = 0;  // Part selected for editing/arp
 
-    StateVariableFilter filter_;
-    float ampAttack_ = 10.0f;
-    float ampDecay_ = 100.0f;
-    float ampSustain_ = 0.8f;
-    float ampRelease_ = 200.0f;
-    float ampDelay_ = 0.0f;
-    float ampHold_ = 0.0f;
-    int ampAttackCurve_ = 0;
-    int ampDecayCurve_ = 0;
-    int ampReleaseCurve_ = 0;
-    float filterAttack_ = 20.0f;
-    float filterDecay_ = 200.0f;
-    float filterSustain_ = 0.5f;
-    float filterRelease_ = 300.0f;
-    float filterDelay_ = 0.0f;
-    float filterHold_ = 0.0f;
-    int filterAttackCurve_ = 0;
-    int filterDecayCurve_ = 0;
-    int filterReleaseCurve_ = 0;
-    float pitchEnvAttack_ = 10.0f;
-    float pitchEnvDecay_ = 100.0f;
-    float pitchEnvSustain_ = 0.0f;
-    float pitchEnvRelease_ = 100.0f;
-    float pitchEnvAmount_ = 0.0f;
-    bool lfoPerVoice_ = false;
-
-    LFO lfo1_;
-    LFO lfo2_;
-
-    // Multi-FX engine with pluggable slots
-    FxEngine fxEngine_;
-
-    float masterVolume_ = 0.8f;
-
+    // Global voice pool (dynamically allocated across parts)
     VoiceAllocator allocator_;
 
     // Arpeggiator
     Arpeggiator arpeggiator_;
 
-    // Drum Kit — dedicated drum synthesis engine
+    // Drum Kit
     DrumKit drumKit_;
 
-    // Public drum API
+    // Rhythm Pattern Player — preset drum patterns
+    RhythmPatternPlayer rhythmPlayer_;
+
+    // Recording engine
+    Recorder recorder_;
+
+public:
+    RhythmPatternPlayer& rhythmPlayer() { return rhythmPlayer_; }
+    const RhythmPatternPlayer& rhythmPlayer() const { return rhythmPlayer_; }
+
+private:
     DrumKit& drumKit() { return drumKit_; }
     const DrumKit& drumKit() const { return drumKit_; }
     void drumNoteOn(int midiNote, float velocity) { drumKit_.noteOn(midiNote, velocity); }
@@ -269,13 +252,18 @@ private:
     void setDrumKitPreset(int index) { drumKit_.setKitPreset(index); }
     void setDrumKitLevel(float level) { drumKit_.setLevel(level); }
 
-    // Legacy FX accessor — retrieves the LegacyFxProcessor from slot 0
+    // Multi-FX engine
+    FxEngine fxEngine_;
+
+    float masterVolume_ = 0.8f;
+
+    // Solo tracking
+    bool anySolo_ = false;
+    void updateSoloState();
+
+    // Legacy FX accessor
     LegacyFxProcessor* getLegacyFx() const;
-
-    // Legacy FX slot initialization — creates and assigns LegacyFxProcessor to slot 0
     void initLegacyFxSlot();
-
-    // Factory — creates an FxProcessor from a type ID
     FxProcessor* createFxProcessor(int fxTypeId);
 
     // CPU profiling
@@ -287,6 +275,9 @@ private:
 
     void drainQueue();
     void applyParam(const ParamQueue::Entry& e);
+
+    // MIDI channel -> part index lookup
+    int channelToPart(int channel) const;
 };
 
 } // namespace openamp

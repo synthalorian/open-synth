@@ -1,6 +1,8 @@
 # Open Synth — Roadmap & Architecture Plan
 
 > **Goal:** Open-source Roland Juno-Di parity. Every sound category the Juno-Di covers, we cover — with modern synthesis techniques and a synthwave soul.
+>
+> **Status:** Fully standalone project. No Hermes integration. OpenSynth has its own setup, config, and tooling pipeline.
 
 ---
 
@@ -18,6 +20,7 @@
 - 1,415 factory presets across 25 categories
 - Synthwave-themed UI with oscilloscope + spectrum analyzer
 - Mobile UX: hamburger drawer, landscape split-view, collapsible panels
+- **Standalone setup system** (`opensynth setup` wizard, `opensynth doctor`, config management)
 
 ### What's Broken / Missing
 - **Wavetable synthesis** — `wt_piano`, `wt_guitar`, `wt_choir` waveform types are stubs (Dart enum exists, C++ has no implementation). Piano presets currently fall back to saw-based subtractive approximation.
@@ -67,11 +70,125 @@ All synthesis engines share the same `process(AudioBuffer&)` interface and get m
 
 ---
 
+## OpenSynth Standalone Setup System
+
+OpenSynth has its own setup and configuration pipeline — completely independent from Hermes Agent and OpenShark. The setup wizard runs during first install and can be re-run anytime.
+
+### CLI Commands
+
+```bash
+opensynth setup              # Interactive setup wizard
+opensynth doctor             # Check dependencies and config health
+opensynth config             # View current config
+opensynth config edit        # Open config in $EDITOR
+opensynth config set KEY VAL # Set a config value
+opensynth config path        # Print config file path
+```
+
+### Setup Flow
+
+```
+1. DETECT  → 2. INSTALL DEPS (if needed)  → 3. AUTO-CONFIGURE  → 4. TEST  → 5. DONE
+```
+
+**Step 1 — Detect:**
+- Check Flutter SDK installation and version
+- Check native build toolchain (CMake, C++ compiler)
+- Check PortAudio (desktop) or Android NDK (mobile)
+- Check for existing OpenSynth config at `~/.config/opensynth/`
+
+**Step 2 — Install Dependencies:**
+- Flutter SDK (if missing, prompt for install path)
+- PortAudio development headers (`portaudio` on Arch, `libportaudio2-dev` on Debian)
+- CMake 3.22+
+- Android SDK + NDK (if mobile build selected)
+
+**Step 3 — Auto-Configure:**
+- Write `~/.config/opensynth/config.yaml` with defaults:
+  - Audio backend preference (PortAudio/Oboe/auto)
+  - Default sample rate (48000)
+  - Default buffer size (256 samples)
+  - UI theme (synthwave/default)
+  - MIDI input device (auto-detect)
+- Create `~/.local/share/opensynth/` for presets, wavetables, recordings
+- Create `.desktop` entry for app launchers
+
+**Step 4 — Test:**
+- Verify native library builds successfully
+- Run audio probe (detect available audio devices)
+- Test MIDI device enumeration (if available)
+
+**Step 5 — Done:**
+- Print summary of configured settings
+- Show quick-start commands
+- Offer to launch the app
+
+### Config File (`~/.config/opensynth/config.yaml`)
+
+```yaml
+audio:
+  backend: auto              # portaudio | oboe | auto
+  sample_rate: 48000
+  buffer_size: 256
+  device_index: null         # null = default device
+  input_device_index: null   # for MIDI/audio input
+
+ui:
+  theme: synthwave           # synthwave | dark | light
+  show_spectrum: true
+  show_oscilloscope: true
+  keyboard_size: medium      # small | medium | large
+  default_octave: 4
+
+midi:
+  enabled: true
+  input_device: null         # null = first available
+  channel: 0                 # 0-15
+
+presets:
+  factory_path: ~/.local/share/opensynth/presets
+  user_path: ~/.local/share/opensynth/user_presets
+  favorites_path: ~/.local/share/opensynth/favorites.json
+
+paths:
+  recordings: ~/.local/share/opensynth/recordings
+  wavetables: ~/.local/share/opensynth/wavetables
+  drum_kits: ~/.local/share/opensynth/drum_kits
+```
+
+---
+
 ## Roadmap
+
+### Phase 0: Standalone Setup System
+**Goal:** OpenSynth has its own setup wizard, config management, and doctor command.
+**Estimate:** 2-3 days
+**Status:** NOT STARTED
+
+#### Deliverables
+- `opensynth` CLI entry point (Python or Dart)
+- `opensynth setup` — interactive wizard
+- `opensynth doctor` — dependency/config health check
+- `opensynth config` — get/set/edit config
+- Config file at `~/.config/opensynth/config.yaml`
+- Data directory at `~/.local/share/opensynth/`
+- `.desktop` file generation
+
+#### Files to Create
+```
+scripts/setup.py              # Setup wizard (Python)
+scripts/doctor.py             # Health check
+scripts/config.py             # Config management
+lib/utils/config.dart         # Dart config loader
+lib/utils/paths.dart          # XDG path resolution
+```
+
+---
 
 ### Phase 1: Drum Synthesis Engine
 **Goal:** Real drum sounds, playable from the keyboard, with at least one kit.
 **Estimate:** 3-4 days
+**Status:** NOT STARTED
 
 #### C++ Drum Synthesis
 Each drum sound gets a dedicated algorithm — not generic oscillators.
@@ -132,6 +249,7 @@ lib/widgets/drum_pad_grid.dart
 ### Phase 2: Rhythm Pattern Player
 **Goal:** Preset drum patterns with start/stop/tempo, like the Juno-Di rhythm section.
 **Estimate:** 2-3 days
+**Status:** NOT STARTED
 
 #### Pattern Engine
 ```cpp
@@ -187,6 +305,7 @@ lib/widgets/rhythm_panel.dart
 ### Phase 3: Wavetable Engine
 **Goal:** Sampled wavetables for acoustic instruments that actually sound like the real thing.
 **Estimate:** 5-7 days
+**Status:** NOT STARTED
 
 This is the biggest single feature. It's what separates a "synth with presets" from something that can cover a Juno-Di's full sound palette.
 
@@ -258,6 +377,7 @@ lib/providers/wavetable_providers.dart
 ### Phase 4: Keyboard Split + Drum Zone Integration
 **Goal:** Lower keyboard zone plays drums, upper zone plays synth — like a Juno-Di.
 **Estimate:** 1-2 days
+**Status:** NOT STARTED
 
 The keyboard split infrastructure already exists (`SynthEnginePair`, split/layer modes). This phase wires the drum kit into the lower zone.
 
@@ -271,6 +391,7 @@ The keyboard split infrastructure already exists (`SynthEnginePair`, split/layer
 ### Phase 5: Drum Pad UI + Mobile Layout
 **Goal:** Touch-friendly drum pads and rhythm controls for phone/tablet.
 **Estimate:** 2-3 days
+**Status:** NOT STARTED
 
 - 4×4 pad grid (16 pads = most common drum hits)
 - Color-coded by type (red=kick, blue=snare, yellow=hats, green=toms, purple=cymbals)
@@ -284,6 +405,7 @@ The keyboard split infrastructure already exists (`SynthEnginePair`, split/layer
 ### Phase 6: Sound Design Polish Pass
 **Goal:** Every preset category sounds like the real instrument it's emulating.
 **Estimate:** 3-5 days (ongoing as wavetable library grows)
+**Status:** NOT STARTED
 
 #### Preset Rebuild Targets (per category)
 
@@ -307,6 +429,7 @@ The keyboard split infrastructure already exists (`SynthEnginePair`, split/layer
 
 ### Phase 7: Pro Features (Future)
 **Goal:** Go beyond Juno-Di parity into modern workstation territory.
+**Status:** NOT STARTED
 
 - **Effects rack expansion:** Parametric EQ, vocoder, distortion models (tube, tape, bitcrush), ring modulator, multiband compressor
 - **MIDI import/export** for sequencer patterns
@@ -322,6 +445,7 @@ The keyboard split infrastructure already exists (`SynthEnginePair`, split/layer
 
 | Phase | Feature | Days | Dependency |
 |-------|---------|------|-----------|
+| **0** | Standalone Setup System | 2-3 | None |
 | **1** | Drum Synthesis Engine | 3-4 | None |
 | **2** | Rhythm Pattern Player | 2-3 | Phase 1 |
 | **3** | Wavetable Engine | 5-7 | None (parallel with 1-2) |
@@ -330,7 +454,7 @@ The keyboard split infrastructure already exists (`SynthEnginePair`, split/layer
 | **6** | Sound Design Polish | 3-5 | Phase 3 |
 | **7** | Pro Features | Ongoing | All above |
 
-**Phases 1 and 3 can run in parallel.** Total for Juno-Di parity (1-5): ~16-19 days.
+**Phases 0, 1, and 3 can run in parallel.** Total for Juno-Di parity (0-5): ~18-22 days.
 
 ---
 
@@ -343,6 +467,7 @@ The keyboard split infrastructure already exists (`SynthEnginePair`, split/layer
 - **All engines share AudioBuffer interface** for zero-copy mixing
 - **Desktop must never break** — mobile code is gated behind `Platform.isAndroid/iOS` checks
 - **ARM64 + x86_64** builds for Android (Pixel 8a = ARM64, emulator = x86_64)
+- **No Hermes integration** — OpenSynth is fully standalone with its own setup, config, and tooling
 
 ---
 
@@ -350,8 +475,9 @@ The keyboard split infrastructure already exists (`SynthEnginePair`, split/layer
 
 When we pick this back up:
 
-1. **Start Phase 1** — build `DrumSynth` with kick + snare + hats + toms first
-2. **Get a single kit playable** — trigger from keyboard, hear real drum sounds
-3. **Then expand** — more sounds, more kits, pattern player
+1. **Start Phase 0** — build the standalone `opensynth` CLI with setup wizard, doctor, and config management
+2. **Then Phase 1** — build `DrumSynth` with kick + snare + hats + toms first
+3. **Get a single kit playable** — trigger from keyboard, hear real drum sounds
+4. **Then expand** — more sounds, more kits, pattern player
 
-The drum engine is the highest-impact, fastest-to-build feature. It transforms the app from "synth with presets" into something you can actually perform with.
+The standalone setup system is the foundation. Everything else builds on it.

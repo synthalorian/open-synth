@@ -294,6 +294,65 @@ int32_t synth_engine_get_arp_total_steps(void* engine) {
     return static_cast<int32_t>(static_cast<SynthEngine*>(engine)->getArpTotalSteps());
 }
 
+// ── Rhythm Pattern Player ────────────────────────────────────────────────────
+
+void synth_engine_rhythm_play(void* engine) {
+    static_cast<SynthEngine*>(engine)->rhythmPlayer().play();
+}
+
+void synth_engine_rhythm_stop(void* engine) {
+    static_cast<SynthEngine*>(engine)->rhythmPlayer().stop();
+}
+
+void synth_engine_rhythm_set_pattern(void* engine, int32_t index) {
+    static_cast<SynthEngine*>(engine)->rhythmPlayer().setPattern(index);
+}
+
+void synth_engine_rhythm_set_tempo(void* engine, float bpm) {
+    static_cast<SynthEngine*>(engine)->rhythmPlayer().setTempo(bpm);
+}
+
+void synth_engine_rhythm_set_volume(void* engine, float vol) {
+    static_cast<SynthEngine*>(engine)->rhythmPlayer().setTempo(vol);
+}
+
+void synth_engine_rhythm_set_variation(void* engine, int32_t variation) {
+    static_cast<SynthEngine*>(engine)->rhythmPlayer().setVariation(
+        static_cast<PatternVariation>(variation));
+}
+
+void synth_engine_rhythm_set_song_mode(void* engine, int32_t enabled) {
+    static_cast<SynthEngine*>(engine)->rhythmPlayer().setSongMode(enabled != 0);
+}
+
+int32_t synth_engine_get_rhythm_current_step(void* engine) {
+    return static_cast<int32_t>(
+        static_cast<SynthEngine*>(engine)->rhythmPlayer().currentStep());
+}
+
+int32_t synth_engine_get_rhythm_total_steps(void* engine) {
+    return static_cast<int32_t>(
+        static_cast<SynthEngine*>(engine)->rhythmPlayer().totalSteps());
+}
+
+// ── Recording ─────────────────────────────────────────────────────────────────
+
+void synth_engine_start_recording(void* engine, const char* path) {
+    static_cast<SynthEngine*>(engine)->startRecording(path);
+}
+
+void synth_engine_stop_recording(void* engine) {
+    static_cast<SynthEngine*>(engine)->stopRecording();
+}
+
+int32_t synth_engine_is_recording(void* engine) {
+    return static_cast<SynthEngine*>(engine)->isRecording() ? 1 : 0;
+}
+
+double synth_engine_get_recorded_seconds(void* engine) {
+    return static_cast<SynthEngine*>(engine)->recordedSeconds();
+}
+
 // ── Preset ────────────────────────────────────────────────────────────────────
 
 int32_t synth_engine_load_preset(void* engine, const char* path) {
@@ -470,4 +529,78 @@ int32_t synth_pair_get_zone_a_voices(void* pair) {
 int32_t synth_pair_get_zone_b_voices(void* pair) {
     auto* p = static_cast<SynthEnginePair*>(pair);
     return static_cast<int32_t>(p->getZoneBVoiceCount());
+}
+
+// ── MIDI File I/O ─────────────────────────────────────────────────────────────
+
+#include "midi_file.h"
+
+int32_t midi_file_load(const char* path, void** outHandle) {
+    auto* midi = new MidiFile();
+    if (MidiFileReader::read(path, *midi)) {
+        *outHandle = midi;
+        return 1;
+    }
+    delete midi;
+    return 0;
+}
+
+void midi_file_free(void* handle) {
+    delete static_cast<MidiFile*>(handle);
+}
+
+int32_t midi_file_get_track_count(void* handle) {
+    return static_cast<int32_t>(static_cast<MidiFile*>(handle)->tracks.size());
+}
+
+int32_t midi_file_get_event_count(void* handle, int32_t trackIndex) {
+    auto* midi = static_cast<MidiFile*>(handle);
+    if (trackIndex < 0 || trackIndex >= (int32_t)midi->tracks.size()) return 0;
+    return static_cast<int32_t>(midi->tracks[trackIndex].events.size());
+}
+
+void midi_file_get_event(void* handle, int32_t trackIndex, int32_t eventIndex,
+                         uint32_t* tick, uint8_t* status, uint8_t* data1, uint8_t* data2) {
+    auto* midi = static_cast<MidiFile*>(handle);
+    if (trackIndex < 0 || trackIndex >= (int32_t)midi->tracks.size()) return;
+    auto& track = midi->tracks[trackIndex];
+    if (eventIndex < 0 || eventIndex >= (int32_t)track.events.size()) return;
+    auto& ev = track.events[eventIndex];
+    *tick = ev.tick;
+    *status = ev.status;
+    *data1 = ev.data1;
+    *data2 = ev.data2;
+}
+
+int32_t midi_file_save(const char* path, int32_t format, int32_t ticksPerQuarter,
+                       int32_t numTracks, int32_t numEvents, const uint32_t* ticks,
+                       const uint8_t* statuses, const uint8_t* data1s, const uint8_t* data2s) {
+    MidiFile midi;
+    midi.format = format;
+    midi.ticksPerQuarter = ticksPerQuarter;
+    midi.tracks.resize(numTracks);
+
+    int evIdx = 0;
+    for (int t = 0; t < numTracks; ++t) {
+        for (int e = 0; e < numEvents; ++e) {
+            if (evIdx >= numEvents * numTracks) break;
+            MidiEvent event;
+            event.tick = ticks[evIdx];
+            event.status = statuses[evIdx];
+            event.data1 = data1s[evIdx];
+            event.data2 = data2s[evIdx];
+            midi.tracks[t].events.push_back(event);
+            evIdx++;
+        }
+    }
+
+    return MidiFileWriter::write(path, midi) ? 1 : 0;
+}
+
+float midi_file_get_tempo(void* handle) {
+    return static_cast<MidiFile*>(handle)->tempoBpm;
+}
+
+uint32_t midi_file_get_total_ticks(void* handle) {
+    return static_cast<MidiFile*>(handle)->totalTicks();
 }

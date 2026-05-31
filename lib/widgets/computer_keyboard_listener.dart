@@ -128,10 +128,10 @@ class _ComputerKeyboardListenerState
   @override
   void dispose() {
     // Defensive: release any held notes if the screen tears down with
-    // keys still in the down state.
+    // keys still in the down state. Use NoteRouter to handle split/layer
+    // correctly — it knows which zones each note was routed to.
     if (_activeKeys.isNotEmpty) {
-      ref.read(playbackStateProvider.notifier).allNotesOff();
-      ref.read(zoneBPlaybackProvider.notifier).allNotesOff();
+      ref.read(noteRouterProvider).allNotesOff();
       _activeKeys.clear();
     }
     _focusNode.dispose();
@@ -159,7 +159,7 @@ class _ComputerKeyboardListenerState
         return KeyEventResult.handled;
       }
       if (key == LogicalKeyboardKey.backslash) {
-        ref.read(playbackStateProvider.notifier).allNotesOff();
+        ref.read(noteRouterProvider).allNotesOff();
         _activeKeys.clear();
         return KeyEventResult.handled;
       }

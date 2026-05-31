@@ -24,16 +24,14 @@ static float midiNoteToFreq(int note) {
 
 SynthEngine::SynthEngine(double sampleRate, uint32_t blockSize)
     : sampleRate_(sampleRate), blockSize_(blockSize), drumKit_(sampleRate) {
-    lfo1_.prepare(sampleRate_);
-    lfo2_.prepare(sampleRate_);
+    // Initialize parts: part 0 = MIDI ch 1, parts 1-15 = off by default
+    for (int i = 0; i < MAX_PARTS; ++i) {
+        parts_[i].midiChannel = (i == 0) ? 0 : -1;
+        parts_[i].lfo1.prepare(sampleRate_);
+        parts_[i].lfo2.prepare(sampleRate_);
+    }
 
-    // Initialize the legacy FX (slot 0) with all the old inline effects.
-    // New FX slots (1-3) are left empty for the user to assign via the FxEngine.
     initLegacyFxSlot();
-
-    // Pre-register the new FX processors for slots 1-3 as available types.
-    // Users configure them via the FX panel UI; by default they're empty.
-    // Slot 1: EQ, Slot 2: Limiter, Slot 3: can be swapped at runtime.
 }
 
 SynthEngine::~SynthEngine() = default;
@@ -43,13 +41,14 @@ SynthEngine::~SynthEngine() = default;
 void SynthEngine::reset() {
     allocator_.allNotesOff();
     drumKit_.allNotesOff();
-    osc1_.reset();
-    osc2_.reset();
-    filter_.reset();
-    lfo1_.reset();
-    lfo2_.reset();
+    for (int i = 0; i < MAX_PARTS; ++i) {
+        parts_[i].osc1.reset();
+        parts_[i].osc2.reset();
+        parts_[i].filter.reset();
+        parts_[i].lfo1.reset();
+        parts_[i].lfo2.reset();
+    }
     fxEngine_.reset();
-    // Reset per-voice filter states
     for (int v = 0; v < VoiceAllocator::MAX_VOICES; v++) {
         Voice* voice = allocator_.voice(v);
         if (voice) {
@@ -63,23 +62,51 @@ void SynthEngine::reset() {
 
 // ── MIDI ──────────────────────────────────────────────────────────────────────
 
-void SynthEngine::noteOn(int midiNote, float velocity) {
+void SynthEngine::noteOn(int midiNote, float velocity, int channel) {
+    int partIdx = channelToPart(channel);
+    if (partIdx < 0) return;
+
     arpeggiator_.noteOn(midiNote, velocity);
     if (!arpeggiator_.enabled()) {
-        allocator_.noteOn(midiNote, velocity);
+        Voice* voice = allocator_.noteOn(midiNote, velocity, partIdx);
+        if (voice) {
+            SynthPart& part = parts_[partIdx];
+            // Set up physical model if oscillator is using one
+            int wf1 = part.osc1.waveform();
+            if (wf1 >= 18 && wf1 <= 23) {
+                voice->physicalModel.setType(static_cast<PhysicalModelType>(wf1 - 17));
+                voice->physicalModel.noteOn(voice->baseFreq, voice->velocity);
+            }
+            int wf2 = part.osc2.waveform();
+            if (wf2 >= 18 && wf2 <= 23) {
+                voice->physicalModel.setType(static_cast<PhysicalModelType>(wf2 - 17));
+                voice->physicalModel.noteOn(voice->baseFreq, voice->velocity);
+            }
+        }
     }
 }
 
-void SynthEngine::noteOff(int midiNote) {
+void SynthEngine::noteOff(int midiNote, int channel) {
+    int partIdx = channelToPart(channel);
+    if (partIdx < 0) return;
+
     arpeggiator_.noteOff(midiNote);
     if (!arpeggiator_.enabled()) {
-        allocator_.noteOff(midiNote);
+        allocator_.noteOff(midiNote, partIdx);
+        // Physical models handle their own release via note-off
+        for (int v = 0; v < VoiceAllocator::MAX_VOICES; ++v) {
+            Voice* voice = allocator_.voice(v);
+            if (voice->active && voice->midiNote == midiNote && voice->partIndex == partIdx) {
+                voice->physicalModel.noteOff();
+            }
+        }
     }
 }
 
-void SynthEngine::allNotesOff() {
+void SynthEngine::allNotesOff(int channel) {
+    int partIdx = channelToPart(channel);
     arpeggiator_.allNotesOff();
-    allocator_.allNotesOff();
+    allocator_.allNotesOff(partIdx);
 }
 
 // ── Process ───────────────────────────────────────────────────────────────────
@@ -97,9 +124,15 @@ void SynthEngine::process(AudioBuffer& output) {
     // Let the arpeggiator generate note events (if enabled).
     arpeggiator_.process(numFrames, sampleRate_, allocator_);
 
-    // Update per-block LFO
-    float lfo1Val = lfo1_.process();
-    float lfo2Val = lfo2_.process();
+    // Advance rhythm pattern player (triggers drum hits on step boundaries).
+    rhythmPlayer_.process(drumKit_, numFrames, sampleRate_);
+
+    // Update per-block LFO (using part 0's LFOs for global modulation)
+    float lfo1Val = parts_[0].lfo1.process();
+    float lfo2Val = parts_[0].lfo2.process();
+
+    // Pre-compute piano flag once per block for part 0 (legacy compat)
+    bool isPiano = (parts_[0].osc1.waveform() == 6) || (parts_[0].osc2.waveform() == 6);
 
     for (uint32_t frame = 0; frame < numFrames; frame++) {
         float leftOut = 0.0f;
@@ -109,6 +142,15 @@ void SynthEngine::process(AudioBuffer& output) {
         for (int v = 0; v < VoiceAllocator::MAX_VOICES; v++) {
             Voice* voice = allocator_.voice(v);
             if (!voice->active) continue;
+
+            // Look up the part for this voice
+            int partIdx = voice->partIndex;
+            if (partIdx < 0 || partIdx >= MAX_PARTS) partIdx = 0;
+            SynthPart& part = parts_[partIdx];
+
+            // Skip if part is muted or another part is soloed
+            if (part.mute) continue;
+            if (anySolo_ && !part.solo) continue;
 
             // Process envelopes
             float ampEnv = voice->ampEnv.process(sampleRate_);
@@ -123,29 +165,27 @@ void SynthEngine::process(AudioBuffer& output) {
 
             // Apply pitch modulation (LFO + pitch envelope)
             float pitchMod = 0.0f;
-            if (lfoPerVoice_) {
-                // Per-voice LFO: advance each voice's own LFO phase
-                if (lfo1_.target() == LFO::Target::PITCH) {
-                    voice->lfo1Phase += lfo1_.rate() / sampleRate_;
+            if (part.lfoPerVoice) {
+                if (part.lfo1.target() == LFO::Target::PITCH) {
+                    voice->lfo1Phase += part.lfo1.rate() / sampleRate_;
                     if (voice->lfo1Phase >= 1.0) voice->lfo1Phase -= 1.0;
-                    pitchMod += std::sin(2.0 * M_PI * voice->lfo1Phase) * lfo1_.depth();
+                    pitchMod += std::sin(2.0 * M_PI * voice->lfo1Phase) * part.lfo1.depth();
                 }
-                if (lfo2_.target() == LFO::Target::PITCH) {
-                    voice->lfo2Phase += lfo2_.rate() / sampleRate_;
+                if (part.lfo2.target() == LFO::Target::PITCH) {
+                    voice->lfo2Phase += part.lfo2.rate() / sampleRate_;
                     if (voice->lfo2Phase >= 1.0) voice->lfo2Phase -= 1.0;
-                    pitchMod += std::sin(2.0 * M_PI * voice->lfo2Phase) * lfo2_.depth();
+                    pitchMod += std::sin(2.0 * M_PI * voice->lfo2Phase) * part.lfo2.depth();
                 }
             } else {
-                if (lfo1_.target() == LFO::Target::PITCH) pitchMod += lfo1Val;
-                if (lfo2_.target() == LFO::Target::PITCH) pitchMod += lfo2Val;
+                if (part.lfo1.target() == LFO::Target::PITCH) pitchMod += lfo1Val;
+                if (part.lfo2.target() == LFO::Target::PITCH) pitchMod += lfo2Val;
             }
-            // Apply pitch envelope (in semitones)
-            pitchMod += pitchEnv * pitchEnvAmount_;
+            pitchMod += pitchEnv * part.pitchEnvAmount;
             float modFreq = voice->baseFreq * std::pow(2.0f, pitchMod * 2.0f);
 
-            // Get unison configs (they are per-oscillator and apply per-voice)
-            const UnisonConfig& u1 = osc1_.unison();
-            const UnisonConfig& u2 = osc2_.unison();
+            // Get unison configs from the voice's part
+            const UnisonConfig& u1 = part.osc1.unison();
+            const UnisonConfig& u2 = part.osc2.unison();
             int maxVoices = std::max(u1.voiceCount, u2.voiceCount);
             if (maxVoices < 1) maxVoices = 1;
 
@@ -159,29 +199,43 @@ void SynthEngine::process(AudioBuffer& output) {
 
                 float sample = 0.0f;
 
+                // Check for physical model waveforms on oscillator 1
+                int wf1 = part.osc1.waveform();
+                bool isPm1 = (wf1 >= 18 && wf1 <= 23);
+                int wf2 = part.osc2.waveform();
+                bool isPm2 = (wf2 >= 18 && wf2 <= 23);
+
                 // Oscillator 1
                 if (osc1Active) {
-                    float inc = osc1_.phaseIncrement(modFreq, uv);
-                    voice->osc1Phase[uv] += inc;
-                    if (voice->osc1Phase[uv] >= 1.0f) voice->osc1Phase[uv] -= 1.0f;
-                    sample += osc1_.process(voice->osc1Phase[uv], uv, modFreq, sampleRate_);
+                    if (isPm1 && uv == 0) {
+                        sample += voice->physicalModel.process() * part.osc1.volume();
+                    } else if (!isPm1) {
+                        float inc = part.osc1.phaseIncrement(modFreq, uv);
+                        voice->osc1Phase[uv] += inc;
+                        if (voice->osc1Phase[uv] >= 1.0f) voice->osc1Phase[uv] -= 1.0f;
+                        sample += part.osc1.process(voice->osc1Phase[uv], uv, modFreq, sampleRate_);
+                    }
                 }
 
                 // Oscillator 2
                 if (osc2Active) {
-                    float inc = osc2_.phaseIncrement(modFreq, uv);
-                    voice->osc2Phase[uv] += inc;
-                    if (voice->osc2Phase[uv] >= 1.0f) voice->osc2Phase[uv] -= 1.0f;
-                    sample += osc2_.process(voice->osc2Phase[uv], uv, modFreq, sampleRate_);
+                    if (isPm2 && uv == 0) {
+                        sample += voice->physicalModel.process() * part.osc2.volume();
+                    } else if (!isPm2) {
+                        float inc = part.osc2.phaseIncrement(modFreq, uv);
+                        voice->osc2Phase[uv] += inc;
+                        if (voice->osc2Phase[uv] >= 1.0f) voice->osc2Phase[uv] -= 1.0f;
+                        sample += part.osc2.process(voice->osc2Phase[uv], uv, modFreq, sampleRate_);
+                    }
                 }
 
                 // Apply oscillator mix
-                sample *= oscMix_;
+                sample *= part.oscMix;
 
                 // Apply unison stereo panning
                 float pan;
                 if (uv == 0) {
-                    pan = 0.0f; // center
+                    pan = 0.0f;
                 } else {
                     pan = (u1.stereoSpread * 0.5f) * (uv % 2 == 0 ? -1.0f : 1.0f);
                 }
@@ -196,39 +250,40 @@ void SynthEngine::process(AudioBuffer& output) {
 
             // Apply filter
             float filterMod = 0.0f;
-            if (lfo1_.target() == LFO::Target::FILTER) filterMod += lfo1Val;
-            if (lfo2_.target() == LFO::Target::FILTER) filterMod += lfo2Val;
+            if (part.lfo1.target() == LFO::Target::FILTER) filterMod += lfo1Val;
+            if (part.lfo2.target() == LFO::Target::FILTER) filterMod += lfo2Val;
 
-            // Mix down to mono for filter, then re-pan
             float monoMix = (voiceLeft + voiceRight) * 0.5f;
+            float filtered = part.filter.process(monoMix, filterEnv + filterMod, sampleRate_, voice->midiNote, voice->filterState);
 
-            // Piano hammer transient: brief noise burst + high click at note start
-            float filtered = filter_.process(monoMix, filterEnv + filterMod, sampleRate_, voice->midiNote, voice->filterState);
-
-            // Piano hammer transient: brief bright click added AFTER filter so it stays sharp
-            bool isPiano = (osc1_.waveform() == 6) || (osc2_.waveform() == 6);
-            if (isPiano && voice->noteAge < 0.015f) {
+            // Piano hammer transient for part 0 legacy compat
+            if (partIdx == 0 && isPiano && voice->noteAge < 0.015f) {
                 float clickDecay = std::exp(-voice->noteAge * 300.0f);
                 float clickAmt = clickDecay * 0.25f * voice->velocity;
-                float hammerNoise = (std::sin(voice->noteAge * 12000.0f) * 0.7f +
-                                     std::sin(voice->noteAge * 18432.0f) * 0.3f) * clickAmt;
-                filtered += hammerNoise;
+                float hammerSine = (std::sin(voice->noteAge * 12000.0f) * 0.4f +
+                                    std::sin(voice->noteAge * 18432.0f) * 0.2f) * clickAmt;
+                float hash = std::sin(voice->noteAge * 15453.789f + voice->midiNote * 7.13f) * 43758.5453f;
+                float hammerNoise = (hash - std::floor(hash)) * 2.0f - 1.0f;
+                hammerNoise *= clickAmt * 0.4f;
+                filtered += hammerSine + hammerNoise;
             }
 
-            voiceLeft = filtered * ampGain * (1.0f - voice->pan) * 0.5f;
-            voiceRight = filtered * ampGain * (1.0f + voice->pan) * 0.5f;
+            // Apply part volume/pan
+            float partPanL = std::cos((part.pan + 1.0f) * M_PI / 4.0f);
+            float partPanR = std::sin((part.pan + 1.0f) * M_PI / 4.0f);
+            voiceLeft = filtered * ampGain * partPanL * part.volume;
+            voiceRight = filtered * ampGain * partPanR * part.volume;
 
             leftOut += voiceLeft;
             rightOut += voiceRight;
 
-            // Advance note age
             voice->noteAge += 1.0f / static_cast<float>(sampleRate_);
         }
 
-        // Apply LFO amplitude modulation
+        // Apply LFO amplitude modulation (using part 0 LFOs for global amp mod)
         float ampMod = 0.0f;
-        if (lfo1_.target() == LFO::Target::AMPLITUDE) ampMod += lfo1Val;
-        if (lfo2_.target() == LFO::Target::AMPLITUDE) ampMod += lfo2Val;
+        if (parts_[0].lfo1.target() == LFO::Target::AMPLITUDE) ampMod += lfo1Val;
+        if (parts_[0].lfo2.target() == LFO::Target::AMPLITUDE) ampMod += lfo2Val;
         ampMod = 1.0f - std::abs(ampMod) * 0.5f;
 
         leftOut *= ampMod;
@@ -257,6 +312,27 @@ void SynthEngine::process(AudioBuffer& output) {
         } else {
             output.data[frame] = (leftOut + rightOut) * 0.5f;
         }
+    }
+
+    // ── Recording ── capture mixed output before drums
+    if (recorder_.state() == TransportState::RECORDING) {
+        // We need to capture the final mix. Since we wrote per-frame above,
+        // extract from output buffer (before drums are mixed in).
+        // For simplicity, record the synth voices only (no drums) — drums can be recorded separately.
+        static constexpr uint32_t kRecBufMax = 2048;
+        float recLeft[kRecBufMax];
+        float recRight[kRecBufMax];
+        uint32_t recFrames = numFrames < kRecBufMax ? numFrames : kRecBufMax;
+        for (uint32_t i = 0; i < recFrames; ++i) {
+            if (stereo) {
+                recLeft[i] = output.data[i * 2];
+                recRight[i] = output.data[i * 2 + 1];
+            } else {
+                recLeft[i] = output.data[i];
+                recRight[i] = output.data[i];
+            }
+        }
+        recorder_.process(recLeft, recRight, recFrames);
     }
 
     // CPU profiling — measure block time vs. real-time budget
@@ -303,7 +379,22 @@ void SynthEngine::applyParam(const ParamQueue::Entry& e) {
     switch (id) {
     // MIDI
     case P::NOTE_ON:
-        allocator_.noteOn(e.intData, e.floatData);
+        {
+            Voice* voice = allocator_.noteOn(e.intData, e.floatData);
+            if (voice) {
+                SynthPart& voicePart = parts_[voice->partIndex];
+                int wf1 = voicePart.osc1.waveform();
+                if (wf1 >= 18 && wf1 <= 23) {
+                    voice->physicalModel.setType(static_cast<PhysicalModelType>(wf1 - 17));
+                    voice->physicalModel.noteOn(voice->baseFreq, voice->velocity);
+                }
+                int wf2 = voicePart.osc2.waveform();
+                if (wf2 >= 18 && wf2 <= 23) {
+                    voice->physicalModel.setType(static_cast<PhysicalModelType>(wf2 - 17));
+                    voice->physicalModel.noteOn(voice->baseFreq, voice->velocity);
+                }
+            }
+        }
         break;
     case P::NOTE_OFF:
         allocator_.noteOff(e.intData);
@@ -334,104 +425,128 @@ void SynthEngine::applyParam(const ParamQueue::Entry& e) {
         drumKit_.noteOff(static_cast<int>(e.floatData));
         break;
 
+    // Rhythm Pattern Player
+    case P::RHYTHM_PATTERN:
+        rhythmPlayer_.setPattern(static_cast<int>(e.floatData));
+        break;
+    case P::RHYTHM_PLAY:
+        rhythmPlayer_.play();
+        break;
+    case P::RHYTHM_STOP:
+        rhythmPlayer_.stop();
+        break;
+    case P::RHYTHM_TEMPO:
+        rhythmPlayer_.setTempo(e.floatData);
+        break;
+    case P::RHYTHM_VOLUME:
+        // Rhythm volume applied as drum kit master level scaling
+        drumKit_.setLevel(e.floatData);
+        break;
+    case P::RHYTHM_VARIATION:
+        rhythmPlayer_.setVariation(static_cast<PatternVariation>(static_cast<int>(e.floatData)));
+        break;
+    case P::RHYTHM_SONG_MODE:
+        rhythmPlayer_.setSongMode(e.intData != 0);
+        break;
+
     // Osc 1
-    case P::OSC1_WAVEFORM: osc1_.setWaveform(e.intData); break;
-    case P::OSC1_OCTAVE:   osc1_.setOctave(e.intData); break;
-    case P::OSC1_DETUNE:   osc1_.setDetune(e.floatData); break;
-    case P::OSC1_PULSE_WIDTH: osc1_.setPulseWidth(e.floatData); break;
-    case P::OSC1_VOLUME:   osc1_.setVolume(e.floatData); break;
-    case P::OSC1_NOISE_TYPE: osc1_.setNoiseType(e.intData); break;
-    case P::OSC1_SUB_OSC_MODE: osc1_.setSubOscMode(e.intData); break;
-    case P::OSC1_SUB_OSC_VOLUME: osc1_.setSubOscVolume(e.floatData); break;
-    case P::OSC1_FM_ENABLED: osc1_.setFmEnabled(e.intData != 0); break;
-    case P::OSC1_FM_AMOUNT: osc1_.setFmAmount(e.floatData); break;
+    case P::OSC1_WAVEFORM: parts_[0].osc1.setWaveform(e.intData); break;
+    case P::OSC1_OCTAVE:   parts_[0].osc1.setOctave(e.intData); break;
+    case P::OSC1_DETUNE:   parts_[0].osc1.setDetune(e.floatData); break;
+    case P::OSC1_PULSE_WIDTH: parts_[0].osc1.setPulseWidth(e.floatData); break;
+    case P::OSC1_VOLUME:   parts_[0].osc1.setVolume(e.floatData); break;
+    case P::OSC1_NOISE_TYPE: parts_[0].osc1.setNoiseType(e.intData); break;
+    case P::OSC1_SUB_OSC_MODE: parts_[0].osc1.setSubOscMode(e.intData); break;
+    case P::OSC1_SUB_OSC_VOLUME: parts_[0].osc1.setSubOscVolume(e.floatData); break;
+    case P::OSC1_FM_ENABLED: parts_[0].osc1.setFmEnabled(e.intData != 0); break;
+    case P::OSC1_FM_AMOUNT: parts_[0].osc1.setFmAmount(e.floatData); break;
 
     // Osc 2
-    case P::OSC2_WAVEFORM: osc2_.setWaveform(e.intData); break;
-    case P::OSC2_OCTAVE:   osc2_.setOctave(e.intData); break;
-    case P::OSC2_DETUNE:   osc2_.setDetune(e.floatData); break;
-    case P::OSC2_PULSE_WIDTH: osc2_.setPulseWidth(e.floatData); break;
-    case P::OSC2_VOLUME:   osc2_.setVolume(e.floatData); break;
-    case P::OSC2_NOISE_TYPE: osc2_.setNoiseType(e.intData); break;
-    case P::OSC2_SUB_OSC_MODE: osc2_.setSubOscMode(e.intData); break;
-    case P::OSC2_SUB_OSC_VOLUME: osc2_.setSubOscVolume(e.floatData); break;
-    case P::OSC2_FM_ENABLED: osc2_.setFmEnabled(e.intData != 0); break;
-    case P::OSC2_FM_AMOUNT: osc2_.setFmAmount(e.floatData); break;
-    case P::OSC_MIX:       oscMix_ = e.floatData; break;
+    case P::OSC2_WAVEFORM: parts_[0].osc2.setWaveform(e.intData); break;
+    case P::OSC2_OCTAVE:   parts_[0].osc2.setOctave(e.intData); break;
+    case P::OSC2_DETUNE:   parts_[0].osc2.setDetune(e.floatData); break;
+    case P::OSC2_PULSE_WIDTH: parts_[0].osc2.setPulseWidth(e.floatData); break;
+    case P::OSC2_VOLUME:   parts_[0].osc2.setVolume(e.floatData); break;
+    case P::OSC2_NOISE_TYPE: parts_[0].osc2.setNoiseType(e.intData); break;
+    case P::OSC2_SUB_OSC_MODE: parts_[0].osc2.setSubOscMode(e.intData); break;
+    case P::OSC2_SUB_OSC_VOLUME: parts_[0].osc2.setSubOscVolume(e.floatData); break;
+    case P::OSC2_FM_ENABLED: parts_[0].osc2.setFmEnabled(e.intData != 0); break;
+    case P::OSC2_FM_AMOUNT: parts_[0].osc2.setFmAmount(e.floatData); break;
+    case P::OSC_MIX:       parts_[0].oscMix = e.floatData; break;
 
     // Filter
-    case P::FILTER_TYPE:     filter_.setType(e.intData); break;
-    case P::FILTER_CUTOFF:   filter_.setCutoff(e.floatData); break;
-    case P::FILTER_RESONANCE: filter_.setResonance(e.floatData); break;
-    case P::FILTER_ENV_AMOUNT: filter_.setEnvAmount(e.floatData); break;
-    case P::FILTER_KEY_TRACKING: filter_.setKeyTracking(e.floatData); break;
-    case P::FILTER_DRIVE: filter_.setDrive(e.floatData); break;
+    case P::FILTER_TYPE:     parts_[0].filter.setType(e.intData); break;
+    case P::FILTER_CUTOFF:   parts_[0].filter.setCutoff(e.floatData); break;
+    case P::FILTER_RESONANCE: parts_[0].filter.setResonance(e.floatData); break;
+    case P::FILTER_ENV_AMOUNT: parts_[0].filter.setEnvAmount(e.floatData); break;
+    case P::FILTER_KEY_TRACKING: parts_[0].filter.setKeyTracking(e.floatData); break;
+    case P::FILTER_DRIVE: parts_[0].filter.setDrive(e.floatData); break;
 
     // Amp envelope
-    case P::AMP_ATTACK:  ampAttack_ = e.floatData; break;
-    case P::AMP_DECAY:   ampDecay_ = e.floatData; break;
-    case P::AMP_SUSTAIN: ampSustain_ = e.floatData; break;
-    case P::AMP_RELEASE: ampRelease_ = e.floatData; break;
-    case P::AMP_DELAY:   ampDelay_ = e.floatData; break;
-    case P::AMP_HOLD:    ampHold_ = e.floatData; break;
-    case P::AMP_ATTACK_CURVE:  ampAttackCurve_ = e.intData; break;
-    case P::AMP_DECAY_CURVE:   ampDecayCurve_ = e.intData; break;
+    case P::AMP_ATTACK:  parts_[0].ampAttack = e.floatData; break;
+    case P::AMP_DECAY:   parts_[0].ampDecay = e.floatData; break;
+    case P::AMP_SUSTAIN: parts_[0].ampSustain = e.floatData; break;
+    case P::AMP_RELEASE: parts_[0].ampRelease = e.floatData; break;
+    case P::AMP_DELAY:   parts_[0].ampDelay = e.floatData; break;
+    case P::AMP_HOLD:    parts_[0].ampHold = e.floatData; break;
+    case P::AMP_ATTACK_CURVE:  parts_[0].ampAttackCurve = e.intData; break;
+    case P::AMP_DECAY_CURVE:   parts_[0].ampDecayCurve = e.intData; break;
     case P::AMP_RELEASE_CURVE:
-        ampReleaseCurve_ = e.intData;
+        parts_[0].ampReleaseCurve = e.intData;
         // Apply to all active voices
         for (int v = 0; v < VoiceAllocator::MAX_VOICES; v++) {
             Voice* voice = allocator_.voice(v);
             if (!voice->active) continue;
-            voice->ampEnv.setDelay(ampDelay_);
-            voice->ampEnv.setHold(ampHold_);
-            voice->ampEnv.setAttack(ampAttack_);
-            voice->ampEnv.setDecay(ampDecay_);
-            voice->ampEnv.setSustain(ampSustain_);
-            voice->ampEnv.setRelease(ampRelease_);
+            voice->ampEnv.setDelay(parts_[0].ampDelay);
+            voice->ampEnv.setHold(parts_[0].ampHold);
+            voice->ampEnv.setAttack(parts_[0].ampAttack);
+            voice->ampEnv.setDecay(parts_[0].ampDecay);
+            voice->ampEnv.setSustain(parts_[0].ampSustain);
+            voice->ampEnv.setRelease(parts_[0].ampRelease);
         }
         break;
 
     // Filter envelope
-    case P::FILTER_ATTACK:  filterAttack_ = e.floatData; break;
-    case P::FILTER_DECAY:   filterDecay_ = e.floatData; break;
-    case P::FILTER_SUSTAIN: filterSustain_ = e.floatData; break;
-    case P::FILTER_RELEASE: filterRelease_ = e.floatData; break;
-    case P::FILTER_DELAY:   filterDelay_ = e.floatData; break;
-    case P::FILTER_HOLD:    filterHold_ = e.floatData; break;
-    case P::FILTER_ATTACK_CURVE:  filterAttackCurve_ = e.intData; break;
-    case P::FILTER_DECAY_CURVE:   filterDecayCurve_ = e.intData; break;
+    case P::FILTER_ATTACK:  parts_[0].filterAttack = e.floatData; break;
+    case P::FILTER_DECAY:   parts_[0].filterDecay = e.floatData; break;
+    case P::FILTER_SUSTAIN: parts_[0].filterSustain = e.floatData; break;
+    case P::FILTER_RELEASE: parts_[0].filterRelease = e.floatData; break;
+    case P::FILTER_DELAY:   parts_[0].filterDelay = e.floatData; break;
+    case P::FILTER_HOLD:    parts_[0].filterHold = e.floatData; break;
+    case P::FILTER_ATTACK_CURVE:  parts_[0].filterAttackCurve = e.intData; break;
+    case P::FILTER_DECAY_CURVE:   parts_[0].filterDecayCurve = e.intData; break;
     case P::FILTER_RELEASE_CURVE:
-        filterReleaseCurve_ = e.intData;
+        parts_[0].filterReleaseCurve = e.intData;
         // Apply to all active voices
         for (int v = 0; v < VoiceAllocator::MAX_VOICES; v++) {
             Voice* voice = allocator_.voice(v);
             if (!voice->active) continue;
-            voice->filterEnv.setDelay(filterDelay_);
-            voice->filterEnv.setHold(filterHold_);
-            voice->filterEnv.setAttack(filterAttack_);
-            voice->filterEnv.setDecay(filterDecay_);
-            voice->filterEnv.setSustain(filterSustain_);
-            voice->filterEnv.setRelease(filterRelease_);
+            voice->filterEnv.setDelay(parts_[0].filterDelay);
+            voice->filterEnv.setHold(parts_[0].filterHold);
+            voice->filterEnv.setAttack(parts_[0].filterAttack);
+            voice->filterEnv.setDecay(parts_[0].filterDecay);
+            voice->filterEnv.setSustain(parts_[0].filterSustain);
+            voice->filterEnv.setRelease(parts_[0].filterRelease);
         }
         break;
 
     // LFO 1
-    case P::LFO1_WAVEFORM: lfo1_.setWaveform(e.intData); break;
-    case P::LFO1_RATE:     lfo1_.setRate(e.floatData); break;
-    case P::LFO1_DEPTH:    lfo1_.setDepth(e.floatData); break;
-    case P::LFO1_TARGET:   lfo1_.setTarget(e.intData); break;
-    case P::LFO1_FADE_IN:  lfo1_.setFadeIn(e.floatData); break;
-    case P::LFO1_TEMPO_SYNC: lfo1_.setTempoSync(e.intData != 0); break;
-    case P::LFO1_TEMPO_DIVISION: lfo1_.setTempoNoteDivision(e.intData); break;
+    case P::LFO1_WAVEFORM: parts_[0].lfo1.setWaveform(e.intData); break;
+    case P::LFO1_RATE:     parts_[0].lfo1.setRate(e.floatData); break;
+    case P::LFO1_DEPTH:    parts_[0].lfo1.setDepth(e.floatData); break;
+    case P::LFO1_TARGET:   parts_[0].lfo1.setTarget(e.intData); break;
+    case P::LFO1_FADE_IN:  parts_[0].lfo1.setFadeIn(e.floatData); break;
+    case P::LFO1_TEMPO_SYNC: parts_[0].lfo1.setTempoSync(e.intData != 0); break;
+    case P::LFO1_TEMPO_DIVISION: parts_[0].lfo1.setTempoNoteDivision(e.intData); break;
 
     // LFO 2
-    case P::LFO2_WAVEFORM: lfo2_.setWaveform(e.intData); break;
-    case P::LFO2_RATE:     lfo2_.setRate(e.floatData); break;
-    case P::LFO2_DEPTH:    lfo2_.setDepth(e.floatData); break;
-    case P::LFO2_TARGET:   lfo2_.setTarget(e.intData); break;
-    case P::LFO2_FADE_IN:  lfo2_.setFadeIn(e.floatData); break;
-    case P::LFO2_TEMPO_SYNC: lfo2_.setTempoSync(e.intData != 0); break;
-    case P::LFO2_TEMPO_DIVISION: lfo2_.setTempoNoteDivision(e.intData); break;
+    case P::LFO2_WAVEFORM: parts_[0].lfo2.setWaveform(e.intData); break;
+    case P::LFO2_RATE:     parts_[0].lfo2.setRate(e.floatData); break;
+    case P::LFO2_DEPTH:    parts_[0].lfo2.setDepth(e.floatData); break;
+    case P::LFO2_TARGET:   parts_[0].lfo2.setTarget(e.intData); break;
+    case P::LFO2_FADE_IN:  parts_[0].lfo2.setFadeIn(e.floatData); break;
+    case P::LFO2_TEMPO_SYNC: parts_[0].lfo2.setTempoSync(e.intData != 0); break;
+    case P::LFO2_TEMPO_DIVISION: parts_[0].lfo2.setTempoNoteDivision(e.intData); break;
 
     // FX: Chorus (routed to LegacyFxProcessor slot 0)
     case P::CHORUS_ENABLED: {
@@ -639,16 +754,16 @@ void SynthEngine::applyParam(const ParamQueue::Entry& e) {
     case P::MASTER_VOLUME: masterVolume_ = e.floatData; break;
 
     // Unison 1
-    case P::OSC1_UNISON_VOICE_COUNT:    osc1_.setUnisonVoiceCount(e.intData); break;
-    case P::OSC1_UNISON_DETUNE_SPREAD:  osc1_.setUnisonDetuneSpread(e.floatData); break;
-    case P::OSC1_UNISON_STEREO_SPREAD:  osc1_.setUnisonStereoSpread(e.floatData); break;
-    case P::OSC1_UNISON_MIX:            osc1_.setUnisonMix(e.floatData); break;
+    case P::OSC1_UNISON_VOICE_COUNT:    parts_[0].osc1.setUnisonVoiceCount(e.intData); break;
+    case P::OSC1_UNISON_DETUNE_SPREAD:  parts_[0].osc1.setUnisonDetuneSpread(e.floatData); break;
+    case P::OSC1_UNISON_STEREO_SPREAD:  parts_[0].osc1.setUnisonStereoSpread(e.floatData); break;
+    case P::OSC1_UNISON_MIX:            parts_[0].osc1.setUnisonMix(e.floatData); break;
 
     // Unison 2
-    case P::OSC2_UNISON_VOICE_COUNT:    osc2_.setUnisonVoiceCount(e.intData); break;
-    case P::OSC2_UNISON_DETUNE_SPREAD:  osc2_.setUnisonDetuneSpread(e.floatData); break;
-    case P::OSC2_UNISON_STEREO_SPREAD:  osc2_.setUnisonStereoSpread(e.floatData); break;
-    case P::OSC2_UNISON_MIX:            osc2_.setUnisonMix(e.floatData); break;
+    case P::OSC2_UNISON_VOICE_COUNT:    parts_[0].osc2.setUnisonVoiceCount(e.intData); break;
+    case P::OSC2_UNISON_DETUNE_SPREAD:  parts_[0].osc2.setUnisonDetuneSpread(e.floatData); break;
+    case P::OSC2_UNISON_STEREO_SPREAD:  parts_[0].osc2.setUnisonStereoSpread(e.floatData); break;
+    case P::OSC2_UNISON_MIX:            parts_[0].osc2.setUnisonMix(e.floatData); break;
 
     // Arpeggiator
     case P::ARP_ENABLED:       arpeggiator_.setEnabled(e.intData != 0); break;
@@ -862,67 +977,116 @@ int SynthEngine::savePreset(const char* path) const {
     if (!file.is_open()) return -1;
 
     // Oscillator 1
-    file << "osc1_waveform=" << osc1_.waveform() << "\n";
-    file << "osc1_octave=" << osc1_.octave() << "\n";
-    file << "osc1_detune=" << osc1_.detune() << "\n";
-    file << "osc1_pulse_width=" << osc1_.pulseWidth() << "\n";
-    file << "osc1_volume=" << osc1_.volume() << "\n";
+    file << "osc1_waveform=" << parts_[0].osc1.waveform() << "\n";
+    file << "osc1_octave=" << parts_[0].osc1.octave() << "\n";
+    file << "osc1_detune=" << parts_[0].osc1.detune() << "\n";
+    file << "osc1_pulse_width=" << parts_[0].osc1.pulseWidth() << "\n";
+    file << "osc1_volume=" << parts_[0].osc1.volume() << "\n";
 
     // Oscillator 2
-    file << "osc2_waveform=" << osc2_.waveform() << "\n";
-    file << "osc2_octave=" << osc2_.octave() << "\n";
-    file << "osc2_detune=" << osc2_.detune() << "\n";
-    file << "osc2_pulse_width=" << osc2_.pulseWidth() << "\n";
-    file << "osc2_volume=" << osc2_.volume() << "\n";
+    file << "osc2_waveform=" << parts_[0].osc2.waveform() << "\n";
+    file << "osc2_octave=" << parts_[0].osc2.octave() << "\n";
+    file << "osc2_detune=" << parts_[0].osc2.detune() << "\n";
+    file << "osc2_pulse_width=" << parts_[0].osc2.pulseWidth() << "\n";
+    file << "osc2_volume=" << parts_[0].osc2.volume() << "\n";
 
-    file << "osc_mix=" << oscMix_ << "\n";
+    file << "osc_mix=" << parts_[0].oscMix << "\n";
 
     // Unison 1
-    file << "osc1_unison_voice_count=" << osc1_.unison().voiceCount << "\n";
-    file << "osc1_unison_detune_spread=" << osc1_.unison().detuneSpread << "\n";
-    file << "osc1_unison_stereo_spread=" << osc1_.unison().stereoSpread << "\n";
-    file << "osc1_unison_mix=" << osc1_.unison().mix << "\n";
+    file << "osc1_unison_voice_count=" << parts_[0].osc1.unison().voiceCount << "\n";
+    file << "osc1_unison_detune_spread=" << parts_[0].osc1.unison().detuneSpread << "\n";
+    file << "osc1_unison_stereo_spread=" << parts_[0].osc1.unison().stereoSpread << "\n";
+    file << "osc1_unison_mix=" << parts_[0].osc1.unison().mix << "\n";
 
     // Unison 2
-    file << "osc2_unison_voice_count=" << osc2_.unison().voiceCount << "\n";
-    file << "osc2_unison_detune_spread=" << osc2_.unison().detuneSpread << "\n";
-    file << "osc2_unison_stereo_spread=" << osc2_.unison().stereoSpread << "\n";
-    file << "osc2_unison_mix=" << osc2_.unison().mix << "\n";
+    file << "osc2_unison_voice_count=" << parts_[0].osc2.unison().voiceCount << "\n";
+    file << "osc2_unison_detune_spread=" << parts_[0].osc2.unison().detuneSpread << "\n";
+    file << "osc2_unison_stereo_spread=" << parts_[0].osc2.unison().stereoSpread << "\n";
+    file << "osc2_unison_mix=" << parts_[0].osc2.unison().mix << "\n";
 
     // Filter
-    file << "filter_type=" << filter_.type() << "\n";
-    file << "filter_cutoff=" << filter_.cutoff() << "\n";
-    file << "filter_resonance=" << filter_.resonance() << "\n";
-    file << "filter_env_amount=" << filter_.envAmount() << "\n";
+    file << "filter_type=" << parts_[0].filter.type() << "\n";
+    file << "filter_cutoff=" << parts_[0].filter.cutoff() << "\n";
+    file << "filter_resonance=" << parts_[0].filter.resonance() << "\n";
+    file << "filter_env_amount=" << parts_[0].filter.envAmount() << "\n";
 
     // Amplifier envelope
-    file << "amp_attack=" << ampAttack_ << "\n";
-    file << "amp_decay=" << ampDecay_ << "\n";
-    file << "amp_sustain=" << ampSustain_ << "\n";
-    file << "amp_release=" << ampRelease_ << "\n";
+    file << "amp_attack=" << parts_[0].ampAttack << "\n";
+    file << "amp_decay=" << parts_[0].ampDecay << "\n";
+    file << "amp_sustain=" << parts_[0].ampSustain << "\n";
+    file << "amp_release=" << parts_[0].ampRelease << "\n";
 
     // Filter envelope
-    file << "filter_attack=" << filterAttack_ << "\n";
-    file << "filter_decay=" << filterDecay_ << "\n";
-    file << "filter_sustain=" << filterSustain_ << "\n";
-    file << "filter_release=" << filterRelease_ << "\n";
+    file << "filter_attack=" << parts_[0].filterAttack << "\n";
+    file << "filter_decay=" << parts_[0].filterDecay << "\n";
+    file << "filter_sustain=" << parts_[0].filterSustain << "\n";
+    file << "filter_release=" << parts_[0].filterRelease << "\n";
 
     // LFO 1
-    file << "lfo1_waveform=" << lfo1_.waveform() << "\n";
-    file << "lfo1_rate=" << lfo1_.rate() << "\n";
-    file << "lfo1_depth=" << lfo1_.depth() << "\n";
-    file << "lfo1_target=" << static_cast<int>(lfo1_.target()) << "\n";
+    file << "lfo1_waveform=" << parts_[0].lfo1.waveform() << "\n";
+    file << "lfo1_rate=" << parts_[0].lfo1.rate() << "\n";
+    file << "lfo1_depth=" << parts_[0].lfo1.depth() << "\n";
+    file << "lfo1_target=" << static_cast<int>(parts_[0].lfo1.target()) << "\n";
 
     // LFO 2
-    file << "lfo2_waveform=" << lfo2_.waveform() << "\n";
-    file << "lfo2_rate=" << lfo2_.rate() << "\n";
-    file << "lfo2_depth=" << lfo2_.depth() << "\n";
-    file << "lfo2_target=" << static_cast<int>(lfo2_.target()) << "\n";
+    file << "lfo2_waveform=" << parts_[0].lfo2.waveform() << "\n";
+    file << "lfo2_rate=" << parts_[0].lfo2.rate() << "\n";
+    file << "lfo2_depth=" << parts_[0].lfo2.depth() << "\n";
+    file << "lfo2_target=" << static_cast<int>(parts_[0].lfo2.target()) << "\n";
 
     // Master volume
     file << "master_volume=" << masterVolume_ << "\n";
 
     return 0;
+}
+
+// ── Multitimbral part management ──────────────────────────────────────────────
+
+int SynthEngine::channelToPart(int channel) const {
+    if (channel < 0 || channel > 15) return 0; // Default to part 0
+    for (int i = 0; i < MAX_PARTS; ++i) {
+        if (parts_[i].midiChannel == channel || parts_[i].omni) {
+            return i;
+        }
+    }
+    return 0; // Fallback to part 0
+}
+
+void SynthEngine::setPartMidiChannel(int partIndex, int channel) {
+    if (partIndex < 0 || partIndex >= MAX_PARTS) return;
+    parts_[partIndex].midiChannel = channel;
+}
+
+void SynthEngine::setPartVolume(int partIndex, float vol) {
+    if (partIndex < 0 || partIndex >= MAX_PARTS) return;
+    parts_[partIndex].volume = clamp(vol, 0.0f, 1.0f);
+}
+
+void SynthEngine::setPartPan(int partIndex, float pan) {
+    if (partIndex < 0 || partIndex >= MAX_PARTS) return;
+    parts_[partIndex].pan = clamp(pan, -1.0f, 1.0f);
+}
+
+void SynthEngine::setPartMute(int partIndex, bool mute) {
+    if (partIndex < 0 || partIndex >= MAX_PARTS) return;
+    parts_[partIndex].mute = mute;
+    updateSoloState();
+}
+
+void SynthEngine::setPartSolo(int partIndex, bool solo) {
+    if (partIndex < 0 || partIndex >= MAX_PARTS) return;
+    parts_[partIndex].solo = solo;
+    updateSoloState();
+}
+
+void SynthEngine::updateSoloState() {
+    anySolo_ = false;
+    for (int i = 0; i < MAX_PARTS; ++i) {
+        if (parts_[i].solo) {
+            anySolo_ = true;
+            break;
+        }
+    }
 }
 
 } // namespace openamp

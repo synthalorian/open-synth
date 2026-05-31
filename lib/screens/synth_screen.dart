@@ -565,7 +565,9 @@ class SynthScreen extends ConsumerWidget {
 
     // Keep zone B engine + preset sync alive (for keyboard split).
     ref.watch(synthPairProvider);
+    ref.watch(synthPairAudioStreamProvider);
     ref.watch(zoneBPresetSyncProvider);
+    ref.watch(zoneBMixSyncProvider);
 
     // Show onboarding if not yet completed — one-shot via Future.microtask.
     final onboardingDone = ref.watch(onboardingCompletedProvider);
@@ -1030,7 +1032,7 @@ class SynthScreen extends ConsumerWidget {
                                         ),
                                         onPressed: () {
                                           ref.read(synthEngineProvider)?.reset();
-                                          ref.read(playbackStateProvider.notifier).allNotesOff();
+                                          ref.read(noteRouterProvider).allNotesOff();
                                           ref.read(arpNotesProvider.notifier).state = {};
                                           ScaffoldMessenger.of(context).showSnackBar(
                                             const SnackBar(content: Text('PANIC: All notes killed')),

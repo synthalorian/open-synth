@@ -16,6 +16,21 @@ enum class OscWaveform : int {
     WT_PIANO = 6,
     WT_GUITAR = 7,
     WT_CHOIR = 8,
+    WT_BRASS = 9,
+    WT_STRINGS = 10,
+    WT_WOODWIND = 11,
+    WT_ORGAN = 12,
+    WT_BELL = 13,
+    WT_SYNTH_BASS = 14,
+    WT_SYNTH_LEAD = 15,
+    WT_PAD = 16,
+    WT_EPIANO = 17,
+    PM_KARPLUS = 18,
+    PM_KARPLUS_BRIGHT = 19,
+    PM_KARPLUS_BASS = 20,
+    PM_MODAL_MALLET = 21,
+    PM_MODAL_VIBRAPHONE = 22,
+    PM_MODAL_STEEL = 23,
 };
 
 /// Noise color types for the NOISE waveform.

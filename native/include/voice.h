@@ -4,6 +4,7 @@
 #include "envelope.h"
 #include "oscillator.h"
 #include "filter.h"
+#include "physical_model.h"
 
 namespace openamp {
 
@@ -35,6 +36,12 @@ struct Voice {
 
     // Pan
     float pan = 0.0f;
+
+    // Part index for multitimbral routing (0-15)
+    int partIndex = 0;
+
+    // Physical modeling voice (for Karplus-Strong, modal synthesis)
+    PhysicalModelVoice physicalModel;
 
     void reset();
     void noteOn(int note, float vel);
