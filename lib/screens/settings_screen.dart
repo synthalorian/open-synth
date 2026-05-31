@@ -114,7 +114,7 @@ class SettingsScreen extends ConsumerWidget {
             _SectionTitle('CREDITS'),
             const SizedBox(height: 12),
             Text(
-              'Open Synth is a software synthesizer built with Flutter and the OpenAmp DSP engine.\n\nDesigned for the neon-soaked aesthetics of 1984. 🎹🦞',
+              'Open Synth is a software synthesizer built with Flutter and the OpenAmp DSP engine.\n\nDesigned for the neon-soaked aesthetics of 1984. 🎹🦈',
               style: TextStyle(
                 color: SynthTheme.textSecondary,
                 fontSize: 13,

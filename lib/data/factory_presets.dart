@@ -677,7 +677,7 @@ final List<SynthPreset> factoryPresets = [
   ),
   SynthPreset(
     id: 'factory-50',
-    name: 'Synthclaws Grid',
+    name: 'Synthsharks Grid',
     category: PresetCategory.synthwave,
     osc1: const Oscillator(waveform: Waveform.saw, volume: 0.6),
     osc2: const Oscillator(waveform: Waveform.square, octave: -1, detune: 5.0, volume: 0.5),
@@ -686,7 +686,7 @@ final List<SynthPreset> factoryPresets = [
     chorus: const ChorusConfig(enabled: true, rate: 1.5, depth: 0.5, mix: 0.5),
     reverb: const ReverbConfig(enabled: true, size: 0.7, mix: 0.3),
     drive: const DriveConfig(enabled: true, amount: 0.2, type: DriveType.tube),
-    tags: ['synthclaw', 'grid', 'neon', 'ultimate'],
+    tags: ['synthshark', 'grid', 'neon', 'ultimate'],
     author: 'Open Synth',
   ),
 
