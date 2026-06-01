@@ -10,11 +10,15 @@ void Oscillator::setWaveform(int w) {
     // Dart: sine(0), saw(1), square(2), triangle(3), noise(4), wavetable(5),
     //       wt_piano(6), wt_guitar(7), wt_choir(8), wt_brass(9), wt_strings(10),
     //       wt_woodwind(11), wt_organ(12), wt_bell(13), wt_synth_bass(14),
-    //       wt_synth_lead(15), wt_pad(16), wt_epiano(17)
+    //       wt_synth_lead(15), wt_pad(16), wt_epiano(17),
+    //       pm_karplus(18), pm_karplus_bright(19), pm_karplus_bass(20),
+    //       pm_modal_mallet(21), pm_modal_vibraphone(22), pm_modal_steel(23)
     // Internal: SAW(0), SQUARE(1), TRIANGLE(2), SINE(3), NOISE(4), PULSE(5),
     //           WT_PIANO(6), WT_GUITAR(7), WT_CHOIR(8), WT_BRASS(9), WT_STRINGS(10),
     //           WT_WOODWIND(11), WT_ORGAN(12), WT_BELL(13), WT_SYNTH_BASS(14),
-    //           WT_SYNTH_LEAD(15), WT_PAD(16), WT_EPIANO(17)
+    //           WT_SYNTH_LEAD(15), WT_PAD(16), WT_EPIANO(17),
+    //           PM_KARPLUS(18), PM_KARPLUS_BRIGHT(19), PM_KARPLUS_BASS(20),
+    //           PM_MODAL_MALLET(21), PM_MODAL_VIBRAPHONE(22), PM_MODAL_STEEL(23)
     static constexpr int dartToInternal[] = {
         3,  // Dart sine(0) → SINE
         0,  // Dart saw(1) → SAW
@@ -34,16 +38,22 @@ void Oscillator::setWaveform(int w) {
         15, // Dart wt_synth_lead(15) → WT_SYNTH_LEAD
         16, // Dart wt_pad(16) → WT_PAD
         17, // Dart wt_epiano(17) → WT_EPIANO
+        18, // Dart pm_karplus(18) → PM_KARPLUS
+        19, // Dart pm_karplus_bright(19) → PM_KARPLUS_BRIGHT
+        20, // Dart pm_karplus_bass(20) → PM_KARPLUS_BASS
+        21, // Dart pm_modal_mallet(21) → PM_MODAL_MALLET
+        22, // Dart pm_modal_vibraphone(22) → PM_MODAL_VIBRAPHONE
+        23, // Dart pm_modal_steel(23) → PM_MODAL_STEEL
     };
 
     int mapped;
-    if (w >= 0 && w <= 17) {
+    if (w >= 0 && w <= 23) {
         mapped = dartToInternal[w];
     } else {
         mapped = 3; // default to SINE
     }
 
-    waveform_ = std::clamp(mapped, 0, 17);
+    waveform_ = std::clamp(mapped, 0, 23);
 
     // Configure wavetable oscillator for wavetable types
     auto wf = static_cast<OscWaveform>(waveform_);
@@ -177,6 +187,17 @@ float Oscillator::generateWaveform(float phase) const {
         float sample = wtOsc_.getSampleAtPhase(phase);
         return sample;
     }
+
+    case OscWaveform::PM_KARPLUS:
+    case OscWaveform::PM_KARPLUS_BRIGHT:
+    case OscWaveform::PM_KARPLUS_BASS:
+    case OscWaveform::PM_MODAL_MALLET:
+    case OscWaveform::PM_MODAL_VIBRAPHONE:
+    case OscWaveform::PM_MODAL_STEEL:
+        // Physical models are rendered per-voice in synth_engine.cpp, not here.
+        // This function is called for single-sample waveform lookup.
+        // Return a placeholder sine to avoid silence if called directly.
+        return std::sin(2.0f * M_PI * phase);
 
     case OscWaveform::WT_PIANO: {
         float base = wtOsc_.getSampleAtPhase(phase);
