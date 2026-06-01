@@ -9,7 +9,7 @@ import '../models/synth_preset.dart';
 import '../models/waveform.dart';
 
 /// Bump this when factory presets change — forces Hive reload.
-const int factoryPresetVersion = 7;
+const int factoryPresetVersion = 8;
 
 final List<SynthPreset> factoryPresets = [
   // ── PADS ──────────────────────────────────────────────
@@ -113,8 +113,7 @@ final List<SynthPreset> factoryPresets = [
     tags: ['bell', 'fm', 'shimmer', 'classic'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-08',
     name: 'Electric Piano',
     category: PresetCategory.keys,
@@ -209,8 +208,7 @@ SynthPreset(
     author: 'Open Synth',
   ),
 
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-15',
     name: 'Init Patch',
     category: PresetCategory.custom,
@@ -243,8 +241,7 @@ SynthPreset(
     tags: ['strings', 'cinematic', 'wide', 'cs80'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-18',
     name: 'Vocal Choir Pad',
     category: PresetCategory.pads,
@@ -377,8 +374,7 @@ SynthPreset(
     tags: ['bell', 'fm', 'metallic', 'tine'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-28',
     name: 'Mellow Wurli',
     category: PresetCategory.keys,
@@ -710,8 +706,7 @@ SynthPreset(
     tags: ['dark', 'brooding', 'cinematic', 'ominous'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-53',
     name: 'Heavenly Choir',
     category: PresetCategory.pads,
@@ -838,7 +833,7 @@ SynthPreset(
     name: '808 Square',
     category: PresetCategory.leads,
     osc1: const Oscillator(waveform: Waveform.square, volume: 0.85),
-    osc2: const Oscillator(waveform: Waveform.square, volume: 0.0, enabled: false),
+    osc2: const Oscillator(waveform: Waveform.square, volume: 0.0, enabled: false, detune: 7.0),
     filter: const FilterConfig(cutoff: 12000, resonance: 0.1),
     ampEnvelope: const Envelope(attack: 5, decay: 100, sustain: 0.8, release: 150),
     tags: ['simple', 'pulse', '808', 'retro'],
@@ -1051,8 +1046,7 @@ SynthPreset(
     tags: ['clav', 'funk', 'percussive', 'wah'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-77',
     name: 'Harpsichord',
     category: PresetCategory.keys,
@@ -1064,8 +1058,7 @@ SynthPreset(
     tags: ['harpsichord', 'baroque', 'classical', 'pluck', 'piano'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-78',
     name: 'Glass Marimba',
     category: PresetCategory.keys,
@@ -1084,7 +1077,7 @@ SynthPreset(
     osc1: const Oscillator(waveform: Waveform.wtPiano, octave: -1, volume: 0.45, wavetablePosition: 0.05),
     osc2: const Oscillator(waveform: Waveform.triangle, octave: 2, volume: 0.5),
     filter: const FilterConfig(cutoff: 9000, resonance: 0.1),
-    ampEnvelope: const Envelope(attack: 2, decay: 700, sustain: 0.0, release: 500),
+    ampEnvelope: const Envelope(attack: 2, decay: 210, sustain: 0.6, release: 600),
     reverb: const ReverbConfig(enabled: true, size: 0.5, damping: 0.4, mix: 0.3),
     tags: ['music box', 'delicate', 'tinkling', 'gentle', 'piano'],
     author: 'Open Synth',
@@ -2912,7 +2905,7 @@ SynthPreset(
     osc1: const Oscillator(waveform: Waveform.sine, volume: 0.65),
     osc2: const Oscillator(waveform: Waveform.triangle, octave: 1, detune: 3.0, volume: 0.45),
     filter: const FilterConfig(cutoff: 7000, resonance: 0.2),
-    ampEnvelope: const Envelope(attack: 1, decay: 600, sustain: 0.0, release: 400),
+    ampEnvelope: const Envelope(attack: 1, decay: 180, sustain: 0.6, release: 600),
     reverb: const ReverbConfig(enabled: true, size: 0.5, damping: 0.3, mix: 0.3),
     tags: ['steel', 'drums', 'caribbean', 'pan', 'bright'],
     author: 'Open Synth',
@@ -2937,7 +2930,7 @@ SynthPreset(
     osc1: const Oscillator(waveform: Waveform.sine, volume: 0.7),
     osc2: const Oscillator(waveform: Waveform.sine, octave: 2, detune: 5.0, volume: 0.3),
     filter: const FilterConfig(cutoff: 10000, resonance: 0.1),
-    ampEnvelope: const Envelope(attack: 1, decay: 1000, sustain: 0.0, release: 800),
+    ampEnvelope: const Envelope(attack: 1, decay: 300, sustain: 0.6, release: 600),
     reverb: const ReverbConfig(enabled: true, size: 0.5, damping: 0.1, mix: 0.25),
     tags: ['glockenspiel', 'bell', 'bright', 'metallic', 'orchestral'],
     author: 'Open Synth',
@@ -2962,7 +2955,7 @@ SynthPreset(
     osc1: const Oscillator(waveform: Waveform.sine, volume: 0.6),
     osc2: const Oscillator(waveform: Waveform.sine, octave: 2, detune: 2.0, volume: 0.35),
     filter: const FilterConfig(cutoff: 9000, resonance: 0.1),
-    ampEnvelope: const Envelope(attack: 2, decay: 1500, sustain: 0.0, release: 1200),
+    ampEnvelope: const Envelope(attack: 2, decay: 450, sustain: 0.6, release: 600),
     lfo1: const LfoConfig(waveform: Waveform.sine, rate: 3.0, depth: 0.02, target: LfoTarget.pitch),
     reverb: const ReverbConfig(enabled: true, size: 0.6, damping: 0.15, mix: 0.35),
     tags: ['celesta', 'music-box', 'tinkling', 'magical', 'delicate'],
@@ -3719,7 +3712,7 @@ SynthPreset(
     name: 'White Noise Sweep',
     category: PresetCategory.fx,
     osc1: const Oscillator(waveform: Waveform.noise, volume: 0.8),
-    osc2: const Oscillator(waveform: Waveform.noise, volume: 0.0, enabled: false),
+    osc2: const Oscillator(waveform: Waveform.noise, volume: 0.0, enabled: false, detune: 7.0),
     filter: const FilterConfig(cutoff: 200, resonance: 0.5, envelopeAmount: 0.9),
     ampEnvelope: const Envelope(attack: 3000, decay: 100, sustain: 1.0, release: 200),
     filterEnvelope: const Envelope(attack: 4000, decay: 100, sustain: 1.0, release: 200),
@@ -3767,47 +3760,43 @@ SynthPreset(
     author: 'Open Synth',
   ),
 
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-273',
     name: 'Grand Piano',
     category: PresetCategory.piano,
     osc1: const Oscillator(waveform: Waveform.wtPiano, octave: 0, detune: 0.0, volume: 0.8),
     osc2: const Oscillator(waveform: Waveform.wtPiano, octave: 0, detune: 3.0, volume: 0.3, enabled: true),
     filter: const FilterConfig(cutoff: 12000, resonance: 0.05, keyTracking: 0.5),
-    ampEnvelope: const Envelope(attack: 5, decay: 4000, sustain: 0.0, release: 100, decayCurve: 2),
+    ampEnvelope: const Envelope(attack: 5, decay: 200, sustain: 0.6, release: 800),
     filterEnvelope: const Envelope(attack: 5, decay: 2000, sustain: 0.0, release: 50),
     reverb: const ReverbConfig(enabled: true, size: 0.4, damping: 0.6, mix: 0.25),
     tags: ['piano', 'grand', 'acoustic', 'natural'],
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-274',
     name: 'Bright Piano',
     category: PresetCategory.piano,
     osc1: const Oscillator(waveform: Waveform.wtPiano, octave: 1, detune: 0.0, volume: 0.9),
     osc2: const Oscillator(waveform: Waveform.wtPiano, octave: 0, detune: 12.0, volume: 0.2, enabled: true),
     filter: const FilterConfig(cutoff: 15000, resonance: 0.1, keyTracking: 0.4),
-    ampEnvelope: const Envelope(attack: 2, decay: 3500, sustain: 0.0, release: 80),
+    ampEnvelope: const Envelope(attack: 5, decay: 200, sustain: 0.6, release: 800),
     chorus: const ChorusConfig(enabled: true, rate: 0.5, depth: 0.15, mix: 0.15),
     reverb: const ReverbConfig(enabled: true, size: 0.3, mix: 0.2),
     tags: ['piano', 'bright', 'pop', 'lively'],
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-275',
     name: 'Honky Tonk Piano',
     category: PresetCategory.piano,
     osc1: const Oscillator(waveform: Waveform.wtPiano, octave: 0, detune: 5.0, volume: 0.8),
     osc2: const Oscillator(waveform: Waveform.wtPiano, octave: 0, detune: -5.0, volume: 0.5, enabled: true),
     filter: const FilterConfig(cutoff: 8000, resonance: 0.15),
-    ampEnvelope: const Envelope(attack: 3, decay: 2500, sustain: 0.0, release: 150, decayCurve: 1),
+    ampEnvelope: const Envelope(attack: 5, decay: 200, sustain: 0.6, release: 800),
     chorus: const ChorusConfig(enabled: true, rate: 2.5, depth: 0.3, mix: 0.3),
     reverb: const ReverbConfig(enabled: true, size: 0.25, mix: 0.3),
     tags: ['piano', 'honky-tonk', 'vintage', 'character'],
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-276',
     name: 'Soft Piano Pad',
     category: PresetCategory.piano,
@@ -3845,20 +3834,18 @@ SynthPreset(
     reverb: const ReverbConfig(enabled: true, size: 0.35, mix: 0.3),
     tags: ['piano', 'electric', 'wurlitzer', 'soul'],
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-279',
     name: 'FM Piano',
     category: PresetCategory.piano,
     osc1: const Oscillator(waveform: Waveform.sine, octave: 0, detune: 0.0, volume: 0.8, fmEnabled: true, fmAmount: 0.6),
     osc2: const Oscillator(waveform: Waveform.sine, octave: 2, detune: 0.0, volume: 0.6, enabled: true, fmEnabled: true, fmAmount: 0.4),
     filter: const FilterConfig(cutoff: 10000, resonance: 0.1, keyTracking: 0.3),
-    ampEnvelope: const Envelope(attack: 5, decay: 3500, sustain: 0.0, release: 200, decayCurve: 1),
+    ampEnvelope: const Envelope(attack: 5, decay: 200, sustain: 0.6, release: 800),
     reverb: const ReverbConfig(enabled: true, size: 0.3, mix: 0.2),
     tags: ['piano', 'fm', 'digital', 'bright', '80s'],
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-280',
     name: 'Cinematic Piano',
     category: PresetCategory.piano,
@@ -3871,8 +3858,7 @@ SynthPreset(
     reverb: const ReverbConfig(enabled: true, size: 0.9, damping: 0.3, mix: 0.55),
     tags: ['piano', 'cinematic', 'epic', 'orchestral'],
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-281',
     name: 'Mellow Piano',
     category: PresetCategory.piano,
@@ -3890,13 +3876,12 @@ SynthPreset(
     osc1: const Oscillator(waveform: Waveform.square, octave: 2, detune: 0.0, volume: 0.7),
     osc2: const Oscillator(waveform: Waveform.triangle, octave: 3, detune: 3.0, volume: 0.3, enabled: true),
     filter: const FilterConfig(cutoff: 14000, resonance: 0.05),
-    ampEnvelope: const Envelope(attack: 1, decay: 1200, sustain: 0.0, release: 200),
+    ampEnvelope: const Envelope(attack: 5, decay: 200, sustain: 0.6, release: 800),
     lfo1: const LfoConfig(waveform: Waveform.sine, rate: 7.0, depth: 0.04, target: LfoTarget.pitch),
     reverb: const ReverbConfig(enabled: true, size: 0.2, mix: 0.2),
     tags: ['piano', 'toy', 'bell', 'playful'],
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-283',
     name: 'Piano Strings Layer',
     category: PresetCategory.piano,
@@ -3909,35 +3894,32 @@ SynthPreset(
     reverb: const ReverbConfig(enabled: true, size: 0.6, mix: 0.4),
     tags: ['piano', 'strings', 'layer', 'rich'],
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-284',
     name: 'Lo-Fi Piano',
     category: PresetCategory.piano,
     osc1: const Oscillator(waveform: Waveform.wtPiano, octave: 0, detune: -2.0, volume: 0.7),
     osc2: const Oscillator(waveform: Waveform.noise, octave: 0, detune: 0.0, volume: 0.1, enabled: true, noiseType: 1),
     filter: const FilterConfig(cutoff: 3000, resonance: 0.3, drive: 0.2),
-    ampEnvelope: const Envelope(attack: 10, decay: 2000, sustain: 0.0, release: 300, decayCurve: 1),
+    ampEnvelope: const Envelope(attack: 5, decay: 200, sustain: 0.6, release: 800),
     lfo1: const LfoConfig(waveform: Waveform.sine, rate: 0.2, depth: 0.15, target: LfoTarget.pitch),
     reverb: const ReverbConfig(enabled: true, size: 0.4, mix: 0.3),
     phaser: const PhaserConfig(enabled: true, rate: 0.15, depth: 0.5, mix: 0.25),
     tags: ['piano', 'lo-fi', 'vintage', 'warm', 'character'],
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-285',
     name: 'Rock Piano',
     category: PresetCategory.piano,
     osc1: const Oscillator(waveform: Waveform.wtPiano, octave: 0, detune: 0.0, volume: 0.9),
     osc2: const Oscillator(waveform: Waveform.wtPiano, octave: 0, detune: 3.0, volume: 0.25, enabled: true),
     filter: const FilterConfig(cutoff: 10000, resonance: 0.1, drive: 0.15),
-    ampEnvelope: const Envelope(attack: 2, decay: 2500, sustain: 0.0, release: 100),
+    ampEnvelope: const Envelope(attack: 5, decay: 200, sustain: 0.6, release: 800),
     reverb: const ReverbConfig(enabled: true, size: 0.3, mix: 0.2),
     compressor: const CompressorConfig(enabled: true, threshold: -15, ratio: 3, attack: 1, release: 100, makeupGain: 3),
     tags: ['piano', 'rock', 'aggressive', 'punchy'],
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-286',
     name: 'Ambient Piano Wash',
     category: PresetCategory.piano,
@@ -3950,15 +3932,14 @@ SynthPreset(
     reverb: const ReverbConfig(enabled: true, size: 0.95, damping: 0.2, mix: 0.7),
     tags: ['piano', 'ambient', 'wash', 'ethereal', 'atmospheric'],
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-287',
     name: 'Jazz Piano',
     category: PresetCategory.piano,
     osc1: const Oscillator(waveform: Waveform.wtPiano, octave: 0, detune: 0.0, volume: 0.75),
     osc2: const Oscillator(waveform: Waveform.sine, octave: -1, detune: 0.0, volume: 0.2, enabled: true),
     filter: const FilterConfig(cutoff: 9000, resonance: 0.08, keyTracking: 0.4),
-    ampEnvelope: const Envelope(attack: 10, decay: 3500, sustain: 0.0, release: 200, decayCurve: 2),
+    ampEnvelope: const Envelope(attack: 5, decay: 200, sustain: 0.6, release: 800),
     lfo1: const LfoConfig(waveform: Waveform.sine, rate: 3.5, depth: 0.03, target: LfoTarget.pitch),
     reverb: const ReverbConfig(enabled: true, size: 0.5, damping: 0.5, mix: 0.3),
     tags: ['piano', 'jazz', 'warm', 'classy'],
@@ -4060,15 +4041,14 @@ SynthPreset(
     reverb: const ReverbConfig(enabled: true, size: 0.6, mix: 0.4),
     tags: ['organ', 'gospel', 'church', 'soulful'],
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-296',
     name: 'Percussive Organ',
     category: PresetCategory.organ,
     osc1: const Oscillator(waveform: Waveform.saw, octave: 0, detune: 0.0, volume: 0.7),
     osc2: const Oscillator(waveform: Waveform.noise, octave: 0, detune: 0.0, volume: 0.3, enabled: true),
     filter: const FilterConfig(cutoff: 8000, resonance: 0.1),
-    ampEnvelope: const Envelope(attack: 1, decay: 1500, sustain: 0.0, release: 30),
+    ampEnvelope: const Envelope(attack: 2, decay: 50, sustain: 1.0, release: 100),
     reverb: const ReverbConfig(enabled: true, size: 0.3, mix: 0.2),
     flanger: const FlangerConfig(enabled: true, rate: 1.5, depth: 0.3, feedback: 0.3, mix: 0.2),
     tags: ['organ', 'percussive', 'attack', 'punchy'],
@@ -4132,21 +4112,19 @@ SynthPreset(
     tags: ['organ', 'bass', 'pedal', 'low'],
     isBassPreset: true,
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-302',
     name: 'Reggae Bubble Organ',
     category: PresetCategory.organ,
     osc1: const Oscillator(waveform: Waveform.triangle, octave: 1, detune: 0.0, volume: 0.6),
     osc2: const Oscillator(waveform: Waveform.square, octave: 2, detune: 7.0, pulseWidth: 0.2, volume: 0.3, enabled: true),
     filter: const FilterConfig(cutoff: 5000, resonance: 0.1),
-    ampEnvelope: const Envelope(attack: 1, decay: 600, sustain: 0.0, release: 30),
+    ampEnvelope: const Envelope(attack: 2, decay: 50, sustain: 1.0, release: 100),
     reverb: const ReverbConfig(enabled: true, size: 0.3, mix: 0.25),
     phaser: const PhaserConfig(enabled: true, rate: 0.8, depth: 0.4, feedback: 0.2, mix: 0.3),
     tags: ['organ', 'reggae', 'bubble', 'skank'],
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-303',
     name: 'Clean Guitar',
     category: PresetCategory.guitar,
@@ -4158,8 +4136,7 @@ SynthPreset(
     reverb: const ReverbConfig(enabled: true, size: 0.4, mix: 0.3),
     tags: ['guitar', 'clean', 'acoustic', 'warm'],
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-304',
     name: 'Nylon Guitar',
     category: PresetCategory.guitar,
@@ -4196,15 +4173,14 @@ SynthPreset(
     drive: const DriveConfig(enabled: true, amount: 0.8, type: DriveType.fuzz),
     tags: ['guitar', 'distortion', 'heavy', 'metal'],
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-307',
     name: 'Funk Guitar',
     category: PresetCategory.guitar,
     osc1: const Oscillator(waveform: Waveform.saw, octave: 0, detune: 0.0, volume: 0.7),
     osc2: const Oscillator(waveform: Waveform.noise, octave: 0, detune: 0.0, volume: 0.15, enabled: true),
     filter: const FilterConfig(cutoff: 4000, resonance: 0.3, envelopeAmount: 0.5),
-    ampEnvelope: const Envelope(attack: 1, decay: 800, sustain: 0.0, release: 50),
+    ampEnvelope: const Envelope(attack: 10, decay: 400, sustain: 0.5, release: 600),
     filterEnvelope: const Envelope(attack: 1, decay: 400, sustain: 0.0, release: 30),
     reverb: const ReverbConfig(enabled: true, size: 0.2, mix: 0.15),
     tags: ['guitar', 'funk', 'muted', 'percussive'],
@@ -4247,8 +4223,7 @@ SynthPreset(
     reverb: const ReverbConfig(enabled: true, size: 0.35, mix: 0.3),
     tags: ['guitar', 'twang', 'country', 'telecaster'],
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-311',
     name: 'Ambient Guitar',
     category: PresetCategory.guitar,
@@ -4261,15 +4236,14 @@ SynthPreset(
     reverb: const ReverbConfig(enabled: true, size: 0.9, damping: 0.3, mix: 0.65),
     tags: ['guitar', 'ambient', 'atmospheric', 'shoegaze'],
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-312',
     name: 'Acoustic Strum',
     category: PresetCategory.guitar,
     osc1: const Oscillator(waveform: Waveform.wtGuitar, octave: 0, detune: 0.0, volume: 0.8),
     osc2: const Oscillator(waveform: Waveform.noise, octave: 0, detune: 0.0, volume: 0.08, enabled: true),
     filter: const FilterConfig(cutoff: 9000, resonance: 0.02, keyTracking: 0.5),
-    ampEnvelope: const Envelope(attack: 3, decay: 1800, sustain: 0.0, release: 400, decayCurve: 2),
+    ampEnvelope: const Envelope(attack: 10, decay: 400, sustain: 0.5, release: 600),
     reverb: const ReverbConfig(enabled: true, size: 0.45, damping: 0.5, mix: 0.3),
     tags: ['guitar', 'acoustic', 'strum', 'folk'],
   ),
@@ -4298,8 +4272,7 @@ SynthPreset(
     drive: const DriveConfig(enabled: true, amount: 0.7, type: DriveType.hardClip),
     tags: ['guitar', 'power', 'chord', 'rock', 'punk'],
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-315',
     name: 'Twelve String Guitar',
     category: PresetCategory.guitar,
@@ -4323,15 +4296,14 @@ SynthPreset(
     reverb: const ReverbConfig(enabled: true, size: 0.5, mix: 0.35),
     tags: ['guitar', 'slide', 'blues', 'smooth'],
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-317',
     name: 'Guitar Harmonics',
     category: PresetCategory.guitar,
     osc1: const Oscillator(waveform: Waveform.sine, octave: 2, detune: 0.0, volume: 0.7),
     osc2: const Oscillator(waveform: Waveform.sine, octave: 3, detune: 19.0, volume: 0.3, enabled: true),
     filter: const FilterConfig(cutoff: 10000, resonance: 0.05),
-    ampEnvelope: const Envelope(attack: 1, decay: 1500, sustain: 0.0, release: 400),
+    ampEnvelope: const Envelope(attack: 10, decay: 400, sustain: 0.5, release: 600),
     reverb: const ReverbConfig(enabled: true, size: 0.6, damping: 0.4, mix: 0.5),
     tags: ['guitar', 'harmonics', 'bell', 'shimmer'],
   ),
@@ -4456,15 +4428,14 @@ SynthPreset(
     reverb: const ReverbConfig(enabled: true, size: 0.8, damping: 0.3, mix: 0.6),
     tags: ['strings', 'soft', 'ambient', 'texture'],
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-328',
     name: 'String Stab',
     category: PresetCategory.strings,
     osc1: const Oscillator(waveform: Waveform.saw, octave: 0, detune: 0.0, volume: 0.8),
     osc2: const Oscillator(waveform: Waveform.saw, octave: 1, detune: 12.0, volume: 0.4, enabled: true),
     filter: const FilterConfig(cutoff: 7000, resonance: 0.2, envelopeAmount: 0.4),
-    ampEnvelope: const Envelope(attack: 5, decay: 800, sustain: 0.0, release: 200, decayCurve: 1),
+    ampEnvelope: const Envelope(attack: 300, decay: 600, sustain: 0.75, release: 1200),
     filterEnvelope: const Envelope(attack: 5, decay: 400, sustain: 0.0, release: 150),
     reverb: const ReverbConfig(enabled: true, size: 0.35, mix: 0.25),
     tags: ['strings', 'stab', 'hit', 'dramatic'],
@@ -4592,15 +4563,14 @@ SynthPreset(
     reverb: const ReverbConfig(enabled: true, size: 0.4, mix: 0.3),
     tags: ['brass', 'saxophone', 'smooth', 'jazz'],
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-339',
     name: 'Brass Stab',
     category: PresetCategory.brass,
     osc1: const Oscillator(waveform: Waveform.saw, octave: 0, detune: 0.0, volume: 0.9),
     osc2: const Oscillator(waveform: Waveform.saw, octave: 1, detune: 7.0, volume: 0.5, enabled: true),
     filter: const FilterConfig(cutoff: 6000, resonance: 0.25, envelopeAmount: 0.5),
-    ampEnvelope: const Envelope(attack: 5, decay: 600, sustain: 0.0, release: 150, decayCurve: 1),
+    ampEnvelope: const Envelope(attack: 80, decay: 300, sustain: 0.65, release: 500),
     filterEnvelope: const Envelope(attack: 5, decay: 300, sustain: 0.0, release: 100),
     reverb: const ReverbConfig(enabled: true, size: 0.3, mix: 0.2),
     tags: ['brass', 'stab', 'hit', 'funky'],
@@ -4716,8 +4686,7 @@ SynthPreset(
     reverb: const ReverbConfig(enabled: true, size: 0.9, damping: 0.3, mix: 0.6),
     tags: ['choir', 'cathedral', 'sacred', 'ethereal'],
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-349',
     name: 'Warm Choir Pad',
     category: PresetCategory.choir,
@@ -4728,8 +4697,7 @@ SynthPreset(
     reverb: const ReverbConfig(enabled: true, size: 0.8, damping: 0.35, mix: 0.55),
     tags: ['choir', 'warm', 'pad', 'lush'],
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-350',
     name: 'Angelic Voices',
     category: PresetCategory.choir,
@@ -4742,8 +4710,7 @@ SynthPreset(
     reverb: const ReverbConfig(enabled: true, size: 0.9, damping: 0.2, mix: 0.65),
     tags: ['choir', 'angelic', 'heavenly', 'ethereal'],
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-351',
     name: 'Male Chorus',
     category: PresetCategory.choir,
@@ -4779,8 +4746,7 @@ SynthPreset(
     reverb: const ReverbConfig(enabled: true, size: 0.7, damping: 0.35, mix: 0.5),
     tags: ['choir', 'soprano', 'opera', 'soaring'],
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-354',
     name: 'Distant Choir',
     category: PresetCategory.choir,
@@ -4792,8 +4758,7 @@ SynthPreset(
     reverb: const ReverbConfig(enabled: true, size: 0.95, damping: 0.25, mix: 0.7),
     tags: ['choir', 'distant', 'ambient', 'mysterious'],
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-355',
     name: 'Gospel Choir',
     category: PresetCategory.choir,
@@ -4824,13 +4789,12 @@ SynthPreset(
     osc1: const Oscillator(waveform: Waveform.wtChoir, octave: 0, detune: 0.0, volume: 0.7),
     osc2: const Oscillator(waveform: Waveform.saw, octave: 0, detune: 5.0, volume: 0.35, enabled: true),
     filter: const FilterConfig(cutoff: 5500, resonance: 0.15, envelopeAmount: 0.3),
-    ampEnvelope: const Envelope(attack: 10, decay: 800, sustain: 0.0, release: 300, decayCurve: 1),
+    ampEnvelope: const Envelope(attack: 400, decay: 500, sustain: 0.8, release: 1000),
     filterEnvelope: const Envelope(attack: 15, decay: 400, sustain: 0.0, release: 200),
     reverb: const ReverbConfig(enabled: true, size: 0.5, mix: 0.35),
     tags: ['choir', 'stab', 'hit', 'dramatic'],
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-358',
     name: 'Dark Choir',
     category: PresetCategory.choir,
@@ -4842,8 +4806,7 @@ SynthPreset(
     reverb: const ReverbConfig(enabled: true, size: 0.8, damping: 0.3, mix: 0.55),
     tags: ['choir', 'dark', 'ominous', 'gothic'],
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-359',
     name: 'Children Choir',
     category: PresetCategory.choir,
@@ -4867,8 +4830,7 @@ SynthPreset(
     reverb: const ReverbConfig(enabled: true, size: 0.5, mix: 0.35),
     tags: ['choir', 'vocoder', 'robotic', 'hybrid'],
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-361',
     name: 'Haunting Voices',
     category: PresetCategory.choir,
@@ -4881,8 +4843,7 @@ SynthPreset(
     reverb: const ReverbConfig(enabled: true, size: 0.85, damping: 0.25, mix: 0.6),
     tags: ['choir', 'haunting', 'spooky', 'ambient'],
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-362',
     name: 'Celestial Choir',
     category: PresetCategory.choir,
@@ -5866,7 +5827,7 @@ SynthPreset(
     name: 'Acid 303',
     category: PresetCategory.bass,
     osc1: const Oscillator(waveform: Waveform.saw, volume: 0.8),
-    osc2: const Oscillator(waveform: Waveform.saw, volume: 0.0, enabled: false),
+    osc2: const Oscillator(waveform: Waveform.saw, volume: 0.0, enabled: false, detune: 7.0),
     filter: const FilterConfig(cutoff: 1200, resonance: 0.90, envelopeAmount: 0.8),
     ampEnvelope: const Envelope(attack: 2, decay: 150, sustain: 0.6, release: 150),
     filterEnvelope: const Envelope(attack: 2, decay: 250, sustain: 0.0, release: 180),
@@ -6903,8 +6864,7 @@ SynthPreset(
     tags: ['pad', 'ambient', 'synth'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-508',
     name: 'Scream Lead 97',
     category: PresetCategory.leads,
@@ -7041,8 +7001,7 @@ SynthPreset(
     tags: ['lead', 'solo', 'synth'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-516',
     name: 'Digital Lead 35',
     category: PresetCategory.leads,
@@ -7198,8 +7157,7 @@ SynthPreset(
     tags: ['lead', 'solo', 'synth'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-525',
     name: 'Square Lead 39',
     category: PresetCategory.leads,
@@ -7284,8 +7242,7 @@ SynthPreset(
     tags: ['lead', 'solo', 'synth'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-530',
     name: 'Digital Lead 78',
     category: PresetCategory.leads,
@@ -8545,8 +8502,7 @@ SynthPreset(
     tags: ['arp', 'sequencer', 'pattern'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-603',
     name: 'Pad Arp 29',
     category: PresetCategory.arps,
@@ -8630,8 +8586,7 @@ SynthPreset(
     tags: ['arp', 'sequencer', 'pattern'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-608',
     name: 'Synth Arp 2',
     category: PresetCategory.arps,
@@ -8890,8 +8845,7 @@ SynthPreset(
     tags: ['arp', 'sequencer', 'pattern'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-623',
     name: 'Up Arp 71',
     category: PresetCategory.arps,
@@ -8976,8 +8930,7 @@ SynthPreset(
     tags: ['arp', 'sequencer', 'pattern'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-628',
     name: 'Crash 19',
     category: PresetCategory.fx,
@@ -9014,8 +8967,7 @@ SynthPreset(
     tags: ['fx', 'sound effect', 'sfx'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-630',
     name: 'Vocoder 70',
     category: PresetCategory.fx,
@@ -9050,8 +9002,7 @@ SynthPreset(
     tags: ['fx', 'sound effect', 'sfx'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-632',
     name: 'Arcade 13',
     category: PresetCategory.fx,
@@ -9087,8 +9038,7 @@ SynthPreset(
     tags: ['fx', 'sound effect', 'sfx'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-634',
     name: 'Siren 22',
     category: PresetCategory.fx,
@@ -9124,8 +9074,7 @@ SynthPreset(
     tags: ['fx', 'sound effect', 'sfx'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-636',
     name: 'Modem 67',
     category: PresetCategory.fx,
@@ -9142,8 +9091,7 @@ SynthPreset(
     tags: ['fx', 'sound effect', 'sfx'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-637',
     name: 'Pixel 51',
     category: PresetCategory.fx,
@@ -9211,8 +9159,7 @@ SynthPreset(
     tags: ['fx', 'sound effect', 'sfx'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-641',
     name: 'Arcade 14',
     category: PresetCategory.fx,
@@ -9242,8 +9189,7 @@ SynthPreset(
     tags: ['fx', 'sound effect', 'sfx'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-643',
     name: 'Robot 16',
     category: PresetCategory.fx,
@@ -9278,8 +9224,7 @@ SynthPreset(
     tags: ['fx', 'sound effect', 'sfx'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-645',
     name: 'Robot 94',
     category: PresetCategory.fx,
@@ -9315,8 +9260,7 @@ SynthPreset(
     tags: ['fx', 'sound effect', 'sfx'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-647',
     name: 'Laser 2',
     category: PresetCategory.fx,
@@ -9351,8 +9295,7 @@ SynthPreset(
     tags: ['fx', 'sound effect', 'sfx'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-649',
     name: 'Stab 53',
     category: PresetCategory.fx,
@@ -9369,8 +9312,7 @@ SynthPreset(
     tags: ['fx', 'sound effect', 'sfx'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-650',
     name: 'Glitch 43',
     category: PresetCategory.fx,
@@ -9387,8 +9329,7 @@ SynthPreset(
     tags: ['fx', 'sound effect', 'sfx'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-651',
     name: 'Siren 72',
     category: PresetCategory.fx,
@@ -9406,8 +9347,7 @@ SynthPreset(
     tags: ['fx', 'sound effect', 'sfx'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-652',
     name: 'Arcade 16',
     category: PresetCategory.fx,
@@ -9422,8 +9362,7 @@ SynthPreset(
     tags: ['fx', 'sound effect', 'sfx'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-653',
     name: 'Noise Burst 18',
     category: PresetCategory.fx,
@@ -9476,8 +9415,7 @@ SynthPreset(
     tags: ['fx', 'sound effect', 'sfx'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-656',
     name: 'Wind 67',
     category: PresetCategory.fx,
@@ -9493,8 +9431,7 @@ SynthPreset(
     tags: ['fx', 'sound effect', 'sfx'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-657',
     name: 'Formant 66',
     category: PresetCategory.fx,
@@ -9513,8 +9450,7 @@ SynthPreset(
     tags: ['fx', 'sound effect', 'sfx'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-658',
     name: 'Grid Runner 30',
     category: PresetCategory.synthwave,
@@ -9579,8 +9515,7 @@ SynthPreset(
     tags: ['synthwave', 'retro', '80s'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-662',
     name: 'Outrun Lead 1',
     category: PresetCategory.synthwave,
@@ -9965,8 +9900,7 @@ SynthPreset(
     tags: ['piano', 'acoustic', 'keyboard'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-685',
     name: 'Bright Piano 11',
     category: PresetCategory.piano,
@@ -10000,8 +9934,7 @@ SynthPreset(
     tags: ['piano', 'acoustic', 'keyboard'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-687',
     name: 'Dark Piano 40',
     category: PresetCategory.piano,
@@ -10052,8 +9985,7 @@ SynthPreset(
     tags: ['piano', 'acoustic', 'keyboard'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-690',
     name: 'Dark Piano 49',
     category: PresetCategory.piano,
@@ -10104,8 +10036,7 @@ SynthPreset(
     tags: ['piano', 'acoustic', 'keyboard'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-693',
     name: 'Concert Grand 50',
     category: PresetCategory.piano,
@@ -10190,8 +10121,7 @@ SynthPreset(
     tags: ['piano', 'acoustic', 'keyboard'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-698',
     name: 'Studio Piano 93',
     category: PresetCategory.piano,
@@ -10242,8 +10172,7 @@ SynthPreset(
     tags: ['piano', 'acoustic', 'keyboard'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-701',
     name: 'Classical Piano 50',
     category: PresetCategory.piano,
@@ -10311,8 +10240,7 @@ SynthPreset(
     tags: ['piano', 'acoustic', 'keyboard'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-705',
     name: 'Studio Piano 62',
     category: PresetCategory.piano,
@@ -10329,8 +10257,7 @@ SynthPreset(
     tags: ['piano', 'acoustic', 'keyboard'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-706',
     name: 'Soft Piano 99',
     category: PresetCategory.piano,
@@ -10803,8 +10730,7 @@ SynthPreset(
     tags: ['organ', 'tonewheel', 'keyboard'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-733',
     name: 'Finger Pick 68',
     category: PresetCategory.guitar,
@@ -10821,8 +10747,7 @@ SynthPreset(
     tags: ['guitar', 'acoustic', 'plucked'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-734',
     name: 'Fingerstyle 77',
     category: PresetCategory.guitar,
@@ -10839,8 +10764,7 @@ SynthPreset(
     tags: ['guitar', 'acoustic', 'plucked'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-735',
     name: 'Baroque Guitar 57',
     category: PresetCategory.guitar,
@@ -10857,8 +10781,7 @@ SynthPreset(
     tags: ['guitar', 'acoustic', 'plucked'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-736',
     name: 'Classical Guitar 10',
     category: PresetCategory.guitar,
@@ -10875,8 +10798,7 @@ SynthPreset(
     tags: ['guitar', 'acoustic', 'plucked'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-737',
     name: 'Romantic Guitar 89',
     category: PresetCategory.guitar,
@@ -10893,8 +10815,7 @@ SynthPreset(
     tags: ['guitar', 'acoustic', 'plucked'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-738',
     name: 'Steel String 59',
     category: PresetCategory.guitar,
@@ -10911,8 +10832,7 @@ SynthPreset(
     tags: ['guitar', 'acoustic', 'plucked'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-739',
     name: 'Clean Strat 59',
     category: PresetCategory.guitar,
@@ -10929,8 +10849,7 @@ SynthPreset(
     tags: ['guitar', 'acoustic', 'plucked'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-740',
     name: 'Steel String 39',
     category: PresetCategory.guitar,
@@ -10947,8 +10866,7 @@ SynthPreset(
     tags: ['guitar', 'acoustic', 'plucked'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-741',
     name: 'Clean Strat 70',
     category: PresetCategory.guitar,
@@ -10965,8 +10883,7 @@ SynthPreset(
     tags: ['guitar', 'acoustic', 'plucked'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-742',
     name: 'Archtop 14',
     category: PresetCategory.guitar,
@@ -10983,8 +10900,7 @@ SynthPreset(
     tags: ['guitar', 'acoustic', 'plucked'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-743',
     name: 'Classical Guitar 58',
     category: PresetCategory.guitar,
@@ -11001,8 +10917,7 @@ SynthPreset(
     tags: ['guitar', 'acoustic', 'plucked'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-744',
     name: 'Archtop 2',
     category: PresetCategory.guitar,
@@ -11019,8 +10934,7 @@ SynthPreset(
     tags: ['guitar', 'acoustic', 'plucked'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-745',
     name: 'Flamenco 56',
     category: PresetCategory.guitar,
@@ -11037,8 +10951,7 @@ SynthPreset(
     tags: ['guitar', 'acoustic', 'plucked'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-746',
     name: 'Jazz Guitar 86',
     category: PresetCategory.guitar,
@@ -11055,8 +10968,7 @@ SynthPreset(
     tags: ['guitar', 'acoustic', 'plucked'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-747',
     name: 'Parlor Guitar 55',
     category: PresetCategory.guitar,
@@ -11073,8 +10985,7 @@ SynthPreset(
     tags: ['guitar', 'acoustic', 'plucked'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-748',
     name: 'Semi Hollow 74',
     category: PresetCategory.guitar,
@@ -11091,8 +11002,7 @@ SynthPreset(
     tags: ['guitar', 'acoustic', 'plucked'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-749',
     name: 'Semi Hollow 11',
     category: PresetCategory.guitar,
@@ -11109,8 +11019,7 @@ SynthPreset(
     tags: ['guitar', 'acoustic', 'plucked'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-750',
     name: 'Les Paul 59',
     category: PresetCategory.guitar,
@@ -11127,8 +11036,7 @@ SynthPreset(
     tags: ['guitar', 'acoustic', 'plucked'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-751',
     name: 'Classical Guitar 74',
     category: PresetCategory.guitar,
@@ -11145,8 +11053,7 @@ SynthPreset(
     tags: ['guitar', 'acoustic', 'plucked'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-752',
     name: 'Finger Pick 15',
     category: PresetCategory.guitar,
@@ -11163,8 +11070,7 @@ SynthPreset(
     tags: ['guitar', 'acoustic', 'plucked'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-753',
     name: 'Classical Guitar 77',
     category: PresetCategory.guitar,
@@ -11181,8 +11087,7 @@ SynthPreset(
     tags: ['guitar', 'acoustic', 'plucked'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-754',
     name: 'Steel String 7',
     category: PresetCategory.guitar,
@@ -11199,8 +11104,7 @@ SynthPreset(
     tags: ['guitar', 'acoustic', 'plucked'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-755',
     name: 'Telecaster 87',
     category: PresetCategory.guitar,
@@ -11217,8 +11121,7 @@ SynthPreset(
     tags: ['guitar', 'acoustic', 'plucked'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-756',
     name: 'Fingerstyle 75',
     category: PresetCategory.guitar,
@@ -11235,8 +11138,7 @@ SynthPreset(
     tags: ['guitar', 'acoustic', 'plucked'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-757',
     name: 'Telecaster 13',
     category: PresetCategory.guitar,
@@ -11253,8 +11155,7 @@ SynthPreset(
     tags: ['guitar', 'acoustic', 'plucked'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-758',
     name: 'Double Bass 12',
     category: PresetCategory.strings,
@@ -11356,8 +11257,7 @@ SynthPreset(
     tags: ['strings', 'orchestral', 'ensemble'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-764',
     name: 'Epic Strings 20',
     category: PresetCategory.strings,
@@ -11425,8 +11325,7 @@ SynthPreset(
     tags: ['strings', 'orchestral', 'ensemble'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-768',
     name: 'Soft Strings 1',
     category: PresetCategory.strings,
@@ -11494,8 +11393,7 @@ SynthPreset(
     tags: ['strings', 'orchestral', 'ensemble'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-772',
     name: 'Bowed Strings 22',
     category: PresetCategory.strings,
@@ -11665,8 +11563,7 @@ SynthPreset(
     tags: ['strings', 'orchestral', 'ensemble'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-782',
     name: 'Violin 95',
     category: PresetCategory.strings,
@@ -11734,8 +11631,7 @@ SynthPreset(
     tags: ['brass', 'horn', 'orchestral'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-786',
     name: 'Muted Trumpet 9',
     category: PresetCategory.brass,
@@ -11786,8 +11682,7 @@ SynthPreset(
     tags: ['brass', 'horn', 'orchestral'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-789',
     name: 'Soft Brass 21',
     category: PresetCategory.brass,
@@ -11872,8 +11767,7 @@ SynthPreset(
     tags: ['brass', 'horn', 'orchestral'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-794',
     name: 'Brass Swell 76',
     category: PresetCategory.brass,
@@ -12111,8 +12005,7 @@ SynthPreset(
     tags: ['brass', 'horn', 'orchestral'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-808',
     name: 'Gregorian 84',
     category: PresetCategory.choir,
@@ -12129,8 +12022,7 @@ SynthPreset(
     tags: ['choir', 'vocal', 'ensemble'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-809',
     name: 'Alto 82',
     category: PresetCategory.choir,
@@ -12148,8 +12040,7 @@ SynthPreset(
     tags: ['choir', 'vocal', 'ensemble'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-810',
     name: 'Ethereal Choir 35',
     category: PresetCategory.choir,
@@ -12167,8 +12058,7 @@ SynthPreset(
     tags: ['choir', 'vocal', 'ensemble'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-811',
     name: 'Mixed Choir 34',
     category: PresetCategory.choir,
@@ -12186,8 +12076,7 @@ SynthPreset(
     tags: ['choir', 'vocal', 'ensemble'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-812',
     name: 'Choir Pad 93',
     category: PresetCategory.choir,
@@ -12204,8 +12093,7 @@ SynthPreset(
     tags: ['choir', 'vocal', 'ensemble'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-813',
     name: 'Mmm Choir 19',
     category: PresetCategory.choir,
@@ -12222,8 +12110,7 @@ SynthPreset(
     tags: ['choir', 'vocal', 'ensemble'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-814',
     name: 'Baritone 40',
     category: PresetCategory.choir,
@@ -12240,8 +12127,7 @@ SynthPreset(
     tags: ['choir', 'vocal', 'ensemble'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-815',
     name: 'Choir Pad 2',
     category: PresetCategory.choir,
@@ -12258,8 +12144,7 @@ SynthPreset(
     tags: ['choir', 'vocal', 'ensemble'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-816',
     name: 'Dark Choir 95',
     category: PresetCategory.choir,
@@ -12276,8 +12161,7 @@ SynthPreset(
     tags: ['choir', 'vocal', 'ensemble'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-817',
     name: 'Ooh Choir 1',
     category: PresetCategory.choir,
@@ -12294,8 +12178,7 @@ SynthPreset(
     tags: ['choir', 'vocal', 'ensemble'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-818',
     name: 'Eeh Choir 88',
     category: PresetCategory.choir,
@@ -12312,8 +12195,7 @@ SynthPreset(
     tags: ['choir', 'vocal', 'ensemble'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-819',
     name: 'Mmm Choir 34',
     category: PresetCategory.choir,
@@ -12331,8 +12213,7 @@ SynthPreset(
     tags: ['choir', 'vocal', 'ensemble'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-820',
     name: 'Mmm Choir 35',
     category: PresetCategory.choir,
@@ -12349,8 +12230,7 @@ SynthPreset(
     tags: ['choir', 'vocal', 'ensemble'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-821',
     name: 'Chamber Choir 88',
     category: PresetCategory.choir,
@@ -12367,8 +12247,7 @@ SynthPreset(
     tags: ['choir', 'vocal', 'ensemble'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-822',
     name: 'Opera 86',
     category: PresetCategory.choir,
@@ -12386,8 +12265,7 @@ SynthPreset(
     tags: ['choir', 'vocal', 'ensemble'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-823',
     name: 'Gregorian 41',
     category: PresetCategory.choir,
@@ -12404,8 +12282,7 @@ SynthPreset(
     tags: ['choir', 'vocal', 'ensemble'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-824',
     name: 'Eeh Choir 41',
     category: PresetCategory.choir,
@@ -12423,8 +12300,7 @@ SynthPreset(
     tags: ['choir', 'vocal', 'ensemble'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-825',
     name: 'Angelic Choir 46',
     category: PresetCategory.choir,
@@ -12442,8 +12318,7 @@ SynthPreset(
     tags: ['choir', 'vocal', 'ensemble'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-826',
     name: 'Mystic Choir 99',
     category: PresetCategory.choir,
@@ -12460,8 +12335,7 @@ SynthPreset(
     tags: ['choir', 'vocal', 'ensemble'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-827',
     name: 'Angelic Choir 81',
     category: PresetCategory.choir,
@@ -12479,8 +12353,7 @@ SynthPreset(
     tags: ['choir', 'vocal', 'ensemble'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-828',
     name: 'Gregorian 71',
     category: PresetCategory.choir,
@@ -12497,8 +12370,7 @@ SynthPreset(
     tags: ['choir', 'vocal', 'ensemble'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-829',
     name: 'Opera 17',
     category: PresetCategory.choir,
@@ -12515,8 +12387,7 @@ SynthPreset(
     tags: ['choir', 'vocal', 'ensemble'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-830',
     name: 'Soprano 83',
     category: PresetCategory.choir,
@@ -12534,8 +12405,7 @@ SynthPreset(
     tags: ['choir', 'vocal', 'ensemble'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-831',
     name: 'Sacred Choir 10',
     category: PresetCategory.choir,
@@ -12553,8 +12423,7 @@ SynthPreset(
     tags: ['choir', 'vocal', 'ensemble'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-832',
     name: 'Ethereal Choir 91',
     category: PresetCategory.choir,
@@ -12763,8 +12632,7 @@ SynthPreset(
     tags: ['percussion', 'orchestral', 'mallets'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-845',
     name: 'Concert Bass Drum 11',
     category: PresetCategory.percussion,
@@ -12991,8 +12859,7 @@ SynthPreset(
     tags: ['custom', 'user', 'experimental'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-859',
     name: 'Grain 1',
     category: PresetCategory.custom,
@@ -13028,8 +12895,7 @@ SynthPreset(
     tags: ['custom', 'user', 'experimental'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-861',
     name: 'Feel 36',
     category: PresetCategory.custom,
@@ -13080,8 +12946,7 @@ SynthPreset(
     tags: ['custom', 'user', 'experimental'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-864',
     name: 'Test Patch 40',
     category: PresetCategory.custom,
@@ -13155,8 +13020,7 @@ SynthPreset(
     tags: ['custom', 'user', 'experimental'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-868',
     name: 'Mood 71',
     category: PresetCategory.custom,
@@ -13228,8 +13092,7 @@ SynthPreset(
     tags: ['custom', 'user', 'experimental'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-872',
     name: 'Concept 91',
     category: PresetCategory.custom,
@@ -13247,8 +13110,7 @@ SynthPreset(
     tags: ['custom', 'user', 'experimental'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-873',
     name: 'Tone 85',
     category: PresetCategory.custom,
@@ -13265,8 +13127,7 @@ SynthPreset(
     tags: ['custom', 'user', 'experimental'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-874',
     name: 'User Init 15',
     category: PresetCategory.custom,
@@ -13302,8 +13163,7 @@ SynthPreset(
     tags: ['custom', 'user', 'experimental'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-876',
     name: 'Mood 23',
     category: PresetCategory.custom,
@@ -13831,8 +13691,7 @@ SynthPreset(
     tags: ['drums', 'kit', 'electronic'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-908',
     name: 'Singer Songwriter 21',
     category: PresetCategory.acousticGuitar,
@@ -13849,8 +13708,7 @@ SynthPreset(
     tags: ['acoustic', 'guitar', 'folk'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-909',
     name: 'Singer Songwriter 66',
     category: PresetCategory.acousticGuitar,
@@ -13867,8 +13725,7 @@ SynthPreset(
     tags: ['acoustic', 'guitar', 'folk'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-910',
     name: 'Dreadnought 47',
     category: PresetCategory.acousticGuitar,
@@ -13885,8 +13742,7 @@ SynthPreset(
     tags: ['acoustic', 'guitar', 'folk'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-911',
     name: '12 String 76',
     category: PresetCategory.acousticGuitar,
@@ -13903,8 +13759,7 @@ SynthPreset(
     tags: ['acoustic', 'guitar', 'folk'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-912',
     name: 'Singer Songwriter 69',
     category: PresetCategory.acousticGuitar,
@@ -13921,8 +13776,7 @@ SynthPreset(
     tags: ['acoustic', 'guitar', 'folk'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-913',
     name: 'Fingerstyle Steel 91',
     category: PresetCategory.acousticGuitar,
@@ -13939,8 +13793,7 @@ SynthPreset(
     tags: ['acoustic', 'guitar', 'folk'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-914',
     name: '12 String 82',
     category: PresetCategory.acousticGuitar,
@@ -13957,8 +13810,7 @@ SynthPreset(
     tags: ['acoustic', 'guitar', 'folk'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-915',
     name: 'Slide Acoustic 2',
     category: PresetCategory.acousticGuitar,
@@ -13975,8 +13827,7 @@ SynthPreset(
     tags: ['acoustic', 'guitar', 'folk'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-916',
     name: 'Acoustic Steel 92',
     category: PresetCategory.acousticGuitar,
@@ -13993,8 +13844,7 @@ SynthPreset(
     tags: ['acoustic', 'guitar', 'folk'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-917',
     name: 'Slide Acoustic 68',
     category: PresetCategory.acousticGuitar,
@@ -14011,8 +13861,7 @@ SynthPreset(
     tags: ['acoustic', 'guitar', 'folk'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-918',
     name: 'Slide Acoustic 16',
     category: PresetCategory.acousticGuitar,
@@ -14029,8 +13878,7 @@ SynthPreset(
     tags: ['acoustic', 'guitar', 'folk'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-919',
     name: 'Coffeehouse 63',
     category: PresetCategory.acousticGuitar,
@@ -14047,8 +13895,7 @@ SynthPreset(
     tags: ['acoustic', 'guitar', 'folk'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-920',
     name: 'Jumbo Acoustic 53',
     category: PresetCategory.acousticGuitar,
@@ -14065,8 +13912,7 @@ SynthPreset(
     tags: ['acoustic', 'guitar', 'folk'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-921',
     name: 'Folk Guitar 21',
     category: PresetCategory.acousticGuitar,
@@ -14083,8 +13929,7 @@ SynthPreset(
     tags: ['acoustic', 'guitar', 'folk'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-922',
     name: 'Folk Guitar 86',
     category: PresetCategory.acousticGuitar,
@@ -14101,8 +13946,7 @@ SynthPreset(
     tags: ['acoustic', 'guitar', 'folk'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-923',
     name: 'Dreadnought 14',
     category: PresetCategory.acousticGuitar,
@@ -14119,8 +13963,7 @@ SynthPreset(
     tags: ['acoustic', 'guitar', 'folk'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-924',
     name: 'Slide Acoustic 55',
     category: PresetCategory.acousticGuitar,
@@ -14137,8 +13980,7 @@ SynthPreset(
     tags: ['acoustic', 'guitar', 'folk'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-925',
     name: 'Open Tuning 65',
     category: PresetCategory.acousticGuitar,
@@ -14155,8 +13997,7 @@ SynthPreset(
     tags: ['acoustic', 'guitar', 'folk'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-926',
     name: 'Acoustic Steel 49',
     category: PresetCategory.acousticGuitar,
@@ -14173,8 +14014,7 @@ SynthPreset(
     tags: ['acoustic', 'guitar', 'folk'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-927',
     name: 'Grand Auditorium 41',
     category: PresetCategory.acousticGuitar,
@@ -14191,8 +14031,7 @@ SynthPreset(
     tags: ['acoustic', 'guitar', 'folk'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-928',
     name: 'Dreadnought 86',
     category: PresetCategory.acousticGuitar,
@@ -14209,8 +14048,7 @@ SynthPreset(
     tags: ['acoustic', 'guitar', 'folk'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-929',
     name: 'Dreadnought 17',
     category: PresetCategory.acousticGuitar,
@@ -14227,8 +14065,7 @@ SynthPreset(
     tags: ['acoustic', 'guitar', 'folk'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-930',
     name: 'Slide Acoustic 26',
     category: PresetCategory.acousticGuitar,
@@ -14245,8 +14082,7 @@ SynthPreset(
     tags: ['acoustic', 'guitar', 'folk'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-931',
     name: 'Travis Picking 9',
     category: PresetCategory.acousticGuitar,
@@ -14263,8 +14099,7 @@ SynthPreset(
     tags: ['acoustic', 'guitar', 'folk'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-932',
     name: 'Travis Picking 64',
     category: PresetCategory.acousticGuitar,
@@ -14350,8 +14185,7 @@ SynthPreset(
     tags: ['electric', 'guitar', 'rock'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-937',
     name: 'Fusion Lead 78',
     category: PresetCategory.electricGuitar,
@@ -14386,8 +14220,7 @@ SynthPreset(
     tags: ['electric', 'guitar', 'rock'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-939',
     name: 'Tweed Clean 20',
     category: PresetCategory.electricGuitar,
@@ -14405,8 +14238,7 @@ SynthPreset(
     tags: ['electric', 'guitar', 'rock'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-940',
     name: 'Fusion Lead 50',
     category: PresetCategory.electricGuitar,
@@ -14442,8 +14274,7 @@ SynthPreset(
     tags: ['electric', 'guitar', 'rock'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-942',
     name: 'Math Rock 20',
     category: PresetCategory.electricGuitar,
@@ -14460,8 +14291,7 @@ SynthPreset(
     tags: ['electric', 'guitar', 'rock'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-943',
     name: 'Blues Drive 62',
     category: PresetCategory.electricGuitar,
@@ -14479,8 +14309,7 @@ SynthPreset(
     tags: ['electric', 'guitar', 'rock'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-944',
     name: '80s Clean 12',
     category: PresetCategory.electricGuitar,
@@ -14497,8 +14326,7 @@ SynthPreset(
     tags: ['electric', 'guitar', 'rock'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-945',
     name: 'Single Coil 27',
     category: PresetCategory.electricGuitar,
@@ -14622,8 +14450,7 @@ SynthPreset(
     tags: ['electric', 'guitar', 'rock'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-952',
     name: 'Blues Breaker 17',
     category: PresetCategory.electricGuitar,
@@ -14640,8 +14467,7 @@ SynthPreset(
     tags: ['electric', 'guitar', 'rock'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-953',
     name: 'British Crunch 12',
     category: PresetCategory.electricGuitar,
@@ -14784,8 +14610,7 @@ SynthPreset(
     tags: ['electric', 'guitar', 'rock'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-961',
     name: 'Djent 49',
     category: PresetCategory.electricGuitar,
@@ -16336,8 +16161,7 @@ SynthPreset(
     tags: ['mallets', 'bells', 'percussion'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1053',
     name: 'Celesta 91',
     category: PresetCategory.mallets,
@@ -16536,8 +16360,7 @@ SynthPreset(
     tags: ['woodwinds', 'wind', 'blow'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1065',
     name: 'Ney 95',
     category: PresetCategory.woodwinds,
@@ -16758,8 +16581,7 @@ SynthPreset(
     tags: ['woodwinds', 'wind', 'blow'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1078',
     name: 'Baritone Sax 71',
     category: PresetCategory.woodwinds,
@@ -17278,8 +17100,7 @@ SynthPreset(
     tags: ['pads', 'ambient', 'synth'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1110',
     name: 'Nebulous 66',
     category: PresetCategory.pads,
@@ -17296,8 +17117,7 @@ SynthPreset(
     tags: ['pads', 'ambient', 'synth'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1111',
     name: 'Cosmos 65',
     category: PresetCategory.pads,
@@ -17313,8 +17133,7 @@ SynthPreset(
     tags: ['pads', 'ambient', 'synth'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1112',
     name: 'Galaxy 14',
     category: PresetCategory.pads,
@@ -17365,8 +17184,7 @@ SynthPreset(
     tags: ['pads', 'ambient', 'synth'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1115',
     name: 'Event Horizon 65',
     category: PresetCategory.pads,
@@ -17415,8 +17233,7 @@ SynthPreset(
     tags: ['pads', 'ambient', 'synth'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1118',
     name: 'Void Pad 39',
     category: PresetCategory.pads,
@@ -17433,8 +17250,7 @@ SynthPreset(
     tags: ['pads', 'ambient', 'synth'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1119',
     name: 'Nebulous 70',
     category: PresetCategory.pads,
@@ -17451,8 +17267,7 @@ SynthPreset(
     tags: ['pads', 'ambient', 'synth'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1120',
     name: 'Aurora 6',
     category: PresetCategory.pads,
@@ -17470,8 +17285,7 @@ SynthPreset(
     tags: ['pads', 'ambient', 'synth'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1121',
     name: 'Galaxy 58',
     category: PresetCategory.pads,
@@ -17505,8 +17319,7 @@ SynthPreset(
     tags: ['pads', 'ambient', 'synth'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1123',
     name: 'Spectrum 16',
     category: PresetCategory.leads,
@@ -17539,8 +17352,7 @@ SynthPreset(
     tags: ['leads', 'synth', 'electronic'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1125',
     name: 'Pulse Wave 31',
     category: PresetCategory.leads,
@@ -17574,8 +17386,7 @@ SynthPreset(
     tags: ['leads', 'synth', 'electronic'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1127',
     name: 'X-Ray 27',
     category: PresetCategory.leads,
@@ -17608,8 +17419,7 @@ SynthPreset(
     tags: ['leads', 'synth', 'electronic'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1129',
     name: 'Laser Lead 15',
     category: PresetCategory.leads,
@@ -17627,8 +17437,7 @@ SynthPreset(
     tags: ['leads', 'synth', 'electronic'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1130',
     name: 'Infrared 22',
     category: PresetCategory.leads,
@@ -17698,8 +17507,7 @@ SynthPreset(
     tags: ['leads', 'synth', 'electronic'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1134',
     name: 'Infrared 13',
     category: PresetCategory.leads,
@@ -17717,8 +17525,7 @@ SynthPreset(
     tags: ['leads', 'synth', 'electronic'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1135',
     name: 'Neon Solo 75',
     category: PresetCategory.leads,
@@ -17735,8 +17542,7 @@ SynthPreset(
     tags: ['leads', 'synth', 'electronic'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1136',
     name: 'Gamma Ray 81',
     category: PresetCategory.leads,
@@ -17753,8 +17559,7 @@ SynthPreset(
     tags: ['leads', 'synth', 'electronic'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1137',
     name: 'Spectrum 32',
     category: PresetCategory.leads,
@@ -18034,8 +17839,7 @@ SynthPreset(
     author: 'Open Synth',
     isBassPreset: true,
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1153',
     name: 'Retro Keys 22',
     category: PresetCategory.keys,
@@ -18052,8 +17856,7 @@ SynthPreset(
     tags: ['keys', 'synth', 'electronic'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1154',
     name: 'Wurly-ish 89',
     category: PresetCategory.keys,
@@ -18070,8 +17873,7 @@ SynthPreset(
     tags: ['keys', 'synth', 'electronic'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1155',
     name: 'Bell Keys 18',
     category: PresetCategory.keys,
@@ -18104,8 +17906,7 @@ SynthPreset(
     tags: ['keys', 'synth', 'electronic'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1157',
     name: 'Rhodes-ish 68',
     category: PresetCategory.keys,
@@ -18122,8 +17923,7 @@ SynthPreset(
     tags: ['keys', 'synth', 'electronic'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1158',
     name: 'Retro Keys 49',
     category: PresetCategory.keys,
@@ -18211,8 +18011,7 @@ SynthPreset(
     tags: ['keys', 'synth', 'electronic'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1163',
     name: 'Crystal EP 99',
     category: PresetCategory.keys,
@@ -18229,8 +18028,7 @@ SynthPreset(
     tags: ['keys', 'synth', 'electronic'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1164',
     name: 'Cyber Keys 58',
     category: PresetCategory.keys,
@@ -18246,8 +18044,7 @@ SynthPreset(
     tags: ['keys', 'synth', 'electronic'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1165',
     name: 'Retro Keys 37',
     category: PresetCategory.keys,
@@ -18265,8 +18062,7 @@ SynthPreset(
     tags: ['keys', 'synth', 'electronic'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1166',
     name: 'Crystal EP 62',
     category: PresetCategory.keys,
@@ -18282,8 +18078,7 @@ SynthPreset(
     tags: ['keys', 'synth', 'electronic'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1167',
     name: 'Soft EP 96',
     category: PresetCategory.keys,
@@ -18300,8 +18095,7 @@ SynthPreset(
     tags: ['keys', 'synth', 'electronic'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1168',
     name: 'Pulsar Arp 11',
     category: PresetCategory.arps,
@@ -18318,8 +18112,7 @@ SynthPreset(
     tags: ['arps', 'synth', 'electronic'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1169',
     name: 'Photon Arp 47',
     category: PresetCategory.arps,
@@ -18337,8 +18130,7 @@ SynthPreset(
     tags: ['arps', 'synth', 'electronic'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1170',
     name: 'Dark Matter Arp 60',
     category: PresetCategory.arps,
@@ -18355,8 +18147,7 @@ SynthPreset(
     tags: ['arps', 'synth', 'electronic'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1171',
     name: 'Galactic Arp 26',
     category: PresetCategory.arps,
@@ -18373,8 +18164,7 @@ SynthPreset(
     tags: ['arps', 'synth', 'electronic'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1172',
     name: 'Dark Matter Arp 86',
     category: PresetCategory.arps,
@@ -18390,8 +18180,7 @@ SynthPreset(
     tags: ['arps', 'synth', 'electronic'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1173',
     name: 'Neon Arp 6',
     category: PresetCategory.arps,
@@ -18408,8 +18197,7 @@ SynthPreset(
     tags: ['arps', 'synth', 'electronic'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1174',
     name: 'Nebula Arp 84',
     category: PresetCategory.arps,
@@ -18443,8 +18231,7 @@ SynthPreset(
     tags: ['arps', 'synth', 'electronic'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1176',
     name: 'Dark Matter Arp 28',
     category: PresetCategory.arps,
@@ -18460,8 +18247,7 @@ SynthPreset(
     tags: ['arps', 'synth', 'electronic'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1177',
     name: 'Photon Arp 35',
     category: PresetCategory.arps,
@@ -18495,8 +18281,7 @@ SynthPreset(
     tags: ['arps', 'synth', 'electronic'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1179',
     name: 'Stellar Arp 79',
     category: PresetCategory.arps,
@@ -18514,8 +18299,7 @@ SynthPreset(
     tags: ['arps', 'synth', 'electronic'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1180',
     name: 'Pulsar Arp 15',
     category: PresetCategory.arps,
@@ -18532,8 +18316,7 @@ SynthPreset(
     tags: ['arps', 'synth', 'electronic'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1181',
     name: 'Cyber Arp 62',
     category: PresetCategory.arps,
@@ -18550,8 +18333,7 @@ SynthPreset(
     tags: ['arps', 'synth', 'electronic'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1182',
     name: 'Nebula Arp 53',
     category: PresetCategory.arps,
@@ -18567,8 +18349,7 @@ SynthPreset(
     tags: ['arps', 'synth', 'electronic'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1183',
     name: 'Interference 54',
     category: PresetCategory.fx,
@@ -18601,8 +18382,7 @@ SynthPreset(
     tags: ['fx', 'sound effect', 'sfx'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1185',
     name: 'Harmonic 79',
     category: PresetCategory.fx,
@@ -18619,8 +18399,7 @@ SynthPreset(
     tags: ['fx', 'sound effect', 'sfx'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1186',
     name: 'Feedback Loop 54',
     category: PresetCategory.fx,
@@ -18656,8 +18435,7 @@ SynthPreset(
     tags: ['fx', 'sound effect', 'sfx'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1188',
     name: 'Infrasound 73',
     category: PresetCategory.fx,
@@ -18672,8 +18450,7 @@ SynthPreset(
     tags: ['fx', 'sound effect', 'sfx'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1189',
     name: 'Feedback Loop 68',
     category: PresetCategory.fx,
@@ -18690,8 +18467,7 @@ SynthPreset(
     tags: ['fx', 'sound effect', 'sfx'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1190',
     name: 'Harmonic 53',
     category: PresetCategory.fx,
@@ -18724,8 +18500,7 @@ SynthPreset(
     tags: ['fx', 'sound effect', 'sfx'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1192',
     name: 'Oscillation 95',
     category: PresetCategory.fx,
@@ -18776,8 +18551,7 @@ SynthPreset(
     tags: ['fx', 'sound effect', 'sfx'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1195',
     name: 'Interference 44',
     category: PresetCategory.fx,
@@ -18847,8 +18621,7 @@ SynthPreset(
     tags: ['synthwave', 'synth', 'electronic'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1199',
     name: 'Simulation Drive 98',
     category: PresetCategory.synthwave,
@@ -18884,8 +18657,7 @@ SynthPreset(
     tags: ['synthwave', 'synth', 'electronic'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1201',
     name: 'Laser Drive 31',
     category: PresetCategory.synthwave,
@@ -18953,8 +18725,7 @@ SynthPreset(
     tags: ['synthwave', 'synth', 'electronic'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1205',
     name: 'Photon Drive 20',
     category: PresetCategory.synthwave,
@@ -19444,8 +19215,7 @@ SynthPreset(
     tags: ['organ', 'keyboard', 'funk'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1234',
     name: 'Bachata Guitar 27',
     category: PresetCategory.guitar,
@@ -19479,8 +19249,7 @@ SynthPreset(
     tags: ['guitar', 'guitar', 'plucked'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1236',
     name: 'Samba Guitar 49',
     category: PresetCategory.guitar,
@@ -19514,8 +19283,7 @@ SynthPreset(
     tags: ['guitar', 'guitar', 'plucked'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1238',
     name: 'Bachata Guitar 86',
     category: PresetCategory.guitar,
@@ -19549,8 +19317,7 @@ SynthPreset(
     tags: ['guitar', 'guitar', 'plucked'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1240',
     name: 'Flamenco Guitar 43',
     category: PresetCategory.guitar,
@@ -19668,8 +19435,7 @@ SynthPreset(
     tags: ['strings', 'ambient', 'synth'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1247',
     name: 'Trio 41',
     category: PresetCategory.strings,
@@ -19686,8 +19452,7 @@ SynthPreset(
     tags: ['strings', 'ambient', 'synth'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1248',
     name: 'Octet 45',
     category: PresetCategory.strings,
@@ -19756,8 +19521,7 @@ SynthPreset(
     tags: ['strings', 'ambient', 'synth'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1252',
     name: 'Trio 81',
     category: PresetCategory.strings,
@@ -20065,8 +19829,7 @@ SynthPreset(
     tags: ['brass', 'wind', 'blow'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1270',
     name: 'Archangel 31',
     category: PresetCategory.choir,
@@ -20083,8 +19846,7 @@ SynthPreset(
     tags: ['choir', 'ambient', 'synth'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1271',
     name: 'Convert 38',
     category: PresetCategory.choir,
@@ -20101,8 +19863,7 @@ SynthPreset(
     tags: ['choir', 'ambient', 'synth'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1272',
     name: 'Angel 1',
     category: PresetCategory.choir,
@@ -20138,8 +19899,7 @@ SynthPreset(
     tags: ['choir', 'ambient', 'synth'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1274',
     name: 'Heavenly Host 62',
     category: PresetCategory.choir,
@@ -20192,8 +19952,7 @@ SynthPreset(
     tags: ['choir', 'ambient', 'synth'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1277',
     name: 'Seraphim 32',
     category: PresetCategory.choir,
@@ -20227,8 +19986,7 @@ SynthPreset(
     tags: ['choir', 'ambient', 'synth'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1279',
     name: 'Acolyte 80',
     category: PresetCategory.choir,
@@ -20245,8 +20003,7 @@ SynthPreset(
     tags: ['choir', 'ambient', 'synth'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1280',
     name: 'Archangel 8',
     category: PresetCategory.choir,
@@ -20471,8 +20228,7 @@ SynthPreset(
     tags: ['percussion', 'bells', 'percussion'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1294',
     name: 'Formula 1 10',
     category: PresetCategory.custom,
@@ -20507,8 +20263,7 @@ SynthPreset(
     tags: ['custom', 'synth', 'electronic'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1296',
     name: 'Algorithm A 71',
     category: PresetCategory.custom,
@@ -20544,8 +20299,7 @@ SynthPreset(
     tags: ['custom', 'synth', 'electronic'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1298',
     name: 'Formula 2 78',
     category: PresetCategory.custom,
@@ -20562,8 +20316,7 @@ SynthPreset(
     tags: ['custom', 'synth', 'electronic'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1299',
     name: 'Equation B 21',
     category: PresetCategory.custom,
@@ -20579,8 +20332,7 @@ SynthPreset(
     tags: ['custom', 'synth', 'electronic'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1300',
     name: 'Algorithm C 42',
     category: PresetCategory.custom,
@@ -20615,8 +20367,7 @@ SynthPreset(
     tags: ['custom', 'synth', 'electronic'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1302',
     name: 'Formula 2 24',
     category: PresetCategory.custom,
@@ -20949,8 +20700,7 @@ SynthPreset(
     tags: ['acousticguitar', 'guitar', 'plucked'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1322',
     name: 'Stride Piano 47',
     category: PresetCategory.acousticGuitar,
@@ -20967,8 +20717,7 @@ SynthPreset(
     tags: ['acousticguitar', 'guitar', 'plucked'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1323',
     name: 'Chicago Blues 28',
     category: PresetCategory.acousticGuitar,
@@ -21002,8 +20751,7 @@ SynthPreset(
     tags: ['acousticguitar', 'guitar', 'plucked'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1325',
     name: 'Texas Blues 49',
     category: PresetCategory.acousticGuitar,
@@ -21020,8 +20768,7 @@ SynthPreset(
     tags: ['acousticguitar', 'guitar', 'plucked'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1326',
     name: 'New Orleans Blues 37',
     category: PresetCategory.acousticGuitar,
@@ -21038,8 +20785,7 @@ SynthPreset(
     tags: ['acousticguitar', 'guitar', 'plucked'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1327',
     name: 'Fingerstyle Blues 83',
     category: PresetCategory.acousticGuitar,
@@ -21073,8 +20819,7 @@ SynthPreset(
     tags: ['acousticguitar', 'guitar', 'plucked'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1329',
     name: 'Stride Piano 94',
     category: PresetCategory.acousticGuitar,
@@ -21125,8 +20870,7 @@ SynthPreset(
     tags: ['electricguitar', 'guitar', 'plucked'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1332',
     name: 'Altered Chord 31',
     category: PresetCategory.electricGuitar,
@@ -21195,8 +20939,7 @@ SynthPreset(
     tags: ['electricguitar', 'guitar', 'plucked'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1336',
     name: 'Power Chord 28',
     category: PresetCategory.electricGuitar,
@@ -21214,8 +20957,7 @@ SynthPreset(
     tags: ['electricguitar', 'guitar', 'plucked'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1337',
     name: 'Quintal 32',
     category: PresetCategory.electricGuitar,
@@ -21232,8 +20974,7 @@ SynthPreset(
     tags: ['electricguitar', 'guitar', 'plucked'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1338',
     name: 'Mixed Interval 84',
     category: PresetCategory.electricGuitar,
@@ -21267,8 +21008,7 @@ SynthPreset(
     tags: ['electricguitar', 'guitar', 'plucked'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1340',
     name: 'Cluster 17',
     category: PresetCategory.electricGuitar,
@@ -21303,8 +21043,7 @@ SynthPreset(
     tags: ['electricguitar', 'guitar', 'plucked'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1342',
     name: 'Open Chord 70',
     category: PresetCategory.electricGuitar,
@@ -22413,8 +22152,7 @@ SynthPreset(
     tags: ['ethnic', 'world', 'traditional'],
     author: 'Open Synth',
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-1408',
     name: 'Dilruba 26',
     category: PresetCategory.ethnic,
@@ -22594,8 +22332,7 @@ SynthPreset(
     reverb: const ReverbConfig(enabled: true, size: 0.6, mix: 0.3),
     tags: ['organ', 'rock', 'gritty', 'overdrive'],
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-ep-01',
     name: 'Classic Rhodes',
     category: PresetCategory.electricPiano,
@@ -22609,36 +22346,33 @@ SynthPreset(
     reverb: const ReverbConfig(enabled: true, size: 0.35, mix: 0.2),
     tags: ['electric piano', 'rhodes', 'vintage', 'warm'],
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-ep-02',
     name: 'Wurlitzer 200A',
     category: PresetCategory.electricPiano,
     osc1: const Oscillator(waveform: Waveform.saw, octave: 0, detune: 0.0, volume: 0.65),
     osc2: const Oscillator(waveform: Waveform.sine, octave: 1, detune: 0.0, volume: 0.2, enabled: true),
     filter: const FilterConfig(cutoff: 2500, resonance: 0.3, keyTracking: 0.4),
-    ampEnvelope: const Envelope(attack: 5, decay: 2500, sustain: 0.0, release: 200, decayCurve: 2),
+    ampEnvelope: const Envelope(attack: 5, decay: 200, sustain: 0.6, release: 800),
     filterEnvelope: const Envelope(attack: 3, decay: 1500, sustain: 0.0, release: 100),
     tremolo: const TremoloConfig(enabled: true, rate: 4.5, depth: 0.3, shape: 0),
     drive: const DriveConfig(enabled: true, amount: 0.15, type: DriveType.overdrive),
     reverb: const ReverbConfig(enabled: true, size: 0.3, mix: 0.15),
     tags: ['electric piano', 'wurlitzer', 'barky', 'reed'],
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-ep-03',
     name: 'DX7 Full Tines',
     category: PresetCategory.electricPiano,
     osc1: const Oscillator(waveform: Waveform.sine, octave: 0, detune: 0.0, volume: 0.7, fmEnabled: true, fmAmount: 0.6),
     osc2: const Oscillator(waveform: Waveform.sine, octave: 0, detune: 0.5, volume: 0.4, enabled: true),
     filter: const FilterConfig(cutoff: 5000, resonance: 0.1, keyTracking: 0.6),
-    ampEnvelope: const Envelope(attack: 3, decay: 3000, sustain: 0.0, release: 500, decayCurve: 2),
+    ampEnvelope: const Envelope(attack: 5, decay: 200, sustain: 0.6, release: 800),
     chorus: const ChorusConfig(enabled: true, rate: 0.6, depth: 0.25, mix: 0.3),
     reverb: const ReverbConfig(enabled: true, size: 0.45, mix: 0.25),
     tags: ['electric piano', 'dx7', 'fm', 'digital', '80s'],
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-ep-04',
     name: 'Stage Mark II',
     category: PresetCategory.electricPiano,
@@ -22652,15 +22386,14 @@ SynthPreset(
     tags: ['electric piano', 'stage', 'bell', '70s'],
   ),
 
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-clv-01',
     name: 'Funky Clav',
     category: PresetCategory.clavinet,
     osc1: const Oscillator(waveform: Waveform.square, octave: 0, detune: 0.0, volume: 0.8, pulseWidth: 0.3),
     osc2: const Oscillator(waveform: Waveform.saw, octave: 0, detune: -5.0, volume: 0.3, enabled: true),
     filter: const FilterConfig(type: FilterType.bandpass, cutoff: 4000, resonance: 0.35, envelopeAmount: 0.7, keyTracking: 0.8),
-    ampEnvelope: const Envelope(attack: 1, decay: 600, sustain: 0.0, release: 50),
+    ampEnvelope: const Envelope(attack: 1, decay: 180, sustain: 0.6, release: 600),
     filterEnvelope: const Envelope(attack: 1, decay: 300, sustain: 0.0, release: 30),
     tags: ['clavinet', 'funk', 'percussive', 'pick'],
   ),
@@ -22688,45 +22421,41 @@ SynthPreset(
     tags: ['clavinet', 'muted', 'pluck', 'short'],
   ),
 
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-ag-01',
     name: 'Nylon String',
     category: PresetCategory.acousticGuitar,
     osc1: const Oscillator(waveform: Waveform.wtGuitar, octave: 0, detune: 0.0, volume: 0.7),
     osc2: const Oscillator(waveform: Waveform.triangle, octave: 0, detune: 5.0, volume: 0.25, enabled: true),
     filter: const FilterConfig(cutoff: 4000, resonance: 0.15, keyTracking: 0.6),
-    ampEnvelope: const Envelope(attack: 2, decay: 2000, sustain: 0.0, release: 300, decayCurve: 2),
+    ampEnvelope: const Envelope(attack: 10, decay: 400, sustain: 0.5, release: 600),
     reverb: const ReverbConfig(enabled: true, size: 0.5, damping: 0.4, mix: 0.35),
     tags: ['acoustic guitar', 'nylon', 'classical', 'warm'],
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-ag-02',
     name: 'Steel String',
     category: PresetCategory.acousticGuitar,
     osc1: const Oscillator(waveform: Waveform.wtGuitar, octave: 0, detune: 0.0, volume: 0.75),
     osc2: const Oscillator(waveform: Waveform.saw, octave: 0, detune: 8.0, volume: 0.2, enabled: true),
     filter: const FilterConfig(cutoff: 5000, resonance: 0.1, keyTracking: 0.5),
-    ampEnvelope: const Envelope(attack: 1, decay: 2500, sustain: 0.0, release: 200, decayCurve: 2),
+    ampEnvelope: const Envelope(attack: 10, decay: 400, sustain: 0.5, release: 600),
     chorus: const ChorusConfig(enabled: true, rate: 0.7, depth: 0.15, mix: 0.2),
     reverb: const ReverbConfig(enabled: true, size: 0.4, mix: 0.3),
     tags: ['acoustic guitar', 'steel', 'bright', 'folk'],
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-ag-03',
     name: 'Fingerstyle',
     category: PresetCategory.acousticGuitar,
     osc1: const Oscillator(waveform: Waveform.wtGuitar, octave: 0, detune: 0.0, volume: 0.6),
     filter: const FilterConfig(cutoff: 3000, resonance: 0.2, keyTracking: 0.7),
-    ampEnvelope: const Envelope(attack: 3, decay: 1500, sustain: 0.0, release: 400, decayCurve: 2),
+    ampEnvelope: const Envelope(attack: 10, decay: 400, sustain: 0.5, release: 600),
     reverb: const ReverbConfig(enabled: true, size: 0.6, damping: 0.5, mix: 0.4),
     tags: ['acoustic guitar', 'fingerstyle', 'warm', 'solo'],
   ),
 
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-eg-01',
     name: 'Clean Strat',
     category: PresetCategory.electricGuitar,
@@ -22751,8 +22480,7 @@ SynthPreset(
     reverb: const ReverbConfig(enabled: true, size: 0.3, mix: 0.15),
     tags: ['electric guitar', 'crunch', 'lead', 'rock'],
   ),
-    // FIXME: This preset needs parameter tweaks
-SynthPreset(
+    SynthPreset(
     id: 'factory-eg-03',
     name: 'Ambient Swell',
     category: PresetCategory.electricGuitar,
@@ -22923,7 +22651,7 @@ SynthPreset(
     osc1: const Oscillator(waveform: Waveform.triangle, octave: 0, detune: 0.0, volume: 0.65),
     osc2: const Oscillator(waveform: Waveform.sine, octave: 1, detune: 12.0, volume: 0.15, enabled: true),
     filter: const FilterConfig(cutoff: 4000, resonance: 0.1, keyTracking: 0.5),
-    ampEnvelope: const Envelope(attack: 1, decay: 1800, sustain: 0.0, release: 300, decayCurve: 2),
+    ampEnvelope: const Envelope(attack: 1, decay: 540, sustain: 0.6, release: 600),
     reverb: const ReverbConfig(enabled: true, size: 0.7, mix: 0.35),
     tags: ['ethnic', 'koto', 'japan', 'pluck'],
   ),
