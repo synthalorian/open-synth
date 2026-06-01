@@ -294,6 +294,8 @@ int32_t synth_engine_get_arp_total_steps(void* engine) {
     return static_cast<int32_t>(static_cast<SynthEngine*>(engine)->getArpTotalSteps());
 }
 
+extern "C" {
+
 // ── Rhythm Pattern Player ────────────────────────────────────────────────────
 
 void synth_engine_rhythm_play(void* engine) {
@@ -334,6 +336,8 @@ int32_t synth_engine_get_rhythm_total_steps(void* engine) {
     return static_cast<int32_t>(
         static_cast<SynthEngine*>(engine)->rhythmPlayer().totalSteps());
 }
+
+} // extern "C"
 
 // ── Recording ─────────────────────────────────────────────────────────────────
 

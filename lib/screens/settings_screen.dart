@@ -23,6 +23,9 @@ class SettingsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Keep audio engine alive so diagnostics show current state.
+    ref.watch(synthEngineProvider);
+    ref.watch(synthAudioStreamProvider);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -440,6 +443,9 @@ class _MidiDeviceSelector extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Keep audio engine alive so diagnostics show current state.
+    ref.watch(synthEngineProvider);
+    ref.watch(synthAudioStreamProvider);
     final devicesAsync = ref.watch(midiDevicesProvider);
     final selected = ref.watch(selectedMidiDeviceProvider);
 
@@ -571,6 +577,9 @@ class _AudioDeviceSelector extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Keep audio engine alive so diagnostics show current state.
+    ref.watch(synthEngineProvider);
+    ref.watch(synthAudioStreamProvider);
     final selectedIndex = ref.watch(selectedAudioDeviceProvider);
     final devicesAsync = ref.watch(audioDevicesProvider);
 
@@ -686,6 +695,9 @@ class _AudioBackendInfo extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Keep audio engine alive so diagnostics show current state.
+    ref.watch(synthEngineProvider);
+    ref.watch(synthAudioStreamProvider);
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -776,6 +788,9 @@ class _AudioDiagnosticsSummary extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Keep audio engine alive so diagnostics show current state.
+    ref.watch(synthEngineProvider);
+    ref.watch(synthAudioStreamProvider);
     final diag = ref.watch(audioStreamDiagnosticsProvider);
     final selectedIdx = ref.watch(selectedAudioDeviceProvider);
 
@@ -824,6 +839,9 @@ class _AudioBufferSelector extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Keep audio engine alive so diagnostics show current state.
+    ref.watch(synthEngineProvider);
+    ref.watch(synthAudioStreamProvider);
     final bufferSize = ref.watch(audioBufferSizeProvider);
     final notifier = ref.read(audioBufferSizeProvider.notifier);
 
@@ -919,6 +937,9 @@ class _ThemeToggle extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Keep audio engine alive so diagnostics show current state.
+    ref.watch(synthEngineProvider);
+    ref.watch(synthAudioStreamProvider);
     final themeMode = ref.watch(themeModeProvider);
     final isDark = themeMode == ThemeMode.dark;
 

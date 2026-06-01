@@ -563,6 +563,9 @@ class SynthScreen extends ConsumerWidget {
     // Keep MIDI clock engine alive.
     ref.watch(midiClockEngineProvider);
 
+    // Keep the single-engine audio stream alive (used when split is off).
+    ref.watch(synthAudioStreamProvider);
+
     // Keep zone B engine + preset sync alive (for keyboard split).
     ref.watch(synthPairProvider);
     ref.watch(synthPairAudioStreamProvider);

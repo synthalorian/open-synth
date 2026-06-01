@@ -57,6 +57,7 @@ class MobileSynthScreen extends ConsumerWidget {
     ref.watch(arpeggiatorNativeBridgeProvider);
     ref.watch(midiClockEngineProvider);
     ref.watch(synthPairProvider);
+    ref.watch(synthAudioStreamProvider);
     ref.watch(synthPairAudioStreamProvider);
     ref.watch(zoneBPresetSyncProvider);
     ref.watch(zoneBMixSyncProvider);

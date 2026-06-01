@@ -10,6 +10,7 @@
 import 'dart:ffi';
 import 'dart:io';
 
+import '../utils/logger.dart';
 // ── Opaque handle ────────────────────────────────────────────────────────────
 
 final class _SynthHandle extends Opaque {}
@@ -56,16 +57,26 @@ typedef _SetInt2Dart = void Function(SynthEngineRef, int, int);
 
 DynamicLibrary _openLibrary() {
   if (Platform.isLinux) {
+    // Try executable-relative path first (for installed bundles)
+    final exePath = Platform.resolvedExecutable;
+    appLogger.info("FFI: resolvedExecutable = $exePath");
+    final exeDir = File(exePath).parent.path;
     final candidates = [
+      '$exeDir/lib/libopenamp_dart_ffi.so',
+      '$exeDir/../lib/libopenamp_dart_ffi.so',
       'native/libopenamp_dart_ffi.so',
       './native/libopenamp_dart_ffi.so',
       '${Directory.current.path}/native/libopenamp_dart_ffi.so',
       'libopenamp_dart_ffi.so',
     ];
     for (final path in candidates) {
+      appLogger.info("FFI: trying $path (exists=${File(path).existsSync()})");
       try {
-        return DynamicLibrary.open(path);
+        final lib = DynamicLibrary.open(path);
+        appLogger.info("FFI: loaded from $path");
+        return lib;
       } catch (_) {
+        appLogger.info("FFI: failed to load $path");
         // try next
       }
     }
