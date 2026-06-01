@@ -210,6 +210,21 @@ class _SpectrumPainter extends CustomPainter {
 
       case Waveform.wtGuitar:
       case Waveform.wtChoir:
+      case Waveform.wtBrass:
+      case Waveform.wtStrings:
+      case Waveform.wtWoodwind:
+      case Waveform.wtOrgan:
+      case Waveform.wtBell:
+      case Waveform.wtSynthBass:
+      case Waveform.wtSynthLead:
+      case Waveform.wtPad:
+      case Waveform.wtEPiano:
+      case Waveform.pmKarplus:
+      case Waveform.pmKarplusBright:
+      case Waveform.pmKarplusBass:
+      case Waveform.pmModalMallet:
+      case Waveform.pmModalVibraphone:
+      case Waveform.pmModalSteel:
       case Waveform.random:
         energies[bin] += 0.45 * osc.volume;
         for (int h = 2; h <= 10; h++) {

@@ -125,6 +125,21 @@ class _WaveformMiniPainter extends CustomPainter {
       case Waveform.wtPiano:
       case Waveform.wtGuitar:
       case Waveform.wtChoir:
+      case Waveform.wtBrass:
+      case Waveform.wtStrings:
+      case Waveform.wtWoodwind:
+      case Waveform.wtOrgan:
+      case Waveform.wtBell:
+      case Waveform.wtSynthBass:
+      case Waveform.wtSynthLead:
+      case Waveform.wtPad:
+      case Waveform.wtEPiano:
+      case Waveform.pmKarplus:
+      case Waveform.pmKarplusBright:
+      case Waveform.pmKarplusBass:
+      case Waveform.pmModalMallet:
+      case Waveform.pmModalVibraphone:
+      case Waveform.pmModalSteel:
       case Waveform.random:
         // Fall back to wavetable-like rendering
         for (double x = 0; x <= w; x += 1) {

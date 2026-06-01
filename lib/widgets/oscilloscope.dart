@@ -333,6 +333,21 @@ double _sampleOscillatorPoints(
     case Waveform.wtPiano:
     case Waveform.wtGuitar:
     case Waveform.wtChoir:
+    case Waveform.wtBrass:
+    case Waveform.wtStrings:
+    case Waveform.wtWoodwind:
+    case Waveform.wtOrgan:
+    case Waveform.wtBell:
+    case Waveform.wtSynthBass:
+    case Waveform.wtSynthLead:
+    case Waveform.wtPad:
+    case Waveform.wtEPiano:
+    case Waveform.pmKarplus:
+    case Waveform.pmKarplusBright:
+    case Waveform.pmKarplusBass:
+    case Waveform.pmModalMallet:
+    case Waveform.pmModalVibraphone:
+    case Waveform.pmModalSteel:
     case Waveform.random:
       // Complex wavetable: blend of sine and harmonics
       final base = sin(f * time);
