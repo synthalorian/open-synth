@@ -18,6 +18,7 @@ struct SynthColors {
     static juce::Colour text()        { return juce::Colour(0xFFFFFFFF); }
     static juce::Colour textDim()     { return juce::Colour(0x80FFFFFF); }
     static juce::Colour gridLine()    { return juce::Colour(0x208F00FF); }
+    static juce::Colour danger()      { return juce::Colour(0xFFFF3333); }
 };
 
 // ── Custom Knob Component ─────────────────────────────────────────────────
@@ -76,16 +77,114 @@ private:
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> attackAttach_, decayAttach_, sustainAttach_, releaseAttach_;
 };
 
-// ── FX Panel ──────────────────────────────────────────────────────────────
-class FxPanel : public juce::Component {
+// ── FX Slot Panel (one slot with type selector + params) ──────────────────
+class FxSlotPanel : public juce::Component {
 public:
-    explicit FxPanel(juce::AudioProcessorValueTreeState& apvts);
+    FxSlotPanel(juce::AudioProcessorValueTreeState& apvts, int slotIndex);
     void paint(juce::Graphics& g) override;
     void resized() override;
 
 private:
     juce::AudioProcessorValueTreeState& apvts_;
-    juce::TabbedComponent tabs_;
+    int slotIndex_;
+
+    juce::ToggleButton enabledButton_;
+    juce::ComboBox typeSelector_;
+    SynthKnob paramKnobs_[4];
+
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> enabledAttach_;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> typeAttach_;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> paramAttaches_[4];
+
+    void populateFxTypes();
+};
+
+// ── Arpeggiator Panel ─────────────────────────────────────────────────────
+class ArpPanel : public juce::Component {
+public:
+    explicit ArpPanel(juce::AudioProcessorValueTreeState& apvts);
+    void paint(juce::Graphics& g) override;
+    void resized() override;
+
+private:
+    juce::AudioProcessorValueTreeState& apvts_;
+    juce::ToggleButton enabledButton_;
+    juce::ComboBox patternSelector_;
+    SynthKnob tempoKnob_, gateKnob_, swingKnob_, octaveKnob_;
+
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> enabledAttach_;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> patternAttach_;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> tempoAttach_, gateAttach_, swingAttach_, octaveAttach_;
+};
+
+// ── Performance Meters ────────────────────────────────────────────────────
+class PerformanceMeter : public juce::Component, private juce::Timer {
+public:
+    PerformanceMeter();
+    void setVoiceCount(int count);
+    void setCpuLoad(float load);
+    void paint(juce::Graphics& g) override;
+    void resized() override;
+
+private:
+    int voiceCount_ = 0;
+    float cpuLoad_ = 0.0f;
+    void timerCallback() override;
+};
+
+// ── Preset Browser (popup overlay) ────────────────────────────────────────
+class PresetBrowser : public juce::Component {
+public:
+    PresetBrowser();
+    void paint(juce::Graphics& g) override;
+    void resized() override;
+
+    void setVisible(bool shouldBeVisible) override;
+
+private:
+    juce::TextEditor searchBox_;
+    juce::ListBox presetList_;
+    juce::TextButton closeButton_;
+    juce::Label titleLabel_;
+
+    struct PresetItem;
+    std::unique_ptr<PresetItem> presetData_;
+};
+
+// ── Quick Favorites Bar ───────────────────────────────────────────────────
+class FavoritesBar : public juce::Component {
+public:
+    FavoritesBar();
+    void paint(juce::Graphics& g) override;
+    void resized() override;
+
+    std::function<void(int)> onPresetSelected;
+
+private:
+    juce::TextButton favButtons_[8];
+    void buttonClicked(int index);
+};
+
+// ── Split Keyboard Overlay ────────────────────────────────────────────────
+class SplitKeyboardOverlay : public juce::Component {
+public:
+    SplitKeyboardOverlay();
+    void paint(juce::Graphics& g) override;
+    void resized() override;
+
+    void setSplitPoint(int note);
+    int getSplitPoint() const { return splitPoint_; }
+
+    std::function<void(int)> onSplitChanged;
+
+private:
+    int splitPoint_ = 60; // C3
+    bool dragging_ = false;
+
+    void mouseDown(const juce::MouseEvent& e) override;
+    void mouseDrag(const juce::MouseEvent& e) override;
+    void mouseUp(const juce::MouseEvent& e) override;
+    int noteAtX(int x) const;
 };
 
 // ── Keyboard Component ────────────────────────────────────────────────────
@@ -103,10 +202,15 @@ public:
     void handleNoteOn(juce::MidiKeyboardState*, int midiChannel, int midiNoteNumber, float velocity) override;
     void handleNoteOff(juce::MidiKeyboardState*, int midiChannel, int midiNoteNumber, float velocity) override;
 
+    void setSplitPoint(int note);
+    void setShowSplit(bool show);
+
 private:
     juce::MidiKeyboardState& state_;
     int hoveredNote_ = -1;
     int pressedNote_ = -1;
+    int splitPoint_ = 60;
+    bool showSplit_ = false;
 
     int getNoteAtPosition(juce::Point<int> pos) const;
     bool isBlackKey(int note) const;
@@ -131,18 +235,26 @@ private:
     // Header
     juce::Label titleLabel_;
     juce::TextButton presetButton_;
+    juce::TextButton setlistButton_;
+    PerformanceMeter meters_;
+    FavoritesBar favorites_;
 
     // Main sections
     OscPanel osc1Panel_, osc2Panel_;
     FilterPanel filterPanel_;
     EnvelopePanel ampEnvPanel_, filterEnvPanel_;
-    FxPanel fxPanel_;
+    FxSlotPanel fx1Panel_, fx2Panel_, fx3Panel_;
+    ArpPanel arpPanel_;
     PianoKeyboard keyboard_;
 
-    // Performance meters
-    juce::Label voiceCountLabel_, cpuLabel_;
+    // Overlay components
+    PresetBrowser presetBrowser_;
+    SplitKeyboardOverlay splitOverlay_;
 
     void timerCallback() override;
+    void showPresetBrowser();
+    void showSetlistMode();
+    void loadFavoritePreset(int index);
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(OpenSynthEditor)
 };
