@@ -1,0 +1,7279 @@
+{
+  "total": 1453,
+  "keep": 1140,
+  "merge": 41,
+  "fix": 272,
+  "kill": 0,
+  "keepPresets": [
+    {
+      "id": "factory-01",
+      "name": "Blade Runner Pad",
+      "category": "pads"
+    },
+    {
+      "id": "factory-02",
+      "name": "Stranger Things Pad",
+      "category": "pads"
+    },
+    {
+      "id": "factory-03",
+      "name": "Neon Lead",
+      "category": "leads"
+    },
+    {
+      "id": "factory-04",
+      "name": "Laser Lead",
+      "category": "leads"
+    },
+    {
+      "id": "factory-05",
+      "name": "Sub Bass",
+      "category": "bass"
+    },
+    {
+      "id": "factory-06",
+      "name": "Synth Bass",
+      "category": "bass"
+    },
+    {
+      "id": "factory-07",
+      "name": "DX7 Bells",
+      "category": "keys"
+    },
+    {
+      "id": "factory-09",
+      "name": "Outrun Arp",
+      "category": "arps"
+    },
+    {
+      "id": "factory-10",
+      "name": "Crystal Arp",
+      "category": "arps"
+    },
+    {
+      "id": "factory-11",
+      "name": "Sweep Riser",
+      "category": "fx"
+    },
+    {
+      "id": "factory-12",
+      "name": "Sci-Fi Zap",
+      "category": "fx"
+    },
+    {
+      "id": "factory-13",
+      "name": "Retrowave Pad",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-14",
+      "name": "Sunset Drive",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-16",
+      "name": "Bass Following",
+      "category": "custom"
+    },
+    {
+      "id": "factory-17",
+      "name": "Vangelis Strings",
+      "category": "pads"
+    },
+    {
+      "id": "factory-19",
+      "name": "Glacier Pad",
+      "category": "pads"
+    },
+    {
+      "id": "factory-20",
+      "name": "Supersaw Lead",
+      "category": "leads"
+    },
+    {
+      "id": "factory-21",
+      "name": "Square Wave Pulse",
+      "category": "leads"
+    },
+    {
+      "id": "factory-22",
+      "name": "Acid Lead",
+      "category": "leads"
+    },
+    {
+      "id": "factory-23",
+      "name": "Reese Bass",
+      "category": "bass"
+    },
+    {
+      "id": "factory-24",
+      "name": "Wobble Bass",
+      "category": "bass"
+    },
+    {
+      "id": "factory-25",
+      "name": "Juno Bass",
+      "category": "bass"
+    },
+    {
+      "id": "factory-26",
+      "name": "Drum & Bass Sub",
+      "category": "bass"
+    },
+    {
+      "id": "factory-27",
+      "name": "FM Bell Tower",
+      "category": "keys"
+    },
+    {
+      "id": "factory-29",
+      "name": "Pluck Arp",
+      "category": "arps"
+    },
+    {
+      "id": "factory-30",
+      "name": "Marimba Arp",
+      "category": "arps"
+    },
+    {
+      "id": "factory-31",
+      "name": "Noise Riser",
+      "category": "fx"
+    },
+    {
+      "id": "factory-32",
+      "name": "Impact Hit",
+      "category": "fx"
+    },
+    {
+      "id": "factory-33",
+      "name": "Drone Sweep",
+      "category": "fx"
+    },
+    {
+      "id": "factory-34",
+      "name": "Miami Lights",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-35",
+      "name": "Outrun Bassline",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-36",
+      "name": "Neon Sunset Lead",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-37",
+      "name": "Gated Reverb Hit",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-38",
+      "name": "Industrial Grime",
+      "category": "bass"
+    },
+    {
+      "id": "factory-39",
+      "name": "Bitcrushed Lead",
+      "category": "leads"
+    },
+    {
+      "id": "factory-40",
+      "name": "Tube Overdrive Bass",
+      "category": "bass"
+    },
+    {
+      "id": "factory-41",
+      "name": "Hard Clipping Lead",
+      "category": "leads"
+    },
+    {
+      "id": "factory-42",
+      "name": "Cyberpunk Skyline",
+      "category": "pads"
+    },
+    {
+      "id": "factory-43",
+      "name": "Surge Acid",
+      "category": "leads"
+    },
+    {
+      "id": "factory-44",
+      "name": "Vital Wavetable",
+      "category": "keys"
+    },
+    {
+      "id": "factory-45",
+      "name": "Helms Deep",
+      "category": "bass"
+    },
+    {
+      "id": "factory-46",
+      "name": "OB-Xd Brass",
+      "category": "keys"
+    },
+    {
+      "id": "factory-47",
+      "name": "Dexed Crystal",
+      "category": "keys"
+    },
+    {
+      "id": "factory-48",
+      "name": "Zyn Soft Pad",
+      "category": "pads"
+    },
+    {
+      "id": "factory-49",
+      "name": "Yoshimi Dream",
+      "category": "arps"
+    },
+    {
+      "id": "factory-50",
+      "name": "Synthsharks Grid",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-51",
+      "name": "Dreamscape",
+      "category": "pads"
+    },
+    {
+      "id": "factory-52",
+      "name": "Dark Matter",
+      "category": "pads"
+    },
+    {
+      "id": "factory-54",
+      "name": "Analog Strings",
+      "category": "pads"
+    },
+    {
+      "id": "factory-55",
+      "name": "Tundra Wind",
+      "category": "pads"
+    },
+    {
+      "id": "factory-56",
+      "name": "Warm Organ",
+      "category": "pads"
+    },
+    {
+      "id": "factory-57",
+      "name": "Dawn Chorus",
+      "category": "pads"
+    },
+    {
+      "id": "factory-58",
+      "name": "Shimmer Bells",
+      "category": "pads"
+    },
+    {
+      "id": "factory-59",
+      "name": "Moog Voyager",
+      "category": "leads"
+    },
+    {
+      "id": "factory-60",
+      "name": "Euro Trance",
+      "category": "leads"
+    },
+    {
+      "id": "factory-61",
+      "name": "808 Square",
+      "category": "leads"
+    },
+    {
+      "id": "factory-62",
+      "name": "Expressive Filter",
+      "category": "leads"
+    },
+    {
+      "id": "factory-63",
+      "name": "Calliope",
+      "category": "leads"
+    },
+    {
+      "id": "factory-64",
+      "name": "Distorted Solo",
+      "category": "leads"
+    },
+    {
+      "id": "factory-65",
+      "name": "Fuzzy Octave",
+      "category": "leads"
+    },
+    {
+      "id": "factory-66",
+      "name": "Hardstyle Saw",
+      "category": "leads"
+    },
+    {
+      "id": "factory-67",
+      "name": "Electro Funk",
+      "category": "bass"
+    },
+    {
+      "id": "factory-68",
+      "name": "808 Deep",
+      "category": "bass"
+    },
+    {
+      "id": "factory-69",
+      "name": "Growl Dubstep",
+      "category": "bass"
+    },
+    {
+      "id": "factory-70",
+      "name": "Rubber Pluck",
+      "category": "bass"
+    },
+    {
+      "id": "factory-71",
+      "name": "FM Bass",
+      "category": "bass"
+    },
+    {
+      "id": "factory-72",
+      "name": "PWM Bass",
+      "category": "bass"
+    },
+    {
+      "id": "factory-73",
+      "name": "Lo-Fi Bass",
+      "category": "bass"
+    },
+    {
+      "id": "factory-74",
+      "name": "Neuro Reese",
+      "category": "bass"
+    },
+    {
+      "id": "factory-75",
+      "name": "Bright Organ",
+      "category": "keys"
+    },
+    {
+      "id": "factory-76",
+      "name": "Funk Clavinet",
+      "category": "keys"
+    },
+    {
+      "id": "factory-79",
+      "name": "Music Box",
+      "category": "keys"
+    },
+    {
+      "id": "factory-80",
+      "name": "Toy Piano",
+      "category": "keys"
+    },
+    {
+      "id": "factory-81",
+      "name": "Bubbles",
+      "category": "arps"
+    },
+    {
+      "id": "factory-82",
+      "name": "Pulsar",
+      "category": "arps"
+    },
+    {
+      "id": "factory-83",
+      "name": "Trance Gate",
+      "category": "arps"
+    },
+    {
+      "id": "factory-84",
+      "name": "Fractal",
+      "category": "arps"
+    },
+    {
+      "id": "factory-85",
+      "name": "Rising Sun",
+      "category": "arps"
+    },
+    {
+      "id": "factory-86",
+      "name": "Spooky Arp",
+      "category": "arps"
+    },
+    {
+      "id": "factory-87",
+      "name": "Laser Beam",
+      "category": "fx"
+    },
+    {
+      "id": "factory-88",
+      "name": "Space Glide",
+      "category": "fx"
+    },
+    {
+      "id": "factory-89",
+      "name": "Explosion",
+      "category": "fx"
+    },
+    {
+      "id": "factory-90",
+      "name": "Alien Talk",
+      "category": "fx"
+    },
+    {
+      "id": "factory-91",
+      "name": "Sub Drop",
+      "category": "fx"
+    },
+    {
+      "id": "factory-92",
+      "name": "Glitch Hit",
+      "category": "fx"
+    },
+    {
+      "id": "factory-93",
+      "name": "Chase Sequence",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-94",
+      "name": "Vaporwave",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-95",
+      "name": "A E S T H E T I C",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-96",
+      "name": "Night Rider",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-97",
+      "name": "Darksynth Lead",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-98",
+      "name": "Retrowave Bassline",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-99",
+      "name": "Weather Report",
+      "category": "custom"
+    },
+    {
+      "id": "factory-100",
+      "name": "Rain Dance",
+      "category": "custom"
+    },
+    {
+      "id": "factory-101",
+      "name": "Morning Light",
+      "category": "custom"
+    },
+    {
+      "id": "factory-102",
+      "name": "Deep Space",
+      "category": "custom"
+    },
+    {
+      "id": "factory-103",
+      "name": "Nebula Haze",
+      "category": "pads"
+    },
+    {
+      "id": "factory-104",
+      "name": "Solar Wind",
+      "category": "pads"
+    },
+    {
+      "id": "factory-105",
+      "name": "Enchanted Forest",
+      "category": "pads"
+    },
+    {
+      "id": "factory-106",
+      "name": "Digital Aurora",
+      "category": "pads"
+    },
+    {
+      "id": "factory-107",
+      "name": "Underwater Cathedral",
+      "category": "pads"
+    },
+    {
+      "id": "factory-108",
+      "name": "Crimson Horizon",
+      "category": "pads"
+    },
+    {
+      "id": "factory-109",
+      "name": "Lunar Surface",
+      "category": "pads"
+    },
+    {
+      "id": "factory-110",
+      "name": "Hologram Dream",
+      "category": "pads"
+    },
+    {
+      "id": "factory-111",
+      "name": "Velvet Dusk",
+      "category": "pads"
+    },
+    {
+      "id": "factory-112",
+      "name": "Ionosphere",
+      "category": "pads"
+    },
+    {
+      "id": "factory-113",
+      "name": "Misty Moor",
+      "category": "pads"
+    },
+    {
+      "id": "factory-114",
+      "name": "Crystalium",
+      "category": "pads"
+    },
+    {
+      "id": "factory-115",
+      "name": "Abyssal Plain",
+      "category": "pads"
+    },
+    {
+      "id": "factory-116",
+      "name": "Stratosphere",
+      "category": "pads"
+    },
+    {
+      "id": "factory-117",
+      "name": "Phantom Organ",
+      "category": "pads"
+    },
+    {
+      "id": "factory-118",
+      "name": "Arctic Glow",
+      "category": "pads"
+    },
+    {
+      "id": "factory-119",
+      "name": "Wistful Waves",
+      "category": "pads"
+    },
+    {
+      "id": "factory-120",
+      "name": "Temple Bells Pad",
+      "category": "pads"
+    },
+    {
+      "id": "factory-121",
+      "name": "Neon Rain",
+      "category": "pads"
+    },
+    {
+      "id": "factory-122",
+      "name": "Pastel Sky",
+      "category": "pads"
+    },
+    {
+      "id": "factory-123",
+      "name": "Dark Star Pad",
+      "category": "pads"
+    },
+    {
+      "id": "factory-124",
+      "name": "Morning Dew",
+      "category": "pads"
+    },
+    {
+      "id": "factory-125",
+      "name": "Spectral Haze",
+      "category": "pads"
+    },
+    {
+      "id": "factory-126",
+      "name": "Golden Hour",
+      "category": "pads"
+    },
+    {
+      "id": "factory-127",
+      "name": "Ocean Floor",
+      "category": "pads"
+    },
+    {
+      "id": "factory-128",
+      "name": "Starfield",
+      "category": "pads"
+    },
+    {
+      "id": "factory-129",
+      "name": "Silk Cloud",
+      "category": "pads"
+    },
+    {
+      "id": "factory-130",
+      "name": "Cathedral Choir",
+      "category": "pads"
+    },
+    {
+      "id": "factory-131",
+      "name": "Polar Night",
+      "category": "pads"
+    },
+    {
+      "id": "factory-132",
+      "name": "Celestial Drift",
+      "category": "pads"
+    },
+    {
+      "id": "factory-133",
+      "name": "Amber Field",
+      "category": "pads"
+    },
+    {
+      "id": "factory-134",
+      "name": "Astral Plane",
+      "category": "pads"
+    },
+    {
+      "id": "factory-135",
+      "name": "Aurora Borealis",
+      "category": "pads"
+    },
+    {
+      "id": "factory-136",
+      "name": "Mirage",
+      "category": "pads"
+    },
+    {
+      "id": "factory-137",
+      "name": "Ethereal Voice",
+      "category": "pads"
+    },
+    {
+      "id": "factory-138",
+      "name": "Fusion Lead",
+      "category": "leads"
+    },
+    {
+      "id": "factory-139",
+      "name": "Razor Lead",
+      "category": "leads"
+    },
+    {
+      "id": "factory-140",
+      "name": "Warm Flute Lead",
+      "category": "leads"
+    },
+    {
+      "id": "factory-141",
+      "name": "Grungy Saw",
+      "category": "leads"
+    },
+    {
+      "id": "factory-142",
+      "name": "Digital Scream",
+      "category": "leads"
+    },
+    {
+      "id": "factory-143",
+      "name": "Pentaphonic",
+      "category": "leads"
+    },
+    {
+      "id": "factory-144",
+      "name": "Resonant Lead",
+      "category": "leads"
+    },
+    {
+      "id": "factory-145",
+      "name": "Dual Square Lead",
+      "category": "leads"
+    },
+    {
+      "id": "factory-146",
+      "name": "Velocity Lead",
+      "category": "leads"
+    },
+    {
+      "id": "factory-147",
+      "name": "Hoover Lead",
+      "category": "leads"
+    },
+    {
+      "id": "factory-148",
+      "name": "Sync Lead",
+      "category": "leads"
+    },
+    {
+      "id": "factory-149",
+      "name": "Chiff Lead",
+      "category": "leads"
+    },
+    {
+      "id": "factory-150",
+      "name": "Overdriven Organ",
+      "category": "leads"
+    },
+    {
+      "id": "factory-151",
+      "name": "Glass Lead",
+      "category": "leads"
+    },
+    {
+      "id": "factory-152",
+      "name": "Pulse Width Lead",
+      "category": "leads"
+    },
+    {
+      "id": "factory-153",
+      "name": "Wah Lead",
+      "category": "leads"
+    },
+    {
+      "id": "factory-154",
+      "name": "Detuned Unison",
+      "category": "leads"
+    },
+    {
+      "id": "factory-155",
+      "name": "Harmonic Lead",
+      "category": "leads"
+    },
+    {
+      "id": "factory-156",
+      "name": "Nasty Lead",
+      "category": "leads"
+    },
+    {
+      "id": "factory-157",
+      "name": "Feedback Lead",
+      "category": "leads"
+    },
+    {
+      "id": "factory-158",
+      "name": "Plastic Horn",
+      "category": "leads"
+    },
+    {
+      "id": "factory-159",
+      "name": "Metal Lead",
+      "category": "leads"
+    },
+    {
+      "id": "factory-160",
+      "name": "Whistle Tone",
+      "category": "leads"
+    },
+    {
+      "id": "factory-161",
+      "name": "Funky Lead",
+      "category": "leads"
+    },
+    {
+      "id": "factory-162",
+      "name": "Tropical Lead",
+      "category": "leads"
+    },
+    {
+      "id": "factory-163",
+      "name": "Hard Lead",
+      "category": "leads"
+    },
+    {
+      "id": "factory-164",
+      "name": "Soft Pad Lead",
+      "category": "leads"
+    },
+    {
+      "id": "factory-165",
+      "name": "Octave Lead",
+      "category": "leads"
+    },
+    {
+      "id": "factory-166",
+      "name": "Sitar Lead",
+      "category": "leads"
+    },
+    {
+      "id": "factory-167",
+      "name": "Reverb Drenched",
+      "category": "leads"
+    },
+    {
+      "id": "factory-168",
+      "name": "Atari Lead",
+      "category": "leads"
+    },
+    {
+      "id": "factory-169",
+      "name": "Power Synth",
+      "category": "leads"
+    },
+    {
+      "id": "factory-170",
+      "name": "Acid Melt",
+      "category": "leads"
+    },
+    {
+      "id": "factory-171",
+      "name": "Space Lead",
+      "category": "leads"
+    },
+    {
+      "id": "factory-172",
+      "name": "Reso Stack",
+      "category": "leads"
+    },
+    {
+      "id": "factory-173",
+      "name": "Future Bass",
+      "category": "bass"
+    },
+    {
+      "id": "factory-174",
+      "name": "808 Sub Boom",
+      "category": "bass"
+    },
+    {
+      "id": "factory-175",
+      "name": "Square Bass",
+      "category": "bass"
+    },
+    {
+      "id": "factory-176",
+      "name": "Slap Bass",
+      "category": "bass"
+    },
+    {
+      "id": "factory-177",
+      "name": "Filtered Acid",
+      "category": "bass"
+    },
+    {
+      "id": "factory-178",
+      "name": "Submarine",
+      "category": "bass"
+    },
+    {
+      "id": "factory-179",
+      "name": "Gritty Reese",
+      "category": "bass"
+    },
+    {
+      "id": "factory-180",
+      "name": "Tape Bass",
+      "category": "bass"
+    },
+    {
+      "id": "factory-181",
+      "name": "808 Slide",
+      "category": "bass"
+    },
+    {
+      "id": "factory-182",
+      "name": "Electric Bass",
+      "category": "bass"
+    },
+    {
+      "id": "factory-183",
+      "name": "Wobble Dub",
+      "category": "bass"
+    },
+    {
+      "id": "factory-184",
+      "name": "Moog Bass",
+      "category": "bass"
+    },
+    {
+      "id": "factory-185",
+      "name": "Rumble Bass",
+      "category": "bass"
+    },
+    {
+      "id": "factory-186",
+      "name": "Minimal Bass",
+      "category": "bass"
+    },
+    {
+      "id": "factory-187",
+      "name": "Club Kick Bass",
+      "category": "bass"
+    },
+    {
+      "id": "factory-188",
+      "name": "Sine Sub Layer",
+      "category": "bass"
+    },
+    {
+      "id": "factory-189",
+      "name": "DnB Reece",
+      "category": "bass"
+    },
+    {
+      "id": "factory-190",
+      "name": "Fingered Bass",
+      "category": "bass"
+    },
+    {
+      "id": "factory-191",
+      "name": "Acid 303",
+      "category": "bass"
+    },
+    {
+      "id": "factory-192",
+      "name": "Boogie Bass",
+      "category": "bass"
+    },
+    {
+      "id": "factory-193",
+      "name": "Distorted Sub",
+      "category": "bass"
+    },
+    {
+      "id": "factory-194",
+      "name": "Triangle Sub",
+      "category": "bass"
+    },
+    {
+      "id": "factory-195",
+      "name": "Perc Bass",
+      "category": "bass"
+    },
+    {
+      "id": "factory-196",
+      "name": "Warehouse Bass",
+      "category": "bass"
+    },
+    {
+      "id": "factory-197",
+      "name": "Bubble Bass",
+      "category": "bass"
+    },
+    {
+      "id": "factory-198",
+      "name": "Jazz Walk Bass",
+      "category": "bass"
+    },
+    {
+      "id": "factory-199",
+      "name": "Trance Bassline",
+      "category": "bass"
+    },
+    {
+      "id": "factory-200",
+      "name": "Rubber Band Bass",
+      "category": "bass"
+    },
+    {
+      "id": "factory-201",
+      "name": "Deep House Bass",
+      "category": "bass"
+    },
+    {
+      "id": "factory-202",
+      "name": "Clank Bass",
+      "category": "bass"
+    },
+    {
+      "id": "factory-203",
+      "name": "Vibraphone",
+      "category": "keys"
+    },
+    {
+      "id": "factory-204",
+      "name": "Tine EP",
+      "category": "keys"
+    },
+    {
+      "id": "factory-205",
+      "name": "Steel Drums",
+      "category": "keys"
+    },
+    {
+      "id": "factory-206",
+      "name": "Clavinet Wah",
+      "category": "keys"
+    },
+    {
+      "id": "factory-207",
+      "name": "Glockenspiel",
+      "category": "keys"
+    },
+    {
+      "id": "factory-208",
+      "name": "Reed Organ",
+      "category": "keys"
+    },
+    {
+      "id": "factory-209",
+      "name": "Celesta",
+      "category": "keys"
+    },
+    {
+      "id": "factory-210",
+      "name": "Synth Clav",
+      "category": "keys"
+    },
+    {
+      "id": "factory-211",
+      "name": "Balafon",
+      "category": "keys"
+    },
+    {
+      "id": "factory-212",
+      "name": "Doo-Wop Organ",
+      "category": "keys"
+    },
+    {
+      "id": "factory-213",
+      "name": "Kalimba",
+      "category": "keys"
+    },
+    {
+      "id": "factory-214",
+      "name": "Pipe Organ",
+      "category": "keys"
+    },
+    {
+      "id": "factory-215",
+      "name": "Dream Bells",
+      "category": "keys"
+    },
+    {
+      "id": "factory-216",
+      "name": "FM Keys",
+      "category": "keys"
+    },
+    {
+      "id": "factory-217",
+      "name": "Tremolo Organ",
+      "category": "keys"
+    },
+    {
+      "id": "factory-218",
+      "name": "Mallets",
+      "category": "keys"
+    },
+    {
+      "id": "factory-219",
+      "name": "Wurlitzer EP",
+      "category": "keys"
+    },
+    {
+      "id": "factory-220",
+      "name": "Marimba Bright",
+      "category": "keys"
+    },
+    {
+      "id": "factory-221",
+      "name": "Farfisa Organ",
+      "category": "keys"
+    },
+    {
+      "id": "factory-222",
+      "name": "Bell Pad",
+      "category": "keys"
+    },
+    {
+      "id": "factory-223",
+      "name": "Honky Tonk",
+      "category": "keys"
+    },
+    {
+      "id": "factory-224",
+      "name": "Tubular Bells",
+      "category": "keys"
+    },
+    {
+      "id": "factory-225",
+      "name": "Electric Grand",
+      "category": "keys"
+    },
+    {
+      "id": "factory-226",
+      "name": "Toy Xylophone",
+      "category": "keys"
+    },
+    {
+      "id": "factory-227",
+      "name": "Mellow Rhodes",
+      "category": "keys"
+    },
+    {
+      "id": "factory-228",
+      "name": "Noodle Arp",
+      "category": "arps"
+    },
+    {
+      "id": "factory-229",
+      "name": "Wasp Arp",
+      "category": "arps"
+    },
+    {
+      "id": "factory-230",
+      "name": "Glass Arp",
+      "category": "arps"
+    },
+    {
+      "id": "factory-231",
+      "name": "Saw Stab",
+      "category": "arps"
+    },
+    {
+      "id": "factory-232",
+      "name": "Ghost Arp",
+      "category": "arps"
+    },
+    {
+      "id": "factory-233",
+      "name": "Fizz Arp",
+      "category": "arps"
+    },
+    {
+      "id": "factory-234",
+      "name": "Sine Arp",
+      "category": "arps"
+    },
+    {
+      "id": "factory-235",
+      "name": "Tech Arp",
+      "category": "arps"
+    },
+    {
+      "id": "factory-236",
+      "name": "Warm Arp",
+      "category": "arps"
+    },
+    {
+      "id": "factory-237",
+      "name": "Rave Stab",
+      "category": "arps"
+    },
+    {
+      "id": "factory-238",
+      "name": "Ping Pong Arp",
+      "category": "arps"
+    },
+    {
+      "id": "factory-239",
+      "name": "Chiptune Arp",
+      "category": "arps"
+    },
+    {
+      "id": "factory-240",
+      "name": "Pulse Arp",
+      "category": "arps"
+    },
+    {
+      "id": "factory-241",
+      "name": "Drip Arp",
+      "category": "arps"
+    },
+    {
+      "id": "factory-242",
+      "name": "Reso Arp",
+      "category": "arps"
+    },
+    {
+      "id": "factory-243",
+      "name": "Flute Arp",
+      "category": "arps"
+    },
+    {
+      "id": "factory-244",
+      "name": "Grit Arp",
+      "category": "arps"
+    },
+    {
+      "id": "factory-245",
+      "name": "Dream Arp",
+      "category": "arps"
+    },
+    {
+      "id": "factory-246",
+      "name": "Analog Arp",
+      "category": "arps"
+    },
+    {
+      "id": "factory-247",
+      "name": "Bubble Arp",
+      "category": "arps"
+    },
+    {
+      "id": "factory-248",
+      "name": "Staccato Arp",
+      "category": "arps"
+    },
+    {
+      "id": "factory-249",
+      "name": "Space Arp",
+      "category": "arps"
+    },
+    {
+      "id": "factory-250",
+      "name": "Pluck  Strings",
+      "category": "arps"
+    },
+    {
+      "id": "factory-251",
+      "name": "Filtered Arp",
+      "category": "arps"
+    },
+    {
+      "id": "factory-252",
+      "name": "Digital Arp",
+      "category": "arps"
+    },
+    {
+      "id": "factory-253",
+      "name": "Wind Blow",
+      "category": "fx"
+    },
+    {
+      "id": "factory-254",
+      "name": "Frequency Sweep",
+      "category": "fx"
+    },
+    {
+      "id": "factory-255",
+      "name": "Laser Blast",
+      "category": "fx"
+    },
+    {
+      "id": "factory-256",
+      "name": "Thunder Clap",
+      "category": "fx"
+    },
+    {
+      "id": "factory-257",
+      "name": "Siren",
+      "category": "fx"
+    },
+    {
+      "id": "factory-258",
+      "name": "Teleport",
+      "category": "fx"
+    },
+    {
+      "id": "factory-259",
+      "name": "Spacecraft",
+      "category": "fx"
+    },
+    {
+      "id": "factory-260",
+      "name": "Rising Chord",
+      "category": "fx"
+    },
+    {
+      "id": "factory-261",
+      "name": "Bass Drop",
+      "category": "fx"
+    },
+    {
+      "id": "factory-262",
+      "name": "Metallic Hit",
+      "category": "fx"
+    },
+    {
+      "id": "factory-263",
+      "name": "Ominous Hum",
+      "category": "fx"
+    },
+    {
+      "id": "factory-264",
+      "name": "Glitch FX",
+      "category": "fx"
+    },
+    {
+      "id": "factory-265",
+      "name": "Reverb Swell",
+      "category": "fx"
+    },
+    {
+      "id": "factory-266",
+      "name": "Alien Signal",
+      "category": "fx"
+    },
+    {
+      "id": "factory-267",
+      "name": "Power Up",
+      "category": "fx"
+    },
+    {
+      "id": "factory-268",
+      "name": "Heartbeat",
+      "category": "fx"
+    },
+    {
+      "id": "factory-269",
+      "name": "White Noise Sweep",
+      "category": "fx"
+    },
+    {
+      "id": "factory-270",
+      "name": "Quake Rumble",
+      "category": "fx"
+    },
+    {
+      "id": "factory-271",
+      "name": "Phaser Sweep",
+      "category": "fx"
+    },
+    {
+      "id": "factory-272",
+      "name": "Robot Voice",
+      "category": "fx"
+    },
+    {
+      "id": "factory-277",
+      "name": "Electric Piano Classic",
+      "category": "piano"
+    },
+    {
+      "id": "factory-288",
+      "name": "Hammond B3",
+      "category": "organ"
+    },
+    {
+      "id": "factory-289",
+      "name": "Jazz Organ",
+      "category": "organ"
+    },
+    {
+      "id": "factory-291",
+      "name": "Rock Organ",
+      "category": "organ"
+    },
+    {
+      "id": "factory-292",
+      "name": "Cathedral Organ",
+      "category": "organ"
+    },
+    {
+      "id": "factory-293",
+      "name": "Farfisa Combo",
+      "category": "organ"
+    },
+    {
+      "id": "factory-294",
+      "name": "Vox Continental",
+      "category": "organ"
+    },
+    {
+      "id": "factory-295",
+      "name": "Gospel Organ",
+      "category": "organ"
+    },
+    {
+      "id": "factory-297",
+      "name": "Drawbar Organ",
+      "category": "organ"
+    },
+    {
+      "id": "factory-298",
+      "name": "Phaser Organ",
+      "category": "organ"
+    },
+    {
+      "id": "factory-299",
+      "name": "Dark Organ",
+      "category": "organ"
+    },
+    {
+      "id": "factory-300",
+      "name": "Funky Organ",
+      "category": "organ"
+    },
+    {
+      "id": "factory-301",
+      "name": "Organ Bass",
+      "category": "organ"
+    },
+    {
+      "id": "factory-305",
+      "name": "Overdrive Guitar",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-306",
+      "name": "Distortion Guitar",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-308",
+      "name": "Lead Guitar",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-309",
+      "name": "Jazz Guitar",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-310",
+      "name": "Twang Guitar",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-313",
+      "name": "Surf Guitar",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-314",
+      "name": "Power Chord",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-316",
+      "name": "Slide Guitar",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-318",
+      "name": "String Ensemble",
+      "category": "strings"
+    },
+    {
+      "id": "factory-319",
+      "name": "Violin Solo",
+      "category": "strings"
+    },
+    {
+      "id": "factory-320",
+      "name": "Cello",
+      "category": "strings"
+    },
+    {
+      "id": "factory-321",
+      "name": "Pizzicato Strings",
+      "category": "strings"
+    },
+    {
+      "id": "factory-322",
+      "name": "Tremolo Strings",
+      "category": "strings"
+    },
+    {
+      "id": "factory-323",
+      "name": "Synth Strings",
+      "category": "strings"
+    },
+    {
+      "id": "factory-324",
+      "name": "Warm Strings",
+      "category": "strings"
+    },
+    {
+      "id": "factory-325",
+      "name": "Spiccato Strings",
+      "category": "strings"
+    },
+    {
+      "id": "factory-326",
+      "name": "Octave Strings",
+      "category": "strings"
+    },
+    {
+      "id": "factory-327",
+      "name": "Soft Strings",
+      "category": "strings"
+    },
+    {
+      "id": "factory-329",
+      "name": "Film Score Strings",
+      "category": "strings"
+    },
+    {
+      "id": "factory-330",
+      "name": "Sci-Fi Strings",
+      "category": "strings"
+    },
+    {
+      "id": "factory-331",
+      "name": "Staccato Strings",
+      "category": "strings"
+    },
+    {
+      "id": "factory-332",
+      "name": "Baroque Strings",
+      "category": "strings"
+    },
+    {
+      "id": "factory-333",
+      "name": "Trumpet Solo",
+      "category": "brass"
+    },
+    {
+      "id": "factory-334",
+      "name": "Brass Section",
+      "category": "brass"
+    },
+    {
+      "id": "factory-335",
+      "name": "Trombone",
+      "category": "brass"
+    },
+    {
+      "id": "factory-336",
+      "name": "French Horn",
+      "category": "brass"
+    },
+    {
+      "id": "factory-337",
+      "name": "Synth Brass",
+      "category": "brass"
+    },
+    {
+      "id": "factory-338",
+      "name": "Saxophone",
+      "category": "brass"
+    },
+    {
+      "id": "factory-340",
+      "name": "Fat Brass",
+      "category": "brass"
+    },
+    {
+      "id": "factory-341",
+      "name": "Muted Trumpet",
+      "category": "brass"
+    },
+    {
+      "id": "factory-342",
+      "name": "Pop Brass",
+      "category": "brass"
+    },
+    {
+      "id": "factory-343",
+      "name": "Tuba",
+      "category": "brass"
+    },
+    {
+      "id": "factory-344",
+      "name": "Fanfare Brass",
+      "category": "brass"
+    },
+    {
+      "id": "factory-345",
+      "name": "Soft Brass Pad",
+      "category": "brass"
+    },
+    {
+      "id": "factory-346",
+      "name": "Flugelhorn",
+      "category": "brass"
+    },
+    {
+      "id": "factory-347",
+      "name": "Brass Orchestra",
+      "category": "brass"
+    },
+    {
+      "id": "factory-352",
+      "name": "Synth Choir",
+      "category": "choir"
+    },
+    {
+      "id": "factory-353",
+      "name": "Operatic Soprano",
+      "category": "choir"
+    },
+    {
+      "id": "factory-356",
+      "name": "Ethereal Voices",
+      "category": "choir"
+    },
+    {
+      "id": "factory-357",
+      "name": "Choir Stab",
+      "category": "choir"
+    },
+    {
+      "id": "factory-360",
+      "name": "Vocoder Choir",
+      "category": "choir"
+    },
+    {
+      "id": "factory-364",
+      "name": "Marimba",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-365",
+      "name": "Xylophone",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-370",
+      "name": "Timpani",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-371",
+      "name": "Pluck Synth",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-373",
+      "name": "808 Cowbell",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-374",
+      "name": "Crystal Mallet",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-375",
+      "name": "Log Drum",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-376",
+      "name": "FM Percussion",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-377",
+      "name": "Wind Chimes",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-378",
+      "name": "Amen Chop Bass",
+      "category": "bass"
+    },
+    {
+      "id": "factory-379",
+      "name": "Neuro Stab",
+      "category": "leads"
+    },
+    {
+      "id": "factory-380",
+      "name": "Liquid Funk Bass",
+      "category": "bass"
+    },
+    {
+      "id": "factory-381",
+      "name": "Jump Up Reese",
+      "category": "bass"
+    },
+    {
+      "id": "factory-382",
+      "name": "Half Time Growl",
+      "category": "bass"
+    },
+    {
+      "id": "factory-383",
+      "name": "Roller Pad",
+      "category": "pads"
+    },
+    {
+      "id": "factory-384",
+      "name": "Atmospheric Break",
+      "category": "arps"
+    },
+    {
+      "id": "factory-385",
+      "name": "Tech Stepper",
+      "category": "leads"
+    },
+    {
+      "id": "factory-386",
+      "name": "Minimal Drum Bass",
+      "category": "bass"
+    },
+    {
+      "id": "factory-387",
+      "name": "Jungle Reese",
+      "category": "bass"
+    },
+    {
+      "id": "factory-388",
+      "name": "Epic Brass Stab",
+      "category": "leads"
+    },
+    {
+      "id": "factory-389",
+      "name": "Orchestral Swell",
+      "category": "pads"
+    },
+    {
+      "id": "factory-390",
+      "name": "Tension String",
+      "category": "pads"
+    },
+    {
+      "id": "factory-391",
+      "name": "Battle Drums",
+      "category": "fx"
+    },
+    {
+      "id": "factory-392",
+      "name": "Sci-Fi Alarm",
+      "category": "fx"
+    },
+    {
+      "id": "factory-393",
+      "name": "Heartbeat Sub",
+      "category": "bass"
+    },
+    {
+      "id": "factory-395",
+      "name": "War Horn",
+      "category": "fx"
+    },
+    {
+      "id": "factory-396",
+      "name": "Ghost Whispers",
+      "category": "pads"
+    },
+    {
+      "id": "factory-397",
+      "name": "Victory Fanfare",
+      "category": "leads"
+    },
+    {
+      "id": "factory-398",
+      "name": "Deep Drone",
+      "category": "pads"
+    },
+    {
+      "id": "factory-399",
+      "name": "Granular Mist",
+      "category": "pads"
+    },
+    {
+      "id": "factory-400",
+      "name": "Binaural Beats",
+      "category": "pads"
+    },
+    {
+      "id": "factory-401",
+      "name": "Rain Field",
+      "category": "pads"
+    },
+    {
+      "id": "factory-402",
+      "name": "Solar Drone",
+      "category": "pads"
+    },
+    {
+      "id": "factory-403",
+      "name": "Lost Signal",
+      "category": "fx"
+    },
+    {
+      "id": "factory-404",
+      "name": "Ice Cave",
+      "category": "pads"
+    },
+    {
+      "id": "factory-405",
+      "name": "Zen Garden",
+      "category": "pads"
+    },
+    {
+      "id": "factory-406",
+      "name": "Sleep Waves",
+      "category": "pads"
+    },
+    {
+      "id": "factory-407",
+      "name": "Fog Bank",
+      "category": "pads"
+    },
+    {
+      "id": "factory-408",
+      "name": "Stochastic",
+      "category": "fx"
+    },
+    {
+      "id": "factory-409",
+      "name": "Formant Speech",
+      "category": "fx"
+    },
+    {
+      "id": "factory-410",
+      "name": "Bowed Metal",
+      "category": "fx"
+    },
+    {
+      "id": "factory-411",
+      "name": "Circuit Bent",
+      "category": "fx"
+    },
+    {
+      "id": "factory-412",
+      "name": "Shepard Tone",
+      "category": "fx"
+    },
+    {
+      "id": "factory-413",
+      "name": "Data Stream",
+      "category": "arps"
+    },
+    {
+      "id": "factory-414",
+      "name": "Resonant Body",
+      "category": "fx"
+    },
+    {
+      "id": "factory-415",
+      "name": "Chaos Engine",
+      "category": "fx"
+    },
+    {
+      "id": "factory-416",
+      "name": "Spectral Scan",
+      "category": "pads"
+    },
+    {
+      "id": "factory-417",
+      "name": "Modular Glitch",
+      "category": "fx"
+    },
+    {
+      "id": "factory-418",
+      "name": "Cassette Warmth",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-419",
+      "name": "Arcade High Score",
+      "category": "leads"
+    },
+    {
+      "id": "factory-420",
+      "name": "VHS Sunset",
+      "category": "pads"
+    },
+    {
+      "id": "factory-421",
+      "name": "Palm Trees",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-422",
+      "name": "Grid Runner",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-423",
+      "name": "Tron Lightcycle",
+      "category": "leads"
+    },
+    {
+      "id": "factory-424",
+      "name": "Laserdisc",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-425",
+      "name": "Mallsoft Pad",
+      "category": "pads"
+    },
+    {
+      "id": "factory-426",
+      "name": "Outrun Drift",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-427",
+      "name": "CRT Glow",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-428",
+      "name": "Felt Piano",
+      "category": "keys"
+    },
+    {
+      "id": "factory-430",
+      "name": "Clavichord",
+      "category": "keys"
+    },
+    {
+      "id": "factory-432",
+      "name": "Crumhorn",
+      "category": "keys"
+    },
+    {
+      "id": "factory-433",
+      "name": "Dulcimer",
+      "category": "keys"
+    },
+    {
+      "id": "factory-434",
+      "name": "Rhodes MKI",
+      "category": "keys"
+    },
+    {
+      "id": "factory-435",
+      "name": "Wurlitzer 200",
+      "category": "keys"
+    },
+    {
+      "id": "factory-439",
+      "name": "Moog Sub",
+      "category": "bass"
+    },
+    {
+      "id": "factory-440",
+      "name": "FM Sub",
+      "category": "bass"
+    },
+    {
+      "id": "factory-442",
+      "name": "Upright Bass",
+      "category": "bass"
+    },
+    {
+      "id": "factory-443",
+      "name": "Distorted 808",
+      "category": "bass"
+    },
+    {
+      "id": "factory-444",
+      "name": "Garage Bass",
+      "category": "bass"
+    },
+    {
+      "id": "factory-445",
+      "name": "Techno Kick",
+      "category": "bass"
+    },
+    {
+      "id": "factory-446",
+      "name": "Sidechain Bass",
+      "category": "bass"
+    },
+    {
+      "id": "factory-447",
+      "name": "Dub Bass",
+      "category": "bass"
+    },
+    {
+      "id": "factory-448",
+      "name": "Soprano Sax",
+      "category": "leads"
+    },
+    {
+      "id": "factory-449",
+      "name": "Shakuhachi",
+      "category": "leads"
+    },
+    {
+      "id": "factory-450",
+      "name": "Oboe",
+      "category": "leads"
+    },
+    {
+      "id": "factory-451",
+      "name": "Pan Flute",
+      "category": "leads"
+    },
+    {
+      "id": "factory-452",
+      "name": "Theremin",
+      "category": "leads"
+    },
+    {
+      "id": "factory-453",
+      "name": "Glass Harmonica",
+      "category": "leads"
+    },
+    {
+      "id": "factory-454",
+      "name": "Trumpet",
+      "category": "leads"
+    },
+    {
+      "id": "factory-455",
+      "name": "Violin",
+      "category": "leads"
+    },
+    {
+      "id": "factory-457",
+      "name": "Didgeridoo",
+      "category": "leads"
+    },
+    {
+      "id": "factory-458",
+      "name": "Sequenced Pluck",
+      "category": "arps"
+    },
+    {
+      "id": "factory-459",
+      "name": "Gated Pluck",
+      "category": "arps"
+    },
+    {
+      "id": "factory-460",
+      "name": "Harpsichord Arp",
+      "category": "arps"
+    },
+    {
+      "id": "factory-461",
+      "name": "Synth Harp",
+      "category": "arps"
+    },
+    {
+      "id": "factory-463",
+      "name": "Koto Pluck",
+      "category": "arps"
+    },
+    {
+      "id": "factory-464",
+      "name": "Banjo Twang",
+      "category": "arps"
+    },
+    {
+      "id": "factory-465",
+      "name": "Sitar Drone",
+      "category": "arps"
+    },
+    {
+      "id": "factory-466",
+      "name": "Pizzicato",
+      "category": "arps"
+    },
+    {
+      "id": "factory-467",
+      "name": "Hammered",
+      "category": "arps"
+    },
+    {
+      "id": "factory-468",
+      "name": "Taiko Drum",
+      "category": "fx"
+    },
+    {
+      "id": "factory-469",
+      "name": "Steel Tongue",
+      "category": "fx"
+    },
+    {
+      "id": "factory-470",
+      "name": "Singing Bowl",
+      "category": "fx"
+    },
+    {
+      "id": "factory-472",
+      "name": "Wood Block",
+      "category": "fx"
+    },
+    {
+      "id": "factory-473",
+      "name": "Anvil",
+      "category": "fx"
+    },
+    {
+      "id": "factory-474",
+      "name": "Thunder",
+      "category": "fx"
+    },
+    {
+      "id": "factory-475",
+      "name": "Tuning Fork",
+      "category": "fx"
+    },
+    {
+      "id": "factory-477",
+      "name": "Reverse Cymbal",
+      "category": "fx"
+    },
+    {
+      "id": "factory-478",
+      "name": "Atmosphere 15",
+      "category": "pads"
+    },
+    {
+      "id": "factory-479",
+      "name": "Ethereal 55",
+      "category": "pads"
+    },
+    {
+      "id": "factory-480",
+      "name": "Dream Pad 30",
+      "category": "pads"
+    },
+    {
+      "id": "factory-481",
+      "name": "Spirit Pad 8",
+      "category": "pads"
+    },
+    {
+      "id": "factory-482",
+      "name": "Space Pad 18",
+      "category": "pads"
+    },
+    {
+      "id": "factory-483",
+      "name": "Drone Pad 56",
+      "category": "pads"
+    },
+    {
+      "id": "factory-484",
+      "name": "Drone Pad 31",
+      "category": "pads"
+    },
+    {
+      "id": "factory-485",
+      "name": "Dream Pad 84",
+      "category": "pads"
+    },
+    {
+      "id": "factory-486",
+      "name": "Mystic Pad 74",
+      "category": "pads"
+    },
+    {
+      "id": "factory-487",
+      "name": "Dark Pad 24",
+      "category": "pads"
+    },
+    {
+      "id": "factory-488",
+      "name": "Warm Pad 50",
+      "category": "pads"
+    },
+    {
+      "id": "factory-489",
+      "name": "Crystal Pad 9",
+      "category": "pads"
+    },
+    {
+      "id": "factory-490",
+      "name": "Spirit Pad 10",
+      "category": "pads"
+    },
+    {
+      "id": "factory-491",
+      "name": "Glass Pad 34",
+      "category": "pads"
+    },
+    {
+      "id": "factory-492",
+      "name": "Mystic Pad 57",
+      "category": "pads"
+    },
+    {
+      "id": "factory-493",
+      "name": "Pulsing Pad 72",
+      "category": "pads"
+    },
+    {
+      "id": "factory-494",
+      "name": "Cloud Pad 59",
+      "category": "pads"
+    },
+    {
+      "id": "factory-495",
+      "name": "String Pad 14",
+      "category": "pads"
+    },
+    {
+      "id": "factory-496",
+      "name": "Texture Pad 41",
+      "category": "pads"
+    },
+    {
+      "id": "factory-497",
+      "name": "Mellow Pad 57",
+      "category": "pads"
+    },
+    {
+      "id": "factory-498",
+      "name": "Atmosphere 74",
+      "category": "pads"
+    },
+    {
+      "id": "factory-499",
+      "name": "Heaven Pad 58",
+      "category": "pads"
+    },
+    {
+      "id": "factory-500",
+      "name": "Dark Pad 53",
+      "category": "pads"
+    },
+    {
+      "id": "factory-501",
+      "name": "Ambient Pad 56",
+      "category": "pads"
+    },
+    {
+      "id": "factory-502",
+      "name": "Spirit Pad 49",
+      "category": "pads"
+    },
+    {
+      "id": "factory-503",
+      "name": "Bell Pad 28",
+      "category": "pads"
+    },
+    {
+      "id": "factory-504",
+      "name": "Bell Pad 6",
+      "category": "pads"
+    },
+    {
+      "id": "factory-505",
+      "name": "Mystic Pad 76",
+      "category": "pads"
+    },
+    {
+      "id": "factory-506",
+      "name": "Analog Pad 31",
+      "category": "pads"
+    },
+    {
+      "id": "factory-507",
+      "name": "Ambient Pad 30",
+      "category": "pads"
+    },
+    {
+      "id": "factory-509",
+      "name": "Reso Lead 16",
+      "category": "leads"
+    },
+    {
+      "id": "factory-510",
+      "name": "Reso Lead 23",
+      "category": "leads"
+    },
+    {
+      "id": "factory-511",
+      "name": "Scream Lead 20",
+      "category": "leads"
+    },
+    {
+      "id": "factory-512",
+      "name": "Saw Lead 12",
+      "category": "leads"
+    },
+    {
+      "id": "factory-513",
+      "name": "Soft Lead 14",
+      "category": "leads"
+    },
+    {
+      "id": "factory-514",
+      "name": "Digital Lead 47",
+      "category": "leads"
+    },
+    {
+      "id": "factory-515",
+      "name": "Detuned Lead 60",
+      "category": "leads"
+    },
+    {
+      "id": "factory-517",
+      "name": "808 Lead 61",
+      "category": "leads"
+    },
+    {
+      "id": "factory-518",
+      "name": "Pluck Lead 44",
+      "category": "leads"
+    },
+    {
+      "id": "factory-519",
+      "name": "Synth Lead 22",
+      "category": "leads"
+    },
+    {
+      "id": "factory-520",
+      "name": "Synth Lead 82",
+      "category": "leads"
+    },
+    {
+      "id": "factory-521",
+      "name": "Guitar Lead 74",
+      "category": "leads"
+    },
+    {
+      "id": "factory-522",
+      "name": "Reso Lead 82",
+      "category": "leads"
+    },
+    {
+      "id": "factory-523",
+      "name": "Super Saw 33",
+      "category": "leads"
+    },
+    {
+      "id": "factory-524",
+      "name": "Flute Lead 87",
+      "category": "leads"
+    },
+    {
+      "id": "factory-526",
+      "name": "Fuzz Lead 48",
+      "category": "leads"
+    },
+    {
+      "id": "factory-527",
+      "name": "Brass Lead 32",
+      "category": "leads"
+    },
+    {
+      "id": "factory-528",
+      "name": "Saw Lead 46",
+      "category": "leads"
+    },
+    {
+      "id": "factory-529",
+      "name": "Scream Lead 4",
+      "category": "leads"
+    },
+    {
+      "id": "factory-531",
+      "name": "Pulse Lead 56",
+      "category": "leads"
+    },
+    {
+      "id": "factory-532",
+      "name": "Unison Lead 85",
+      "category": "leads"
+    },
+    {
+      "id": "factory-533",
+      "name": "Pluck Lead 90",
+      "category": "leads"
+    },
+    {
+      "id": "factory-534",
+      "name": "Unison Lead 21",
+      "category": "leads"
+    },
+    {
+      "id": "factory-535",
+      "name": "Acid Lead 39",
+      "category": "leads"
+    },
+    {
+      "id": "factory-536",
+      "name": "Pulse Lead 41",
+      "category": "leads"
+    },
+    {
+      "id": "factory-537",
+      "name": "Bell Lead 96",
+      "category": "leads"
+    },
+    {
+      "id": "factory-538",
+      "name": "Techno Bass 81",
+      "category": "bass"
+    },
+    {
+      "id": "factory-539",
+      "name": "Analog Bass 58",
+      "category": "bass"
+    },
+    {
+      "id": "factory-540",
+      "name": "Sub Drop 61",
+      "category": "bass"
+    },
+    {
+      "id": "factory-541",
+      "name": "House Bass 81",
+      "category": "bass"
+    },
+    {
+      "id": "factory-542",
+      "name": "Sine Bass 49",
+      "category": "bass"
+    },
+    {
+      "id": "factory-543",
+      "name": "Square Bass 99",
+      "category": "bass"
+    },
+    {
+      "id": "factory-544",
+      "name": "Techno Bass 96",
+      "category": "bass"
+    },
+    {
+      "id": "factory-545",
+      "name": "Slap Bass 48",
+      "category": "bass"
+    },
+    {
+      "id": "factory-546",
+      "name": "Square Bass 48",
+      "category": "bass"
+    },
+    {
+      "id": "factory-547",
+      "name": "Sub Bass 33",
+      "category": "bass"
+    },
+    {
+      "id": "factory-548",
+      "name": "Neuro Bass 19",
+      "category": "bass"
+    },
+    {
+      "id": "factory-549",
+      "name": "Dark Bass 33",
+      "category": "bass"
+    },
+    {
+      "id": "factory-550",
+      "name": "Acid Bass 92",
+      "category": "bass"
+    },
+    {
+      "id": "factory-551",
+      "name": "Rubber Bass 16",
+      "category": "bass"
+    },
+    {
+      "id": "factory-552",
+      "name": "Deep Bass 14",
+      "category": "bass"
+    },
+    {
+      "id": "factory-553",
+      "name": "Dark Bass 66",
+      "category": "bass"
+    },
+    {
+      "id": "factory-554",
+      "name": "Bright Bass 41",
+      "category": "bass"
+    },
+    {
+      "id": "factory-555",
+      "name": "Growl Bass 92",
+      "category": "bass"
+    },
+    {
+      "id": "factory-556",
+      "name": "Squelch Bass 64",
+      "category": "bass"
+    },
+    {
+      "id": "factory-557",
+      "name": "Analog Bass 60",
+      "category": "bass"
+    },
+    {
+      "id": "factory-558",
+      "name": "Slap Bass 11",
+      "category": "bass"
+    },
+    {
+      "id": "factory-559",
+      "name": "Funk Bass 4",
+      "category": "bass"
+    },
+    {
+      "id": "factory-560",
+      "name": "Acid Bass 89",
+      "category": "bass"
+    },
+    {
+      "id": "factory-561",
+      "name": "Rubber Bass 58",
+      "category": "bass"
+    },
+    {
+      "id": "factory-562",
+      "name": "Bright Bass 65",
+      "category": "bass"
+    },
+    {
+      "id": "factory-563",
+      "name": "Dark Bass 71",
+      "category": "bass"
+    },
+    {
+      "id": "factory-564",
+      "name": "Reese Bass 5",
+      "category": "bass"
+    },
+    {
+      "id": "factory-565",
+      "name": "Saw Bass 3",
+      "category": "bass"
+    },
+    {
+      "id": "factory-566",
+      "name": "Wobble Bass 88",
+      "category": "bass"
+    },
+    {
+      "id": "factory-567",
+      "name": "Sine Bass 42",
+      "category": "bass"
+    },
+    {
+      "id": "factory-568",
+      "name": "Synth Keys 91",
+      "category": "keys"
+    },
+    {
+      "id": "factory-569",
+      "name": "Pluck Keys 38",
+      "category": "keys"
+    },
+    {
+      "id": "factory-570",
+      "name": "Jazz Keys 7",
+      "category": "keys"
+    },
+    {
+      "id": "factory-571",
+      "name": "Warm Keys 62",
+      "category": "keys"
+    },
+    {
+      "id": "factory-572",
+      "name": "Soft Keys 5",
+      "category": "keys"
+    },
+    {
+      "id": "factory-573",
+      "name": "Funky Keys 60",
+      "category": "keys"
+    },
+    {
+      "id": "factory-574",
+      "name": "Crystal Keys 66",
+      "category": "keys"
+    },
+    {
+      "id": "factory-575",
+      "name": "Harpsichord Keys 89",
+      "category": "keys"
+    },
+    {
+      "id": "factory-576",
+      "name": "Metallic Keys 96",
+      "category": "keys"
+    },
+    {
+      "id": "factory-577",
+      "name": "Space Keys 15",
+      "category": "keys"
+    },
+    {
+      "id": "factory-578",
+      "name": "Pluck Keys 66",
+      "category": "keys"
+    },
+    {
+      "id": "factory-579",
+      "name": "FM Keys 61",
+      "category": "keys"
+    },
+    {
+      "id": "factory-580",
+      "name": "Disco Keys 18",
+      "category": "keys"
+    },
+    {
+      "id": "factory-581",
+      "name": "Metallic Keys 45",
+      "category": "keys"
+    },
+    {
+      "id": "factory-582",
+      "name": "Digital Keys 32",
+      "category": "keys"
+    },
+    {
+      "id": "factory-583",
+      "name": "Synth Keys 19",
+      "category": "keys"
+    },
+    {
+      "id": "factory-584",
+      "name": "Clav Keys 90",
+      "category": "keys"
+    },
+    {
+      "id": "factory-585",
+      "name": "Glass Keys 32",
+      "category": "keys"
+    },
+    {
+      "id": "factory-586",
+      "name": "Disco Keys 28",
+      "category": "keys"
+    },
+    {
+      "id": "factory-587",
+      "name": "Disco Keys 42",
+      "category": "keys"
+    },
+    {
+      "id": "factory-588",
+      "name": "Jazz Keys 95",
+      "category": "keys"
+    },
+    {
+      "id": "factory-589",
+      "name": "Warm Keys 59",
+      "category": "keys"
+    },
+    {
+      "id": "factory-590",
+      "name": "Pluck Keys 81",
+      "category": "keys"
+    },
+    {
+      "id": "factory-591",
+      "name": "Pop Keys 69",
+      "category": "keys"
+    },
+    {
+      "id": "factory-592",
+      "name": "Glass Keys 59",
+      "category": "keys"
+    },
+    {
+      "id": "factory-593",
+      "name": "FM Keys 64",
+      "category": "keys"
+    },
+    {
+      "id": "factory-594",
+      "name": "Space Keys 85",
+      "category": "keys"
+    },
+    {
+      "id": "factory-595",
+      "name": "Disco Keys 43",
+      "category": "keys"
+    },
+    {
+      "id": "factory-596",
+      "name": "Pop Keys 58",
+      "category": "keys"
+    },
+    {
+      "id": "factory-597",
+      "name": "Pluck Keys 95",
+      "category": "keys"
+    },
+    {
+      "id": "factory-598",
+      "name": "Down Arp 77",
+      "category": "arps"
+    },
+    {
+      "id": "factory-599",
+      "name": "House Arp 39",
+      "category": "arps"
+    },
+    {
+      "id": "factory-600",
+      "name": "Bell Arp 78",
+      "category": "arps"
+    },
+    {
+      "id": "factory-601",
+      "name": "Trance Arp 91",
+      "category": "arps"
+    },
+    {
+      "id": "factory-602",
+      "name": "Breakbeat Arp 5",
+      "category": "arps"
+    },
+    {
+      "id": "factory-604",
+      "name": "UpDown Arp 57",
+      "category": "arps"
+    },
+    {
+      "id": "factory-605",
+      "name": "Pattern Arp 82",
+      "category": "arps"
+    },
+    {
+      "id": "factory-606",
+      "name": "Pad Arp 86",
+      "category": "arps"
+    },
+    {
+      "id": "factory-607",
+      "name": "UpDown Arp 24",
+      "category": "arps"
+    },
+    {
+      "id": "factory-609",
+      "name": "Breakbeat Arp 66",
+      "category": "arps"
+    },
+    {
+      "id": "factory-610",
+      "name": "Trance Arp 16",
+      "category": "arps"
+    },
+    {
+      "id": "factory-611",
+      "name": "Glitch Arp 35",
+      "category": "arps"
+    },
+    {
+      "id": "factory-612",
+      "name": "Acid Arp 58",
+      "category": "arps"
+    },
+    {
+      "id": "factory-613",
+      "name": "Breakbeat Arp 51",
+      "category": "arps"
+    },
+    {
+      "id": "factory-614",
+      "name": "Pattern Arp 57",
+      "category": "arps"
+    },
+    {
+      "id": "factory-615",
+      "name": "House Arp 84",
+      "category": "arps"
+    },
+    {
+      "id": "factory-616",
+      "name": "Bell Arp 48",
+      "category": "arps"
+    },
+    {
+      "id": "factory-617",
+      "name": "UpDown Arp 18",
+      "category": "arps"
+    },
+    {
+      "id": "factory-618",
+      "name": "Acid Arp 38",
+      "category": "arps"
+    },
+    {
+      "id": "factory-619",
+      "name": "Down Arp 3",
+      "category": "arps"
+    },
+    {
+      "id": "factory-620",
+      "name": "Breakbeat Arp 42",
+      "category": "arps"
+    },
+    {
+      "id": "factory-621",
+      "name": "Pattern Arp 64",
+      "category": "arps"
+    },
+    {
+      "id": "factory-622",
+      "name": "Trance Arp 66",
+      "category": "arps"
+    },
+    {
+      "id": "factory-624",
+      "name": "Down Arp 71",
+      "category": "arps"
+    },
+    {
+      "id": "factory-625",
+      "name": "Classic Arp 43",
+      "category": "arps"
+    },
+    {
+      "id": "factory-626",
+      "name": "Down Arp 75",
+      "category": "arps"
+    },
+    {
+      "id": "factory-627",
+      "name": "Bass Arp 18",
+      "category": "arps"
+    },
+    {
+      "id": "factory-629",
+      "name": "Impact 43",
+      "category": "fx"
+    },
+    {
+      "id": "factory-631",
+      "name": "Alarm 76",
+      "category": "fx"
+    },
+    {
+      "id": "factory-633",
+      "name": "Impact 91",
+      "category": "fx"
+    },
+    {
+      "id": "factory-635",
+      "name": "Impact 38",
+      "category": "fx"
+    },
+    {
+      "id": "factory-638",
+      "name": "Siren 89",
+      "category": "fx"
+    },
+    {
+      "id": "factory-639",
+      "name": "Formant 52",
+      "category": "fx"
+    },
+    {
+      "id": "factory-640",
+      "name": "Rise 21",
+      "category": "fx"
+    },
+    {
+      "id": "factory-642",
+      "name": "Sweep 75",
+      "category": "fx"
+    },
+    {
+      "id": "factory-644",
+      "name": "Thunder 98",
+      "category": "fx"
+    },
+    {
+      "id": "factory-646",
+      "name": "UFO 49",
+      "category": "fx"
+    },
+    {
+      "id": "factory-648",
+      "name": "UFO 80",
+      "category": "fx"
+    },
+    {
+      "id": "factory-654",
+      "name": "Modem 19",
+      "category": "fx"
+    },
+    {
+      "id": "factory-655",
+      "name": "Explosion 82",
+      "category": "fx"
+    },
+    {
+      "id": "factory-659",
+      "name": "Palm Trees 98",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-660",
+      "name": "VHS Keys 6",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-661",
+      "name": "Palm Trees 86",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-663",
+      "name": "Tangerine Pad 81",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-664",
+      "name": "Coastal Drive 66",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-665",
+      "name": "Kraftwerk Keys 63",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-666",
+      "name": "Blade Runner 49",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-667",
+      "name": "Cassette Pad 24",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-668",
+      "name": "Grid Runner 19",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-669",
+      "name": "Tron Bass 85",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-670",
+      "name": "Cyber Bass 62",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-671",
+      "name": "Miami Nights 62",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-672",
+      "name": "Grid Runner 47",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-673",
+      "name": "Carpenter Lead 21",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-674",
+      "name": "Tron Bass 5",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-675",
+      "name": "Laser Disc 31",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-676",
+      "name": "Tron Bass 25",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-677",
+      "name": "Kraftwerk Keys 44",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-678",
+      "name": "Vaporwave Keys 87",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-679",
+      "name": "Cassette Pad 14",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-680",
+      "name": "Kraftwerk Keys 74",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-681",
+      "name": "Tron Bass 34",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-682",
+      "name": "Dream Pad 72",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-683",
+      "name": "Upright Piano 28",
+      "category": "piano"
+    },
+    {
+      "id": "factory-684",
+      "name": "Classical Piano 23",
+      "category": "piano"
+    },
+    {
+      "id": "factory-686",
+      "name": "Concert Grand 85",
+      "category": "piano"
+    },
+    {
+      "id": "factory-689",
+      "name": "Honky Tonk 45",
+      "category": "piano"
+    },
+    {
+      "id": "factory-691",
+      "name": "Ballad Piano 90",
+      "category": "piano"
+    },
+    {
+      "id": "factory-692",
+      "name": "Rock Piano 48",
+      "category": "piano"
+    },
+    {
+      "id": "factory-694",
+      "name": "Soft Piano 33",
+      "category": "piano"
+    },
+    {
+      "id": "factory-695",
+      "name": "Rock Piano 89",
+      "category": "piano"
+    },
+    {
+      "id": "factory-696",
+      "name": "Classical Piano 83",
+      "category": "piano"
+    },
+    {
+      "id": "factory-697",
+      "name": "Pop Piano 36",
+      "category": "piano"
+    },
+    {
+      "id": "factory-699",
+      "name": "Stage Piano 14",
+      "category": "piano"
+    },
+    {
+      "id": "factory-700",
+      "name": "Bright Piano 60",
+      "category": "piano"
+    },
+    {
+      "id": "factory-702",
+      "name": "Jazz Piano 44",
+      "category": "piano"
+    },
+    {
+      "id": "factory-703",
+      "name": "Ballad Piano 47",
+      "category": "piano"
+    },
+    {
+      "id": "factory-704",
+      "name": "Ballad Piano 71",
+      "category": "piano"
+    },
+    {
+      "id": "factory-707",
+      "name": "Pop Piano 97",
+      "category": "piano"
+    },
+    {
+      "id": "factory-708",
+      "name": "Hammond Growl 72",
+      "category": "organ"
+    },
+    {
+      "id": "factory-709",
+      "name": "Theater Organ 77",
+      "category": "organ"
+    },
+    {
+      "id": "factory-710",
+      "name": "Jazz Organ 80",
+      "category": "organ"
+    },
+    {
+      "id": "factory-711",
+      "name": "Hammond B3 49",
+      "category": "organ"
+    },
+    {
+      "id": "factory-712",
+      "name": "Baroque Organ 30",
+      "category": "organ"
+    },
+    {
+      "id": "factory-713",
+      "name": "Church Organ 3",
+      "category": "organ"
+    },
+    {
+      "id": "factory-714",
+      "name": "Baroque Organ 85",
+      "category": "organ"
+    },
+    {
+      "id": "factory-715",
+      "name": "Rotary Organ 70",
+      "category": "organ"
+    },
+    {
+      "id": "factory-716",
+      "name": "Church Organ 41",
+      "category": "organ"
+    },
+    {
+      "id": "factory-717",
+      "name": "Electric Organ 73",
+      "category": "organ"
+    },
+    {
+      "id": "factory-718",
+      "name": "Hammond C3 53",
+      "category": "organ"
+    },
+    {
+      "id": "factory-719",
+      "name": "Hammond C3 78",
+      "category": "organ"
+    },
+    {
+      "id": "factory-720",
+      "name": "Hammond C3 72",
+      "category": "organ"
+    },
+    {
+      "id": "factory-721",
+      "name": "Farfisa 93",
+      "category": "organ"
+    },
+    {
+      "id": "factory-722",
+      "name": "Farfisa 15",
+      "category": "organ"
+    },
+    {
+      "id": "factory-723",
+      "name": "Cathedral Organ 23",
+      "category": "organ"
+    },
+    {
+      "id": "factory-724",
+      "name": "Electric Organ 64",
+      "category": "organ"
+    },
+    {
+      "id": "factory-725",
+      "name": "Cathedral Organ 5",
+      "category": "organ"
+    },
+    {
+      "id": "factory-726",
+      "name": "Farfisa 99",
+      "category": "organ"
+    },
+    {
+      "id": "factory-727",
+      "name": "Rotary Organ 94",
+      "category": "organ"
+    },
+    {
+      "id": "factory-728",
+      "name": "Gospel Organ 25",
+      "category": "organ"
+    },
+    {
+      "id": "factory-729",
+      "name": "Farfisa 40",
+      "category": "organ"
+    },
+    {
+      "id": "factory-730",
+      "name": "Cathedral Organ 62",
+      "category": "organ"
+    },
+    {
+      "id": "factory-731",
+      "name": "Farfisa 20",
+      "category": "organ"
+    },
+    {
+      "id": "factory-732",
+      "name": "Hammond Growl 31",
+      "category": "organ"
+    },
+    {
+      "id": "factory-759",
+      "name": "Cello 36",
+      "category": "strings"
+    },
+    {
+      "id": "factory-760",
+      "name": "Bright Strings 92",
+      "category": "strings"
+    },
+    {
+      "id": "factory-761",
+      "name": "Warm Strings 62",
+      "category": "strings"
+    },
+    {
+      "id": "factory-762",
+      "name": "Chamber Strings 11",
+      "category": "strings"
+    },
+    {
+      "id": "factory-763",
+      "name": "Pad Strings 31",
+      "category": "strings"
+    },
+    {
+      "id": "factory-765",
+      "name": "Double Bass 15",
+      "category": "strings"
+    },
+    {
+      "id": "factory-766",
+      "name": "Double Bass 36",
+      "category": "strings"
+    },
+    {
+      "id": "factory-767",
+      "name": "Pad Strings 37",
+      "category": "strings"
+    },
+    {
+      "id": "factory-769",
+      "name": "Pizzicato 86",
+      "category": "strings"
+    },
+    {
+      "id": "factory-770",
+      "name": "Pad Strings 42",
+      "category": "strings"
+    },
+    {
+      "id": "factory-771",
+      "name": "Pizzicato 50",
+      "category": "strings"
+    },
+    {
+      "id": "factory-773",
+      "name": "String Ensemble 74",
+      "category": "strings"
+    },
+    {
+      "id": "factory-774",
+      "name": "Cello 3",
+      "category": "strings"
+    },
+    {
+      "id": "factory-775",
+      "name": "Viola 38",
+      "category": "strings"
+    },
+    {
+      "id": "factory-776",
+      "name": "Epic Strings 91",
+      "category": "strings"
+    },
+    {
+      "id": "factory-777",
+      "name": "Viola 9",
+      "category": "strings"
+    },
+    {
+      "id": "factory-778",
+      "name": "Cello 51",
+      "category": "strings"
+    },
+    {
+      "id": "factory-779",
+      "name": "Violin 38",
+      "category": "strings"
+    },
+    {
+      "id": "factory-780",
+      "name": "Marcato 62",
+      "category": "strings"
+    },
+    {
+      "id": "factory-781",
+      "name": "Chamber Strings 74",
+      "category": "strings"
+    },
+    {
+      "id": "factory-783",
+      "name": "Horn Section 15",
+      "category": "brass"
+    },
+    {
+      "id": "factory-784",
+      "name": "French Horn 66",
+      "category": "brass"
+    },
+    {
+      "id": "factory-785",
+      "name": "Jazz Brass 94",
+      "category": "brass"
+    },
+    {
+      "id": "factory-787",
+      "name": "Orchestral Brass 39",
+      "category": "brass"
+    },
+    {
+      "id": "factory-788",
+      "name": "Synth Brass 4",
+      "category": "brass"
+    },
+    {
+      "id": "factory-790",
+      "name": "Big Band Brass 98",
+      "category": "brass"
+    },
+    {
+      "id": "factory-791",
+      "name": "Bright Brass 48",
+      "category": "brass"
+    },
+    {
+      "id": "factory-792",
+      "name": "Tuba 54",
+      "category": "brass"
+    },
+    {
+      "id": "factory-793",
+      "name": "Tuba 29",
+      "category": "brass"
+    },
+    {
+      "id": "factory-795",
+      "name": "Soft Brass 75",
+      "category": "brass"
+    },
+    {
+      "id": "factory-796",
+      "name": "Jazz Brass 65",
+      "category": "brass"
+    },
+    {
+      "id": "factory-797",
+      "name": "Brass Stab 98",
+      "category": "brass"
+    },
+    {
+      "id": "factory-798",
+      "name": "Jazz Brass 9",
+      "category": "brass"
+    },
+    {
+      "id": "factory-799",
+      "name": "Big Band Brass 9",
+      "category": "brass"
+    },
+    {
+      "id": "factory-800",
+      "name": "Cinematic Brass 52",
+      "category": "brass"
+    },
+    {
+      "id": "factory-801",
+      "name": "Cinematic Brass 87",
+      "category": "brass"
+    },
+    {
+      "id": "factory-802",
+      "name": "Horn Section 3",
+      "category": "brass"
+    },
+    {
+      "id": "factory-803",
+      "name": "Bright Brass 92",
+      "category": "brass"
+    },
+    {
+      "id": "factory-804",
+      "name": "Bright Brass 42",
+      "category": "brass"
+    },
+    {
+      "id": "factory-805",
+      "name": "Synth Brass 83",
+      "category": "brass"
+    },
+    {
+      "id": "factory-806",
+      "name": "Orchestral Brass 3",
+      "category": "brass"
+    },
+    {
+      "id": "factory-807",
+      "name": "French Horn 69",
+      "category": "brass"
+    },
+    {
+      "id": "factory-833",
+      "name": "Vibraphone 2",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-834",
+      "name": "Agogo 25",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-835",
+      "name": "Claves 61",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-836",
+      "name": "Claves 66",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-837",
+      "name": "Steel Drum 61",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-838",
+      "name": "Steel Drum 37",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-839",
+      "name": "Castanets 5",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-840",
+      "name": "Agogo 7",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-841",
+      "name": "Vibraphone 20",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-842",
+      "name": "Sleigh Bells 32",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-843",
+      "name": "Marimba 44",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-844",
+      "name": "Sleigh Bells 90",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-846",
+      "name": "Timbales 55",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-847",
+      "name": "Wind Chimes 86",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-848",
+      "name": "Triangle 17",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-849",
+      "name": "Agogo 59",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-850",
+      "name": "Field Drum 39",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-851",
+      "name": "Gong 58",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-852",
+      "name": "Snare Drum 70",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-853",
+      "name": "Castanets 25",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-854",
+      "name": "Timpani 44",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-855",
+      "name": "Snare Drum 24",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-856",
+      "name": "Vibraphone 35",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-857",
+      "name": "Wood Block 11",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-858",
+      "name": "Grain 88",
+      "category": "custom"
+    },
+    {
+      "id": "factory-860",
+      "name": "Mood 36",
+      "category": "custom"
+    },
+    {
+      "id": "factory-862",
+      "name": "Draft 61",
+      "category": "custom"
+    },
+    {
+      "id": "factory-863",
+      "name": "Grain 2",
+      "category": "custom"
+    },
+    {
+      "id": "factory-865",
+      "name": "Color 1",
+      "category": "custom"
+    },
+    {
+      "id": "factory-866",
+      "name": "Sketch 3",
+      "category": "custom"
+    },
+    {
+      "id": "factory-867",
+      "name": "Blank Canvas 17",
+      "category": "custom"
+    },
+    {
+      "id": "factory-869",
+      "name": "Sketch 96",
+      "category": "custom"
+    },
+    {
+      "id": "factory-870",
+      "name": "Feel 57",
+      "category": "custom"
+    },
+    {
+      "id": "factory-871",
+      "name": "Color 43",
+      "category": "custom"
+    },
+    {
+      "id": "factory-875",
+      "name": "Blank Canvas 1",
+      "category": "custom"
+    },
+    {
+      "id": "factory-877",
+      "name": "User Init 75",
+      "category": "custom"
+    },
+    {
+      "id": "factory-878",
+      "name": "Rock Kit 27",
+      "category": "drums"
+    },
+    {
+      "id": "factory-879",
+      "name": "Jazz Kit 17",
+      "category": "drums"
+    },
+    {
+      "id": "factory-880",
+      "name": "Metal Kit 62",
+      "category": "drums"
+    },
+    {
+      "id": "factory-881",
+      "name": "Room Kit 69",
+      "category": "drums"
+    },
+    {
+      "id": "factory-882",
+      "name": "DnB Kit 52",
+      "category": "drums"
+    },
+    {
+      "id": "factory-883",
+      "name": "Breakbeat 91",
+      "category": "drums"
+    },
+    {
+      "id": "factory-884",
+      "name": "Tribal Kit 19",
+      "category": "drums"
+    },
+    {
+      "id": "factory-885",
+      "name": "House Kit 33",
+      "category": "drums"
+    },
+    {
+      "id": "factory-886",
+      "name": "Cyber Kit 51",
+      "category": "drums"
+    },
+    {
+      "id": "factory-887",
+      "name": "Techno Kit 73",
+      "category": "drums"
+    },
+    {
+      "id": "factory-888",
+      "name": "Vintage Kit 31",
+      "category": "drums"
+    },
+    {
+      "id": "factory-889",
+      "name": "DnB Kit 61",
+      "category": "drums"
+    },
+    {
+      "id": "factory-890",
+      "name": "Cyber Kit 18",
+      "category": "drums"
+    },
+    {
+      "id": "factory-891",
+      "name": "808 Kit 82",
+      "category": "drums"
+    },
+    {
+      "id": "factory-892",
+      "name": "Cyber Kit 50",
+      "category": "drums"
+    },
+    {
+      "id": "factory-893",
+      "name": "Linn Drum 62",
+      "category": "drums"
+    },
+    {
+      "id": "factory-894",
+      "name": "Tribal Kit 16",
+      "category": "drums"
+    },
+    {
+      "id": "factory-895",
+      "name": "Garage Kit 83",
+      "category": "drums"
+    },
+    {
+      "id": "factory-896",
+      "name": "Vintage Kit 95",
+      "category": "drums"
+    },
+    {
+      "id": "factory-897",
+      "name": "Drum Machine 19",
+      "category": "drums"
+    },
+    {
+      "id": "factory-898",
+      "name": "Garage Kit 28",
+      "category": "drums"
+    },
+    {
+      "id": "factory-899",
+      "name": "Trap Kit 85",
+      "category": "drums"
+    },
+    {
+      "id": "factory-900",
+      "name": "Drum Machine 97",
+      "category": "drums"
+    },
+    {
+      "id": "factory-902",
+      "name": "Linn Drum 31",
+      "category": "drums"
+    },
+    {
+      "id": "factory-903",
+      "name": "Linn Drum 15",
+      "category": "drums"
+    },
+    {
+      "id": "factory-904",
+      "name": "Linn Drum 42",
+      "category": "drums"
+    },
+    {
+      "id": "factory-905",
+      "name": "Jazz Kit 85",
+      "category": "drums"
+    },
+    {
+      "id": "factory-906",
+      "name": "Analog Kit 70",
+      "category": "drums"
+    },
+    {
+      "id": "factory-907",
+      "name": "Electronic Kit 13",
+      "category": "drums"
+    },
+    {
+      "id": "factory-933",
+      "name": "Clean Strat 66",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-934",
+      "name": "Shred Lead 32",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-935",
+      "name": "Single Coil 94",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-936",
+      "name": "Les Paul Clean 58",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-938",
+      "name": "Les Paul Clean 32",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-941",
+      "name": "Blues Drive 68",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-946",
+      "name": "Clean Strat 73",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-947",
+      "name": "Blackface 21",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-948",
+      "name": "Single Coil 51",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-949",
+      "name": "Clean Strat 31",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-950",
+      "name": "Gretsch Clean 12",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-951",
+      "name": "Clean Strat 76",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-954",
+      "name": "Modern High Gain 63",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-955",
+      "name": "Djent 83",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-956",
+      "name": "Tele Twang 11",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-957",
+      "name": "Shred Lead 28",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-958",
+      "name": "P90 52",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-959",
+      "name": "80s Clean 56",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-960",
+      "name": "Blues Breaker 19",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-962",
+      "name": "Tele Twang 23",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-963",
+      "name": "Doom Bass 3",
+      "category": "bassGuitar"
+    },
+    {
+      "id": "factory-964",
+      "name": "Fretless 83",
+      "category": "bassGuitar"
+    },
+    {
+      "id": "factory-965",
+      "name": "Pop Bass 22",
+      "category": "bassGuitar"
+    },
+    {
+      "id": "factory-966",
+      "name": "Acid Bass 17",
+      "category": "bassGuitar"
+    },
+    {
+      "id": "factory-967",
+      "name": "Precision Bass 96",
+      "category": "bassGuitar"
+    },
+    {
+      "id": "factory-968",
+      "name": "Doom Bass 75",
+      "category": "bassGuitar"
+    },
+    {
+      "id": "factory-969",
+      "name": "Acoustic Bass 88",
+      "category": "bassGuitar"
+    },
+    {
+      "id": "factory-970",
+      "name": "Gibson Bass 67",
+      "category": "bassGuitar"
+    },
+    {
+      "id": "factory-971",
+      "name": "Fender Bass 45",
+      "category": "bassGuitar"
+    },
+    {
+      "id": "factory-972",
+      "name": "Sub Octave Bass 63",
+      "category": "bassGuitar"
+    },
+    {
+      "id": "factory-973",
+      "name": "Metal Bass 83",
+      "category": "bassGuitar"
+    },
+    {
+      "id": "factory-974",
+      "name": "Upright Bass 72",
+      "category": "bassGuitar"
+    },
+    {
+      "id": "factory-975",
+      "name": "Fretless 16",
+      "category": "bassGuitar"
+    },
+    {
+      "id": "factory-976",
+      "name": "Pop Bass 83",
+      "category": "bassGuitar"
+    },
+    {
+      "id": "factory-977",
+      "name": "Finger Bass 80",
+      "category": "bassGuitar"
+    },
+    {
+      "id": "factory-978",
+      "name": "Rickenbacker 7",
+      "category": "bassGuitar"
+    },
+    {
+      "id": "factory-979",
+      "name": "Funk Bass 62",
+      "category": "bassGuitar"
+    },
+    {
+      "id": "factory-980",
+      "name": "Precision Bass 86",
+      "category": "bassGuitar"
+    },
+    {
+      "id": "factory-981",
+      "name": "Pick Bass 25",
+      "category": "bassGuitar"
+    },
+    {
+      "id": "factory-982",
+      "name": "Rickenbacker 71",
+      "category": "bassGuitar"
+    },
+    {
+      "id": "factory-983",
+      "name": "Motown Bass 56",
+      "category": "bassGuitar"
+    },
+    {
+      "id": "factory-984",
+      "name": "Synth Bass Guitar 27",
+      "category": "bassGuitar"
+    },
+    {
+      "id": "factory-985",
+      "name": "Pop Bass 59",
+      "category": "bassGuitar"
+    },
+    {
+      "id": "factory-986",
+      "name": "Precision Bass 73",
+      "category": "bassGuitar"
+    },
+    {
+      "id": "factory-987",
+      "name": "Slap Bass 91",
+      "category": "bassGuitar"
+    },
+    {
+      "id": "factory-988",
+      "name": "Rhodes Stage 25",
+      "category": "electricPiano"
+    },
+    {
+      "id": "factory-989",
+      "name": "Dyno My Piano 73",
+      "category": "electricPiano"
+    },
+    {
+      "id": "factory-990",
+      "name": "Wurlitzer 7",
+      "category": "electricPiano"
+    },
+    {
+      "id": "factory-991",
+      "name": "Yamaha DX7 EP 5",
+      "category": "electricPiano"
+    },
+    {
+      "id": "factory-992",
+      "name": "CP80 39",
+      "category": "electricPiano"
+    },
+    {
+      "id": "factory-993",
+      "name": "Rhodes MK1 99",
+      "category": "electricPiano"
+    },
+    {
+      "id": "factory-994",
+      "name": "FM Electric Piano 84",
+      "category": "electricPiano"
+    },
+    {
+      "id": "factory-995",
+      "name": "Wurlitzer 200 39",
+      "category": "electricPiano"
+    },
+    {
+      "id": "factory-996",
+      "name": "DX Bell 52",
+      "category": "electricPiano"
+    },
+    {
+      "id": "factory-997",
+      "name": "Wurlitzer 76",
+      "category": "electricPiano"
+    },
+    {
+      "id": "factory-998",
+      "name": "Wurlitzer 200 60",
+      "category": "electricPiano"
+    },
+    {
+      "id": "factory-999",
+      "name": "FM Electric Piano 98",
+      "category": "electricPiano"
+    },
+    {
+      "id": "factory-1000",
+      "name": "Clavinet D6 30",
+      "category": "electricPiano"
+    },
+    {
+      "id": "factory-1001",
+      "name": "Soft EP 78",
+      "category": "electricPiano"
+    },
+    {
+      "id": "factory-1002",
+      "name": "Wurlitzer 27",
+      "category": "electricPiano"
+    },
+    {
+      "id": "factory-1003",
+      "name": "Wurlitzer 200 9",
+      "category": "electricPiano"
+    },
+    {
+      "id": "factory-1004",
+      "name": "Clavinet D6 37",
+      "category": "electricPiano"
+    },
+    {
+      "id": "factory-1005",
+      "name": "Bright EP 97",
+      "category": "electricPiano"
+    },
+    {
+      "id": "factory-1006",
+      "name": "Rhodes MK2 14",
+      "category": "electricPiano"
+    },
+    {
+      "id": "factory-1007",
+      "name": "Wurlitzer 200 56",
+      "category": "electricPiano"
+    },
+    {
+      "id": "factory-1008",
+      "name": "Yamaha DX7 EP 8",
+      "category": "electricPiano"
+    },
+    {
+      "id": "factory-1009",
+      "name": "Soft EP 29",
+      "category": "electricPiano"
+    },
+    {
+      "id": "factory-1010",
+      "name": "DX Bell 95",
+      "category": "electricPiano"
+    },
+    {
+      "id": "factory-1011",
+      "name": "Tremolo EP 64",
+      "category": "electricPiano"
+    },
+    {
+      "id": "factory-1012",
+      "name": "Rhodes MK1 44",
+      "category": "electricPiano"
+    },
+    {
+      "id": "factory-1013",
+      "name": "Clean Clav 31",
+      "category": "clavinet"
+    },
+    {
+      "id": "factory-1014",
+      "name": "Clavinet C 40",
+      "category": "clavinet"
+    },
+    {
+      "id": "factory-1015",
+      "name": "Muted Clav 79",
+      "category": "clavinet"
+    },
+    {
+      "id": "factory-1016",
+      "name": "Nasty Clav 65",
+      "category": "clavinet"
+    },
+    {
+      "id": "factory-1017",
+      "name": "Wah Clav 14",
+      "category": "clavinet"
+    },
+    {
+      "id": "factory-1018",
+      "name": "Wah Clav 53",
+      "category": "clavinet"
+    },
+    {
+      "id": "factory-1019",
+      "name": "Bright Clav 49",
+      "category": "clavinet"
+    },
+    {
+      "id": "factory-1020",
+      "name": "Guitar Clav 68",
+      "category": "clavinet"
+    },
+    {
+      "id": "factory-1022",
+      "name": "Staccato Clav 69",
+      "category": "clavinet"
+    },
+    {
+      "id": "factory-1023",
+      "name": "Staccato Clav 24",
+      "category": "clavinet"
+    },
+    {
+      "id": "factory-1024",
+      "name": "Staccato Clav 55",
+      "category": "clavinet"
+    },
+    {
+      "id": "factory-1025",
+      "name": "Staccato Clav 53",
+      "category": "clavinet"
+    },
+    {
+      "id": "factory-1026",
+      "name": "Nasty Clav 84",
+      "category": "clavinet"
+    },
+    {
+      "id": "factory-1027",
+      "name": "Muted Clav 42",
+      "category": "clavinet"
+    },
+    {
+      "id": "factory-1028",
+      "name": "Bright Clav 22",
+      "category": "clavinet"
+    },
+    {
+      "id": "factory-1029",
+      "name": "Clavinet D6 63",
+      "category": "clavinet"
+    },
+    {
+      "id": "factory-1030",
+      "name": "Soul Clav 34",
+      "category": "clavinet"
+    },
+    {
+      "id": "factory-1031",
+      "name": "Clean Clav 89",
+      "category": "clavinet"
+    },
+    {
+      "id": "factory-1032",
+      "name": "Guitar Clav 29",
+      "category": "clavinet"
+    },
+    {
+      "id": "factory-1033",
+      "name": "Music Box 5",
+      "category": "mallets"
+    },
+    {
+      "id": "factory-1034",
+      "name": "Orchestral Bells 13",
+      "category": "mallets"
+    },
+    {
+      "id": "factory-1035",
+      "name": "Tongue Drum 77",
+      "category": "mallets"
+    },
+    {
+      "id": "factory-1036",
+      "name": "Marimba 40",
+      "category": "mallets"
+    },
+    {
+      "id": "factory-1037",
+      "name": "Soft Mallets 9",
+      "category": "mallets"
+    },
+    {
+      "id": "factory-1038",
+      "name": "Hang Drum 14",
+      "category": "mallets"
+    },
+    {
+      "id": "factory-1039",
+      "name": "Xylophone 65",
+      "category": "mallets"
+    },
+    {
+      "id": "factory-1040",
+      "name": "Hard Mallets 61",
+      "category": "mallets"
+    },
+    {
+      "id": "factory-1041",
+      "name": "Steel Drum 74",
+      "category": "mallets"
+    },
+    {
+      "id": "factory-1042",
+      "name": "Orchestral Mallets 61",
+      "category": "mallets"
+    },
+    {
+      "id": "factory-1043",
+      "name": "Steel Drum 42",
+      "category": "mallets"
+    },
+    {
+      "id": "factory-1044",
+      "name": "Music Box 81",
+      "category": "mallets"
+    },
+    {
+      "id": "factory-1045",
+      "name": "Kalimba 79",
+      "category": "mallets"
+    },
+    {
+      "id": "factory-1046",
+      "name": "Kalimba 26",
+      "category": "mallets"
+    },
+    {
+      "id": "factory-1047",
+      "name": "Chime 80",
+      "category": "mallets"
+    },
+    {
+      "id": "factory-1048",
+      "name": "Hard Mallets 78",
+      "category": "mallets"
+    },
+    {
+      "id": "factory-1049",
+      "name": "Tongue Drum 42",
+      "category": "mallets"
+    },
+    {
+      "id": "factory-1050",
+      "name": "Balafon 72",
+      "category": "mallets"
+    },
+    {
+      "id": "factory-1051",
+      "name": "Kalimba 49",
+      "category": "mallets"
+    },
+    {
+      "id": "factory-1052",
+      "name": "Tongue Drum 51",
+      "category": "mallets"
+    },
+    {
+      "id": "factory-1054",
+      "name": "Crystal Bells 91",
+      "category": "mallets"
+    },
+    {
+      "id": "factory-1055",
+      "name": "Balafon 23",
+      "category": "mallets"
+    },
+    {
+      "id": "factory-1056",
+      "name": "Music Box 2",
+      "category": "mallets"
+    },
+    {
+      "id": "factory-1057",
+      "name": "Kalimba 35",
+      "category": "mallets"
+    },
+    {
+      "id": "factory-1058",
+      "name": "Irish Whistle 73",
+      "category": "woodwinds"
+    },
+    {
+      "id": "factory-1059",
+      "name": "Ocarina 85",
+      "category": "woodwinds"
+    },
+    {
+      "id": "factory-1060",
+      "name": "Clarinet 24",
+      "category": "woodwinds"
+    },
+    {
+      "id": "factory-1061",
+      "name": "Ney 52",
+      "category": "woodwinds"
+    },
+    {
+      "id": "factory-1062",
+      "name": "Bansuri 90",
+      "category": "woodwinds"
+    },
+    {
+      "id": "factory-1063",
+      "name": "Oboe 39",
+      "category": "woodwinds"
+    },
+    {
+      "id": "factory-1064",
+      "name": "Shakuhachi 86",
+      "category": "woodwinds"
+    },
+    {
+      "id": "factory-1066",
+      "name": "Alto Sax 50",
+      "category": "woodwinds"
+    },
+    {
+      "id": "factory-1067",
+      "name": "Clarinet 84",
+      "category": "woodwinds"
+    },
+    {
+      "id": "factory-1068",
+      "name": "Bansuri 58",
+      "category": "woodwinds"
+    },
+    {
+      "id": "factory-1069",
+      "name": "Bansuri 94",
+      "category": "woodwinds"
+    },
+    {
+      "id": "factory-1070",
+      "name": "Soprano Sax 46",
+      "category": "woodwinds"
+    },
+    {
+      "id": "factory-1071",
+      "name": "Tenor Sax 59",
+      "category": "woodwinds"
+    },
+    {
+      "id": "factory-1072",
+      "name": "Shinobue 39",
+      "category": "woodwinds"
+    },
+    {
+      "id": "factory-1073",
+      "name": "Bassoon 89",
+      "category": "woodwinds"
+    },
+    {
+      "id": "factory-1074",
+      "name": "Recorder 85",
+      "category": "woodwinds"
+    },
+    {
+      "id": "factory-1075",
+      "name": "Baritone Sax 61",
+      "category": "woodwinds"
+    },
+    {
+      "id": "factory-1076",
+      "name": "Irish Whistle 45",
+      "category": "woodwinds"
+    },
+    {
+      "id": "factory-1077",
+      "name": "Soprano Sax 72",
+      "category": "woodwinds"
+    },
+    {
+      "id": "factory-1079",
+      "name": "Bamboo Flute 60",
+      "category": "woodwinds"
+    },
+    {
+      "id": "factory-1080",
+      "name": "Flute 80",
+      "category": "woodwinds"
+    },
+    {
+      "id": "factory-1081",
+      "name": "Duduk 50",
+      "category": "woodwinds"
+    },
+    {
+      "id": "factory-1082",
+      "name": "Bansuri 57",
+      "category": "woodwinds"
+    },
+    {
+      "id": "factory-1083",
+      "name": "Thumb Piano 10",
+      "category": "ethnic"
+    },
+    {
+      "id": "factory-1084",
+      "name": "Didgeridoo 92",
+      "category": "ethnic"
+    },
+    {
+      "id": "factory-1085",
+      "name": "Hammered Dulcimer 34",
+      "category": "ethnic"
+    },
+    {
+      "id": "factory-1086",
+      "name": "Pipa 19",
+      "category": "ethnic"
+    },
+    {
+      "id": "factory-1087",
+      "name": "Erhu 78",
+      "category": "ethnic"
+    },
+    {
+      "id": "factory-1088",
+      "name": "Mbira 83",
+      "category": "ethnic"
+    },
+    {
+      "id": "factory-1089",
+      "name": "Zither 20",
+      "category": "ethnic"
+    },
+    {
+      "id": "factory-1090",
+      "name": "Kalimba 86",
+      "category": "ethnic"
+    },
+    {
+      "id": "factory-1091",
+      "name": "Santoor 89",
+      "category": "ethnic"
+    },
+    {
+      "id": "factory-1092",
+      "name": "Zither 32",
+      "category": "ethnic"
+    },
+    {
+      "id": "factory-1093",
+      "name": "Kora 73",
+      "category": "ethnic"
+    },
+    {
+      "id": "factory-1094",
+      "name": "Santoor 43",
+      "category": "ethnic"
+    },
+    {
+      "id": "factory-1095",
+      "name": "Pan Pipe 61",
+      "category": "ethnic"
+    },
+    {
+      "id": "factory-1096",
+      "name": "Ocarina 61",
+      "category": "ethnic"
+    },
+    {
+      "id": "factory-1097",
+      "name": "Mizmar 54",
+      "category": "ethnic"
+    },
+    {
+      "id": "factory-1098",
+      "name": "Didgeridoo 8",
+      "category": "ethnic"
+    },
+    {
+      "id": "factory-1099",
+      "name": "Dulcimer 28",
+      "category": "ethnic"
+    },
+    {
+      "id": "factory-1100",
+      "name": "Harmonica 32",
+      "category": "ethnic"
+    },
+    {
+      "id": "factory-1101",
+      "name": "Erhu 20",
+      "category": "ethnic"
+    },
+    {
+      "id": "factory-1102",
+      "name": "Ngoni 47",
+      "category": "ethnic"
+    },
+    {
+      "id": "factory-1103",
+      "name": "Harmonica 7",
+      "category": "ethnic"
+    },
+    {
+      "id": "factory-1104",
+      "name": "Shamisen 72",
+      "category": "ethnic"
+    },
+    {
+      "id": "factory-1105",
+      "name": "Balafon 10",
+      "category": "ethnic"
+    },
+    {
+      "id": "factory-1106",
+      "name": "Ngoni 69",
+      "category": "ethnic"
+    },
+    {
+      "id": "factory-1107",
+      "name": "Whistle 45",
+      "category": "ethnic"
+    },
+    {
+      "id": "factory-1108",
+      "name": "Void Pad 99",
+      "category": "pads"
+    },
+    {
+      "id": "factory-1109",
+      "name": "Zero Gravity 86",
+      "category": "pads"
+    },
+    {
+      "id": "factory-1113",
+      "name": "Deep Space 86",
+      "category": "pads"
+    },
+    {
+      "id": "factory-1116",
+      "name": "Cosmic Dust 92",
+      "category": "pads"
+    },
+    {
+      "id": "factory-1117",
+      "name": "Singularity 99",
+      "category": "pads"
+    },
+    {
+      "id": "factory-1122",
+      "name": "Deep Space 39",
+      "category": "pads"
+    },
+    {
+      "id": "factory-1124",
+      "name": "Cyber Solo 61",
+      "category": "leads"
+    },
+    {
+      "id": "factory-1126",
+      "name": "Infrared 81",
+      "category": "leads"
+    },
+    {
+      "id": "factory-1128",
+      "name": "Neon Scream 8",
+      "category": "leads"
+    },
+    {
+      "id": "factory-1131",
+      "name": "Photon Lead 55",
+      "category": "leads"
+    },
+    {
+      "id": "factory-1132",
+      "name": "Square Solo 57",
+      "category": "leads"
+    },
+    {
+      "id": "factory-1133",
+      "name": "X-Ray 6",
+      "category": "leads"
+    },
+    {
+      "id": "factory-1138",
+      "name": "Stellar Bass 42",
+      "category": "bass"
+    },
+    {
+      "id": "factory-1139",
+      "name": "Cosmic Bass 84",
+      "category": "bass"
+    },
+    {
+      "id": "factory-1140",
+      "name": "Dark Matter 15",
+      "category": "bass"
+    },
+    {
+      "id": "factory-1141",
+      "name": "Antimatter 39",
+      "category": "bass"
+    },
+    {
+      "id": "factory-1142",
+      "name": "Pulsar 79",
+      "category": "bass"
+    },
+    {
+      "id": "factory-1143",
+      "name": "Black Hole 13",
+      "category": "bass"
+    },
+    {
+      "id": "factory-1144",
+      "name": "Event Horizon Bass 9",
+      "category": "bass"
+    },
+    {
+      "id": "factory-1145",
+      "name": "Nebula Bass 79",
+      "category": "bass"
+    },
+    {
+      "id": "factory-1146",
+      "name": "Cosmic Bass 20",
+      "category": "bass"
+    },
+    {
+      "id": "factory-1147",
+      "name": "Cosmic Bass 21",
+      "category": "bass"
+    },
+    {
+      "id": "factory-1148",
+      "name": "Nebula Bass 72",
+      "category": "bass"
+    },
+    {
+      "id": "factory-1149",
+      "name": "Neutron Star 17",
+      "category": "bass"
+    },
+    {
+      "id": "factory-1150",
+      "name": "Dark Matter 50",
+      "category": "bass"
+    },
+    {
+      "id": "factory-1151",
+      "name": "Wormhole 91",
+      "category": "bass"
+    },
+    {
+      "id": "factory-1152",
+      "name": "Neutron Star 86",
+      "category": "bass"
+    },
+    {
+      "id": "factory-1156",
+      "name": "Disco Keys 22",
+      "category": "keys"
+    },
+    {
+      "id": "factory-1159",
+      "name": "Metallic Keys 89",
+      "category": "keys"
+    },
+    {
+      "id": "factory-1160",
+      "name": "Glass EP 92",
+      "category": "keys"
+    },
+    {
+      "id": "factory-1161",
+      "name": "Glass EP 9",
+      "category": "keys"
+    },
+    {
+      "id": "factory-1162",
+      "name": "Digital Piano 47",
+      "category": "keys"
+    },
+    {
+      "id": "factory-1175",
+      "name": "Laser Arp 29",
+      "category": "arps"
+    },
+    {
+      "id": "factory-1178",
+      "name": "Nebula Arp 42",
+      "category": "arps"
+    },
+    {
+      "id": "factory-1184",
+      "name": "Pink Noise 61",
+      "category": "fx"
+    },
+    {
+      "id": "factory-1187",
+      "name": "Data Burst 9",
+      "category": "fx"
+    },
+    {
+      "id": "factory-1191",
+      "name": "Signal Loss 35",
+      "category": "fx"
+    },
+    {
+      "id": "factory-1193",
+      "name": "White Noise 57",
+      "category": "fx"
+    },
+    {
+      "id": "factory-1194",
+      "name": "Oscillation 56",
+      "category": "fx"
+    },
+    {
+      "id": "factory-1196",
+      "name": "Oscillation 48",
+      "category": "fx"
+    },
+    {
+      "id": "factory-1197",
+      "name": "Transmission 97",
+      "category": "fx"
+    },
+    {
+      "id": "factory-1198",
+      "name": "Matrix Drive 29",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-1200",
+      "name": "Present Drive 91",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-1202",
+      "name": "Simulation Drive 70",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-1203",
+      "name": "Analog Drive 65",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-1204",
+      "name": "Future Drive 68",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-1206",
+      "name": "Laser Drive 7",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-1208",
+      "name": "Past Drive 51",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-1209",
+      "name": "Cyber Drive 67",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-1210",
+      "name": "Live Room 12",
+      "category": "piano"
+    },
+    {
+      "id": "factory-1211",
+      "name": "Parlor 49",
+      "category": "piano"
+    },
+    {
+      "id": "factory-1212",
+      "name": "Salon 96",
+      "category": "piano"
+    },
+    {
+      "id": "factory-1213",
+      "name": "Recital Hall 71",
+      "category": "piano"
+    },
+    {
+      "id": "factory-1214",
+      "name": "Drawing Room 88",
+      "category": "piano"
+    },
+    {
+      "id": "factory-1215",
+      "name": "Practice Room 88",
+      "category": "piano"
+    },
+    {
+      "id": "factory-1216",
+      "name": "Drawing Room 65",
+      "category": "piano"
+    },
+    {
+      "id": "factory-1217",
+      "name": "Coffee Shop 40",
+      "category": "piano"
+    },
+    {
+      "id": "factory-1218",
+      "name": "Recital Hall 43",
+      "category": "piano"
+    },
+    {
+      "id": "factory-1219",
+      "name": "Coffee Shop 59",
+      "category": "piano"
+    },
+    {
+      "id": "factory-1220",
+      "name": "Coffee Shop 90",
+      "category": "piano"
+    },
+    {
+      "id": "factory-1221",
+      "name": "Recording Booth 15",
+      "category": "piano"
+    },
+    {
+      "id": "factory-1222",
+      "name": "Pagoda 77",
+      "category": "organ"
+    },
+    {
+      "id": "factory-1223",
+      "name": "Pagoda 45",
+      "category": "organ"
+    },
+    {
+      "id": "factory-1224",
+      "name": "Synagogue 77",
+      "category": "organ"
+    },
+    {
+      "id": "factory-1225",
+      "name": "Chapel 62",
+      "category": "organ"
+    },
+    {
+      "id": "factory-1226",
+      "name": "Synagogue 70",
+      "category": "organ"
+    },
+    {
+      "id": "factory-1227",
+      "name": "Gurdwara 18",
+      "category": "organ"
+    },
+    {
+      "id": "factory-1228",
+      "name": "Chapel 12",
+      "category": "organ"
+    },
+    {
+      "id": "factory-1229",
+      "name": "Abbey 33",
+      "category": "organ"
+    },
+    {
+      "id": "factory-1230",
+      "name": "Stupa 70",
+      "category": "organ"
+    },
+    {
+      "id": "factory-1231",
+      "name": "Chapel 24",
+      "category": "organ"
+    },
+    {
+      "id": "factory-1232",
+      "name": "Synagogue 51",
+      "category": "organ"
+    },
+    {
+      "id": "factory-1233",
+      "name": "Monastery 76",
+      "category": "organ"
+    },
+    {
+      "id": "factory-1235",
+      "name": "Tango Guitar 94",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-1237",
+      "name": "Reggae Guitar 37",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-1239",
+      "name": "Bossa Guitar 91",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-1241",
+      "name": "Flamenco Guitar 65",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-1242",
+      "name": "Son Guitar 84",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-1243",
+      "name": "Salsa Guitar 27",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-1244",
+      "name": "Bossa Guitar 58",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-1245",
+      "name": "Ska Guitar 73",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-1246",
+      "name": "Quartet 69",
+      "category": "strings"
+    },
+    {
+      "id": "factory-1249",
+      "name": "Sextet 50",
+      "category": "strings"
+    },
+    {
+      "id": "factory-1250",
+      "name": "Ensemble Medium 52",
+      "category": "strings"
+    },
+    {
+      "id": "factory-1251",
+      "name": "Duet 39",
+      "category": "strings"
+    },
+    {
+      "id": "factory-1253",
+      "name": "Quintet 15",
+      "category": "strings"
+    },
+    {
+      "id": "factory-1254",
+      "name": "Solo Cello 13",
+      "category": "strings"
+    },
+    {
+      "id": "factory-1255",
+      "name": "Solo Viola 83",
+      "category": "strings"
+    },
+    {
+      "id": "factory-1256",
+      "name": "Ensemble Large 40",
+      "category": "strings"
+    },
+    {
+      "id": "factory-1257",
+      "name": "Duet 19",
+      "category": "strings"
+    },
+    {
+      "id": "factory-1258",
+      "name": "Alert 58",
+      "category": "brass"
+    },
+    {
+      "id": "factory-1259",
+      "name": "Siren 55",
+      "category": "brass"
+    },
+    {
+      "id": "factory-1260",
+      "name": "Klaxon 44",
+      "category": "brass"
+    },
+    {
+      "id": "factory-1261",
+      "name": "Fanfare 31",
+      "category": "brass"
+    },
+    {
+      "id": "factory-1262",
+      "name": "Reveille 71",
+      "category": "brass"
+    },
+    {
+      "id": "factory-1263",
+      "name": "Reveille 23",
+      "category": "brass"
+    },
+    {
+      "id": "factory-1264",
+      "name": "Signal 56",
+      "category": "brass"
+    },
+    {
+      "id": "factory-1265",
+      "name": "Horn Blast 66",
+      "category": "brass"
+    },
+    {
+      "id": "factory-1266",
+      "name": "Trumpet Voluntary 82",
+      "category": "brass"
+    },
+    {
+      "id": "factory-1267",
+      "name": "Siren 96",
+      "category": "brass"
+    },
+    {
+      "id": "factory-1268",
+      "name": "Fanfare 99",
+      "category": "brass"
+    },
+    {
+      "id": "factory-1269",
+      "name": "Trumpet Voluntary 49",
+      "category": "brass"
+    },
+    {
+      "id": "factory-1273",
+      "name": "Follower 3",
+      "category": "choir"
+    },
+    {
+      "id": "factory-1275",
+      "name": "Seraphim 44",
+      "category": "choir"
+    },
+    {
+      "id": "factory-1276",
+      "name": "Devotee 30",
+      "category": "choir"
+    },
+    {
+      "id": "factory-1278",
+      "name": "Prophet 9",
+      "category": "choir"
+    },
+    {
+      "id": "factory-1281",
+      "name": "Saint 59",
+      "category": "choir"
+    },
+    {
+      "id": "factory-1282",
+      "name": "Just Intonation 92",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-1283",
+      "name": "Junk Band 19",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-1284",
+      "name": "Alternate Tuning 92",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-1285",
+      "name": "Drumline 98",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-1286",
+      "name": "Marching Band 25",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-1287",
+      "name": "Drum Corps 97",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-1288",
+      "name": "Steel Band 61",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-1289",
+      "name": "Just Intonation 28",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-1290",
+      "name": "Extended Technique 75",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-1291",
+      "name": "Equal Temperament 4",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-1292",
+      "name": "Marching Band 13",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-1293",
+      "name": "Kitchen Band 11",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-1295",
+      "name": "Theorem 2 4",
+      "category": "custom"
+    },
+    {
+      "id": "factory-1297",
+      "name": "Equation A 26",
+      "category": "custom"
+    },
+    {
+      "id": "factory-1301",
+      "name": "Equation A 41",
+      "category": "custom"
+    },
+    {
+      "id": "factory-1303",
+      "name": "Proof A 10",
+      "category": "custom"
+    },
+    {
+      "id": "factory-1304",
+      "name": "Swing Beat 83",
+      "category": "drums"
+    },
+    {
+      "id": "factory-1305",
+      "name": "Soukous 24",
+      "category": "drums"
+    },
+    {
+      "id": "factory-1306",
+      "name": "Samba Beat 85",
+      "category": "drums"
+    },
+    {
+      "id": "factory-1307",
+      "name": "Shuffle Beat 62",
+      "category": "drums"
+    },
+    {
+      "id": "factory-1308",
+      "name": "Afrobeat 39",
+      "category": "drums"
+    },
+    {
+      "id": "factory-1309",
+      "name": "Funky Drummer 14",
+      "category": "drums"
+    },
+    {
+      "id": "factory-1310",
+      "name": "Mbalax 93",
+      "category": "drums"
+    },
+    {
+      "id": "factory-1311",
+      "name": "Swing Beat 84",
+      "category": "drums"
+    },
+    {
+      "id": "factory-1312",
+      "name": "Highlife 39",
+      "category": "drums"
+    },
+    {
+      "id": "factory-1313",
+      "name": "Think Break 8",
+      "category": "drums"
+    },
+    {
+      "id": "factory-1314",
+      "name": "Soukous 7",
+      "category": "drums"
+    },
+    {
+      "id": "factory-1315",
+      "name": "Samba Beat 72",
+      "category": "drums"
+    },
+    {
+      "id": "factory-1316",
+      "name": "Highlife 46",
+      "category": "drums"
+    },
+    {
+      "id": "factory-1317",
+      "name": "Bossa Beat 62",
+      "category": "drums"
+    },
+    {
+      "id": "factory-1318",
+      "name": "Soukous 15",
+      "category": "drums"
+    },
+    {
+      "id": "factory-1319",
+      "name": "Folk Blues 16",
+      "category": "acousticGuitar"
+    },
+    {
+      "id": "factory-1320",
+      "name": "Stride Piano 13",
+      "category": "acousticGuitar"
+    },
+    {
+      "id": "factory-1321",
+      "name": "Ragtime Guitar 13",
+      "category": "acousticGuitar"
+    },
+    {
+      "id": "factory-1324",
+      "name": "Delta Blues 21",
+      "category": "acousticGuitar"
+    },
+    {
+      "id": "factory-1328",
+      "name": "Boogie Woogie 59",
+      "category": "acousticGuitar"
+    },
+    {
+      "id": "factory-1330",
+      "name": "Fingerstyle Blues 11",
+      "category": "acousticGuitar"
+    },
+    {
+      "id": "factory-1331",
+      "name": "Secundal 35",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-1333",
+      "name": "Added Tone 80",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-1334",
+      "name": "Power Chord 89",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-1335",
+      "name": "Suspended Chord 2",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-1339",
+      "name": "Power Chord 66",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-1341",
+      "name": "Jazz Chord 7",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-1343",
+      "name": "Added Tone 95",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-1344",
+      "name": "Tone Cluster 85",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-1345",
+      "name": "Quintal 90",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-1346",
+      "name": "Chordal Bass 24",
+      "category": "bassGuitar"
+    },
+    {
+      "id": "factory-1347",
+      "name": "Bicycle Bass 95",
+      "category": "bassGuitar"
+    },
+    {
+      "id": "factory-1348",
+      "name": "Chordal Bass 39",
+      "category": "bassGuitar"
+    },
+    {
+      "id": "factory-1349",
+      "name": "Pedal Point 58",
+      "category": "bassGuitar"
+    },
+    {
+      "id": "factory-1350",
+      "name": "Obbligato Bass 85",
+      "category": "bassGuitar"
+    },
+    {
+      "id": "factory-1351",
+      "name": "Obbligato Bass 27",
+      "category": "bassGuitar"
+    },
+    {
+      "id": "factory-1352",
+      "name": "Walking Bass 69",
+      "category": "bassGuitar"
+    },
+    {
+      "id": "factory-1353",
+      "name": "Root Five 9",
+      "category": "bassGuitar"
+    },
+    {
+      "id": "factory-1354",
+      "name": "Pedal Point 24",
+      "category": "bassGuitar"
+    },
+    {
+      "id": "factory-1355",
+      "name": "Pedal Point 54",
+      "category": "bassGuitar"
+    },
+    {
+      "id": "factory-1356",
+      "name": "Chordal Bass 59",
+      "category": "bassGuitar"
+    },
+    {
+      "id": "factory-1357",
+      "name": "Melodic Bass 37",
+      "category": "bassGuitar"
+    },
+    {
+      "id": "factory-1358",
+      "name": "Fazioli 66",
+      "category": "electricPiano"
+    },
+    {
+      "id": "factory-1359",
+      "name": "Yamaha 27",
+      "category": "electricPiano"
+    },
+    {
+      "id": "factory-1360",
+      "name": "Fazioli 76",
+      "category": "electricPiano"
+    },
+    {
+      "id": "factory-1361",
+      "name": "Virginal 19",
+      "category": "electricPiano"
+    },
+    {
+      "id": "factory-1362",
+      "name": "Cristofori 77",
+      "category": "electricPiano"
+    },
+    {
+      "id": "factory-1363",
+      "name": "Casio 21",
+      "category": "electricPiano"
+    },
+    {
+      "id": "factory-1364",
+      "name": "Bluthner 44",
+      "category": "electricPiano"
+    },
+    {
+      "id": "factory-1365",
+      "name": "Bosendorfer 91",
+      "category": "electricPiano"
+    },
+    {
+      "id": "factory-1366",
+      "name": "Harpsichord 81",
+      "category": "electricPiano"
+    },
+    {
+      "id": "factory-1367",
+      "name": "Bluthner 7",
+      "category": "electricPiano"
+    },
+    {
+      "id": "factory-1368",
+      "name": "Harpsichord 88",
+      "category": "electricPiano"
+    },
+    {
+      "id": "factory-1369",
+      "name": "Bechstein 72",
+      "category": "electricPiano"
+    },
+    {
+      "id": "factory-1370",
+      "name": "Fender Rhodes 32",
+      "category": "clavinet"
+    },
+    {
+      "id": "factory-1371",
+      "name": "Vintage Vibe 79",
+      "category": "clavinet"
+    },
+    {
+      "id": "factory-1372",
+      "name": "Rhodes Stage 70",
+      "category": "clavinet"
+    },
+    {
+      "id": "factory-1373",
+      "name": "Rhodes Suitcase 77",
+      "category": "clavinet"
+    },
+    {
+      "id": "factory-1374",
+      "name": "Hohner Cembalet 33",
+      "category": "clavinet"
+    },
+    {
+      "id": "factory-1375",
+      "name": "Wurlitzer 140 50",
+      "category": "clavinet"
+    },
+    {
+      "id": "factory-1376",
+      "name": "Rhodes Suitcase 13",
+      "category": "clavinet"
+    },
+    {
+      "id": "factory-1377",
+      "name": "Hohner Pianet 86",
+      "category": "clavinet"
+    },
+    {
+      "id": "factory-1378",
+      "name": "Mark I 33",
+      "category": "clavinet"
+    },
+    {
+      "id": "factory-1379",
+      "name": "Rhodes Stage 29",
+      "category": "clavinet"
+    },
+    {
+      "id": "factory-1380",
+      "name": "Glock 18",
+      "category": "mallets"
+    },
+    {
+      "id": "factory-1381",
+      "name": "Thunder Tube 74",
+      "category": "mallets"
+    },
+    {
+      "id": "factory-1382",
+      "name": "Steel Pan 60",
+      "category": "mallets"
+    },
+    {
+      "id": "factory-1383",
+      "name": "Thunder Tube 51",
+      "category": "mallets"
+    },
+    {
+      "id": "factory-1384",
+      "name": "Tongue Drum 7",
+      "category": "mallets"
+    },
+    {
+      "id": "factory-1385",
+      "name": "Wind Wand 16",
+      "category": "mallets"
+    },
+    {
+      "id": "factory-1386",
+      "name": "Thunder Tube 18",
+      "category": "mallets"
+    },
+    {
+      "id": "factory-1387",
+      "name": "Marimba 17",
+      "category": "mallets"
+    },
+    {
+      "id": "factory-1388",
+      "name": "Steel Pan 33",
+      "category": "mallets"
+    },
+    {
+      "id": "factory-1389",
+      "name": "Tongue Drum 79",
+      "category": "mallets"
+    },
+    {
+      "id": "factory-1390",
+      "name": "Steel Pan 61",
+      "category": "mallets"
+    },
+    {
+      "id": "factory-1391",
+      "name": "Music Box 3",
+      "category": "mallets"
+    },
+    {
+      "id": "factory-1392",
+      "name": "Bass Flute 76",
+      "category": "woodwinds"
+    },
+    {
+      "id": "factory-1393",
+      "name": "Piccolo 31",
+      "category": "woodwinds"
+    },
+    {
+      "id": "factory-1394",
+      "name": "Native Flute 34",
+      "category": "woodwinds"
+    },
+    {
+      "id": "factory-1395",
+      "name": "Korean Flute 73",
+      "category": "woodwinds"
+    },
+    {
+      "id": "factory-1396",
+      "name": "Recorder 21",
+      "category": "woodwinds"
+    },
+    {
+      "id": "factory-1397",
+      "name": "Irish Flute 56",
+      "category": "woodwinds"
+    },
+    {
+      "id": "factory-1398",
+      "name": "Alto Flute 78",
+      "category": "woodwinds"
+    },
+    {
+      "id": "factory-1399",
+      "name": "Piccolo 64",
+      "category": "woodwinds"
+    },
+    {
+      "id": "factory-1400",
+      "name": "Irish Flute 33",
+      "category": "woodwinds"
+    },
+    {
+      "id": "factory-1401",
+      "name": "Alto Flute 96",
+      "category": "woodwinds"
+    },
+    {
+      "id": "factory-1402",
+      "name": "Piccolo 95",
+      "category": "woodwinds"
+    },
+    {
+      "id": "factory-1403",
+      "name": "Whistle 17",
+      "category": "woodwinds"
+    },
+    {
+      "id": "factory-1404",
+      "name": "Esraj 7",
+      "category": "ethnic"
+    },
+    {
+      "id": "factory-1405",
+      "name": "Kokyu 95",
+      "category": "ethnic"
+    },
+    {
+      "id": "factory-1406",
+      "name": "Gusle 5",
+      "category": "ethnic"
+    },
+    {
+      "id": "factory-1407",
+      "name": "Jews Harp 54",
+      "category": "ethnic"
+    },
+    {
+      "id": "factory-1409",
+      "name": "Mouth Harp 40",
+      "category": "ethnic"
+    },
+    {
+      "id": "factory-1410",
+      "name": "Gadulka 10",
+      "category": "ethnic"
+    },
+    {
+      "id": "factory-1411",
+      "name": "Dilruba 30",
+      "category": "ethnic"
+    },
+    {
+      "id": "factory-1412",
+      "name": "Rebab 31",
+      "category": "ethnic"
+    },
+    {
+      "id": "factory-1413",
+      "name": "Erhu 49",
+      "category": "ethnic"
+    },
+    {
+      "id": "factory-1414",
+      "name": "Sarangi 76",
+      "category": "ethnic"
+    },
+    {
+      "id": "factory-1415",
+      "name": "Haegeum 66",
+      "category": "ethnic"
+    },
+    {
+      "id": "factory-org-01",
+      "name": "Tonewheel Classic",
+      "category": "organ"
+    },
+    {
+      "id": "factory-clv-02",
+      "name": "Superstition Clav",
+      "category": "clavinet"
+    },
+    {
+      "id": "factory-clv-03",
+      "name": "Muted Clav",
+      "category": "clavinet"
+    },
+    {
+      "id": "factory-eg-02",
+      "name": "Crunch Lead",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-bg-01",
+      "name": "Finger Bass",
+      "category": "bassGuitar"
+    },
+    {
+      "id": "factory-bg-03",
+      "name": "Fretless Mwah",
+      "category": "bassGuitar"
+    },
+    {
+      "id": "factory-str-01",
+      "name": "Chamber Strings",
+      "category": "strings"
+    },
+    {
+      "id": "factory-str-03",
+      "name": "Solo Violin",
+      "category": "strings"
+    },
+    {
+      "id": "factory-brs-01",
+      "name": "Trumpet Section",
+      "category": "brass"
+    },
+    {
+      "id": "factory-brs-03",
+      "name": "Saxophone Alto",
+      "category": "brass"
+    },
+    {
+      "id": "factory-ww-01",
+      "name": "Concert Flute",
+      "category": "woodwinds"
+    },
+    {
+      "id": "factory-ww-02",
+      "name": "Clarinet",
+      "category": "woodwinds"
+    },
+    {
+      "id": "factory-eth-04",
+      "name": "Erhu",
+      "category": "ethnic"
+    }
+  ],
+  "mergePresets": [
+    {
+      "id": "factory-368",
+      "name": "Music Box",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-282",
+      "name": "Toy Piano",
+      "category": "piano"
+    },
+    {
+      "id": "factory-348",
+      "name": "Cathedral Choir",
+      "category": "choir"
+    },
+    {
+      "id": "factory-441",
+      "name": "Slap Bass",
+      "category": "bass"
+    },
+    {
+      "id": "factory-bg-02",
+      "name": "Slap Bass",
+      "category": "bassGuitar"
+    },
+    {
+      "id": "factory-438",
+      "name": "Acid 303",
+      "category": "bass"
+    },
+    {
+      "id": "factory-363",
+      "name": "Vibraphone",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-437",
+      "name": "Vibraphone",
+      "category": "keys"
+    },
+    {
+      "id": "factory-mal-01",
+      "name": "Vibraphone",
+      "category": "mallets"
+    },
+    {
+      "id": "factory-367",
+      "name": "Steel Drums",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-366",
+      "name": "Glockenspiel",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-mal-03",
+      "name": "Glockenspiel",
+      "category": "mallets"
+    },
+    {
+      "id": "factory-429",
+      "name": "Celesta",
+      "category": "keys"
+    },
+    {
+      "id": "factory-372",
+      "name": "Kalimba",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-431",
+      "name": "Kalimba",
+      "category": "keys"
+    },
+    {
+      "id": "factory-290",
+      "name": "Pipe Organ",
+      "category": "organ"
+    },
+    {
+      "id": "factory-org-05",
+      "name": "Pipe Organ",
+      "category": "organ"
+    },
+    {
+      "id": "factory-278",
+      "name": "Wurlitzer EP",
+      "category": "piano"
+    },
+    {
+      "id": "factory-369",
+      "name": "Tubular Bells",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-436",
+      "name": "Hammond B3",
+      "category": "keys"
+    },
+    {
+      "id": "factory-org-03",
+      "name": "Jazz Organ",
+      "category": "organ"
+    },
+    {
+      "id": "factory-org-04",
+      "name": "Rock Organ",
+      "category": "organ"
+    },
+    {
+      "id": "factory-org-02",
+      "name": "Gospel Organ",
+      "category": "organ"
+    },
+    {
+      "id": "factory-456",
+      "name": "Cello",
+      "category": "leads"
+    },
+    {
+      "id": "factory-462",
+      "name": "Staccato Strings",
+      "category": "arps"
+    },
+    {
+      "id": "factory-brs-02",
+      "name": "Trombone",
+      "category": "brass"
+    },
+    {
+      "id": "factory-394",
+      "name": "Ethereal Voices",
+      "category": "pads"
+    },
+    {
+      "id": "factory-476",
+      "name": "Choir Stab",
+      "category": "fx"
+    },
+    {
+      "id": "factory-mal-02",
+      "name": "Marimba",
+      "category": "mallets"
+    },
+    {
+      "id": "factory-471",
+      "name": "Timpani",
+      "category": "fx"
+    },
+    {
+      "id": "factory-eth-03",
+      "name": "Shakuhachi",
+      "category": "ethnic"
+    },
+    {
+      "id": "factory-ww-03",
+      "name": "Oboe",
+      "category": "woodwinds"
+    },
+    {
+      "id": "factory-eth-05",
+      "name": "Didgeridoo",
+      "category": "ethnic"
+    },
+    {
+      "id": "factory-eth-02",
+      "name": "Koto Pluck",
+      "category": "ethnic"
+    },
+    {
+      "id": "factory-eth-01",
+      "name": "Sitar Drone",
+      "category": "ethnic"
+    },
+    {
+      "id": "factory-str-02",
+      "name": "Pizzicato",
+      "category": "strings"
+    },
+    {
+      "id": "factory-688",
+      "name": "Classical Piano 23",
+      "category": "piano"
+    },
+    {
+      "id": "factory-901",
+      "name": "Tribal Kit 19",
+      "category": "drums"
+    },
+    {
+      "id": "factory-1021",
+      "name": "Clean Clav 31",
+      "category": "clavinet"
+    },
+    {
+      "id": "factory-1114",
+      "name": "Deep Space 86",
+      "category": "pads"
+    },
+    {
+      "id": "factory-1207",
+      "name": "Laser Drive 7",
+      "category": "synthwave"
+    }
+  ],
+  "fixPresets": [
+    {
+      "id": "factory-08",
+      "name": "Electric Piano",
+      "category": "keys"
+    },
+    {
+      "id": "factory-15",
+      "name": "Init Patch",
+      "category": "custom"
+    },
+    {
+      "id": "factory-18",
+      "name": "Vocal Choir Pad",
+      "category": "pads"
+    },
+    {
+      "id": "factory-28",
+      "name": "Mellow Wurli",
+      "category": "keys"
+    },
+    {
+      "id": "factory-53",
+      "name": "Heavenly Choir",
+      "category": "pads"
+    },
+    {
+      "id": "factory-77",
+      "name": "Harpsichord",
+      "category": "keys"
+    },
+    {
+      "id": "factory-78",
+      "name": "Glass Marimba",
+      "category": "keys"
+    },
+    {
+      "id": "factory-273",
+      "name": "Grand Piano",
+      "category": "piano"
+    },
+    {
+      "id": "factory-274",
+      "name": "Bright Piano",
+      "category": "piano"
+    },
+    {
+      "id": "factory-275",
+      "name": "Honky Tonk Piano",
+      "category": "piano"
+    },
+    {
+      "id": "factory-276",
+      "name": "Soft Piano Pad",
+      "category": "piano"
+    },
+    {
+      "id": "factory-279",
+      "name": "FM Piano",
+      "category": "piano"
+    },
+    {
+      "id": "factory-280",
+      "name": "Cinematic Piano",
+      "category": "piano"
+    },
+    {
+      "id": "factory-281",
+      "name": "Mellow Piano",
+      "category": "piano"
+    },
+    {
+      "id": "factory-283",
+      "name": "Piano Strings Layer",
+      "category": "piano"
+    },
+    {
+      "id": "factory-284",
+      "name": "Lo-Fi Piano",
+      "category": "piano"
+    },
+    {
+      "id": "factory-285",
+      "name": "Rock Piano",
+      "category": "piano"
+    },
+    {
+      "id": "factory-286",
+      "name": "Ambient Piano Wash",
+      "category": "piano"
+    },
+    {
+      "id": "factory-287",
+      "name": "Jazz Piano",
+      "category": "piano"
+    },
+    {
+      "id": "factory-296",
+      "name": "Percussive Organ",
+      "category": "organ"
+    },
+    {
+      "id": "factory-302",
+      "name": "Reggae Bubble Organ",
+      "category": "organ"
+    },
+    {
+      "id": "factory-303",
+      "name": "Clean Guitar",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-304",
+      "name": "Nylon Guitar",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-307",
+      "name": "Funk Guitar",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-311",
+      "name": "Ambient Guitar",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-312",
+      "name": "Acoustic Strum",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-315",
+      "name": "Twelve String Guitar",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-317",
+      "name": "Guitar Harmonics",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-328",
+      "name": "String Stab",
+      "category": "strings"
+    },
+    {
+      "id": "factory-339",
+      "name": "Brass Stab",
+      "category": "brass"
+    },
+    {
+      "id": "factory-349",
+      "name": "Warm Choir Pad",
+      "category": "choir"
+    },
+    {
+      "id": "factory-350",
+      "name": "Angelic Voices",
+      "category": "choir"
+    },
+    {
+      "id": "factory-351",
+      "name": "Male Chorus",
+      "category": "choir"
+    },
+    {
+      "id": "factory-354",
+      "name": "Distant Choir",
+      "category": "choir"
+    },
+    {
+      "id": "factory-355",
+      "name": "Gospel Choir",
+      "category": "choir"
+    },
+    {
+      "id": "factory-358",
+      "name": "Dark Choir",
+      "category": "choir"
+    },
+    {
+      "id": "factory-359",
+      "name": "Children Choir",
+      "category": "choir"
+    },
+    {
+      "id": "factory-361",
+      "name": "Haunting Voices",
+      "category": "choir"
+    },
+    {
+      "id": "factory-362",
+      "name": "Celestial Choir",
+      "category": "choir"
+    },
+    {
+      "id": "factory-508",
+      "name": "Scream Lead 97",
+      "category": "leads"
+    },
+    {
+      "id": "factory-516",
+      "name": "Digital Lead 35",
+      "category": "leads"
+    },
+    {
+      "id": "factory-525",
+      "name": "Square Lead 39",
+      "category": "leads"
+    },
+    {
+      "id": "factory-530",
+      "name": "Digital Lead 78",
+      "category": "leads"
+    },
+    {
+      "id": "factory-603",
+      "name": "Pad Arp 29",
+      "category": "arps"
+    },
+    {
+      "id": "factory-608",
+      "name": "Synth Arp 2",
+      "category": "arps"
+    },
+    {
+      "id": "factory-623",
+      "name": "Up Arp 71",
+      "category": "arps"
+    },
+    {
+      "id": "factory-628",
+      "name": "Crash 19",
+      "category": "fx"
+    },
+    {
+      "id": "factory-630",
+      "name": "Vocoder 70",
+      "category": "fx"
+    },
+    {
+      "id": "factory-632",
+      "name": "Arcade 13",
+      "category": "fx"
+    },
+    {
+      "id": "factory-634",
+      "name": "Siren 22",
+      "category": "fx"
+    },
+    {
+      "id": "factory-636",
+      "name": "Modem 67",
+      "category": "fx"
+    },
+    {
+      "id": "factory-637",
+      "name": "Pixel 51",
+      "category": "fx"
+    },
+    {
+      "id": "factory-641",
+      "name": "Arcade 14",
+      "category": "fx"
+    },
+    {
+      "id": "factory-643",
+      "name": "Robot 16",
+      "category": "fx"
+    },
+    {
+      "id": "factory-645",
+      "name": "Robot 94",
+      "category": "fx"
+    },
+    {
+      "id": "factory-647",
+      "name": "Laser 2",
+      "category": "fx"
+    },
+    {
+      "id": "factory-649",
+      "name": "Stab 53",
+      "category": "fx"
+    },
+    {
+      "id": "factory-650",
+      "name": "Glitch 43",
+      "category": "fx"
+    },
+    {
+      "id": "factory-651",
+      "name": "Siren 72",
+      "category": "fx"
+    },
+    {
+      "id": "factory-652",
+      "name": "Arcade 16",
+      "category": "fx"
+    },
+    {
+      "id": "factory-653",
+      "name": "Noise Burst 18",
+      "category": "fx"
+    },
+    {
+      "id": "factory-656",
+      "name": "Wind 67",
+      "category": "fx"
+    },
+    {
+      "id": "factory-657",
+      "name": "Formant 66",
+      "category": "fx"
+    },
+    {
+      "id": "factory-658",
+      "name": "Grid Runner 30",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-662",
+      "name": "Outrun Lead 1",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-685",
+      "name": "Bright Piano 11",
+      "category": "piano"
+    },
+    {
+      "id": "factory-687",
+      "name": "Dark Piano 40",
+      "category": "piano"
+    },
+    {
+      "id": "factory-690",
+      "name": "Dark Piano 49",
+      "category": "piano"
+    },
+    {
+      "id": "factory-693",
+      "name": "Concert Grand 50",
+      "category": "piano"
+    },
+    {
+      "id": "factory-698",
+      "name": "Studio Piano 93",
+      "category": "piano"
+    },
+    {
+      "id": "factory-701",
+      "name": "Classical Piano 50",
+      "category": "piano"
+    },
+    {
+      "id": "factory-705",
+      "name": "Studio Piano 62",
+      "category": "piano"
+    },
+    {
+      "id": "factory-706",
+      "name": "Soft Piano 99",
+      "category": "piano"
+    },
+    {
+      "id": "factory-733",
+      "name": "Finger Pick 68",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-734",
+      "name": "Fingerstyle 77",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-735",
+      "name": "Baroque Guitar 57",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-736",
+      "name": "Classical Guitar 10",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-737",
+      "name": "Romantic Guitar 89",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-738",
+      "name": "Steel String 59",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-739",
+      "name": "Clean Strat 59",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-740",
+      "name": "Steel String 39",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-741",
+      "name": "Clean Strat 70",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-742",
+      "name": "Archtop 14",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-743",
+      "name": "Classical Guitar 58",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-744",
+      "name": "Archtop 2",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-745",
+      "name": "Flamenco 56",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-746",
+      "name": "Jazz Guitar 86",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-747",
+      "name": "Parlor Guitar 55",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-748",
+      "name": "Semi Hollow 74",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-749",
+      "name": "Semi Hollow 11",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-750",
+      "name": "Les Paul 59",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-751",
+      "name": "Classical Guitar 74",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-752",
+      "name": "Finger Pick 15",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-753",
+      "name": "Classical Guitar 77",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-754",
+      "name": "Steel String 7",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-755",
+      "name": "Telecaster 87",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-756",
+      "name": "Fingerstyle 75",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-757",
+      "name": "Telecaster 13",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-758",
+      "name": "Double Bass 12",
+      "category": "strings"
+    },
+    {
+      "id": "factory-764",
+      "name": "Epic Strings 20",
+      "category": "strings"
+    },
+    {
+      "id": "factory-768",
+      "name": "Soft Strings 1",
+      "category": "strings"
+    },
+    {
+      "id": "factory-772",
+      "name": "Bowed Strings 22",
+      "category": "strings"
+    },
+    {
+      "id": "factory-782",
+      "name": "Violin 95",
+      "category": "strings"
+    },
+    {
+      "id": "factory-786",
+      "name": "Muted Trumpet 9",
+      "category": "brass"
+    },
+    {
+      "id": "factory-789",
+      "name": "Soft Brass 21",
+      "category": "brass"
+    },
+    {
+      "id": "factory-794",
+      "name": "Brass Swell 76",
+      "category": "brass"
+    },
+    {
+      "id": "factory-808",
+      "name": "Gregorian 84",
+      "category": "choir"
+    },
+    {
+      "id": "factory-809",
+      "name": "Alto 82",
+      "category": "choir"
+    },
+    {
+      "id": "factory-810",
+      "name": "Ethereal Choir 35",
+      "category": "choir"
+    },
+    {
+      "id": "factory-811",
+      "name": "Mixed Choir 34",
+      "category": "choir"
+    },
+    {
+      "id": "factory-812",
+      "name": "Choir Pad 93",
+      "category": "choir"
+    },
+    {
+      "id": "factory-813",
+      "name": "Mmm Choir 19",
+      "category": "choir"
+    },
+    {
+      "id": "factory-814",
+      "name": "Baritone 40",
+      "category": "choir"
+    },
+    {
+      "id": "factory-815",
+      "name": "Choir Pad 2",
+      "category": "choir"
+    },
+    {
+      "id": "factory-816",
+      "name": "Dark Choir 95",
+      "category": "choir"
+    },
+    {
+      "id": "factory-817",
+      "name": "Ooh Choir 1",
+      "category": "choir"
+    },
+    {
+      "id": "factory-818",
+      "name": "Eeh Choir 88",
+      "category": "choir"
+    },
+    {
+      "id": "factory-819",
+      "name": "Mmm Choir 34",
+      "category": "choir"
+    },
+    {
+      "id": "factory-820",
+      "name": "Mmm Choir 35",
+      "category": "choir"
+    },
+    {
+      "id": "factory-821",
+      "name": "Chamber Choir 88",
+      "category": "choir"
+    },
+    {
+      "id": "factory-822",
+      "name": "Opera 86",
+      "category": "choir"
+    },
+    {
+      "id": "factory-823",
+      "name": "Gregorian 41",
+      "category": "choir"
+    },
+    {
+      "id": "factory-824",
+      "name": "Eeh Choir 41",
+      "category": "choir"
+    },
+    {
+      "id": "factory-825",
+      "name": "Angelic Choir 46",
+      "category": "choir"
+    },
+    {
+      "id": "factory-826",
+      "name": "Mystic Choir 99",
+      "category": "choir"
+    },
+    {
+      "id": "factory-827",
+      "name": "Angelic Choir 81",
+      "category": "choir"
+    },
+    {
+      "id": "factory-828",
+      "name": "Gregorian 71",
+      "category": "choir"
+    },
+    {
+      "id": "factory-829",
+      "name": "Opera 17",
+      "category": "choir"
+    },
+    {
+      "id": "factory-830",
+      "name": "Soprano 83",
+      "category": "choir"
+    },
+    {
+      "id": "factory-831",
+      "name": "Sacred Choir 10",
+      "category": "choir"
+    },
+    {
+      "id": "factory-832",
+      "name": "Ethereal Choir 91",
+      "category": "choir"
+    },
+    {
+      "id": "factory-845",
+      "name": "Concert Bass Drum 11",
+      "category": "percussion"
+    },
+    {
+      "id": "factory-859",
+      "name": "Grain 1",
+      "category": "custom"
+    },
+    {
+      "id": "factory-861",
+      "name": "Feel 36",
+      "category": "custom"
+    },
+    {
+      "id": "factory-864",
+      "name": "Test Patch 40",
+      "category": "custom"
+    },
+    {
+      "id": "factory-868",
+      "name": "Mood 71",
+      "category": "custom"
+    },
+    {
+      "id": "factory-872",
+      "name": "Concept 91",
+      "category": "custom"
+    },
+    {
+      "id": "factory-873",
+      "name": "Tone 85",
+      "category": "custom"
+    },
+    {
+      "id": "factory-874",
+      "name": "User Init 15",
+      "category": "custom"
+    },
+    {
+      "id": "factory-876",
+      "name": "Mood 23",
+      "category": "custom"
+    },
+    {
+      "id": "factory-908",
+      "name": "Singer Songwriter 21",
+      "category": "acousticGuitar"
+    },
+    {
+      "id": "factory-909",
+      "name": "Singer Songwriter 66",
+      "category": "acousticGuitar"
+    },
+    {
+      "id": "factory-910",
+      "name": "Dreadnought 47",
+      "category": "acousticGuitar"
+    },
+    {
+      "id": "factory-911",
+      "name": "12 String 76",
+      "category": "acousticGuitar"
+    },
+    {
+      "id": "factory-912",
+      "name": "Singer Songwriter 69",
+      "category": "acousticGuitar"
+    },
+    {
+      "id": "factory-913",
+      "name": "Fingerstyle Steel 91",
+      "category": "acousticGuitar"
+    },
+    {
+      "id": "factory-914",
+      "name": "12 String 82",
+      "category": "acousticGuitar"
+    },
+    {
+      "id": "factory-915",
+      "name": "Slide Acoustic 2",
+      "category": "acousticGuitar"
+    },
+    {
+      "id": "factory-916",
+      "name": "Acoustic Steel 92",
+      "category": "acousticGuitar"
+    },
+    {
+      "id": "factory-917",
+      "name": "Slide Acoustic 68",
+      "category": "acousticGuitar"
+    },
+    {
+      "id": "factory-918",
+      "name": "Slide Acoustic 16",
+      "category": "acousticGuitar"
+    },
+    {
+      "id": "factory-919",
+      "name": "Coffeehouse 63",
+      "category": "acousticGuitar"
+    },
+    {
+      "id": "factory-920",
+      "name": "Jumbo Acoustic 53",
+      "category": "acousticGuitar"
+    },
+    {
+      "id": "factory-921",
+      "name": "Folk Guitar 21",
+      "category": "acousticGuitar"
+    },
+    {
+      "id": "factory-922",
+      "name": "Folk Guitar 86",
+      "category": "acousticGuitar"
+    },
+    {
+      "id": "factory-923",
+      "name": "Dreadnought 14",
+      "category": "acousticGuitar"
+    },
+    {
+      "id": "factory-924",
+      "name": "Slide Acoustic 55",
+      "category": "acousticGuitar"
+    },
+    {
+      "id": "factory-925",
+      "name": "Open Tuning 65",
+      "category": "acousticGuitar"
+    },
+    {
+      "id": "factory-926",
+      "name": "Acoustic Steel 49",
+      "category": "acousticGuitar"
+    },
+    {
+      "id": "factory-927",
+      "name": "Grand Auditorium 41",
+      "category": "acousticGuitar"
+    },
+    {
+      "id": "factory-928",
+      "name": "Dreadnought 86",
+      "category": "acousticGuitar"
+    },
+    {
+      "id": "factory-929",
+      "name": "Dreadnought 17",
+      "category": "acousticGuitar"
+    },
+    {
+      "id": "factory-930",
+      "name": "Slide Acoustic 26",
+      "category": "acousticGuitar"
+    },
+    {
+      "id": "factory-931",
+      "name": "Travis Picking 9",
+      "category": "acousticGuitar"
+    },
+    {
+      "id": "factory-932",
+      "name": "Travis Picking 64",
+      "category": "acousticGuitar"
+    },
+    {
+      "id": "factory-937",
+      "name": "Fusion Lead 78",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-939",
+      "name": "Tweed Clean 20",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-940",
+      "name": "Fusion Lead 50",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-942",
+      "name": "Math Rock 20",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-943",
+      "name": "Blues Drive 62",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-944",
+      "name": "80s Clean 12",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-945",
+      "name": "Single Coil 27",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-952",
+      "name": "Blues Breaker 17",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-953",
+      "name": "British Crunch 12",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-961",
+      "name": "Djent 49",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-1053",
+      "name": "Celesta 91",
+      "category": "mallets"
+    },
+    {
+      "id": "factory-1065",
+      "name": "Ney 95",
+      "category": "woodwinds"
+    },
+    {
+      "id": "factory-1078",
+      "name": "Baritone Sax 71",
+      "category": "woodwinds"
+    },
+    {
+      "id": "factory-1110",
+      "name": "Nebulous 66",
+      "category": "pads"
+    },
+    {
+      "id": "factory-1111",
+      "name": "Cosmos 65",
+      "category": "pads"
+    },
+    {
+      "id": "factory-1112",
+      "name": "Galaxy 14",
+      "category": "pads"
+    },
+    {
+      "id": "factory-1115",
+      "name": "Event Horizon 65",
+      "category": "pads"
+    },
+    {
+      "id": "factory-1118",
+      "name": "Void Pad 39",
+      "category": "pads"
+    },
+    {
+      "id": "factory-1119",
+      "name": "Nebulous 70",
+      "category": "pads"
+    },
+    {
+      "id": "factory-1120",
+      "name": "Aurora 6",
+      "category": "pads"
+    },
+    {
+      "id": "factory-1121",
+      "name": "Galaxy 58",
+      "category": "pads"
+    },
+    {
+      "id": "factory-1123",
+      "name": "Spectrum 16",
+      "category": "leads"
+    },
+    {
+      "id": "factory-1125",
+      "name": "Pulse Wave 31",
+      "category": "leads"
+    },
+    {
+      "id": "factory-1127",
+      "name": "X-Ray 27",
+      "category": "leads"
+    },
+    {
+      "id": "factory-1129",
+      "name": "Laser Lead 15",
+      "category": "leads"
+    },
+    {
+      "id": "factory-1130",
+      "name": "Infrared 22",
+      "category": "leads"
+    },
+    {
+      "id": "factory-1134",
+      "name": "Infrared 13",
+      "category": "leads"
+    },
+    {
+      "id": "factory-1135",
+      "name": "Neon Solo 75",
+      "category": "leads"
+    },
+    {
+      "id": "factory-1136",
+      "name": "Gamma Ray 81",
+      "category": "leads"
+    },
+    {
+      "id": "factory-1137",
+      "name": "Spectrum 32",
+      "category": "leads"
+    },
+    {
+      "id": "factory-1153",
+      "name": "Retro Keys 22",
+      "category": "keys"
+    },
+    {
+      "id": "factory-1154",
+      "name": "Wurly-ish 89",
+      "category": "keys"
+    },
+    {
+      "id": "factory-1155",
+      "name": "Bell Keys 18",
+      "category": "keys"
+    },
+    {
+      "id": "factory-1157",
+      "name": "Rhodes-ish 68",
+      "category": "keys"
+    },
+    {
+      "id": "factory-1158",
+      "name": "Retro Keys 49",
+      "category": "keys"
+    },
+    {
+      "id": "factory-1163",
+      "name": "Crystal EP 99",
+      "category": "keys"
+    },
+    {
+      "id": "factory-1164",
+      "name": "Cyber Keys 58",
+      "category": "keys"
+    },
+    {
+      "id": "factory-1165",
+      "name": "Retro Keys 37",
+      "category": "keys"
+    },
+    {
+      "id": "factory-1166",
+      "name": "Crystal EP 62",
+      "category": "keys"
+    },
+    {
+      "id": "factory-1167",
+      "name": "Soft EP 96",
+      "category": "keys"
+    },
+    {
+      "id": "factory-1168",
+      "name": "Pulsar Arp 11",
+      "category": "arps"
+    },
+    {
+      "id": "factory-1169",
+      "name": "Photon Arp 47",
+      "category": "arps"
+    },
+    {
+      "id": "factory-1170",
+      "name": "Dark Matter Arp 60",
+      "category": "arps"
+    },
+    {
+      "id": "factory-1171",
+      "name": "Galactic Arp 26",
+      "category": "arps"
+    },
+    {
+      "id": "factory-1172",
+      "name": "Dark Matter Arp 86",
+      "category": "arps"
+    },
+    {
+      "id": "factory-1173",
+      "name": "Neon Arp 6",
+      "category": "arps"
+    },
+    {
+      "id": "factory-1174",
+      "name": "Nebula Arp 84",
+      "category": "arps"
+    },
+    {
+      "id": "factory-1176",
+      "name": "Dark Matter Arp 28",
+      "category": "arps"
+    },
+    {
+      "id": "factory-1177",
+      "name": "Photon Arp 35",
+      "category": "arps"
+    },
+    {
+      "id": "factory-1179",
+      "name": "Stellar Arp 79",
+      "category": "arps"
+    },
+    {
+      "id": "factory-1180",
+      "name": "Pulsar Arp 15",
+      "category": "arps"
+    },
+    {
+      "id": "factory-1181",
+      "name": "Cyber Arp 62",
+      "category": "arps"
+    },
+    {
+      "id": "factory-1182",
+      "name": "Nebula Arp 53",
+      "category": "arps"
+    },
+    {
+      "id": "factory-1183",
+      "name": "Interference 54",
+      "category": "fx"
+    },
+    {
+      "id": "factory-1185",
+      "name": "Harmonic 79",
+      "category": "fx"
+    },
+    {
+      "id": "factory-1186",
+      "name": "Feedback Loop 54",
+      "category": "fx"
+    },
+    {
+      "id": "factory-1188",
+      "name": "Infrasound 73",
+      "category": "fx"
+    },
+    {
+      "id": "factory-1189",
+      "name": "Feedback Loop 68",
+      "category": "fx"
+    },
+    {
+      "id": "factory-1190",
+      "name": "Harmonic 53",
+      "category": "fx"
+    },
+    {
+      "id": "factory-1192",
+      "name": "Oscillation 95",
+      "category": "fx"
+    },
+    {
+      "id": "factory-1195",
+      "name": "Interference 44",
+      "category": "fx"
+    },
+    {
+      "id": "factory-1199",
+      "name": "Simulation Drive 98",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-1201",
+      "name": "Laser Drive 31",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-1205",
+      "name": "Photon Drive 20",
+      "category": "synthwave"
+    },
+    {
+      "id": "factory-1234",
+      "name": "Bachata Guitar 27",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-1236",
+      "name": "Samba Guitar 49",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-1238",
+      "name": "Bachata Guitar 86",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-1240",
+      "name": "Flamenco Guitar 43",
+      "category": "guitar"
+    },
+    {
+      "id": "factory-1247",
+      "name": "Trio 41",
+      "category": "strings"
+    },
+    {
+      "id": "factory-1248",
+      "name": "Octet 45",
+      "category": "strings"
+    },
+    {
+      "id": "factory-1252",
+      "name": "Trio 81",
+      "category": "strings"
+    },
+    {
+      "id": "factory-1270",
+      "name": "Archangel 31",
+      "category": "choir"
+    },
+    {
+      "id": "factory-1271",
+      "name": "Convert 38",
+      "category": "choir"
+    },
+    {
+      "id": "factory-1272",
+      "name": "Angel 1",
+      "category": "choir"
+    },
+    {
+      "id": "factory-1274",
+      "name": "Heavenly Host 62",
+      "category": "choir"
+    },
+    {
+      "id": "factory-1277",
+      "name": "Seraphim 32",
+      "category": "choir"
+    },
+    {
+      "id": "factory-1279",
+      "name": "Acolyte 80",
+      "category": "choir"
+    },
+    {
+      "id": "factory-1280",
+      "name": "Archangel 8",
+      "category": "choir"
+    },
+    {
+      "id": "factory-1294",
+      "name": "Formula 1 10",
+      "category": "custom"
+    },
+    {
+      "id": "factory-1296",
+      "name": "Algorithm A 71",
+      "category": "custom"
+    },
+    {
+      "id": "factory-1298",
+      "name": "Formula 2 78",
+      "category": "custom"
+    },
+    {
+      "id": "factory-1299",
+      "name": "Equation B 21",
+      "category": "custom"
+    },
+    {
+      "id": "factory-1300",
+      "name": "Algorithm C 42",
+      "category": "custom"
+    },
+    {
+      "id": "factory-1302",
+      "name": "Formula 2 24",
+      "category": "custom"
+    },
+    {
+      "id": "factory-1322",
+      "name": "Stride Piano 47",
+      "category": "acousticGuitar"
+    },
+    {
+      "id": "factory-1323",
+      "name": "Chicago Blues 28",
+      "category": "acousticGuitar"
+    },
+    {
+      "id": "factory-1325",
+      "name": "Texas Blues 49",
+      "category": "acousticGuitar"
+    },
+    {
+      "id": "factory-1326",
+      "name": "New Orleans Blues 37",
+      "category": "acousticGuitar"
+    },
+    {
+      "id": "factory-1327",
+      "name": "Fingerstyle Blues 83",
+      "category": "acousticGuitar"
+    },
+    {
+      "id": "factory-1329",
+      "name": "Stride Piano 94",
+      "category": "acousticGuitar"
+    },
+    {
+      "id": "factory-1332",
+      "name": "Altered Chord 31",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-1336",
+      "name": "Power Chord 28",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-1337",
+      "name": "Quintal 32",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-1338",
+      "name": "Mixed Interval 84",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-1340",
+      "name": "Cluster 17",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-1342",
+      "name": "Open Chord 70",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-1408",
+      "name": "Dilruba 26",
+      "category": "ethnic"
+    },
+    {
+      "id": "factory-ep-01",
+      "name": "Classic Rhodes",
+      "category": "electricPiano"
+    },
+    {
+      "id": "factory-ep-02",
+      "name": "Wurlitzer 200A",
+      "category": "electricPiano"
+    },
+    {
+      "id": "factory-ep-03",
+      "name": "DX7 Full Tines",
+      "category": "electricPiano"
+    },
+    {
+      "id": "factory-ep-04",
+      "name": "Stage Mark II",
+      "category": "electricPiano"
+    },
+    {
+      "id": "factory-clv-01",
+      "name": "Funky Clav",
+      "category": "clavinet"
+    },
+    {
+      "id": "factory-ag-01",
+      "name": "Nylon String",
+      "category": "acousticGuitar"
+    },
+    {
+      "id": "factory-ag-02",
+      "name": "Steel String",
+      "category": "acousticGuitar"
+    },
+    {
+      "id": "factory-ag-03",
+      "name": "Fingerstyle",
+      "category": "acousticGuitar"
+    },
+    {
+      "id": "factory-eg-01",
+      "name": "Clean Strat",
+      "category": "electricGuitar"
+    },
+    {
+      "id": "factory-eg-03",
+      "name": "Ambient Swell",
+      "category": "electricGuitar"
+    }
+  ],
+  "killPresets": []
+}

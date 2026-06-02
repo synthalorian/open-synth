@@ -250,9 +250,11 @@ private:
     void drumNoteOn(int midiNote, float velocity) { drumKit_.noteOn(midiNote, velocity); }
     void drumNoteOff(int midiNote) { drumKit_.noteOff(midiNote); }
     void setDrumKitPreset(int index) { drumKit_.setKitPreset(index); }
+
+public:
     void setDrumKitLevel(float level) { drumKit_.setLevel(level); }
 
-    // Multi-FX engine
+private:
     FxEngine fxEngine_;
 
     float masterVolume_ = 0.8f;

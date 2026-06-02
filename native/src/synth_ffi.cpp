@@ -315,7 +315,9 @@ void synth_engine_rhythm_set_tempo(void* engine, float bpm) {
 }
 
 void synth_engine_rhythm_set_volume(void* engine, float vol) {
-    static_cast<SynthEngine*>(engine)->rhythmPlayer().setTempo(vol);
+    // TODO: implement drum kit volume scaling in RhythmPatternPlayer
+    // For now, store it on the engine's drum kit
+    static_cast<SynthEngine*>(engine)->setDrumKitLevel(vol);
 }
 
 void synth_engine_rhythm_set_variation(void* engine, int32_t variation) {
