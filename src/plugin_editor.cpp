@@ -21,38 +21,29 @@ void SynthKnob::paint(juce::Graphics& g)
     float cy = bounds.getCentreY();
     float radius = size * 0.5f;
 
-    // Background ring
     g.setColour(SynthColors::surface());
     g.fillEllipse(cx - radius, cy - radius, size, size);
 
-    // Accent ring (value arc)
     float value = (float)getValue();
-    float startAngle = 2.356f; // 135 degrees
-    float endAngle = startAngle + value * 4.712f; // 270 degree sweep
+    float startAngle = 2.356f;
+    float endAngle = startAngle + value * 4.712f;
 
     juce::Path arc;
-    arc.addCentredArc(cx, cy, radius - 2, radius - 2, 0.0f,
-                      startAngle, endAngle, true);
+    arc.addCentredArc(cx, cy, radius - 2, radius - 2, 0.0f, startAngle, endAngle, true);
     g.setColour(accent_);
     g.strokePath(arc, juce::PathStrokeType(3.0f));
 
-    // Remaining arc (dim)
     juce::Path arcDim;
-    arcDim.addCentredArc(cx, cy, radius - 2, radius - 2, 0.0f,
-                         endAngle, startAngle + 4.712f, true);
+    arcDim.addCentredArc(cx, cy, radius - 2, radius - 2, 0.0f, endAngle, startAngle + 4.712f, true);
     g.setColour(SynthColors::gridLine());
     g.strokePath(arcDim, juce::PathStrokeType(2.0f));
 
-    // Label
     g.setColour(SynthColors::textDim());
-    g.setFont(10.0f);
+    g.setFont(juce::Font(juce::FontOptions(10.0f)));
     g.drawText(name_, cx - radius, cy + radius + 2, size, 14, juce::Justification::centred);
 }
 
-void SynthKnob::resized()
-{
-    // Let parent handle sizing
-}
+void SynthKnob::resized() {}
 
 // ── OscPanel ────────────────────────────────────────────────────────────────
 
@@ -68,7 +59,6 @@ OscPanel::OscPanel(juce::AudioProcessorValueTreeState& apvts, int oscIndex)
     addAndMakeVisible(detuneKnob_);
     addAndMakeVisible(volumeKnob_);
 
-    // Waveform selector
     waveformSelector_.addItemList({"Sine", "Triangle", "Saw", "Square", "Pulse",
         "Noise", "Sub", "FM", "Wavetable", "Physical Model"}, 1);
     addAndMakeVisible(waveformSelector_);
@@ -88,32 +78,22 @@ void OscPanel::paint(juce::Graphics& g)
 {
     g.setColour(SynthColors::card());
     g.fillRoundedRectangle(getLocalBounds().toFloat(), 8.0f);
-
     g.setColour(SynthColors::neonPurple());
-    g.setFont(14.0f);
+    g.setFont(juce::Font(juce::FontOptions(14.0f)));
     juce::String title = oscIndex_ == 1 ? "OSCILLATOR 1" : "OSCILLATOR 2";
     g.drawText(title, 12, 8, 120, 20, juce::Justification::left);
-
     g.setColour(SynthColors::gridLine());
     g.drawHorizontalLine(32, 8, getWidth() - 8);
 }
 
 void OscPanel::resized()
 {
-    auto b = getLocalBounds().reduced(8, 36);
-    int knobSize = 56;
-    int gap = 8;
-
+    int knobSize = 56, gap = 8;
     waveformSelector_.setBounds(12, 36, 100, 24);
-
-    int x = 12;
-    int y = 68;
-    waveformKnob_.setBounds(x, y, knobSize, knobSize + 16);
-    x += knobSize + gap;
-    octaveKnob_.setBounds(x, y, knobSize, knobSize + 16);
-    x += knobSize + gap;
-    detuneKnob_.setBounds(x, y, knobSize, knobSize + 16);
-    x += knobSize + gap;
+    int x = 12, y = 68;
+    waveformKnob_.setBounds(x, y, knobSize, knobSize + 16); x += knobSize + gap;
+    octaveKnob_.setBounds(x, y, knobSize, knobSize + 16); x += knobSize + gap;
+    detuneKnob_.setBounds(x, y, knobSize, knobSize + 16); x += knobSize + gap;
     volumeKnob_.setBounds(x, y, knobSize, knobSize + 16);
 }
 
@@ -145,29 +125,19 @@ void FilterPanel::paint(juce::Graphics& g)
 {
     g.setColour(SynthColors::card());
     g.fillRoundedRectangle(getLocalBounds().toFloat(), 8.0f);
-
     g.setColour(SynthColors::cyan());
-    g.setFont(14.0f);
+    g.setFont(juce::Font(juce::FontOptions(14.0f)));
     g.drawText("FILTER", 12, 8, 100, 20, juce::Justification::left);
-
     g.setColour(SynthColors::gridLine());
     g.drawHorizontalLine(32, 8, getWidth() - 8);
 }
 
 void FilterPanel::resized()
 {
-    auto b = getLocalBounds().reduced(8, 36);
-    int knobSize = 56;
-    int gap = 8;
-    int x = 12;
-    int y = 68;
-
-    cutoffKnob_.setBounds(x, y, knobSize, knobSize + 16);
-    x += knobSize + gap;
-    resonanceKnob_.setBounds(x, y, knobSize, knobSize + 16);
-    x += knobSize + gap;
-    envAmtKnob_.setBounds(x, y, knobSize, knobSize + 16);
-    x += knobSize + gap;
+    int knobSize = 56, gap = 8, x = 12, y = 68;
+    cutoffKnob_.setBounds(x, y, knobSize, knobSize + 16); x += knobSize + gap;
+    resonanceKnob_.setBounds(x, y, knobSize, knobSize + 16); x += knobSize + gap;
+    envAmtKnob_.setBounds(x, y, knobSize, knobSize + 16); x += knobSize + gap;
     driveKnob_.setBounds(x, y, knobSize, knobSize + 16);
 }
 
@@ -200,30 +170,360 @@ void EnvelopePanel::paint(juce::Graphics& g)
 {
     g.setColour(SynthColors::card());
     g.fillRoundedRectangle(getLocalBounds().toFloat(), 8.0f);
-
     g.setColour(SynthColors::neonYellow());
-    g.setFont(14.0f);
+    g.setFont(juce::Font(juce::FontOptions(14.0f)));
     g.drawText(name_ + " ENVELOPE", 12, 8, 200, 20, juce::Justification::left);
-
     g.setColour(SynthColors::gridLine());
     g.drawHorizontalLine(32, 8, getWidth() - 8);
 }
 
 void EnvelopePanel::resized()
 {
-    auto b = getLocalBounds().reduced(8, 36);
-    int knobSize = 56;
-    int gap = 8;
-    int x = 12;
-    int y = 68;
-
-    attackKnob_.setBounds(x, y, knobSize, knobSize + 16);
-    x += knobSize + gap;
-    decayKnob_.setBounds(x, y, knobSize, knobSize + 16);
-    x += knobSize + gap;
-    sustainKnob_.setBounds(x, y, knobSize, knobSize + 16);
-    x += knobSize + gap;
+    int knobSize = 56, gap = 8, x = 12, y = 68;
+    attackKnob_.setBounds(x, y, knobSize, knobSize + 16); x += knobSize + gap;
+    decayKnob_.setBounds(x, y, knobSize, knobSize + 16); x += knobSize + gap;
+    sustainKnob_.setBounds(x, y, knobSize, knobSize + 16); x += knobSize + gap;
     releaseKnob_.setBounds(x, y, knobSize, knobSize + 16);
+}
+
+// ── FxSlotPanel ─────────────────────────────────────────────────────────────
+
+FxSlotPanel::FxSlotPanel(juce::AudioProcessorValueTreeState& apvts, int slotIndex)
+    : apvts_(apvts), slotIndex_(slotIndex),
+      paramKnobs_{{"P1", SynthColors::neonPurple()}, {"P2", SynthColors::hotPink()},
+                   {"P3", SynthColors::cyan()}, {"P4", SynthColors::neonYellow()}}
+{
+    enabledButton_.setButtonText("ON");
+    enabledButton_.setColour(juce::ToggleButton::tickColourId, SynthColors::neonPurple());
+    addAndMakeVisible(enabledButton_);
+
+    populateFxTypes();
+    addAndMakeVisible(typeSelector_);
+
+    for (auto& knob : paramKnobs_)
+        addAndMakeVisible(knob);
+
+    juce::String prefix = "fx" + juce::String(slotIndex);
+    enabledAttach_ = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(
+        apvts_, prefix + "Enabled", enabledButton_);
+    typeAttach_ = std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment>(
+        apvts_, prefix + "Type", typeSelector_);
+
+    for (int i = 0; i < 4; ++i)
+    {
+        paramAttaches_[i] = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+            apvts_, prefix + "Param" + juce::String(i), paramKnobs_[i]);
+    }
+}
+
+void FxSlotPanel::populateFxTypes()
+{
+    typeSelector_.addItem("None", 1);
+    typeSelector_.addItem("Chorus", 2);
+    typeSelector_.addItem("Delay", 3);
+    typeSelector_.addItem("Reverb", 4);
+    typeSelector_.addItem("Phaser", 5);
+    typeSelector_.addItem("Flanger", 6);
+    typeSelector_.addItem("Compressor", 7);
+    typeSelector_.addItem("Drive", 8);
+    typeSelector_.addItem("EQ", 9);
+    typeSelector_.addItem("Limiter", 10);
+    typeSelector_.addItem("Rotary", 11);
+    typeSelector_.addItem("Tremolo", 12);
+    typeSelector_.addItem("Auto-Wah", 13);
+    typeSelector_.addItem("Bitcrusher", 14);
+    typeSelector_.addItem("Ring Mod", 15);
+    typeSelector_.addItem("Pitch Shift", 16);
+    typeSelector_.addItem("Multi-tap Delay", 17);
+    typeSelector_.addItem("Ping-Pong Delay", 18);
+    typeSelector_.addItem("Spring Reverb", 19);
+    typeSelector_.addItem("Gated Reverb", 20);
+    typeSelector_.addItem("Amp Sim", 21);
+    typeSelector_.addItem("Stereo Widener", 22);
+}
+
+void FxSlotPanel::paint(juce::Graphics& g)
+{
+    g.setColour(SynthColors::card());
+    g.fillRoundedRectangle(getLocalBounds().toFloat(), 8.0f);
+
+    juce::Colour accent = slotIndex_ == 1 ? SynthColors::neonPurple()
+                         : slotIndex_ == 2 ? SynthColors::hotPink()
+                         : SynthColors::cyan();
+    g.setColour(accent);
+    g.setFont(juce::Font(juce::FontOptions(14.0f)));
+    g.drawText("FX SLOT " + juce::String(slotIndex_), 12, 8, 120, 20, juce::Justification::left);
+    g.setColour(SynthColors::gridLine());
+    g.drawHorizontalLine(32, 8, getWidth() - 8);
+}
+
+void FxSlotPanel::resized()
+{
+    enabledButton_.setBounds(12, 36, 50, 24);
+    typeSelector_.setBounds(68, 36, 120, 24);
+
+    int knobSize = 48, gap = 6, x = 12, y = 68;
+    for (auto& knob : paramKnobs_)
+    {
+        knob.setBounds(x, y, knobSize, knobSize + 14);
+        x += knobSize + gap;
+    }
+}
+
+// ── ArpPanel ────────────────────────────────────────────────────────────────
+
+ArpPanel::ArpPanel(juce::AudioProcessorValueTreeState& apvts)
+    : apvts_(apvts),
+      tempoKnob_("Tempo", SynthColors::neonPurple()),
+      gateKnob_("Gate", SynthColors::hotPink()),
+      swingKnob_("Swing", SynthColors::cyan()),
+      octaveKnob_("Octave", SynthColors::neonYellow())
+{
+    enabledButton_.setButtonText("ARP ON");
+    enabledButton_.setColour(juce::ToggleButton::tickColourId, SynthColors::neonPurple());
+    addAndMakeVisible(enabledButton_);
+
+    patternSelector_.addItemList({"Up", "Down", "Up/Down", "Random", "Chord"}, 1);
+    addAndMakeVisible(patternSelector_);
+
+    addAndMakeVisible(tempoKnob_);
+    addAndMakeVisible(gateKnob_);
+    addAndMakeVisible(swingKnob_);
+    addAndMakeVisible(octaveKnob_);
+
+    enabledAttach_ = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(
+        apvts_, "arpEnabled", enabledButton_);
+    patternAttach_ = std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment>(
+        apvts_, "arpPattern", patternSelector_);
+    tempoAttach_ = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+        apvts_, "arpTempo", tempoKnob_);
+    gateAttach_ = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+        apvts_, "arpGate", gateKnob_);
+    swingAttach_ = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+        apvts_, "arpSwing", swingKnob_);
+    octaveAttach_ = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+        apvts_, "arpOctave", octaveKnob_);
+}
+
+void ArpPanel::paint(juce::Graphics& g)
+{
+    g.setColour(SynthColors::card());
+    g.fillRoundedRectangle(getLocalBounds().toFloat(), 8.0f);
+    g.setColour(SynthColors::magenta());
+    g.setFont(juce::Font(juce::FontOptions(14.0f)));
+    g.drawText("ARPEGGIATOR", 12, 8, 120, 20, juce::Justification::left);
+    g.setColour(SynthColors::gridLine());
+    g.drawHorizontalLine(32, 8, getWidth() - 8);
+}
+
+void ArpPanel::resized()
+{
+    enabledButton_.setBounds(12, 36, 70, 24);
+    patternSelector_.setBounds(88, 36, 100, 24);
+
+    int knobSize = 48, gap = 6, x = 12, y = 68;
+    tempoKnob_.setBounds(x, y, knobSize, knobSize + 14); x += knobSize + gap;
+    gateKnob_.setBounds(x, y, knobSize, knobSize + 14); x += knobSize + gap;
+    swingKnob_.setBounds(x, y, knobSize, knobSize + 14); x += knobSize + gap;
+    octaveKnob_.setBounds(x, y, knobSize, knobSize + 14);
+}
+
+// ── PerformanceMeter ────────────────────────────────────────────────────────
+
+PerformanceMeter::PerformanceMeter()
+{
+    startTimerHz(10);
+}
+
+void PerformanceMeter::setVoiceCount(int count) { voiceCount_ = count; }
+void PerformanceMeter::setCpuLoad(float load) { cpuLoad_ = load; }
+
+void PerformanceMeter::timerCallback() { repaint(); }
+
+void PerformanceMeter::paint(juce::Graphics& g)
+{
+    auto b = getLocalBounds().toFloat();
+
+    g.setColour(SynthColors::card());
+    g.fillRoundedRectangle(b, 6.0f);
+
+    // CPU bar
+    float cpuNorm = juce::jlimit(0.0f, 1.0f, cpuLoad_ / 100.0f);
+    juce::Colour cpuColor = cpuNorm < 0.5f ? SynthColors::neonPurple()
+                          : cpuNorm < 0.8f ? SynthColors::neonYellow()
+                          : SynthColors::danger();
+
+    g.setColour(cpuColor.withAlpha(0.3f));
+    g.fillRoundedRectangle(b.reduced(4), 4.0f);
+
+    g.setColour(cpuColor);
+    float barWidth = (b.getWidth() - 8) * cpuNorm;
+    g.fillRoundedRectangle(b.getX() + 4, b.getY() + 4, barWidth, b.getHeight() - 8, 4.0f);
+
+    // Text
+    g.setColour(SynthColors::text());
+    g.setFont(juce::Font(juce::FontOptions(10.0f)));
+    g.drawText("CPU: " + juce::String(cpuLoad_, 1) + "% | Voices: " + juce::String(voiceCount_),
+               b.toNearestInt(), juce::Justification::centred, false);
+}
+
+void PerformanceMeter::resized() {}
+
+// ── PresetBrowser ───────────────────────────────────────────────────────────
+
+struct PresetBrowser::PresetItem {};
+
+PresetBrowser::PresetBrowser()
+    : presetData_(std::make_unique<PresetItem>())
+{
+    setOpaque(true);
+
+    titleLabel_.setText("PRESET BROWSER", juce::dontSendNotification);
+    titleLabel_.setFont(juce::Font(juce::FontOptions(20.0f, juce::Font::bold)));
+    titleLabel_.setColour(juce::Label::textColourId, SynthColors::neonPurple());
+    addAndMakeVisible(titleLabel_);
+
+    searchBox_.setTextToShowWhenEmpty("Search presets...", SynthColors::textDim());
+    searchBox_.setColour(juce::TextEditor::backgroundColourId, SynthColors::surface());
+    searchBox_.setColour(juce::TextEditor::textColourId, SynthColors::text());
+    addAndMakeVisible(searchBox_);
+
+    closeButton_.setButtonText("X");
+    closeButton_.setColour(juce::TextButton::buttonColourId, SynthColors::danger());
+    addAndMakeVisible(closeButton_);
+}
+
+void PresetBrowser::paint(juce::Graphics& g)
+{
+    g.fillAll(SynthColors::background().withAlpha(0.95f));
+
+    g.setColour(SynthColors::gridLine());
+    for (int x = 0; x < getWidth(); x += 40)
+        g.drawVerticalLine(x, 0, getHeight());
+    for (int y = 0; y < getHeight(); y += 40)
+        g.drawHorizontalLine(y, 0, getWidth());
+}
+
+void PresetBrowser::resized()
+{
+    auto b = getLocalBounds().reduced(20);
+    titleLabel_.setBounds(b.removeFromTop(30));
+    closeButton_.setBounds(getWidth() - 50, 20, 30, 30);
+    searchBox_.setBounds(b.removeFromTop(30));
+}
+
+void PresetBrowser::setVisible(bool shouldBeVisible)
+{
+    juce::Component::setVisible(shouldBeVisible);
+    if (shouldBeVisible)
+        searchBox_.grabKeyboardFocus();
+}
+
+// ── FavoritesBar ────────────────────────────────────────────────────────────
+
+FavoritesBar::FavoritesBar()
+{
+    for (int i = 0; i < 8; ++i)
+    {
+        favButtons_[i].setButtonText(juce::String(i + 1));
+        favButtons_[i].setColour(juce::TextButton::buttonColourId, SynthColors::card());
+        favButtons_[i].setColour(juce::TextButton::textColourOffId, SynthColors::neonYellow());
+        favButtons_[i].onClick = [this, i]() { buttonClicked(i); };
+        addAndMakeVisible(favButtons_[i]);
+    }
+}
+
+void FavoritesBar::paint(juce::Graphics& g)
+{
+    g.setColour(SynthColors::card());
+    g.fillRoundedRectangle(getLocalBounds().toFloat(), 6.0f);
+}
+
+void FavoritesBar::resized()
+{
+    auto b = getLocalBounds().reduced(4);
+    int btnWidth = b.getWidth() / 8 - 4;
+    for (int i = 0; i < 8; ++i)
+    {
+        favButtons_[i].setBounds(b.getX() + i * (btnWidth + 4), b.getY(), btnWidth, b.getHeight());
+    }
+}
+
+void FavoritesBar::buttonClicked(int index)
+{
+    if (onPresetSelected)
+        onPresetSelected(index);
+}
+
+// ── SplitKeyboardOverlay ────────────────────────────────────────────────────
+
+SplitKeyboardOverlay::SplitKeyboardOverlay()
+{
+    setInterceptsMouseClicks(true, false);
+}
+
+void SplitKeyboardOverlay::paint(juce::Graphics& g)
+{
+    if (!isVisible()) return;
+
+    auto b = getLocalBounds().toFloat();
+    float splitX = b.getX() + (splitPoint_ - 21) * b.getWidth() / (108 - 21);
+
+    // Split line
+    g.setColour(SynthColors::neonYellow());
+    g.drawVerticalLine((int)splitX, b.getY(), b.getBottom());
+
+    // Zone labels
+    g.setFont(juce::Font(juce::FontOptions(12.0f, juce::Font::bold)));
+    g.setColour(SynthColors::hotPink());
+    g.drawText("LOWER", (int)b.getX() + 4, (int)b.getY() + 4, 60, 20, juce::Justification::left);
+    g.setColour(SynthColors::cyan());
+    g.drawText("UPPER", (int)splitX + 4, (int)b.getY() + 4, 60, 20, juce::Justification::left);
+
+    // Note name at split
+    static const char* noteNames[] = {"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"};
+    int note = splitPoint_ % 12;
+    int octave = splitPoint_ / 12 - 1;
+    g.setColour(SynthColors::neonYellow());
+    g.drawText(noteNames[note] + juce::String(octave), (int)splitX - 20, (int)b.getBottom() - 24, 40, 20, juce::Justification::centred);
+}
+
+void SplitKeyboardOverlay::resized() {}
+
+void SplitKeyboardOverlay::setSplitPoint(int note)
+{
+    splitPoint_ = juce::jlimit(21, 108, note);
+    repaint();
+}
+
+void SplitKeyboardOverlay::mouseDown(const juce::MouseEvent& e)
+{
+    dragging_ = true;
+    setSplitPoint(noteAtX(e.getPosition().getX()));
+    if (onSplitChanged)
+        onSplitChanged(splitPoint_);
+}
+
+void SplitKeyboardOverlay::mouseDrag(const juce::MouseEvent& e)
+{
+    if (dragging_)
+    {
+        setSplitPoint(noteAtX(e.getPosition().getX()));
+        if (onSplitChanged)
+            onSplitChanged(splitPoint_);
+    }
+}
+
+void SplitKeyboardOverlay::mouseUp(const juce::MouseEvent&)
+{
+    dragging_ = false;
+}
+
+int SplitKeyboardOverlay::noteAtX(int x) const
+{
+    auto b = getLocalBounds().toFloat();
+    float norm = juce::jlimit(0.0f, 1.0f, (float)(x - b.getX()) / b.getWidth());
+    return 21 + (int)(norm * (108 - 21));
 }
 
 // ── PianoKeyboard ───────────────────────────────────────────────────────────
@@ -242,49 +542,53 @@ PianoKeyboard::~PianoKeyboard()
 void PianoKeyboard::paint(juce::Graphics& g)
 {
     auto b = getLocalBounds().toFloat();
-
-    // Background
     g.setColour(SynthColors::surface());
     g.fillRect(b);
 
-    // Draw white keys
+    // White keys
     for (int note = 21; note <= 108; ++note)
     {
         if (!isBlackKey(note))
         {
             auto keyRect = getWhiteKeyRect(note);
             bool pressed = pressedNote_ == note;
-            bool hovered = hoveredNote_ == note;
+            bool isSplit = showSplit_ && note >= splitPoint_;
 
             g.setColour(pressed ? SynthColors::neonPurple() :
-                        hovered ? SynthColors::card() : juce::Colours::white);
+                        isSplit ? SynthColors::cyan().withAlpha(0.3f) :
+                        juce::Colours::white);
             g.fillRect(keyRect);
-
             g.setColour(SynthColors::surface());
             g.drawRect(keyRect, 1.0f);
         }
     }
 
-    // Draw black keys on top
+    // Black keys
     for (int note = 21; note <= 108; ++note)
     {
         if (isBlackKey(note))
         {
             auto keyRect = getBlackKeyRect(note);
             bool pressed = pressedNote_ == note;
-            bool hovered = hoveredNote_ == note;
+            bool isSplit = showSplit_ && note >= splitPoint_;
 
             g.setColour(pressed ? SynthColors::hotPink() :
-                        hovered ? SynthColors::neonPurple() : juce::Colours::black);
+                        isSplit ? SynthColors::cyan().withAlpha(0.5f) :
+                        juce::Colours::black);
             g.fillRect(keyRect);
         }
     }
+
+    // Split indicator line
+    if (showSplit_)
+    {
+        auto splitRect = getWhiteKeyRect(splitPoint_);
+        g.setColour(SynthColors::neonYellow());
+        g.drawVerticalLine((int)splitRect.getX(), b.getY(), b.getBottom());
+    }
 }
 
-void PianoKeyboard::resized()
-{
-    // Keys auto-size based on bounds
-}
+void PianoKeyboard::resized() {}
 
 void PianoKeyboard::mouseDown(const juce::MouseEvent& e)
 {
@@ -297,7 +601,7 @@ void PianoKeyboard::mouseDown(const juce::MouseEvent& e)
     }
 }
 
-void PianoKeyboard::mouseUp(const juce::MouseEvent& e)
+void PianoKeyboard::mouseUp(const juce::MouseEvent&)
 {
     if (pressedNote_ >= 0)
     {
@@ -333,6 +637,18 @@ void PianoKeyboard::handleNoteOff(juce::MidiKeyboardState*, int, int note, float
     repaint();
 }
 
+void PianoKeyboard::setSplitPoint(int note)
+{
+    splitPoint_ = juce::jlimit(21, 108, note);
+    repaint();
+}
+
+void PianoKeyboard::setShowSplit(bool show)
+{
+    showSplit_ = show;
+    repaint();
+}
+
 bool PianoKeyboard::isBlackKey(int note) const
 {
     int n = note % 12;
@@ -361,12 +677,11 @@ juce::Rectangle<float> PianoKeyboard::getBlackKeyRect(int note) const
     auto whiteRect = getWhiteKeyRect(note - 1);
     float blackWidth = whiteRect.getWidth() * 0.6f;
     float blackHeight = getHeight() * 0.6f;
-    return { whiteRect.getRight() - blackWidth * 0.5f, getY(), blackWidth, blackHeight };
+    return { whiteRect.getRight() - blackWidth * 0.5f, (float)getY(), blackWidth, blackHeight };
 }
 
 int PianoKeyboard::getNoteAtPosition(juce::Point<int> pos) const
 {
-    // Check black keys first (they're on top)
     for (int note = 108; note >= 21; --note)
     {
         if (isBlackKey(note))
@@ -386,28 +701,6 @@ int PianoKeyboard::getNoteAtPosition(juce::Point<int> pos) const
     return -1;
 }
 
-// ── FxPanel (stub - full implementation later) ──────────────────────────────
-
-FxPanel::FxPanel(juce::AudioProcessorValueTreeState& apvts)
-    : apvts_(apvts), tabs_(juce::TabbedButtonBar::TabsAtTop)
-{
-    addAndMakeVisible(tabs_);
-    tabs_.addTab("FX 1", SynthColors::neonPurple(), new juce::Component(), true);
-    tabs_.addTab("FX 2", SynthColors::hotPink(), new juce::Component(), true);
-    tabs_.addTab("FX 3", SynthColors::cyan(), new juce::Component(), true);
-}
-
-void FxPanel::paint(juce::Graphics& g)
-{
-    g.setColour(SynthColors::card());
-    g.fillRoundedRectangle(getLocalBounds().toFloat(), 8.0f);
-}
-
-void FxPanel::resized()
-{
-    tabs_.setBounds(getLocalBounds().reduced(8));
-}
-
 // ── OpenSynthEditor ─────────────────────────────────────────────────────────
 
 OpenSynthEditor::OpenSynthEditor(OpenSynthProcessor& processor)
@@ -417,24 +710,40 @@ OpenSynthEditor::OpenSynthEditor(OpenSynthProcessor& processor)
       filterPanel_(processor.getParameters()),
       ampEnvPanel_(processor.getParameters(), "AMP"),
       filterEnvPanel_(processor.getParameters(), "FILTER"),
-      fxPanel_(processor.getParameters()),
+      fx1Panel_(processor.getParameters(), 1),
+      fx2Panel_(processor.getParameters(), 2),
+      fx3Panel_(processor.getParameters(), 3),
+      arpPanel_(processor.getParameters()),
       keyboard_(keyboardState_)
 {
-    setSize(1200, 800);
+    setSize(1400, 900);
     setResizable(true, true);
-    setResizeLimits(900, 600, 1920, 1200);
+    setResizeLimits(1000, 700, 1920, 1200);
 
     // Title
     titleLabel_.setText("OpenSynth", juce::dontSendNotification);
-    titleLabel_.setFont(juce::Font(28.0f, juce::Font::bold));
+    titleLabel_.setFont(juce::Font(juce::FontOptions(28.0f, juce::Font::bold)));
     titleLabel_.setColour(juce::Label::textColourId, SynthColors::neonPurple());
     addAndMakeVisible(titleLabel_);
 
-    // Preset button
+    // Header buttons
     presetButton_.setButtonText("Presets");
     presetButton_.setColour(juce::TextButton::buttonColourId, SynthColors::card());
     presetButton_.setColour(juce::TextButton::textColourOffId, SynthColors::hotPink());
+    presetButton_.onClick = [this]() { showPresetBrowser(); };
     addAndMakeVisible(presetButton_);
+
+    setlistButton_.setButtonText("Setlist");
+    setlistButton_.setColour(juce::TextButton::buttonColourId, SynthColors::card());
+    setlistButton_.setColour(juce::TextButton::textColourOffId, SynthColors::cyan());
+    addAndMakeVisible(setlistButton_);
+
+    // Favorites bar
+    favorites_.onPresetSelected = [this](int idx) { loadFavoritePreset(idx); };
+    addAndMakeVisible(favorites_);
+
+    // Meters
+    addAndMakeVisible(meters_);
 
     // Panels
     addAndMakeVisible(osc1Panel_);
@@ -442,17 +751,20 @@ OpenSynthEditor::OpenSynthEditor(OpenSynthProcessor& processor)
     addAndMakeVisible(filterPanel_);
     addAndMakeVisible(ampEnvPanel_);
     addAndMakeVisible(filterEnvPanel_);
-    addAndMakeVisible(fxPanel_);
+    addAndMakeVisible(fx1Panel_);
+    addAndMakeVisible(fx2Panel_);
+    addAndMakeVisible(fx3Panel_);
+    addAndMakeVisible(arpPanel_);
     addAndMakeVisible(keyboard_);
 
-    // Meters
-    voiceCountLabel_.setText("Voices: 0", juce::dontSendNotification);
-    voiceCountLabel_.setColour(juce::Label::textColourId, SynthColors::textDim());
-    addAndMakeVisible(voiceCountLabel_);
+    // Overlays (initially hidden)
+    addChildComponent(presetBrowser_);
+    addChildComponent(splitOverlay_);
 
-    cpuLabel_.setText("CPU: 0%", juce::dontSendNotification);
-    cpuLabel_.setColour(juce::Label::textColourId, SynthColors::textDim());
-    addAndMakeVisible(cpuLabel_);
+    splitOverlay_.onSplitChanged = [this](int note)
+    {
+        keyboard_.setSplitPoint(note);
+    };
 
     // Start meter timer
     startTimerHz(10);
@@ -462,17 +774,31 @@ void OpenSynthEditor::timerCallback()
 {
     int voices = processor_.getSynth().getActiveVoiceCount();
     float cpu = processor_.getSynth().getCpuLoad() * 100.0f;
+    meters_.setVoiceCount(voices);
+    meters_.setCpuLoad(cpu);
+}
 
-    voiceCountLabel_.setText("Voices: " + juce::String(voices), juce::dontSendNotification);
-    cpuLabel_.setText("CPU: " + juce::String(cpu, 1) + "%", juce::dontSendNotification);
+void OpenSynthEditor::showPresetBrowser()
+{
+    presetBrowser_.setVisible(true);
+    presetBrowser_.setBounds(getLocalBounds());
+    presetBrowser_.toFront(true);
+}
+
+void OpenSynthEditor::showSetlistMode()
+{
+    // TODO: Implement setlist overlay
+}
+
+void OpenSynthEditor::loadFavoritePreset(int index)
+{
+    // TODO: Load preset from favorites bank
+    juce::ignoreUnused(index);
 }
 
 void OpenSynthEditor::paint(juce::Graphics& g)
 {
-    // Deep purple background with subtle grid
     g.fillAll(SynthColors::background());
-
-    // Grid lines
     g.setColour(SynthColors::gridLine());
     for (int x = 0; x < getWidth(); x += 40)
         g.drawVerticalLine(x, 0, getHeight());
@@ -484,37 +810,48 @@ void OpenSynthEditor::resized()
 {
     auto b = getLocalBounds().reduced(12);
 
-    // Header
-    titleLabel_.setBounds(b.removeFromTop(40).removeFromLeft(200));
-    presetButton_.setBounds(b.getX() + b.getWidth() - 100, b.getY() - 40, 90, 32);
+    // Header row
+    auto header = b.removeFromTop(40);
+    titleLabel_.setBounds(header.removeFromLeft(200));
+    favorites_.setBounds(header.removeFromLeft(320));
+    meters_.setBounds(header.removeFromLeft(200));
+    presetButton_.setBounds(header.removeFromRight(90));
+    setlistButton_.setBounds(header.removeFromRight(90));
 
     b.removeFromTop(8);
 
-    // Top row: Oscillators + Filter
+    // Top row: Oscillators + Filter + Arp
     auto topRow = b.removeFromTop(200);
-    osc1Panel_.setBounds(topRow.removeFromLeft(280));
+    osc1Panel_.setBounds(topRow.removeFromLeft(260));
     topRow.removeFromLeft(8);
-    osc2Panel_.setBounds(topRow.removeFromLeft(280));
+    osc2Panel_.setBounds(topRow.removeFromLeft(260));
     topRow.removeFromLeft(8);
-    filterPanel_.setBounds(topRow);
+    filterPanel_.setBounds(topRow.removeFromLeft(260));
+    topRow.removeFromLeft(8);
+    arpPanel_.setBounds(topRow);
 
     b.removeFromTop(8);
 
-    // Middle row: Envelopes + FX
+    // Middle row: Envelopes + FX slots
     auto midRow = b.removeFromTop(200);
-    ampEnvPanel_.setBounds(midRow.removeFromLeft(280));
+    ampEnvPanel_.setBounds(midRow.removeFromLeft(200));
     midRow.removeFromLeft(8);
-    filterEnvPanel_.setBounds(midRow.removeFromLeft(280));
+    filterEnvPanel_.setBounds(midRow.removeFromLeft(200));
     midRow.removeFromLeft(8);
-    fxPanel_.setBounds(midRow);
+    fx1Panel_.setBounds(midRow.removeFromLeft(200));
+    midRow.removeFromLeft(8);
+    fx2Panel_.setBounds(midRow.removeFromLeft(200));
+    midRow.removeFromLeft(8);
+    fx3Panel_.setBounds(midRow);
 
     b.removeFromTop(8);
 
-    // Bottom: Keyboard + meters
-    auto bottomRow = b;
-    voiceCountLabel_.setBounds(bottomRow.removeFromBottom(24).removeFromLeft(120));
-    cpuLabel_.setBounds(bottomRow.removeFromBottom(24).removeFromLeft(120));
-    keyboard_.setBounds(bottomRow);
+    // Bottom: Keyboard
+    keyboard_.setBounds(b);
+
+    // Overlays fill entire editor
+    presetBrowser_.setBounds(getLocalBounds());
+    splitOverlay_.setBounds(keyboard_.getBounds());
 }
 
 } // namespace openamp
