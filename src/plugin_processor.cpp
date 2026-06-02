@@ -221,18 +221,21 @@ void OpenSynthJucedProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
 
     // FX slots
     synth_.setFxEnabled(1, *apvts_.getRawParameterValue("fx1Enabled") > 0.5f);
+    synth_.setFxType(1, static_cast<int>(*apvts_.getRawParameterValue("fx1Type")));
     synth_.setFxParam(1, 0, *apvts_.getRawParameterValue("fx1Param0"));
     synth_.setFxParam(1, 1, *apvts_.getRawParameterValue("fx1Param1"));
     synth_.setFxParam(1, 2, *apvts_.getRawParameterValue("fx1Param2"));
     synth_.setFxParam(1, 3, *apvts_.getRawParameterValue("fx1Param3"));
 
     synth_.setFxEnabled(2, *apvts_.getRawParameterValue("fx2Enabled") > 0.5f);
+    synth_.setFxType(2, static_cast<int>(*apvts_.getRawParameterValue("fx2Type")));
     synth_.setFxParam(2, 0, *apvts_.getRawParameterValue("fx2Param0"));
     synth_.setFxParam(2, 1, *apvts_.getRawParameterValue("fx2Param1"));
     synth_.setFxParam(2, 2, *apvts_.getRawParameterValue("fx2Param2"));
     synth_.setFxParam(2, 3, *apvts_.getRawParameterValue("fx2Param3"));
 
     synth_.setFxEnabled(3, *apvts_.getRawParameterValue("fx3Enabled") > 0.5f);
+    synth_.setFxType(3, static_cast<int>(*apvts_.getRawParameterValue("fx3Type")));
     synth_.setFxParam(3, 0, *apvts_.getRawParameterValue("fx3Param0"));
     synth_.setFxParam(3, 1, *apvts_.getRawParameterValue("fx3Param1"));
     synth_.setFxParam(3, 2, *apvts_.getRawParameterValue("fx3Param2"));

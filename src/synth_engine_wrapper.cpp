@@ -142,18 +142,34 @@ void SynthEngineWrapper::setFxEnabled(int slot, bool e)
     }
 }
 
-void SynthEngineWrapper::setArpEnabled(bool e) { if (engine_) engine_->setArpEnabled(e); }
-void SynthEngineWrapper::setArpPattern(int p) { if (engine_) engine_->setArpPattern(p); }
-void SynthEngineWrapper::setArpTempo(float bpm) { if (engine_) engine_->setArpTempo(bpm); }
-void SynthEngineWrapper::setArpGate(float g) { if (engine_) engine_->setArpGate(g); }
-void SynthEngineWrapper::setArpSwing(float s) { if (engine_) engine_->setArpSwing(s); }
-void SynthEngineWrapper::setArpOctaveRange(int o) { if (engine_) engine_->setArpOctaveRange(o); }
+void SynthEngineWrapper::setFxType(int slot, int type)
+{
+    if (!engine_) return;
+    if (slot >= 1 && slot <= 3) {
+        // Only recreate processor if type changed
+        auto currentType = engine_->fxEngine().slotType(slot);
+        auto newType = static_cast<FxType>(type);
+        // Map: UI combo index (0=None, 1=Chorus, ...) -> FxType enum
+        // UI sends 0-22, but our enum starts at None=0, Chorus=1, etc.
+        // They're already aligned!
+        if (currentType != newType) {
+            engine_->fxEngine().setSlotProcessor(slot, engine_->createFxProcessor(type));
+        }
+    }
+}
 
 void SynthEngineWrapper::setFxParam(int slot, int param, float value)
 {
     if (!engine_) return;
     engine_->fxEngine().setSlotParam(slot, param, value);
 }
+
+void SynthEngineWrapper::setArpEnabled(bool e) { if (engine_) engine_->setArpEnabled(e); }
+void SynthEngineWrapper::setArpPattern(int p) { if (engine_) engine_->setArpPattern(p); }
+void SynthEngineWrapper::setArpTempo(float bpm) { if (engine_) engine_->setArpTempo(bpm); }
+void SynthEngineWrapper::setArpGate(float g) { if (engine_) engine_->setArpGate(g); }
+void SynthEngineWrapper::setArpSwing(float s) { if (engine_) engine_->setArpSwing(s); }
+void SynthEngineWrapper::setArpOctaveRange(int o) { if (engine_) engine_->setArpOctaveRange(o); }
 
 void SynthEngineWrapper::setRealismBodyType(int t) { if (engine_) engine_->part(0).realismBodyType = t; }
 void SynthEngineWrapper::setRealismBodyMix(float m) { if (engine_) engine_->part(0).realismBodyMix = m; }

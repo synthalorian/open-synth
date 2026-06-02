@@ -1063,8 +1063,7 @@ OpenSynthJucedEditor::OpenSynthJucedEditor(OpenSynthJucedProcessor& processor)
       keyboard_(processor)
 {
     setSize(1400, 900);
-    setResizable(true, true);
-    setResizeLimits(1000, 700, 1920, 1200);
+    setResizable(false, false);
 
     // Title
     titleLabel_.setText("Open Synth Juced", juce::dontSendNotification);
