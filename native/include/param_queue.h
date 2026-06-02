@@ -204,6 +204,9 @@ public:
         FX_MASTER_ENABLED = 205,
         FX_MASTER_MIX = 206,
 
+        // Phase 5: New FX slot param ranges (slots can hold any FX type now)
+        // Param IDs 210-249 reserved for future FX expansion
+
         // Reset
         RESET = 250,
 

@@ -298,6 +298,17 @@ class FxTypeId {
   static const int limiter = 9;
   static const int rotary = 10;
   static const int tremolo = 11;
+  // Phase 5: MFX Expansion
+  static const int autoWah = 12;
+  static const int bitcrusher = 13;
+  static const int ringMod = 14;
+  static const int pitchShift = 15;
+  static const int multitapDelay = 16;
+  static const int pingPongDelay = 17;
+  static const int springReverb = 18;
+  static const int gatedReverb = 19;
+  static const int ampSimulator = 20;
+  static const int stereoWidener = 21;
 
   static const Map<int, String> names = {
     none: 'None',
@@ -312,6 +323,17 @@ class FxTypeId {
     limiter: 'Limiter',
     rotary: 'Rotary',
     tremolo: 'Tremolo',
+    // Phase 5
+    autoWah: 'Auto-Wah',
+    bitcrusher: 'Bitcrusher',
+    ringMod: 'Ring Mod',
+    pitchShift: 'Pitch Shift',
+    multitapDelay: 'Multi-tap Delay',
+    pingPongDelay: 'Ping-Pong Delay',
+    springReverb: 'Spring Reverb',
+    gatedReverb: 'Gated Reverb',
+    ampSimulator: 'Amp Simulator',
+    stereoWidener: 'Stereo Widener',
   };
 
   static String name(int id) => names[id] ?? 'Unknown';

@@ -26,6 +26,17 @@ enum class FxType : uint8_t {
     Limiter,
     Rotary,
     Tremolo,
+    // Phase 5: MFX Expansion
+    AutoWah,
+    Bitcrusher,
+    RingMod,
+    PitchShift,
+    MultitapDelay,
+    PingPongDelay,
+    SpringReverb,
+    GatedReverb,
+    AmpSimulator,
+    StereoWidener,
 };
 
 /// Base class for all FX processors.

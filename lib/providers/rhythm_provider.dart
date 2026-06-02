@@ -74,10 +74,11 @@ class RhythmNotifier extends StateNotifier<RhythmState> {
     _pollTimer = Timer.periodic(const Duration(milliseconds: 50), (_) {
       final synth = _synth;
       if (synth == null) return;
-      // FFI getter for rhythm current step
-      // final step = synth.getRhythmCurrentStep();
-      // final total = synth.getRhythmTotalSteps();
-      // state = state.copyWith(currentStep: step, totalSteps: total);
+      final step = synth.rhythmCurrentStep;
+      final total = synth.rhythmTotalSteps;
+      if (step != state.currentStep || total != state.totalSteps) {
+        state = state.copyWith(currentStep: step, totalSteps: total);
+      }
     });
   }
 

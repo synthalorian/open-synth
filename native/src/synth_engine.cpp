@@ -4,6 +4,16 @@
 #include "fx_limiter.h"
 #include "fx_rotary.h"
 #include "fx_tremolo.h"
+#include "fx_autowah.h"
+#include "fx_bitcrusher.h"
+#include "fx_ringmod.h"
+#include "fx_pitchshift.h"
+#include "fx_multitap_delay.h"
+#include "fx_pingpong_delay.h"
+#include "fx_spring_reverb.h"
+#include "fx_gated_reverb.h"
+#include "fx_amp_sim.h"
+#include "fx_stereo_widener.h"
 #include <cmath>
 #include <cstring>
 #include <algorithm>
@@ -806,6 +816,17 @@ FxProcessor* SynthEngine::createFxProcessor(int fxTypeId) {
     case 9:  proc = new LimiterProcessor();  break; // Limiter
     case 10: proc = new RotaryProcessor();   break; // Rotary speaker
     case 11: proc = new TremoloProcessor();  break; // Tremolo
+    // Phase 5: MFX Expansion
+    case 12: proc = new AutoWahProcessor();       break; // Auto-wah
+    case 13: proc = new BitcrusherProcessor();    break; // Bitcrusher
+    case 14: proc = new RingModProcessor();       break; // Ring modulator
+    case 15: proc = new PitchShiftProcessor();    break; // Pitch shifter
+    case 16: proc = new MultitapDelayProcessor(); break; // Multi-tap delay
+    case 17: proc = new PingPongDelayProcessor(); break; // Ping-pong delay
+    case 18: proc = new SpringReverbProcessor();  break; // Spring reverb
+    case 19: proc = new GatedReverbProcessor();   break; // Gated reverb
+    case 20: proc = new AmpSimulatorProcessor();  break; // Amp simulator
+    case 21: proc = new StereoWidenerProcessor(); break; // Stereo widener
     default: return nullptr;
     }
     // Forward the actual sample rate so processors can pre-compute

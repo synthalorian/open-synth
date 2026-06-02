@@ -1,0 +1,1091 @@
+# OpenSynth Preset Fix List
+# 272 presets need parameter tweaks
+#
+- Electric Piano (Keys) [factory-08]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Init Patch (Custom) [factory-15]
+  Reason: identical oscs; 
+  Fix: Disable osc2 or add detune
+
+- Vocal Choir Pad (Pads) [factory-18]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Mellow Wurli (Keys) [factory-28]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Heavenly Choir (Pads) [factory-53]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Harpsichord (Keys) [factory-77]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Glass Marimba (Keys) [factory-78]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Grand Piano (Piano) [factory-273]
+  Reason: stub waveform; bad envelope (sustain=0, decay=4000.0ms); 
+  Fix: Replace waveform with real synthesisFix envelope sustain/decay
+
+- Bright Piano (Piano) [factory-274]
+  Reason: stub waveform; bad envelope (sustain=0, decay=3500.0ms); 
+  Fix: Replace waveform with real synthesisFix envelope sustain/decay
+
+- Honky Tonk Piano (Piano) [factory-275]
+  Reason: stub waveform; bad envelope (sustain=0, decay=2500.0ms); 
+  Fix: Replace waveform with real synthesisFix envelope sustain/decay
+
+- Soft Piano Pad (Piano) [factory-276]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- FM Piano (Piano) [factory-279]
+  Reason: bad envelope (sustain=0, decay=3500.0ms); 
+  Fix: Fix envelope sustain/decay
+
+- Cinematic Piano (Piano) [factory-280]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Mellow Piano (Piano) [factory-281]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Piano Strings Layer (Piano) [factory-283]
+  Reason: stub waveform; identical oscs; 
+  Fix: Replace waveform with real synthesisDisable osc2 or add detune
+
+- Lo-Fi Piano (Piano) [factory-284]
+  Reason: stub waveform; bad envelope (sustain=0, decay=2000.0ms); 
+  Fix: Replace waveform with real synthesisFix envelope sustain/decay
+
+- Rock Piano (Piano) [factory-285]
+  Reason: stub waveform; bad envelope (sustain=0, decay=2500.0ms); 
+  Fix: Replace waveform with real synthesisFix envelope sustain/decay
+
+- Ambient Piano Wash (Piano) [factory-286]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Jazz Piano (Piano) [factory-287]
+  Reason: stub waveform; bad envelope (sustain=0, decay=3500.0ms); 
+  Fix: Replace waveform with real synthesisFix envelope sustain/decay
+
+- Percussive Organ (Organ) [factory-296]
+  Reason: bad envelope (sustain=0, decay=1500.0ms); 
+  Fix: Fix envelope sustain/decay
+
+- Reggae Bubble Organ (Organ) [factory-302]
+  Reason: bad envelope (sustain=0, decay=600.0ms); 
+  Fix: Fix envelope sustain/decay
+
+- Clean Guitar (Guitar) [factory-303]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Nylon Guitar (Guitar) [factory-304]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Funk Guitar (Guitar) [factory-307]
+  Reason: bad envelope (sustain=0, decay=800.0ms); 
+  Fix: Fix envelope sustain/decay
+
+- Ambient Guitar (Guitar) [factory-311]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Acoustic Strum (Guitar) [factory-312]
+  Reason: stub waveform; bad envelope (sustain=0, decay=1800.0ms); 
+  Fix: Replace waveform with real synthesisFix envelope sustain/decay
+
+- Twelve String Guitar (Guitar) [factory-315]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Guitar Harmonics (Guitar) [factory-317]
+  Reason: bad envelope (sustain=0, decay=1500.0ms); 
+  Fix: Fix envelope sustain/decay
+
+- String Stab (Strings) [factory-328]
+  Reason: bad envelope (sustain=0, decay=800.0ms); 
+  Fix: Fix envelope sustain/decay
+
+- Brass Stab (Brass) [factory-339]
+  Reason: bad envelope (sustain=0, decay=600.0ms); 
+  Fix: Fix envelope sustain/decay
+
+- Warm Choir Pad (Choir) [factory-349]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Angelic Voices (Choir) [factory-350]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Male Chorus (Choir) [factory-351]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Distant Choir (Choir) [factory-354]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Gospel Choir (Choir) [factory-355]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Dark Choir (Choir) [factory-358]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Children Choir (Choir) [factory-359]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Haunting Voices (Choir) [factory-361]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Celestial Choir (Choir) [factory-362]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Scream Lead 97 (Leads) [factory-508]
+  Reason: identical oscs; 
+  Fix: Disable osc2 or add detune
+
+- Digital Lead 35 (Leads) [factory-516]
+  Reason: identical oscs; 
+  Fix: Disable osc2 or add detune
+
+- Square Lead 39 (Leads) [factory-525]
+  Reason: identical oscs; 
+  Fix: Disable osc2 or add detune
+
+- Digital Lead 78 (Leads) [factory-530]
+  Reason: identical oscs; 
+  Fix: Disable osc2 or add detune
+
+- Pad Arp 29 (Arps) [factory-603]
+  Reason: identical oscs; 
+  Fix: Disable osc2 or add detune
+
+- Synth Arp 2 (Arps) [factory-608]
+  Reason: identical oscs; 
+  Fix: Disable osc2 or add detune
+
+- Up Arp 71 (Arps) [factory-623]
+  Reason: identical oscs; 
+  Fix: Disable osc2 or add detune
+
+- Crash 19 (FX) [factory-628]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Vocoder 70 (FX) [factory-630]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Arcade 13 (FX) [factory-632]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Siren 22 (FX) [factory-634]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Modem 67 (FX) [factory-636]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Pixel 51 (FX) [factory-637]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Arcade 14 (FX) [factory-641]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Robot 16 (FX) [factory-643]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Robot 94 (FX) [factory-645]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Laser 2 (FX) [factory-647]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Stab 53 (FX) [factory-649]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Glitch 43 (FX) [factory-650]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Siren 72 (FX) [factory-651]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Arcade 16 (FX) [factory-652]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Noise Burst 18 (FX) [factory-653]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Wind 67 (FX) [factory-656]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Formant 66 (FX) [factory-657]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Grid Runner 30 (Synthwave) [factory-658]
+  Reason: identical oscs; 
+  Fix: Disable osc2 or add detune
+
+- Outrun Lead 1 (Synthwave) [factory-662]
+  Reason: identical oscs; 
+  Fix: Disable osc2 or add detune
+
+- Bright Piano 11 (Piano) [factory-685]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Dark Piano 40 (Piano) [factory-687]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Dark Piano 49 (Piano) [factory-690]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Concert Grand 50 (Piano) [factory-693]
+  Reason: identical oscs; 
+  Fix: Disable osc2 or add detune
+
+- Studio Piano 93 (Piano) [factory-698]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Classical Piano 50 (Piano) [factory-701]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Studio Piano 62 (Piano) [factory-705]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Soft Piano 99 (Piano) [factory-706]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Finger Pick 68 (Guitar) [factory-733]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Fingerstyle 77 (Guitar) [factory-734]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Baroque Guitar 57 (Guitar) [factory-735]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Classical Guitar 10 (Guitar) [factory-736]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Romantic Guitar 89 (Guitar) [factory-737]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Steel String 59 (Guitar) [factory-738]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Clean Strat 59 (Guitar) [factory-739]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Steel String 39 (Guitar) [factory-740]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Clean Strat 70 (Guitar) [factory-741]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Archtop 14 (Guitar) [factory-742]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Classical Guitar 58 (Guitar) [factory-743]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Archtop 2 (Guitar) [factory-744]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Flamenco 56 (Guitar) [factory-745]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Jazz Guitar 86 (Guitar) [factory-746]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Parlor Guitar 55 (Guitar) [factory-747]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Semi Hollow 74 (Guitar) [factory-748]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Semi Hollow 11 (Guitar) [factory-749]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Les Paul 59 (Guitar) [factory-750]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Classical Guitar 74 (Guitar) [factory-751]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Finger Pick 15 (Guitar) [factory-752]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Classical Guitar 77 (Guitar) [factory-753]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Steel String 7 (Guitar) [factory-754]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Telecaster 87 (Guitar) [factory-755]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Fingerstyle 75 (Guitar) [factory-756]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Telecaster 13 (Guitar) [factory-757]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Double Bass 12 (Strings) [factory-758]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Epic Strings 20 (Strings) [factory-764]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Soft Strings 1 (Strings) [factory-768]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Bowed Strings 22 (Strings) [factory-772]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Violin 95 (Strings) [factory-782]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Muted Trumpet 9 (Brass) [factory-786]
+  Reason: identical oscs; 
+  Fix: Disable osc2 or add detune
+
+- Soft Brass 21 (Brass) [factory-789]
+  Reason: identical oscs; 
+  Fix: Disable osc2 or add detune
+
+- Brass Swell 76 (Brass) [factory-794]
+  Reason: identical oscs; 
+  Fix: Disable osc2 or add detune
+
+- Gregorian 84 (Choir) [factory-808]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Alto 82 (Choir) [factory-809]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Ethereal Choir 35 (Choir) [factory-810]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Mixed Choir 34 (Choir) [factory-811]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Choir Pad 93 (Choir) [factory-812]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Mmm Choir 19 (Choir) [factory-813]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Baritone 40 (Choir) [factory-814]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Choir Pad 2 (Choir) [factory-815]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Dark Choir 95 (Choir) [factory-816]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Ooh Choir 1 (Choir) [factory-817]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Eeh Choir 88 (Choir) [factory-818]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Mmm Choir 34 (Choir) [factory-819]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Mmm Choir 35 (Choir) [factory-820]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Chamber Choir 88 (Choir) [factory-821]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Opera 86 (Choir) [factory-822]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Gregorian 41 (Choir) [factory-823]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Eeh Choir 41 (Choir) [factory-824]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Angelic Choir 46 (Choir) [factory-825]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Mystic Choir 99 (Choir) [factory-826]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Angelic Choir 81 (Choir) [factory-827]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Gregorian 71 (Choir) [factory-828]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Opera 17 (Choir) [factory-829]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Soprano 83 (Choir) [factory-830]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Sacred Choir 10 (Choir) [factory-831]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Ethereal Choir 91 (Choir) [factory-832]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Concert Bass Drum 11 (Percussion) [factory-845]
+  Reason: identical oscs; 
+  Fix: Disable osc2 or add detune
+
+- Grain 1 (Custom) [factory-859]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Feel 36 (Custom) [factory-861]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Test Patch 40 (Custom) [factory-864]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Mood 71 (Custom) [factory-868]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Concept 91 (Custom) [factory-872]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Tone 85 (Custom) [factory-873]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- User Init 15 (Custom) [factory-874]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Mood 23 (Custom) [factory-876]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Singer Songwriter 21 (Acoustic Guitar) [factory-908]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Singer Songwriter 66 (Acoustic Guitar) [factory-909]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Dreadnought 47 (Acoustic Guitar) [factory-910]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- 12 String 76 (Acoustic Guitar) [factory-911]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Singer Songwriter 69 (Acoustic Guitar) [factory-912]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Fingerstyle Steel 91 (Acoustic Guitar) [factory-913]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- 12 String 82 (Acoustic Guitar) [factory-914]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Slide Acoustic 2 (Acoustic Guitar) [factory-915]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Acoustic Steel 92 (Acoustic Guitar) [factory-916]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Slide Acoustic 68 (Acoustic Guitar) [factory-917]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Slide Acoustic 16 (Acoustic Guitar) [factory-918]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Coffeehouse 63 (Acoustic Guitar) [factory-919]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Jumbo Acoustic 53 (Acoustic Guitar) [factory-920]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Folk Guitar 21 (Acoustic Guitar) [factory-921]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Folk Guitar 86 (Acoustic Guitar) [factory-922]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Dreadnought 14 (Acoustic Guitar) [factory-923]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Slide Acoustic 55 (Acoustic Guitar) [factory-924]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Open Tuning 65 (Acoustic Guitar) [factory-925]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Acoustic Steel 49 (Acoustic Guitar) [factory-926]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Grand Auditorium 41 (Acoustic Guitar) [factory-927]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Dreadnought 86 (Acoustic Guitar) [factory-928]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Dreadnought 17 (Acoustic Guitar) [factory-929]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Slide Acoustic 26 (Acoustic Guitar) [factory-930]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Travis Picking 9 (Acoustic Guitar) [factory-931]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Travis Picking 64 (Acoustic Guitar) [factory-932]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Fusion Lead 78 (Electric Guitar) [factory-937]
+  Reason: identical oscs; 
+  Fix: Disable osc2 or add detune
+
+- Tweed Clean 20 (Electric Guitar) [factory-939]
+  Reason: identical oscs; 
+  Fix: Disable osc2 or add detune
+
+- Fusion Lead 50 (Electric Guitar) [factory-940]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Math Rock 20 (Electric Guitar) [factory-942]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Blues Drive 62 (Electric Guitar) [factory-943]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- 80s Clean 12 (Electric Guitar) [factory-944]
+  Reason: identical oscs; 
+  Fix: Disable osc2 or add detune
+
+- Single Coil 27 (Electric Guitar) [factory-945]
+  Reason: identical oscs; 
+  Fix: Disable osc2 or add detune
+
+- Blues Breaker 17 (Electric Guitar) [factory-952]
+  Reason: identical oscs; 
+  Fix: Disable osc2 or add detune
+
+- British Crunch 12 (Electric Guitar) [factory-953]
+  Reason: identical oscs; 
+  Fix: Disable osc2 or add detune
+
+- Djent 49 (Electric Guitar) [factory-961]
+  Reason: identical oscs; 
+  Fix: Disable osc2 or add detune
+
+- Celesta 91 (Mallets) [factory-1053]
+  Reason: identical oscs; 
+  Fix: Disable osc2 or add detune
+
+- Ney 95 (Woodwinds) [factory-1065]
+  Reason: identical oscs; 
+  Fix: Disable osc2 or add detune
+
+- Baritone Sax 71 (Woodwinds) [factory-1078]
+  Reason: identical oscs; 
+  Fix: Disable osc2 or add detune
+
+- Nebulous 66 (Pads) [factory-1110]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Cosmos 65 (Pads) [factory-1111]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Galaxy 14 (Pads) [factory-1112]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Event Horizon 65 (Pads) [factory-1115]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Void Pad 39 (Pads) [factory-1118]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Nebulous 70 (Pads) [factory-1119]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Aurora 6 (Pads) [factory-1120]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Galaxy 58 (Pads) [factory-1121]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Spectrum 16 (Leads) [factory-1123]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Pulse Wave 31 (Leads) [factory-1125]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- X-Ray 27 (Leads) [factory-1127]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Laser Lead 15 (Leads) [factory-1129]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Infrared 22 (Leads) [factory-1130]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Infrared 13 (Leads) [factory-1134]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Neon Solo 75 (Leads) [factory-1135]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Gamma Ray 81 (Leads) [factory-1136]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Spectrum 32 (Leads) [factory-1137]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Retro Keys 22 (Keys) [factory-1153]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Wurly-ish 89 (Keys) [factory-1154]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Bell Keys 18 (Keys) [factory-1155]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Rhodes-ish 68 (Keys) [factory-1157]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Retro Keys 49 (Keys) [factory-1158]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Crystal EP 99 (Keys) [factory-1163]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Cyber Keys 58 (Keys) [factory-1164]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Retro Keys 37 (Keys) [factory-1165]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Crystal EP 62 (Keys) [factory-1166]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Soft EP 96 (Keys) [factory-1167]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Pulsar Arp 11 (Arps) [factory-1168]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Photon Arp 47 (Arps) [factory-1169]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Dark Matter Arp 60 (Arps) [factory-1170]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Galactic Arp 26 (Arps) [factory-1171]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Dark Matter Arp 86 (Arps) [factory-1172]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Neon Arp 6 (Arps) [factory-1173]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Nebula Arp 84 (Arps) [factory-1174]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Dark Matter Arp 28 (Arps) [factory-1176]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Photon Arp 35 (Arps) [factory-1177]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Stellar Arp 79 (Arps) [factory-1179]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Pulsar Arp 15 (Arps) [factory-1180]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Cyber Arp 62 (Arps) [factory-1181]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Nebula Arp 53 (Arps) [factory-1182]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Interference 54 (FX) [factory-1183]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Harmonic 79 (FX) [factory-1185]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Feedback Loop 54 (FX) [factory-1186]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Infrasound 73 (FX) [factory-1188]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Feedback Loop 68 (FX) [factory-1189]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Harmonic 53 (FX) [factory-1190]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Oscillation 95 (FX) [factory-1192]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Interference 44 (FX) [factory-1195]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Simulation Drive 98 (Synthwave) [factory-1199]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Laser Drive 31 (Synthwave) [factory-1201]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Photon Drive 20 (Synthwave) [factory-1205]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Bachata Guitar 27 (Guitar) [factory-1234]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Samba Guitar 49 (Guitar) [factory-1236]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Bachata Guitar 86 (Guitar) [factory-1238]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Flamenco Guitar 43 (Guitar) [factory-1240]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Trio 41 (Strings) [factory-1247]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Octet 45 (Strings) [factory-1248]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Trio 81 (Strings) [factory-1252]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Archangel 31 (Choir) [factory-1270]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Convert 38 (Choir) [factory-1271]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Angel 1 (Choir) [factory-1272]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Heavenly Host 62 (Choir) [factory-1274]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Seraphim 32 (Choir) [factory-1277]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Acolyte 80 (Choir) [factory-1279]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Archangel 8 (Choir) [factory-1280]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Formula 1 10 (Custom) [factory-1294]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Algorithm A 71 (Custom) [factory-1296]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Formula 2 78 (Custom) [factory-1298]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Equation B 21 (Custom) [factory-1299]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Algorithm C 42 (Custom) [factory-1300]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Formula 2 24 (Custom) [factory-1302]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Stride Piano 47 (Acoustic Guitar) [factory-1322]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Chicago Blues 28 (Acoustic Guitar) [factory-1323]
+  Reason: identical oscs; 
+  Fix: Disable osc2 or add detune
+
+- Texas Blues 49 (Acoustic Guitar) [factory-1325]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- New Orleans Blues 37 (Acoustic Guitar) [factory-1326]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Fingerstyle Blues 83 (Acoustic Guitar) [factory-1327]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Stride Piano 94 (Acoustic Guitar) [factory-1329]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Altered Chord 31 (Electric Guitar) [factory-1332]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Power Chord 28 (Electric Guitar) [factory-1336]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Quintal 32 (Electric Guitar) [factory-1337]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Mixed Interval 84 (Electric Guitar) [factory-1338]
+  Reason: identical oscs; 
+  Fix: Disable osc2 or add detune
+
+- Cluster 17 (Electric Guitar) [factory-1340]
+  Reason: identical oscs; 
+  Fix: Disable osc2 or add detune
+
+- Open Chord 70 (Electric Guitar) [factory-1342]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Dilruba 26 (Ethnic) [factory-1408]
+  Reason: identical oscs; 
+  Fix: Disable osc2 or add detune
+
+- Classic Rhodes (Electric Piano) [factory-ep-01]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Wurlitzer 200A (Electric Piano) [factory-ep-02]
+  Reason: bad envelope (sustain=0, decay=2500.0ms); 
+  Fix: Fix envelope sustain/decay
+
+- DX7 Full Tines (Electric Piano) [factory-ep-03]
+  Reason: bad envelope (sustain=0, decay=3000.0ms); 
+  Fix: Fix envelope sustain/decay
+
+- Stage Mark II (Electric Piano) [factory-ep-04]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Funky Clav (Clavinet) [factory-clv-01]
+  Reason: bad envelope (sustain=0, decay=600.0ms); 
+  Fix: Fix envelope sustain/decay
+
+- Nylon String (Acoustic Guitar) [factory-ag-01]
+  Reason: stub waveform; bad envelope (sustain=0, decay=2000.0ms); 
+  Fix: Replace waveform with real synthesisFix envelope sustain/decay
+
+- Steel String (Acoustic Guitar) [factory-ag-02]
+  Reason: stub waveform; bad envelope (sustain=0, decay=2500.0ms); 
+  Fix: Replace waveform with real synthesisFix envelope sustain/decay
+
+- Fingerstyle (Acoustic Guitar) [factory-ag-03]
+  Reason: stub waveform; bad envelope (sustain=0, decay=1500.0ms); 
+  Fix: Replace waveform with real synthesisFix envelope sustain/decay
+
+- Clean Strat (Electric Guitar) [factory-eg-01]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+
+- Ambient Swell (Electric Guitar) [factory-eg-03]
+  Reason: stub waveform; 
+  Fix: Replace waveform with real synthesis
+

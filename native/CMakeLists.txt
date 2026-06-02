@@ -39,6 +39,17 @@ set(COMMON_SOURCES
     ${SRC_DIR}/fx_rotary.cpp
     ${SRC_DIR}/fx_tremolo.cpp
     ${SRC_DIR}/legacy_fx.cpp
+    # Phase 5: MFX Expansion
+    ${SRC_DIR}/fx_autowah.cpp
+    ${SRC_DIR}/fx_bitcrusher.cpp
+    ${SRC_DIR}/fx_ringmod.cpp
+    ${SRC_DIR}/fx_pitchshift.cpp
+    ${SRC_DIR}/fx_multitap_delay.cpp
+    ${SRC_DIR}/fx_pingpong_delay.cpp
+    ${SRC_DIR}/fx_spring_reverb.cpp
+    ${SRC_DIR}/fx_gated_reverb.cpp
+    ${SRC_DIR}/fx_amp_sim.cpp
+    ${SRC_DIR}/fx_stereo_widener.cpp
 )
 
 # ── Platform-specific audio backend ────────────────────────────────────────

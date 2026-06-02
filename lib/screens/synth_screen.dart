@@ -47,6 +47,8 @@ import '../widgets/sequencer_panel.dart';
 import '../widgets/mod_matrix_panel.dart';
 import '../widgets/macro_panel.dart';
 import '../widgets/animated_section.dart';
+import '../widgets/drum_panel.dart';
+import '../widgets/rhythm_panel.dart';
 import '../providers/favorites_provider.dart';
 import '../providers/navigation_provider.dart';
 import '../providers/recent_presets_provider.dart';
@@ -1134,6 +1136,14 @@ class SynthScreen extends ConsumerWidget {
 
                         // ── MIDI Input ──
                         const MidiPanel(),
+                        const SizedBox(height: 12),
+
+                        // ── Drum Kit ──
+                        const DrumPanel(),
+                        const SizedBox(height: 12),
+
+                        // ── Rhythm Player ──
+                        const RhythmPanel(),
                         const SizedBox(height: 16),
 
                         // DSP status indicator

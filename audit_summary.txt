@@ -1,0 +1,157 @@
+OpenSynth Preset Audit Summary
+============================================================
+Total presets: 1453
+
+Category breakdown:
+  Pads                  112
+  Leads                 112
+  Bass                  109
+  FX                     98
+  Keys                   93
+  Arps                   93
+  Organ                  57
+  Synthwave              56
+  Strings                55
+  Brass                  55
+  Piano                  52
+  Guitar                 52
+  Choir                  52
+  Percussion             52
+  Electric Guitar        48
+  Drums                  45
+  Ethnic                 42
+  Electric Piano         41
+  Acoustic Guitar        40
+  Bass Guitar            40
+  Mallets                40
+  Woodwinds              40
+  Custom                 36
+  Clavinet               33
+
+Issues found:
+  Duplicate names:        35
+  Stub waveforms:         243
+  Identical oscillators:  30
+  Suspicious envelopes:   40
+  Missing tags:           0
+  CPU-heavy (5+ FX):      0
+
+Duplicate names:
+  - Music Box (2x)
+  - Toy Piano (2x)
+  - Cathedral Choir (2x)
+  - Slap Bass (3x)
+  - Acid 303 (2x)
+  - Vibraphone (4x)
+  - Steel Drums (2x)
+  - Glockenspiel (3x)
+  - Celesta (2x)
+  - Kalimba (3x)
+  - Pipe Organ (3x)
+  - Wurlitzer EP (2x)
+  - Tubular Bells (2x)
+  - Hammond B3 (2x)
+  - Jazz Organ (2x)
+  - Rock Organ (2x)
+  - Gospel Organ (2x)
+  - Cello (2x)
+  - Staccato Strings (2x)
+  - Trombone (2x)
+  ... and 15 more
+
+Stub waveform presets (first 20):
+  - Electric Piano (keys): wtPiano/sine
+  - Vocal Choir Pad (pads): wtChoir/sine
+  - Mellow Wurli (keys): wtPiano/sine
+  - Heavenly Choir (pads): wtChoir/sine
+  - Harpsichord (keys): wtPiano/triangle
+  - Glass Marimba (keys): wtPiano/triangle
+  - Music Box (keys): wtPiano/triangle
+  - Toy Piano (keys): wtPiano/square
+  - Cathedral Choir (pads): wtChoir/sine
+  - Grand Piano (piano): wtPiano/wtPiano
+  - Bright Piano (piano): wtPiano/wtPiano
+  - Honky Tonk Piano (piano): wtPiano/wtPiano
+  - Soft Piano Pad (piano): wtPiano/sine
+  - Wurlitzer EP (piano): wtPiano/square
+  - Cinematic Piano (piano): wtPiano/sine
+  - Mellow Piano (piano): wtPiano/wtPiano
+  - Piano Strings Layer (piano): wtPiano/wtPiano
+  - Lo-Fi Piano (piano): wtPiano/noise
+  - Rock Piano (piano): wtPiano/wtPiano
+  - Ambient Piano Wash (piano): wtPiano/sine
+  ... and 223 more
+
+Identical oscillator presets (first 20):
+  - Init Patch (custom): both = sine
+  - Piano Strings Layer (piano): both = wtPiano
+  - Scream Lead 97 (leads): both = square
+  - Digital Lead 35 (leads): both = saw
+  - Square Lead 39 (leads): both = square
+  - Digital Lead 78 (leads): both = square
+  - Pad Arp 29 (arps): both = saw
+  - Synth Arp 2 (arps): both = square
+  - Up Arp 71 (arps): both = square
+  - Grid Runner 30 (synthwave): both = square
+  - Outrun Lead 1 (synthwave): both = square
+  - Concert Grand 50 (piano): both = sine
+  - Muted Trumpet 9 (brass): both = square
+  - Soft Brass 21 (brass): both = saw
+  - Brass Swell 76 (brass): both = saw
+  - Concert Bass Drum 11 (percussion): both = sine
+  - Fusion Lead 78 (electricGuitar): both = saw
+  - Tweed Clean 20 (electricGuitar): both = saw
+  - 80s Clean 12 (electricGuitar): both = saw
+  - Single Coil 27 (electricGuitar): both = saw
+  ... and 10 more
+
+Suspicious envelopes (first 20):
+  - Impact Hit (fx): sustain=0, decay=600.0ms
+  - Music Box (keys): sustain=0, decay=700.0ms
+  - Explosion (fx): sustain=0, decay=1000.0ms
+  - Sub Drop (fx): sustain=0, decay=800.0ms
+  - Steel Drums (keys): sustain=0, decay=600.0ms
+  - Glockenspiel (keys): sustain=0, decay=1000.0ms
+  - Celesta (keys): sustain=0, decay=1500.0ms
+  - Thunder Clap (fx): sustain=0, decay=1500.0ms
+  - Quake Rumble (fx): sustain=0, decay=800.0ms
+  - Grand Piano (piano): sustain=0, decay=4000.0ms
+  - Bright Piano (piano): sustain=0, decay=3500.0ms
+  - Honky Tonk Piano (piano): sustain=0, decay=2500.0ms
+  - FM Piano (piano): sustain=0, decay=3500.0ms
+  - Toy Piano (piano): sustain=0, decay=1200.0ms
+  - Lo-Fi Piano (piano): sustain=0, decay=2000.0ms
+  - Rock Piano (piano): sustain=0, decay=2500.0ms
+  - Jazz Piano (piano): sustain=0, decay=3500.0ms
+  - Percussive Organ (organ): sustain=0, decay=1500.0ms
+  - Reggae Bubble Organ (organ): sustain=0, decay=600.0ms
+  - Funk Guitar (guitar): sustain=0, decay=800.0ms
+  ... and 20 more
+
+Top 20 tags:
+  synth                 174
+  keyboard              171
+  guitar                171
+  electronic            115
+  percussion            103
+  bass                  101
+  ambient                96
+  piano                  88
+  low                    87
+  orchestral             86
+  acoustic               83
+  sub                    74
+  keys                   70
+  mallets                68
+  organ                  67
+  plucked                66
+  electric               60
+  brass                  60
+  strings                60
+  choir                  57
+
+Recommendations:
+  • Found 35 duplicate names. Merge or rename.
+  • Found 243 presets using stub waveforms. Implement or replace.
+  • Found 30 presets with identical osc1+osc2. Disable osc2 or add detune.
+  • Found 40 presets with suspicious envelopes. Review attack/release times.
