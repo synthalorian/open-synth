@@ -1,0 +1,10 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/synth/projects/open-synth-juce/build/JUCE_BUILD/tools/cmake_install.cmake",
+		"/home/synth/projects/open-synth-juce/build/JUCE_BUILD/tools/modules/cmake_install.cmake",
+		"/home/synth/projects/open-synth-juce/build/JUCE_BUILD/tools/extras/Build/cmake_install.cmake",
+		"/home/synth/projects/open-synth-juce/build/JUCE_BUILD/tools/extras/Build/juceaide/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
