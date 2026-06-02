@@ -36,6 +36,8 @@ public:
     juce::AudioProcessorValueTreeState& getParameters() { return apvts_; }
     SynthEngineWrapper& getSynth() { return synth_; }
 
+    void handleMidiCC(int ccNumber, float value);
+
     static juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
 
 private:
