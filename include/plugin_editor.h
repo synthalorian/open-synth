@@ -2,6 +2,7 @@
 #include <juce_gui_basics/juce_gui_basics.h>
 #include <juce_audio_processors/juce_audio_processors.h>
 #include "plugin_processor.h"
+#include "preset_library.h"
 
 namespace openamp {
 
@@ -133,7 +134,9 @@ private:
 };
 
 // ── Preset Browser (popup overlay) ────────────────────────────────────────
-class PresetBrowser : public juce::Component {
+class PresetBrowser : public juce::Component,
+                      private juce::ListBoxModel,
+                      private juce::TextEditor::Listener {
 public:
     PresetBrowser();
     void paint(juce::Graphics& g) override;
@@ -141,14 +144,30 @@ public:
 
     void setVisible(bool shouldBeVisible) override;
 
+    std::function<void(const PresetInfo*)> onPresetSelected;
+
 private:
     juce::TextEditor searchBox_;
     juce::ListBox presetList_;
     juce::TextButton closeButton_;
     juce::Label titleLabel_;
+    juce::ComboBox categoryFilter_;
 
-    struct PresetItem;
-    std::unique_ptr<PresetItem> presetData_;
+    std::vector<const PresetInfo*> filteredPresets_;
+    juce::String currentSearch_;
+    juce::String currentCategory_;
+
+    void rebuildFilter();
+
+    // ListBoxModel
+    int getNumRows() override { return (int)filteredPresets_.size(); }
+    void paintListBoxItem(int rowNumber, juce::Graphics& g, int width, int height, bool rowIsSelected) override;
+    void selectedRowsChanged(int lastRowSelected) override;
+
+    // TextEditor::Listener
+    void textEditorTextChanged(juce::TextEditor&) override { rebuildFilter(); }
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PresetBrowser)
 };
 
 // ── Quick Favorites Bar ───────────────────────────────────────────────────
@@ -218,6 +237,53 @@ private:
     juce::Rectangle<float> getBlackKeyRect(int note) const;
 };
 
+// ── MIDI Learn Manager ────────────────────────────────────────────────────
+class MidiLearnManager {
+public:
+    struct Mapping {
+        juce::String paramID;
+        int ccNumber = -1;
+    };
+
+    void startLearning(const juce::String& paramID);
+    bool isLearning() const { return learningParam_.isNotEmpty(); }
+    void cancelLearning();
+
+    // Call from MIDI input handler
+    bool handleMidiCC(int ccNumber, float value, juce::AudioProcessorValueTreeState& apvts);
+
+    // Get/set all mappings
+    std::vector<Mapping> getMappings() const;
+    void setMappings(const std::vector<Mapping>& mappings);
+
+    juce::String getLearningParam() const { return learningParam_; }
+    int getCCForParam(const juce::String& paramID) const;
+
+private:
+    juce::String learningParam_;
+    std::unordered_map<juce::String, int> paramToCC_;
+    std::unordered_map<int, juce::String> ccToParam_;
+};
+
+// ── MIDI-Learnable Knob ───────────────────────────────────────────────────
+class MidiLearnableKnob : public SynthKnob {
+public:
+    MidiLearnableKnob(const juce::String& name, juce::Colour accent,
+                      juce::AudioProcessorValueTreeState& apvts,
+                      const juce::String& paramID,
+                      MidiLearnManager& midiLearn);
+
+    void mouseDown(const juce::MouseEvent& e) override;
+    void paint(juce::Graphics& g) override;
+
+private:
+    juce::AudioProcessorValueTreeState& apvts_;
+    juce::String paramID_;
+    MidiLearnManager& midiLearn_;
+
+    void showContextMenu();
+};
+
 // ── Main Editor ───────────────────────────────────────────────────────────
 class OpenSynthEditor : public juce::AudioProcessorEditor,
                          private juce::Timer {
@@ -251,10 +317,16 @@ private:
     PresetBrowser presetBrowser_;
     SplitKeyboardOverlay splitOverlay_;
 
+    // MIDI Learn
+    MidiLearnManager midiLearnManager_;
+
     void timerCallback() override;
+    void handleMidiCC(int ccNumber, float value);
     void showPresetBrowser();
     void showSetlistMode();
     void loadFavoritePreset(int index);
+    void loadPresetByIndex(int index);
+    void loadPresetByID(const juce::String& id);
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(OpenSynthEditor)
 };

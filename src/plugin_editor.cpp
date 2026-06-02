@@ -371,10 +371,7 @@ void PerformanceMeter::resized() {}
 
 // ── PresetBrowser ───────────────────────────────────────────────────────────
 
-struct PresetBrowser::PresetItem {};
-
 PresetBrowser::PresetBrowser()
-    : presetData_(std::make_unique<PresetItem>())
 {
     setOpaque(true);
 
@@ -386,11 +383,85 @@ PresetBrowser::PresetBrowser()
     searchBox_.setTextToShowWhenEmpty("Search presets...", SynthColors::textDim());
     searchBox_.setColour(juce::TextEditor::backgroundColourId, SynthColors::surface());
     searchBox_.setColour(juce::TextEditor::textColourId, SynthColors::text());
+    searchBox_.addListener(this);
     addAndMakeVisible(searchBox_);
 
     closeButton_.setButtonText("X");
     closeButton_.setColour(juce::TextButton::buttonColourId, SynthColors::danger());
+    closeButton_.onClick = [this]() { setVisible(false); };
     addAndMakeVisible(closeButton_);
+
+    // Category filter
+    categoryFilter_.addItem("All Categories", 1);
+    categoryFilter_.addItemList({"Pads", "Leads", "Bass", "Keys", "Arps", "FX",
+        "Synthwave", "Organ", "Strings", "Brass", "Piano", "Guitar", "Choir",
+        "Percussion", "Electric Guitar", "Drums", "Ethnic", "Mallets",
+        "Electric Piano", "Acoustic Guitar", "Bass Guitar", "Woodwinds",
+        "Custom", "Clavinet"}, 2);
+    categoryFilter_.onChange = [this]() {
+        int idx = categoryFilter_.getSelectedItemIndex();
+        currentCategory_ = (idx <= 0) ? "" : categoryFilter_.getItemText(idx);
+        rebuildFilter();
+    };
+    addAndMakeVisible(categoryFilter_);
+
+    presetList_.setModel(this);
+    presetList_.setColour(juce::ListBox::backgroundColourId, SynthColors::surface());
+    addAndMakeVisible(presetList_);
+
+    rebuildFilter();
+}
+
+void PresetBrowser::rebuildFilter()
+{
+    filteredPresets_.clear();
+    currentSearch_ = searchBox_.getText().toLowerCase();
+
+    for (int i = 0; i < kNumPresets; ++i) {
+        const auto& preset = kPresets[i];
+        bool matchesSearch = currentSearch_.isEmpty() ||
+                             preset.name.toLowerCase().contains(currentSearch_) ||
+                             preset.id.toLowerCase().contains(currentSearch_);
+        bool matchesCategory = currentCategory_.isEmpty() ||
+                               preset.category.equalsIgnoreCase(currentCategory_);
+        if (matchesSearch && matchesCategory)
+            filteredPresets_.push_back(&preset);
+    }
+
+    presetList_.updateContent();
+    presetList_.repaint();
+}
+
+void PresetBrowser::paintListBoxItem(int rowNumber, juce::Graphics& g, int width, int height, bool rowIsSelected)
+{
+    if (rowNumber < 0 || rowNumber >= (int)filteredPresets_.size()) return;
+
+    auto* preset = filteredPresets_[rowNumber];
+    auto b = juce::Rectangle<int>(0, 0, width, height);
+
+    if (rowIsSelected) {
+        g.setColour(SynthColors::neonPurple().withAlpha(0.4f));
+        g.fillRect(b);
+    } else if (rowNumber % 2 == 0) {
+        g.setColour(SynthColors::card().withAlpha(0.3f));
+        g.fillRect(b);
+    }
+
+    g.setColour(SynthColors::text());
+    g.setFont(juce::Font(juce::FontOptions(13.0f)));
+    g.drawText(preset->name, b.reduced(8, 2), juce::Justification::centredLeft, true);
+
+    g.setColour(SynthColors::textDim());
+    g.setFont(juce::Font(juce::FontOptions(10.0f)));
+    g.drawText(preset->category, b.reduced(8, 2), juce::Justification::centredRight, true);
+}
+
+void PresetBrowser::selectedRowsChanged(int lastRowSelected)
+{
+    if (lastRowSelected >= 0 && lastRowSelected < (int)filteredPresets_.size()) {
+        if (onPresetSelected)
+            onPresetSelected(filteredPresets_[lastRowSelected]);
+    }
 }
 
 void PresetBrowser::paint(juce::Graphics& g)
@@ -409,14 +480,23 @@ void PresetBrowser::resized()
     auto b = getLocalBounds().reduced(20);
     titleLabel_.setBounds(b.removeFromTop(30));
     closeButton_.setBounds(getWidth() - 50, 20, 30, 30);
-    searchBox_.setBounds(b.removeFromTop(30));
+
+    auto filterRow = b.removeFromTop(30);
+    categoryFilter_.setBounds(filterRow.removeFromLeft(180));
+    filterRow.removeFromLeft(8);
+    searchBox_.setBounds(filterRow);
+
+    b.removeFromTop(8);
+    presetList_.setBounds(b);
 }
 
 void PresetBrowser::setVisible(bool shouldBeVisible)
 {
     juce::Component::setVisible(shouldBeVisible);
-    if (shouldBeVisible)
+    if (shouldBeVisible) {
         searchBox_.grabKeyboardFocus();
+        rebuildFilter();
+    }
 }
 
 // ── FavoritesBar ────────────────────────────────────────────────────────────
@@ -701,7 +781,143 @@ int PianoKeyboard::getNoteAtPosition(juce::Point<int> pos) const
     return -1;
 }
 
+} // namespace openamp
+
+// ── MidiLearnManager ────────────────────────────────────────────────────────
+
+namespace openamp {
+
+void MidiLearnManager::startLearning(const juce::String& paramID)
+{
+    learningParam_ = paramID;
+}
+
+void MidiLearnManager::cancelLearning()
+{
+    learningParam_.clear();
+}
+
+bool MidiLearnManager::handleMidiCC(int ccNumber, float value, juce::AudioProcessorValueTreeState& apvts)
+{
+    if (learningParam_.isNotEmpty()) {
+        auto it = ccToParam_.find(ccNumber);
+        if (it != ccToParam_.end()) {
+            paramToCC_.erase(it->second);
+        }
+        auto it2 = paramToCC_.find(learningParam_);
+        if (it2 != paramToCC_.end()) {
+            ccToParam_.erase(it2->second);
+        }
+        paramToCC_[learningParam_] = ccNumber;
+        ccToParam_[ccNumber] = learningParam_;
+        learningParam_.clear();
+        return true;
+    }
+
+    auto it = ccToParam_.find(ccNumber);
+    if (it != ccToParam_.end()) {
+        auto* param = apvts.getParameter(it->second);
+        if (param != nullptr) {
+            param->setValueNotifyingHost(value / 127.0f);
+        }
+        return true;
+    }
+    return false;
+}
+
+std::vector<MidiLearnManager::Mapping> MidiLearnManager::getMappings() const
+{
+    std::vector<Mapping> result;
+    result.reserve(paramToCC_.size());
+    for (const auto& kv : paramToCC_) {
+        result.push_back({kv.first, kv.second});
+    }
+    return result;
+}
+
+void MidiLearnManager::setMappings(const std::vector<Mapping>& mappings)
+{
+    paramToCC_.clear();
+    ccToParam_.clear();
+    for (const auto& m : mappings) {
+        if (m.ccNumber >= 0 && m.ccNumber <= 127) {
+            paramToCC_[m.paramID] = m.ccNumber;
+            ccToParam_[m.ccNumber] = m.paramID;
+        }
+    }
+}
+
+int MidiLearnManager::getCCForParam(const juce::String& paramID) const
+{
+    auto it = paramToCC_.find(paramID);
+    return (it != paramToCC_.end()) ? it->second : -1;
+}
+
+// ── MidiLearnableKnob ───────────────────────────────────────────────────────
+
+MidiLearnableKnob::MidiLearnableKnob(const juce::String& name, juce::Colour accent,
+                                     juce::AudioProcessorValueTreeState& apvts,
+                                     const juce::String& paramID,
+                                     MidiLearnManager& midiLearn)
+    : SynthKnob(name, accent), apvts_(apvts), paramID_(paramID), midiLearn_(midiLearn)
+{
+}
+
+void MidiLearnableKnob::mouseDown(const juce::MouseEvent& e)
+{
+    if (e.mods.isRightButtonDown()) {
+        showContextMenu();
+        return;
+    }
+    SynthKnob::mouseDown(e);
+}
+
+void MidiLearnableKnob::showContextMenu()
+{
+    juce::PopupMenu menu;
+    int currentCC = midiLearn_.getCCForParam(paramID_);
+
+    if (currentCC >= 0) {
+        menu.addItem(juce::PopupMenu::Item("Mapped to CC " + juce::String(currentCC)).setEnabled(false));
+        menu.addSeparator();
+        menu.addItem("Unmap MIDI", [this]() {
+            midiLearn_.setMappings({});
+            repaint();
+        });
+    } else {
+        menu.addItem("Learn MIDI CC", [this]() {
+            midiLearn_.startLearning(paramID_);
+            repaint();
+        });
+    }
+    menu.showMenuAsync(juce::PopupMenu::Options().withTargetComponent(this));
+}
+
+void MidiLearnableKnob::paint(juce::Graphics& g)
+{
+    SynthKnob::paint(g);
+
+    auto bounds = getLocalBounds().toFloat();
+    float size = juce::jmin(bounds.getWidth(), bounds.getHeight()) - 8.0f;
+    float cx = bounds.getCentreX();
+    float cy = bounds.getCentreY();
+    float radius = size * 0.5f;
+
+    if (midiLearn_.isLearning() && midiLearn_.getLearningParam() == paramID_) {
+        float pulse = 0.5f + 0.5f * std::sin(juce::Time::getMillisecondCounter() / 200.0f);
+        g.setColour(SynthColors::neonYellow().withAlpha(pulse));
+        g.drawEllipse(cx - radius - 3, cy - radius - 3, size + 6, size + 6, 2.0f);
+    } else if (midiLearn_.getCCForParam(paramID_) >= 0) {
+        g.setColour(SynthColors::neonYellow());
+        g.fillEllipse(cx + radius - 6, cy - radius - 2, 8, 8);
+    }
+}
+
+} // namespace openamp
+
 // ── OpenSynthEditor ─────────────────────────────────────────────────────────
+
+namespace openamp {
 
 OpenSynthEditor::OpenSynthEditor(OpenSynthProcessor& processor)
     : AudioProcessorEditor(&processor), processor_(processor),
@@ -739,8 +955,19 @@ OpenSynthEditor::OpenSynthEditor(OpenSynthProcessor& processor)
     addAndMakeVisible(setlistButton_);
 
     // Favorites bar
-    favorites_.onPresetSelected = [this](int idx) { loadFavoritePreset(idx); };
+    favorites_.onPresetSelected = [this](int idx) {
+        if (idx >= 0 && idx < kNumPresets)
+            loadPresetByIndex(idx);
+    };
     addAndMakeVisible(favorites_);
+
+    // Preset browser callback
+    presetBrowser_.onPresetSelected = [this](const PresetInfo* preset) {
+        if (preset != nullptr) {
+            loadPresetByID(preset->id);
+            presetBrowser_.setVisible(false);
+        }
+    };
 
     // Meters
     addAndMakeVisible(meters_);
@@ -770,6 +997,11 @@ OpenSynthEditor::OpenSynthEditor(OpenSynthProcessor& processor)
     startTimerHz(10);
 }
 
+void OpenSynthEditor::handleMidiCC(int ccNumber, float value)
+{
+    midiLearnManager_.handleMidiCC(ccNumber, value, processor_.getParameters());
+}
+
 void OpenSynthEditor::timerCallback()
 {
     int voices = processor_.getSynth().getActiveVoiceCount();
@@ -792,8 +1024,26 @@ void OpenSynthEditor::showSetlistMode()
 
 void OpenSynthEditor::loadFavoritePreset(int index)
 {
-    // TODO: Load preset from favorites bank
     juce::ignoreUnused(index);
+}
+
+void OpenSynthEditor::loadPresetByIndex(int index)
+{
+    if (index >= 0 && index < kNumPresets)
+        loadPresetByID(kPresets[index].id);
+}
+
+void OpenSynthEditor::loadPresetByID(const juce::String& id)
+{
+    // Find preset in library
+    for (int i = 0; i < kNumPresets; ++i) {
+        if (kPresets[i].id == id) {
+            // Update title
+            titleLabel_.setText(kPresets[i].name, juce::dontSendNotification);
+            // TODO: Load full parameter set into APVTS when preset data includes parameters
+            break;
+        }
+    }
 }
 
 void OpenSynthEditor::paint(juce::Graphics& g)

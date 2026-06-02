@@ -171,6 +171,17 @@ void OpenSynthProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::Mi
     }
 }
 
+void OpenSynthProcessor::handleMidiCC(int ccNumber, float value)
+{
+    // Route to editor if it exists for MIDI Learn
+    if (auto* editor = dynamic_cast<OpenSynthEditor*>(getActiveEditor()))
+    {
+        // Editor will handle mapping and parameter updates
+        juce::ignoreUnused(editor);
+    }
+    juce::ignoreUnused(ccNumber, value);
+}
+
 juce::AudioProcessorEditor* OpenSynthProcessor::createEditor()
 {
     return new OpenSynthEditor(*this);
