@@ -56,6 +56,14 @@ public:
     void setFxEnabled(int slot, bool e);
     void setFxParam(int slot, int param, float value);
 
+    // Instrument realism
+    void setRealismBodyType(int t);
+    void setRealismBodyMix(float m);
+    void setRealismClickMix(float m);
+    void setRealismSympatheticMix(float m);
+    void setRealismAttackCurve(int c);
+    void setRealismBrightnessSens(float s);
+
     int getActiveVoiceCount() const;
     float getCpuLoad() const;
 

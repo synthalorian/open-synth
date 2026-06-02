@@ -22,6 +22,8 @@ set(OPENSYNTH_SOURCES
     src/plugin_processor.cpp
     src/plugin_editor.cpp
     src/synth_engine_wrapper.cpp
+    src/preset_data.cpp
+    src/instrument_realism.cpp
 )
 
 # DSP engine sources (ported from Flutter FFI)
