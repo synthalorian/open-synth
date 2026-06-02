@@ -2,6 +2,7 @@
 #include "plugin_processor.h"
 #include "preset_library_full.h"
 #include "preset_data.h"
+#include "user_preset_manager.h"
 
 namespace openamp {
 
@@ -18,31 +19,48 @@ SynthKnob::SynthKnob(const juce::String& name, juce::Colour accent)
 void SynthKnob::paint(juce::Graphics& g)
 {
     auto bounds = getLocalBounds().toFloat();
-    float size = juce::jmin(bounds.getWidth(), bounds.getHeight()) - 8.0f;
+    float size = juce::jmin(bounds.getWidth(), bounds.getHeight()) - 10.0f;
     float cx = bounds.getCentreX();
     float cy = bounds.getCentreY();
     float radius = size * 0.5f;
 
+    // Glow effect behind knob
+    juce::Path glow;
+    glow.addCentredArc(cx, cy, radius + 6, radius + 6, 0.0f, 0.0f, 6.283f, true);
+    g.setColour(accent_.withAlpha(0.08f));
+    g.fillPath(glow);
+
     g.setColour(SynthColors::surface());
     g.fillEllipse(cx - radius, cy - radius, size, size);
+
+    // Outer ring
+    g.setColour(accent_.withAlpha(0.4f));
+    g.drawEllipse(cx - radius, cy - radius, size, size, 1.5f);
 
     float value = (float)getValue();
     float startAngle = 2.356f;
     float endAngle = startAngle + value * 4.712f;
 
     juce::Path arc;
-    arc.addCentredArc(cx, cy, radius - 2, radius - 2, 0.0f, startAngle, endAngle, true);
+    arc.addCentredArc(cx, cy, radius - 3, radius - 3, 0.0f, startAngle, endAngle, true);
     g.setColour(accent_);
-    g.strokePath(arc, juce::PathStrokeType(3.0f));
+    g.strokePath(arc, juce::PathStrokeType(4.0f));
 
     juce::Path arcDim;
-    arcDim.addCentredArc(cx, cy, radius - 2, radius - 2, 0.0f, endAngle, startAngle + 4.712f, true);
+    arcDim.addCentredArc(cx, cy, radius - 3, radius - 3, 0.0f, endAngle, startAngle + 4.712f, true);
     g.setColour(SynthColors::gridLine());
     g.strokePath(arcDim, juce::PathStrokeType(2.0f));
 
+    // Value indicator dot
+    float dotAngle = endAngle;
+    float dotX = cx + (radius - 8) * std::cos(dotAngle);
+    float dotY = cy + (radius - 8) * std::sin(dotAngle);
+    g.setColour(accent_.brighter());
+    g.fillEllipse(dotX - 3, dotY - 3, 6, 6);
+
     g.setColour(SynthColors::textDim());
     g.setFont(juce::Font(juce::FontOptions(10.0f)));
-    g.drawText(name_, cx - radius, cy + radius + 2, size, 14, juce::Justification::centred);
+    g.drawText(name_, cx - radius, cy + radius + 4, size, 14, juce::Justification::centred);
 }
 
 void SynthKnob::resized() {}
@@ -78,10 +96,16 @@ OscPanel::OscPanel(juce::AudioProcessorValueTreeState& apvts, int oscIndex)
 
 void OscPanel::paint(juce::Graphics& g)
 {
+    auto b = getLocalBounds().toFloat();
     g.setColour(SynthColors::card());
-    g.fillRoundedRectangle(getLocalBounds().toFloat(), 8.0f);
+    g.fillRoundedRectangle(b, 8.0f);
+
+    // Neon border glow
+    g.setColour(SynthColors::neonPurple().withAlpha(0.3f));
+    g.drawRoundedRectangle(b.reduced(1.0f), 8.0f, 1.5f);
+
     g.setColour(SynthColors::neonPurple());
-    g.setFont(juce::Font(juce::FontOptions(14.0f)));
+    g.setFont(juce::Font(juce::FontOptions(14.0f, juce::Font::bold)));
     juce::String title = oscIndex_ == 1 ? "OSCILLATOR 1" : "OSCILLATOR 2";
     g.drawText(title, 12, 8, 120, 20, juce::Justification::left);
     g.setColour(SynthColors::gridLine());
@@ -242,6 +266,7 @@ void FxSlotPanel::populateFxTypes()
     typeSelector_.addItem("Gated Reverb", 20);
     typeSelector_.addItem("Amp Sim", 21);
     typeSelector_.addItem("Stereo Widener", 22);
+    typeSelector_.addItem("Vocoder", 23);
 }
 
 void FxSlotPanel::paint(juce::Graphics& g)
@@ -393,6 +418,24 @@ PresetBrowser::PresetBrowser()
     closeButton_.onClick = [this]() { setVisible(false); };
     addAndMakeVisible(closeButton_);
 
+    savePresetButton_.setButtonText("Save Preset");
+    savePresetButton_.setColour(juce::TextButton::buttonColourId, SynthColors::neonPurple());
+    savePresetButton_.setColour(juce::TextButton::textColourOffId, SynthColors::text());
+    savePresetButton_.onClick = [this]() {
+        if (onSavePresetRequested)
+            onSavePresetRequested();
+    };
+    addAndMakeVisible(savePresetButton_);
+
+    showUserPresetsButton_.setButtonText("User Presets");
+    showUserPresetsButton_.setColour(juce::ToggleButton::tickColourId, SynthColors::neonYellow());
+    showUserPresetsButton_.setColour(juce::ToggleButton::tickDisabledColourId, SynthColors::textDim());
+    showUserPresetsButton_.onClick = [this]() {
+        showingUserPresets_ = showUserPresetsButton_.getToggleState();
+        rebuildFilter();
+    };
+    addAndMakeVisible(showUserPresetsButton_);
+
     // Category filter
     categoryFilter_.addItem("All Categories", 1);
     categoryFilter_.addItemList({"Pads", "Leads", "Bass", "Keys", "Arps", "FX",
@@ -414,20 +457,58 @@ PresetBrowser::PresetBrowser()
     rebuildFilter();
 }
 
+void PresetBrowser::refreshUserPresets()
+{
+    UserPresetManager manager;
+    userPresets_ = manager.getUserPresets();
+    rebuildFilter();
+}
+
 void PresetBrowser::rebuildFilter()
 {
-    filteredPresets_.clear();
+    displayList_.clear();
     currentSearch_ = searchBox_.getText().toLowerCase();
 
-    for (int i = 0; i < kNumPresets; ++i) {
-        const auto& preset = kPresets[i];
-        bool matchesSearch = currentSearch_.isEmpty() ||
-                             preset.name.toLowerCase().contains(currentSearch_) ||
-                             preset.id.toLowerCase().contains(currentSearch_);
-        bool matchesCategory = currentCategory_.isEmpty() ||
-                               preset.category.equalsIgnoreCase(currentCategory_);
-        if (matchesSearch && matchesCategory)
-            filteredPresets_.push_back(&preset);
+    if (showingUserPresets_)
+    {
+        for (const auto& preset : userPresets_)
+        {
+            bool matchesSearch = currentSearch_.isEmpty() ||
+                                 preset.name.toLowerCase().contains(currentSearch_);
+            bool matchesCategory = currentCategory_.isEmpty() ||
+                                   preset.category.equalsIgnoreCase(currentCategory_);
+            if (matchesSearch && matchesCategory)
+            {
+                juce::DynamicObject::Ptr obj = new juce::DynamicObject();
+                obj->setProperty("isUser", true);
+                obj->setProperty("name", preset.name);
+                obj->setProperty("category", preset.category);
+                obj->setProperty("index", (int)(displayList_.size()));
+                displayList_.emplace_back(obj);
+            }
+        }
+    }
+    else
+    {
+        filteredFactoryPresets_.clear();
+        for (int i = 0; i < kNumPresets; ++i) {
+            const auto& preset = kPresets[i];
+            bool matchesSearch = currentSearch_.isEmpty() ||
+                                 preset.name.toLowerCase().contains(currentSearch_) ||
+                                 preset.id.toLowerCase().contains(currentSearch_);
+            bool matchesCategory = currentCategory_.isEmpty() ||
+                                   preset.category.equalsIgnoreCase(currentCategory_);
+            if (matchesSearch && matchesCategory)
+            {
+                filteredFactoryPresets_.push_back(&preset);
+                juce::DynamicObject::Ptr obj = new juce::DynamicObject();
+                obj->setProperty("isUser", false);
+                obj->setProperty("name", preset.name);
+                obj->setProperty("category", preset.category);
+                obj->setProperty("index", (int)(filteredFactoryPresets_.size() - 1));
+                displayList_.emplace_back(obj);
+            }
+        }
     }
 
     presetList_.updateContent();
@@ -436,9 +517,15 @@ void PresetBrowser::rebuildFilter()
 
 void PresetBrowser::paintListBoxItem(int rowNumber, juce::Graphics& g, int width, int height, bool rowIsSelected)
 {
-    if (rowNumber < 0 || rowNumber >= (int)filteredPresets_.size()) return;
+    if (rowNumber < 0 || rowNumber >= (int)displayList_.size()) return;
 
-    auto* preset = filteredPresets_[rowNumber];
+    auto* obj = displayList_[rowNumber].getDynamicObject();
+    if (obj == nullptr) return;
+
+    juce::String name = obj->getProperty("name");
+    juce::String category = obj->getProperty("category");
+    bool isUser = obj->getProperty("isUser");
+
     auto b = juce::Rectangle<int>(0, 0, width, height);
 
     if (rowIsSelected) {
@@ -449,20 +536,55 @@ void PresetBrowser::paintListBoxItem(int rowNumber, juce::Graphics& g, int width
         g.fillRect(b);
     }
 
+    if (isUser)
+    {
+        g.setColour(SynthColors::neonYellow());
+        g.setFont(juce::Font(juce::FontOptions(11.0f, juce::Font::bold)));
+        g.drawText("[USER]", b.reduced(8, 2).removeFromLeft(50), juce::Justification::centredLeft, true);
+    }
+
     g.setColour(SynthColors::text());
     g.setFont(juce::Font(juce::FontOptions(13.0f)));
-    g.drawText(preset->name, b.reduced(8, 2), juce::Justification::centredLeft, true);
+    g.drawText(name, b.reduced(isUser ? 60 : 8, 2), juce::Justification::centredLeft, true);
 
     g.setColour(SynthColors::textDim());
     g.setFont(juce::Font(juce::FontOptions(10.0f)));
-    g.drawText(preset->category, b.reduced(8, 2), juce::Justification::centredRight, true);
+    g.drawText(category, b.reduced(8, 2), juce::Justification::centredRight, true);
 }
 
 void PresetBrowser::selectedRowsChanged(int lastRowSelected)
 {
-    if (lastRowSelected >= 0 && lastRowSelected < (int)filteredPresets_.size()) {
-        if (onPresetSelected)
-            onPresetSelected(filteredPresets_[lastRowSelected]);
+    if (lastRowSelected >= 0 && lastRowSelected < (int)displayList_.size()) {
+        auto* obj = displayList_[lastRowSelected].getDynamicObject();
+        if (obj == nullptr) return;
+
+        bool isUser = obj->getProperty("isUser");
+        if (isUser)
+        {
+            int userIndex = lastRowSelected;
+            int count = 0;
+            for (int i = 0; i < (int)displayList_.size(); ++i)
+            {
+                auto* o = displayList_[i].getDynamicObject();
+                if (o && o->getProperty("isUser"))
+                {
+                    if (count == userIndex && onUserPresetSelected)
+                    {
+                        onUserPresetSelected(userPresets_[count]);
+                        return;
+                    }
+                    count++;
+                }
+            }
+        }
+        else
+        {
+            int factoryIndex = (int)obj->getProperty("index");
+            if (factoryIndex >= 0 && factoryIndex < (int)filteredFactoryPresets_.size()) {
+                if (onPresetSelected)
+                    onPresetSelected(filteredFactoryPresets_[factoryIndex]);
+            }
+        }
     }
 }
 
@@ -484,6 +606,10 @@ void PresetBrowser::resized()
     closeButton_.setBounds(getWidth() - 50, 20, 30, 30);
 
     auto filterRow = b.removeFromTop(30);
+    savePresetButton_.setBounds(filterRow.removeFromLeft(100));
+    filterRow.removeFromLeft(8);
+    showUserPresetsButton_.setBounds(filterRow.removeFromLeft(110));
+    filterRow.removeFromLeft(8);
     categoryFilter_.setBounds(filterRow.removeFromLeft(180));
     filterRow.removeFromLeft(8);
     searchBox_.setBounds(filterRow);
@@ -497,6 +623,7 @@ void PresetBrowser::setVisible(bool shouldBeVisible)
     juce::Component::setVisible(shouldBeVisible);
     if (shouldBeVisible) {
         searchBox_.grabKeyboardFocus();
+        refreshUserPresets();
         rebuildFilter();
     }
 }
@@ -610,15 +737,9 @@ int SplitKeyboardOverlay::noteAtX(int x) const
 
 // ── PianoKeyboard ───────────────────────────────────────────────────────────
 
-PianoKeyboard::PianoKeyboard(juce::MidiKeyboardState& state)
-    : state_(state)
+PianoKeyboard::PianoKeyboard(OpenSynthJucedProcessor& processor)
+    : processor_(processor)
 {
-    state_.addListener(this);
-}
-
-PianoKeyboard::~PianoKeyboard()
-{
-    state_.removeListener(this);
 }
 
 void PianoKeyboard::paint(juce::Graphics& g)
@@ -678,7 +799,7 @@ void PianoKeyboard::mouseDown(const juce::MouseEvent& e)
     if (note >= 0)
     {
         pressedNote_ = note;
-        state_.noteOn(1, note, 0.8f);
+        processor_.injectMidiMessage(juce::MidiMessage::noteOn(1, note, 0.8f));
         repaint();
     }
 }
@@ -687,7 +808,7 @@ void PianoKeyboard::mouseUp(const juce::MouseEvent&)
 {
     if (pressedNote_ >= 0)
     {
-        state_.noteOff(1, pressedNote_, 0.0f);
+        processor_.injectMidiMessage(juce::MidiMessage::noteOff(1, pressedNote_, 0.0f));
         pressedNote_ = -1;
         repaint();
     }
@@ -699,30 +820,35 @@ void PianoKeyboard::mouseDrag(const juce::MouseEvent& e)
     if (note >= 0 && note != pressedNote_)
     {
         if (pressedNote_ >= 0)
-            state_.noteOff(1, pressedNote_, 0.0f);
+            processor_.injectMidiMessage(juce::MidiMessage::noteOff(1, pressedNote_, 0.0f));
         pressedNote_ = note;
-        state_.noteOn(1, note, 0.8f);
+        processor_.injectMidiMessage(juce::MidiMessage::noteOn(1, note, 0.8f));
         repaint();
     }
-}
-
-void PianoKeyboard::handleNoteOn(juce::MidiKeyboardState*, int, int note, float)
-{
-    pressedNote_ = note;
-    repaint();
-}
-
-void PianoKeyboard::handleNoteOff(juce::MidiKeyboardState*, int, int note, float)
-{
-    if (pressedNote_ == note)
-        pressedNote_ = -1;
-    repaint();
 }
 
 void PianoKeyboard::setSplitPoint(int note)
 {
     splitPoint_ = juce::jlimit(21, 108, note);
     repaint();
+}
+
+void PianoKeyboard::setKeyPressed(int note)
+{
+    if (note >= 21 && note <= 108)
+    {
+        pressedNote_ = note;
+        repaint();
+    }
+}
+
+void PianoKeyboard::setKeyReleased(int note)
+{
+    if (pressedNote_ == note)
+    {
+        pressedNote_ = -1;
+        repaint();
+    }
 }
 
 void PianoKeyboard::setShowSplit(bool show)
@@ -917,11 +1043,11 @@ void MidiLearnableKnob::paint(juce::Graphics& g)
 
 } // namespace openamp
 
-// ── OpenSynthEditor ─────────────────────────────────────────────────────────
+// ── OpenSynthJucedEditor ────────────────────────────────────────────────────
 
 namespace openamp {
 
-OpenSynthEditor::OpenSynthEditor(OpenSynthProcessor& processor)
+OpenSynthJucedEditor::OpenSynthJucedEditor(OpenSynthJucedProcessor& processor)
     : AudioProcessorEditor(&processor), processor_(processor),
       osc1Panel_(processor.getParameters(), 1),
       osc2Panel_(processor.getParameters(), 2),
@@ -932,14 +1058,16 @@ OpenSynthEditor::OpenSynthEditor(OpenSynthProcessor& processor)
       fx2Panel_(processor.getParameters(), 2),
       fx3Panel_(processor.getParameters(), 3),
       arpPanel_(processor.getParameters()),
-      keyboard_(keyboardState_)
+      dbeamPanel_(processor.getParameters()),
+      performancePanel_(processor.getParameters()),
+      keyboard_(processor)
 {
     setSize(1400, 900);
     setResizable(true, true);
     setResizeLimits(1000, 700, 1920, 1200);
 
     // Title
-    titleLabel_.setText("OpenSynth", juce::dontSendNotification);
+    titleLabel_.setText("Open Synth Juced", juce::dontSendNotification);
     titleLabel_.setFont(juce::Font(juce::FontOptions(28.0f, juce::Font::bold)));
     titleLabel_.setColour(juce::Label::textColourId, SynthColors::neonPurple());
     addAndMakeVisible(titleLabel_);
@@ -954,7 +1082,53 @@ OpenSynthEditor::OpenSynthEditor(OpenSynthProcessor& processor)
     setlistButton_.setButtonText("Setlist");
     setlistButton_.setColour(juce::TextButton::buttonColourId, SynthColors::card());
     setlistButton_.setColour(juce::TextButton::textColourOffId, SynthColors::cyan());
+    setlistButton_.onClick = [this]() { showSetlistMode(); };
     addAndMakeVisible(setlistButton_);
+
+    undoButton_.setButtonText("Undo");
+    undoButton_.setColour(juce::TextButton::buttonColourId, SynthColors::card());
+    undoButton_.setColour(juce::TextButton::textColourOffId, SynthColors::textDim());
+    undoButton_.onClick = [this]() {
+        processor_.getUndoManager().undo();
+        showUndoFeedback("Undo");
+    };
+    addAndMakeVisible(undoButton_);
+
+    redoButton_.setButtonText("Redo");
+    redoButton_.setColour(juce::TextButton::buttonColourId, SynthColors::card());
+    redoButton_.setColour(juce::TextButton::textColourOffId, SynthColors::textDim());
+    redoButton_.onClick = [this]() {
+        processor_.getUndoManager().redo();
+        showUndoFeedback("Redo");
+    };
+    addAndMakeVisible(redoButton_);
+
+    // Undo feedback label
+    undoFeedbackLabel_.setText("", juce::dontSendNotification);
+    undoFeedbackLabel_.setFont(juce::Font(juce::FontOptions(14.0f, juce::Font::bold)));
+    undoFeedbackLabel_.setColour(juce::Label::textColourId, SynthColors::neonYellow());
+    undoFeedbackLabel_.setJustificationType(juce::Justification::centred);
+    addAndMakeVisible(undoFeedbackLabel_);
+
+    // Setlist overlay
+    setlistOverlay_.onSlotSelected = [this](int slotIndex) {
+        juce::String name = setlistOverlay_.getSlotPresetName(slotIndex);
+        if (name.isNotEmpty()) {
+            // Find preset by name in full library
+            for (int i = 0; i < kNumFullPresets; ++i) {
+                if (juce::String(kFullPresets[i].name) == name) {
+                    loadPresetByIndex(i);
+                    setlistOverlay_.setVisible(false);
+                    break;
+                }
+            }
+        }
+    };
+    setlistOverlay_.onSlotAssigned = [this](int slotIndex) {
+        juce::String currentName = titleLabel_.getText();
+        setlistOverlay_.assignPresetToSlot(slotIndex, currentName);
+    };
+    addChildComponent(setlistOverlay_);
 
     // Favorites bar
     favorites_.onPresetSelected = [this](int idx) {
@@ -970,6 +1144,14 @@ OpenSynthEditor::OpenSynthEditor(OpenSynthProcessor& processor)
             presetBrowser_.setVisible(false);
         }
     };
+    presetBrowser_.onSavePresetRequested = [this]() {
+        saveCurrentPreset();
+    };
+    presetBrowser_.onUserPresetSelected = [this](const UserPreset& preset) {
+        userPresetManager_.loadPreset(preset, processor_.getParameters());
+        titleLabel_.setText(preset.name, juce::dontSendNotification);
+        presetBrowser_.setVisible(false);
+    };
 
     // Meters
     addAndMakeVisible(meters_);
@@ -984,6 +1166,9 @@ OpenSynthEditor::OpenSynthEditor(OpenSynthProcessor& processor)
     addAndMakeVisible(fx2Panel_);
     addAndMakeVisible(fx3Panel_);
     addAndMakeVisible(arpPanel_);
+    addAndMakeVisible(dbeamPanel_);
+    addAndMakeVisible(phraseSamplerPanel_);
+    addAndMakeVisible(performancePanel_);
     addAndMakeVisible(keyboard_);
 
     // Overlays (initially hidden)
@@ -993,54 +1178,138 @@ OpenSynthEditor::OpenSynthEditor(OpenSynthProcessor& processor)
     splitOverlay_.onSplitChanged = [this](int note)
     {
         keyboard_.setSplitPoint(note);
+        // Update performance panel slider to match
+        if (auto* param = processor_.getParameters().getParameter("perfSplitPoint"))
+        {
+            param->beginChangeGesture();
+            param->setValueNotifyingHost((note - 21) / 87.0f);
+            param->endChangeGesture();
+        }
+    };
+
+    performancePanel_.onSplitChanged = [this](int note)
+    {
+        keyboard_.setSplitPoint(note);
+        splitOverlay_.setSplitPoint(note);
+    };
+
+    performancePanel_.onLayerChanged = [this](bool enabled)
+    {
+        juce::ignoreUnused(enabled);
+        // Layer on/off could toggle osc2 volume or enable split mode
+    };
+
+    dbeamPanel_.onValueChanged = [this](float value)
+    {
+        if (auto* param = processor_.getParameters().getParameter("dbeamValue"))
+        {
+            param->beginChangeGesture();
+            param->setValueNotifyingHost(value);
+            param->endChangeGesture();
+        }
+
+        // Also route to target parameter based on dbeamTarget
+        int target = static_cast<int>(*processor_.getParameters().getRawParameterValue("dbeamTarget"));
+        switch (target)
+        {
+        case 0: // Filter cutoff
+            if (auto* p = processor_.getParameters().getParameter("filterCutoff"))
+            {
+                float min = 20.0f, max = 20000.0f;
+                p->beginChangeGesture();
+                p->setValueNotifyingHost((min + value * (max - min) - 20.0f) / 19980.0f);
+                p->endChangeGesture();
+            }
+            break;
+        case 1: // Pitch bend
+            // Pitch bend is handled per-note, store in a mod source
+            break;
+        case 2: // FX depth
+            if (auto* p = processor_.getParameters().getParameter("fx1Param3"))
+            {
+                p->beginChangeGesture();
+                p->setValueNotifyingHost(value);
+                p->endChangeGesture();
+            }
+            break;
+        case 3: // Master volume
+            if (auto* p = processor_.getParameters().getParameter("masterVolume"))
+            {
+                p->beginChangeGesture();
+                p->setValueNotifyingHost(value);
+                p->endChangeGesture();
+            }
+            break;
+        }
     };
 
     // Start meter timer
     startTimerHz(10);
 }
 
-void OpenSynthEditor::handleMidiCC(int ccNumber, float value)
+void OpenSynthJucedEditor::handleMidiCC(int ccNumber, float value)
 {
     midiLearnManager_.handleMidiCC(ccNumber, value, processor_.getParameters());
 }
 
-void OpenSynthEditor::timerCallback()
+void OpenSynthJucedEditor::timerCallback()
 {
     int voices = processor_.getSynth().getActiveVoiceCount();
     float cpu = processor_.getSynth().getCpuLoad() * 100.0f;
     meters_.setVoiceCount(voices);
     meters_.setCpuLoad(cpu);
+
+    // Update undo/redo button states
+    undoButton_.setEnabled(processor_.getUndoManager().canUndo());
+    redoButton_.setEnabled(processor_.getUndoManager().canRedo());
+    undoButton_.setColour(juce::TextButton::textColourOffId,
+        processor_.getUndoManager().canUndo() ? SynthColors::text() : SynthColors::textDim());
+    redoButton_.setColour(juce::TextButton::textColourOffId,
+        processor_.getUndoManager().canRedo() ? SynthColors::text() : SynthColors::textDim());
+
+    // Fade out undo feedback
+    if (undoFeedbackCounter_ > 0)
+    {
+        undoFeedbackCounter_--;
+        if (undoFeedbackCounter_ <= 0)
+            undoFeedbackLabel_.setText("", juce::dontSendNotification);
+    }
 }
 
-void OpenSynthEditor::showPresetBrowser()
+void OpenSynthJucedEditor::showPresetBrowser()
 {
     presetBrowser_.setVisible(true);
     presetBrowser_.setBounds(getLocalBounds());
     presetBrowser_.toFront(true);
 }
 
-void OpenSynthEditor::showSetlistMode()
+void OpenSynthJucedEditor::showSetlistMode()
 {
-    // TODO: Implement setlist overlay
+    setlistOverlay_.setVisible(true);
+    setlistOverlay_.setBounds(getLocalBounds());
+    setlistOverlay_.toFront(true);
 }
 
-void OpenSynthEditor::loadFavoritePreset(int index)
+void OpenSynthJucedEditor::loadFavoritePreset(int index)
 {
     juce::ignoreUnused(index);
 }
 
-void OpenSynthEditor::loadPresetByIndex(int index)
+void OpenSynthJucedEditor::loadPresetByIndex(int index)
 {
-    if (index >= 0 && index < kNumFullPresets)
+    if (index >= 0 && index < kNumFullPresets) {
+        currentPresetIndex_ = index;
         loadPresetByID(kFullPresets[index].id);
+    }
 }
 
-void OpenSynthEditor::loadPresetByID(const juce::String& id)
+void OpenSynthJucedEditor::loadPresetByID(const juce::String& id)
 {
     // Find preset in full library
     for (int i = 0; i < kNumFullPresets; ++i) {
         if (juce::String(kFullPresets[i].id) == id) {
             const auto& p = kFullPresets[i];
+            currentPresetIndex_ = i;
             // Update title
             titleLabel_.setText(p.name, juce::dontSendNotification);
             // Push to APVTS (UI updates automatically via attachments)
@@ -1052,9 +1321,654 @@ void OpenSynthEditor::loadPresetByID(const juce::String& id)
     }
 }
 
-void OpenSynthEditor::paint(juce::Graphics& g)
+void OpenSynthJucedEditor::saveCurrentPreset()
+{
+    auto* alert = new juce::AlertWindow("Save Preset", "Enter a name for your preset:", juce::AlertWindow::QuestionIcon, this);
+    alert->addTextEditor("name", titleLabel_.getText(), "Preset Name");
+    alert->addButton("Save", 1, juce::KeyPress(juce::KeyPress::returnKey));
+    alert->addButton("Cancel", 0, juce::KeyPress(juce::KeyPress::escapeKey));
+
+    alert->enterModalState(true, juce::ModalCallbackFunction::create([this, alert](int result)
+    {
+        if (result == 1)
+        {
+            juce::String name = alert->getTextEditorContents("name").trim();
+            if (name.isNotEmpty())
+            {
+                if (userPresetManager_.savePreset(name, "Custom", {}, processor_.getParameters()))
+                {
+                    titleLabel_.setText(name, juce::dontSendNotification);
+                    presetBrowser_.refreshUserPresets();
+                    showUndoFeedback("Preset Saved");
+                }
+            }
+        }
+        delete alert;
+    }), true);
+}
+
+void OpenSynthJucedEditor::showUndoFeedback(const juce::String& text)
+{
+    undoFeedbackLabel_.setText(text, juce::dontSendNotification);
+    undoFeedbackCounter_ = 30; // ~3 seconds at 10Hz timer
+}
+
+void OpenSynthJucedEditor::paint(juce::Graphics& g)
 {
     g.fillAll(SynthColors::background());
+
+    // Animated grid lines with subtle pulse
+    float alpha = 0.08f + 0.04f * std::sin(juce::Time::getMillisecondCounter() / 2000.0f);
+    g.setColour(SynthColors::neonPurple().withAlpha(alpha));
+    for (int x = 0; x < getWidth(); x += 40)
+        g.drawVerticalLine(x, 0, getHeight());
+    for (int y = 0; y < getHeight(); y += 40)
+        g.drawHorizontalLine(y, 0, getWidth());
+
+    // Horizon line (synthwave sunset effect)
+    float horizonY = getHeight() * 0.65f;
+    g.setColour(SynthColors::hotPink().withAlpha(0.05f));
+    g.drawHorizontalLine((int)horizonY, 0, (float)getWidth());
+    g.setColour(SynthColors::hotPink().withAlpha(0.03f));
+    g.drawHorizontalLine((int)horizonY - 1, 0, (float)getWidth());
+    g.drawHorizontalLine((int)horizonY + 1, 0, (float)getWidth());
+}
+
+void OpenSynthJucedEditor::resized()
+{
+    auto b = getLocalBounds().reduced(12);
+
+    // Header row
+    auto header = b.removeFromTop(40);
+    titleLabel_.setBounds(header.removeFromLeft(220));
+    favorites_.setBounds(header.removeFromLeft(320));
+    meters_.setBounds(header.removeFromLeft(180));
+    undoButton_.setBounds(header.removeFromRight(60));
+    redoButton_.setBounds(header.removeFromRight(60));
+    presetButton_.setBounds(header.removeFromRight(90));
+    setlistButton_.setBounds(header.removeFromRight(90));
+
+    // Undo feedback overlay (centered)
+    undoFeedbackLabel_.setBounds(getLocalBounds().reduced(200, 300));
+
+    b.removeFromTop(8);
+
+    // Calculate responsive panel sizes
+    int availWidth = b.getWidth();
+    int availHeight = b.getHeight();
+    int gap = juce::jmin(12, availWidth / 60);
+    int panelWidth = (availWidth - gap * 3) / 4;
+    int topHeight = juce::jmin(220, availHeight / 3);
+    int midHeight = juce::jmin(220, availHeight / 3);
+    int keyHeight = availHeight - topHeight - midHeight - gap * 2;
+
+    // Top row: Oscillators + Filter + Arp
+    auto topRow = b.removeFromTop(topHeight);
+    osc1Panel_.setBounds(topRow.removeFromLeft(panelWidth));
+    topRow.removeFromLeft(gap);
+    osc2Panel_.setBounds(topRow.removeFromLeft(panelWidth));
+    topRow.removeFromLeft(gap);
+    filterPanel_.setBounds(topRow.removeFromLeft(panelWidth));
+    topRow.removeFromLeft(gap);
+    arpPanel_.setBounds(topRow);
+
+    b.removeFromTop(gap);
+
+    // Middle row: Envelopes + FX slots + D-Beam + Performance
+    auto midRow = b.removeFromTop(midHeight);
+    int midPanelWidth = (availWidth - gap * 6) / 7;
+    ampEnvPanel_.setBounds(midRow.removeFromLeft(midPanelWidth));
+    midRow.removeFromLeft(gap);
+    filterEnvPanel_.setBounds(midRow.removeFromLeft(midPanelWidth));
+    midRow.removeFromLeft(gap);
+    fx1Panel_.setBounds(midRow.removeFromLeft(midPanelWidth));
+    midRow.removeFromLeft(gap);
+    fx2Panel_.setBounds(midRow.removeFromLeft(midPanelWidth));
+    midRow.removeFromLeft(gap);
+    fx3Panel_.setBounds(midRow.removeFromLeft(midPanelWidth));
+    midRow.removeFromLeft(gap);
+    dbeamPanel_.setBounds(midRow.removeFromLeft(midPanelWidth));
+    midRow.removeFromLeft(gap);
+    performancePanel_.setBounds(midRow);
+
+    b.removeFromTop(gap);
+
+    // Bottom: Phrase sampler + Keyboard
+    int samplerHeight = juce::jmin(160, b.getHeight() / 3);
+    auto samplerRow = b.removeFromTop(samplerHeight);
+    phraseSamplerPanel_.setBounds(samplerRow.removeFromLeft(juce::jmin(300, availWidth / 4)));
+    samplerRow.removeFromLeft(gap);
+    keyboard_.setBounds(samplerRow);
+
+    // Overlays fill entire editor
+    presetBrowser_.setBounds(getLocalBounds());
+    splitOverlay_.setBounds(keyboard_.getBounds());
+    setlistOverlay_.setBounds(getLocalBounds());
+}
+
+// ── D-Beam Panel ────────────────────────────────────────────────────────────
+
+DBeamPanel::DBeamPanel(juce::AudioProcessorValueTreeState& apvts)
+    : apvts_(apvts)
+{
+    targetSelector_.addItemList({"Filter Cutoff", "Pitch Bend", "FX Depth", "Master Volume"}, 1);
+    addAndMakeVisible(targetSelector_);
+    targetAttach_ = std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment>(
+        apvts_, "dbeamTarget", targetSelector_);
+}
+
+void DBeamPanel::paint(juce::Graphics& g)
+{
+    auto b = getLocalBounds().toFloat();
+    g.setColour(SynthColors::card());
+    g.fillRoundedRectangle(b, 8.0f);
+
+    g.setColour(SynthColors::neonYellow());
+    g.setFont(juce::Font(juce::FontOptions(14.0f, juce::Font::bold)));
+    g.drawText("D-BEAM", 12, 8, 120, 20, juce::Justification::left);
+    g.setColour(SynthColors::gridLine());
+    g.drawHorizontalLine(32, 8, getWidth() - 8);
+
+    // Draw horizontal bar representing current value
+    int barY = 60;
+    int barHeight = 20;
+    int barX = 12;
+    int barWidth = getWidth() - 24;
+
+    g.setColour(SynthColors::surface());
+    g.fillRoundedRectangle((float)barX, (float)barY, (float)barWidth, (float)barHeight, 4.0f);
+
+    // Filled portion
+    int fillWidth = static_cast<int>(barWidth * currentValue_);
+    juce::Colour beamColor = SynthColors::neonYellow().withAlpha(0.6f + 0.4f * currentValue_);
+    g.setColour(beamColor);
+    g.fillRoundedRectangle((float)barX, (float)barY, (float)fillWidth, (float)barHeight, 4.0f);
+
+    // Glow line at the value position
+    g.setColour(SynthColors::neonYellow().brighter());
+    g.drawVerticalLine(barX + fillWidth, barY, barY + barHeight);
+
+    // Value text
+    g.setColour(SynthColors::text());
+    g.setFont(juce::Font(juce::FontOptions(11.0f)));
+    g.drawText(juce::String(static_cast<int>(currentValue_ * 100)) + "%",
+               barX, barY + barHeight + 4, barWidth, 16, juce::Justification::centred);
+
+    // Instruction
+    g.setColour(SynthColors::textDim());
+    g.setFont(juce::Font(juce::FontOptions(10.0f)));
+    g.drawText("Click & drag vertically to control",
+               barX, barY + barHeight + 20, barWidth, 16, juce::Justification::centred);
+}
+
+void DBeamPanel::resized()
+{
+    targetSelector_.setBounds(12, 36, getWidth() - 24, 22);
+}
+
+void DBeamPanel::mouseDown(const juce::MouseEvent& e)
+{
+    dragging_ = true;
+    updateValueFromY(e.getPosition().getY());
+}
+
+void DBeamPanel::mouseDrag(const juce::MouseEvent& e)
+{
+    if (dragging_)
+        updateValueFromY(e.getPosition().getY());
+}
+
+void DBeamPanel::mouseUp(const juce::MouseEvent&)
+{
+    dragging_ = false;
+}
+
+void DBeamPanel::updateValueFromY(int y)
+{
+    float norm = 1.0f - juce::jlimit(0.0f, 1.0f, (float)(y - 50) / (getHeight() - 70));
+    currentValue_ = norm;
+    if (onValueChanged)
+        onValueChanged(currentValue_);
+    repaint();
+}
+
+// ── Phrase Sampler Panel ────────────────────────────────────────────────────
+
+PhraseSamplerPanel::PhraseSamplerPanel()
+{
+    setOpaque(false);
+
+    loadButton_.setButtonText("Load WAV");
+    loadButton_.setColour(juce::TextButton::buttonColourId, SynthColors::card());
+    loadButton_.setColour(juce::TextButton::textColourOffId, SynthColors::neonYellow());
+    loadButton_.onClick = [this]() { loadFile(); };
+    addAndMakeVisible(loadButton_);
+
+    playButton_.setButtonText("Play");
+    playButton_.setColour(juce::TextButton::buttonColourId, SynthColors::card());
+    playButton_.setColour(juce::TextButton::textColourOffId, SynthColors::cyan());
+    playButton_.onClick = [this]() { play(); };
+    addAndMakeVisible(playButton_);
+
+    stopButton_.setButtonText("Stop");
+    stopButton_.setColour(juce::TextButton::buttonColourId, SynthColors::card());
+    stopButton_.setColour(juce::TextButton::textColourOffId, SynthColors::danger());
+    stopButton_.onClick = [this]() { stop(); };
+    addAndMakeVisible(stopButton_);
+
+    fileLabel_.setText("No file loaded", juce::dontSendNotification);
+    fileLabel_.setColour(juce::Label::textColourId, SynthColors::textDim());
+    fileLabel_.setFont(juce::Font(juce::FontOptions(11.0f)));
+    addAndMakeVisible(fileLabel_);
+
+    volumeSlider_.setSliderStyle(juce::Slider::LinearHorizontal);
+    volumeSlider_.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
+    volumeSlider_.setRange(0.0, 1.0, 0.01);
+    volumeSlider_.setValue(0.8);
+    addAndMakeVisible(volumeSlider_);
+
+    formatManager_.registerBasicFormats();
+
+    startTimerHz(10);
+}
+
+PhraseSamplerPanel::~PhraseSamplerPanel() = default;
+
+void PhraseSamplerPanel::paint(juce::Graphics& g)
+{
+    auto b = getLocalBounds().toFloat();
+    g.setColour(SynthColors::card());
+    g.fillRoundedRectangle(b, 8.0f);
+
+    g.setColour(SynthColors::hotPink());
+    g.setFont(juce::Font(juce::FontOptions(14.0f, juce::Font::bold)));
+    g.drawText("PHRASE SAMPLER", 12, 8, 150, 20, juce::Justification::left);
+    g.setColour(SynthColors::gridLine());
+    g.drawHorizontalLine(32, 8, getWidth() - 8);
+
+    // Simple waveform placeholder
+    g.setColour(SynthColors::surface());
+    g.fillRoundedRectangle(12.0f, 90.0f, (float)getWidth() - 24.0f, 40.0f, 4.0f);
+
+    g.setColour(SynthColors::neonPurple().withAlpha(0.3f));
+    float cx = getWidth() * 0.5f;
+    float cy = 110.0f;
+    for (int i = 0; i < getWidth() - 24; i += 4)
+    {
+        float y = cy + std::sin(i * 0.1f + juce::Time::getMillisecondCounter() / 500.0f) * 10.0f;
+        g.fillEllipse((float)(12 + i), y, 2.0f, 2.0f);
+    }
+}
+
+void PhraseSamplerPanel::resized()
+{
+    loadButton_.setBounds(12, 38, 70, 24);
+    playButton_.setBounds(88, 38, 50, 24);
+    stopButton_.setBounds(144, 38, 50, 24);
+    fileLabel_.setBounds(12, 66, getWidth() - 24, 20);
+    volumeSlider_.setBounds(12, 136, getWidth() - 24, 20);
+}
+
+void PhraseSamplerPanel::timerCallback()
+{
+    // Update playback position if playing
+}
+
+void PhraseSamplerPanel::loadFile()
+{
+    fileChooser_ = std::make_unique<juce::FileChooser>(
+        "Select a WAV file...",
+        juce::File::getSpecialLocation(juce::File::userMusicDirectory),
+        "*.wav;*.aiff;*.flac");
+
+    fileChooser_->launchAsync(juce::FileBrowserComponent::openMode | juce::FileBrowserComponent::canSelectFiles,
+        [this](const juce::FileChooser& chooser)
+    {
+        auto file = chooser.getResult();
+        if (file != juce::File())
+        {
+            auto* reader = formatManager_.createReaderFor(file);
+            if (reader != nullptr)
+            {
+                delete reader;
+                currentFile_ = file;
+                fileLabel_.setText(file.getFileNameWithoutExtension(), juce::dontSendNotification);
+                fileLabel_.setColour(juce::Label::textColourId, SynthColors::text());
+            }
+            else
+            {
+                fileLabel_.setText("Failed to load file", juce::dontSendNotification);
+                fileLabel_.setColour(juce::Label::textColourId, SynthColors::danger());
+            }
+        }
+    });
+}
+
+void PhraseSamplerPanel::play()
+{
+    if (currentFile_.existsAsFile())
+    {
+        fileLabel_.setText(currentFile_.getFileNameWithoutExtension() + " (playing)", juce::dontSendNotification);
+    }
+}
+
+void PhraseSamplerPanel::stop()
+{
+    // Stub: would stop transport
+}
+
+// ── Performance Panel ───────────────────────────────────────────────────────
+
+PerformancePanel::PerformancePanel(juce::AudioProcessorValueTreeState& apvts)
+    : apvts_(apvts)
+{
+    titleLabel_.setText("PERFORMANCE", juce::dontSendNotification);
+    titleLabel_.setFont(juce::Font(juce::FontOptions(14.0f, juce::Font::bold)));
+    titleLabel_.setColour(juce::Label::textColourId, SynthColors::cyan());
+    addAndMakeVisible(titleLabel_);
+
+    splitLabel_.setText("Split", juce::dontSendNotification);
+    splitLabel_.setColour(juce::Label::textColourId, SynthColors::textDim());
+    splitLabel_.setFont(juce::Font(juce::FontOptions(11.0f)));
+    addAndMakeVisible(splitLabel_);
+
+    splitSlider_.setSliderStyle(juce::Slider::LinearHorizontal);
+    splitSlider_.setTextBoxStyle(juce::Slider::TextBoxLeft, false, 40, 20);
+    splitSlider_.setRange(21, 108, 1);
+    splitSlider_.setValue(60);
+    addAndMakeVisible(splitSlider_);
+    splitAttach_ = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+        apvts_, "perfSplitPoint", splitSlider_);
+
+    layerButton_.setButtonText("Layer");
+    layerButton_.setColour(juce::ToggleButton::tickColourId, SynthColors::hotPink());
+    addAndMakeVisible(layerButton_);
+    layerAttach_ = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(
+        apvts_, "perfLayerEnabled", layerButton_);
+
+    transposeLabel_.setText("Transpose", juce::dontSendNotification);
+    transposeLabel_.setColour(juce::Label::textColourId, SynthColors::textDim());
+    transposeLabel_.setFont(juce::Font(juce::FontOptions(11.0f)));
+    addAndMakeVisible(transposeLabel_);
+
+    transposeSlider_.setSliderStyle(juce::Slider::LinearHorizontal);
+    transposeSlider_.setTextBoxStyle(juce::Slider::TextBoxLeft, false, 40, 20);
+    transposeSlider_.setRange(-12, 12, 1);
+    transposeSlider_.setValue(0);
+    addAndMakeVisible(transposeSlider_);
+    transposeAttach_ = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+        apvts_, "perfTranspose", transposeSlider_);
+
+    // Callbacks
+    splitSlider_.onValueChange = [this]()
+    {
+        if (onSplitChanged)
+            onSplitChanged(static_cast<int>(splitSlider_.getValue()));
+    };
+
+    layerButton_.onClick = [this]()
+    {
+        if (onLayerChanged)
+            onLayerChanged(layerButton_.getToggleState());
+    };
+}
+
+void PerformancePanel::paint(juce::Graphics& g)
+{
+    auto b = getLocalBounds().toFloat();
+    g.setColour(SynthColors::card());
+    g.fillRoundedRectangle(b, 8.0f);
+
+    g.setColour(SynthColors::cyan());
+    g.setFont(juce::Font(juce::FontOptions(14.0f, juce::Font::bold)));
+    g.drawText("PERFORMANCE", 12, 8, 120, 20, juce::Justification::left);
+    g.setColour(SynthColors::gridLine());
+    g.drawHorizontalLine(32, 8, getWidth() - 8);
+}
+
+void PerformancePanel::resized()
+{
+    titleLabel_.setBounds(12, 8, 120, 20);
+
+    int y = 38;
+    splitLabel_.setBounds(12, y, 50, 20);
+    splitSlider_.setBounds(64, y, getWidth() - 76, 20);
+    y += 28;
+
+    layerButton_.setBounds(12, y, 80, 22);
+    y += 30;
+
+    transposeLabel_.setBounds(12, y, 60, 20);
+    transposeSlider_.setBounds(74, y, getWidth() - 86, 20);
+}
+
+bool OpenSynthJucedEditor::keyPressed(const juce::KeyPress& key)
+{
+    // Undo/Redo
+    auto mods = juce::ModifierKeys::getCurrentModifiers();
+    if (mods.isCtrlDown() && key.getKeyCode() == 'z' && !mods.isShiftDown())
+    {
+        processor_.getUndoManager().undo();
+        return true;
+    }
+    if (mods.isCtrlDown() && (key.getKeyCode() == 'y' || (key.getKeyCode() == 'z' && mods.isShiftDown())))
+    {
+        processor_.getUndoManager().redo();
+        return true;
+    }
+
+    // Preset navigation: Up/Down arrows
+    if (key == juce::KeyPress::upKey)
+    {
+        if (kNumFullPresets > 0) {
+            currentPresetIndex_--;
+            if (currentPresetIndex_ < 0)
+                currentPresetIndex_ = kNumFullPresets - 1;
+            loadPresetByIndex(currentPresetIndex_);
+        }
+        return true;
+    }
+    if (key == juce::KeyPress::downKey)
+    {
+        if (kNumFullPresets > 0) {
+            currentPresetIndex_++;
+            if (currentPresetIndex_ >= kNumFullPresets)
+                currentPresetIndex_ = 0;
+            loadPresetByIndex(currentPresetIndex_);
+        }
+        return true;
+    }
+
+    // Space = toggle arpeggiator
+    if (key == juce::KeyPress::spaceKey)
+    {
+        auto* param = processor_.getParameters().getParameter("arpEnabled");
+        if (param != nullptr)
+        {
+            bool newVal = !param->getValue();
+            param->beginChangeGesture();
+            param->setValueNotifyingHost(newVal ? 1.0f : 0.0f);
+            param->endChangeGesture();
+        }
+        return true;
+    }
+
+    // Ctrl+Z = undo
+    if (key == juce::KeyPress('z', juce::ModifierKeys::ctrlModifier, 0))
+    {
+        processor_.getUndoManager().undo();
+        showUndoFeedback("Undo");
+        return true;
+    }
+
+    // Ctrl+Y = redo
+    if (key == juce::KeyPress('y', juce::ModifierKeys::ctrlModifier, 0))
+    {
+        processor_.getUndoManager().redo();
+        showUndoFeedback("Redo");
+        return true;
+    }
+
+    // Ctrl+Shift+Z = redo (alternative)
+    if (key == juce::KeyPress('z', juce::ModifierKeys::ctrlModifier | juce::ModifierKeys::shiftModifier, 0))
+    {
+        processor_.getUndoManager().redo();
+        showUndoFeedback("Redo");
+        return true;
+    }
+
+    // 1-8 = favorite presets
+    int favKey = key.getTextCharacter();
+    if (favKey >= '1' && favKey <= '8')
+    {
+        loadFavoritePreset(favKey - '1');
+        return true;
+    }
+
+    // P = open preset browser
+    if (favKey == 'p' || favKey == 'P')
+    {
+        showPresetBrowser();
+        return true;
+    }
+
+    // M = toggle master mute (set master volume to 0 / restore)
+    if (favKey == 'm' || favKey == 'M')
+    {
+        auto* param = processor_.getParameters().getParameter("masterVolume");
+        if (param != nullptr)
+        {
+            static float lastVolume = 0.8f;
+            float current = param->getValue();
+            if (current > 0.01f)
+            {
+                lastVolume = current;
+                param->beginChangeGesture();
+                param->setValueNotifyingHost(0.0f);
+                param->endChangeGesture();
+            }
+            else
+            {
+                param->beginChangeGesture();
+                param->setValueNotifyingHost(lastVolume);
+                param->endChangeGesture();
+            }
+        }
+        return true;
+    }
+
+    // Computer keyboard as piano
+    int note = keyToNote(favKey);
+    if (note >= 0)
+    {
+        if (heldKeys_.insert(favKey).second) // was not already held
+        {
+            processor_.injectMidiMessage(juce::MidiMessage::noteOn(1, note, 0.9f));
+            keyboard_.setKeyPressed(note);
+        }
+        return true;
+    }
+
+    return false;
+}
+
+bool OpenSynthJucedEditor::keyStateChanged(bool isKeyDown)
+{
+    juce::ignoreUnused(isKeyDown);
+
+    // Check which held keys have been released
+    std::vector<int> released;
+    for (int keyCode : heldKeys_)
+    {
+        if (!juce::KeyPress::isKeyCurrentlyDown(keyCode))
+        {
+            int note = keyToNote(keyCode);
+            if (note >= 0)
+            {
+                processor_.injectMidiMessage(juce::MidiMessage::noteOff(1, note, 0.0f));
+                keyboard_.setKeyReleased(note);
+            }
+            released.push_back(keyCode);
+        }
+    }
+    for (int keyCode : released)
+        heldKeys_.erase(keyCode);
+    return false; // allow other handlers
+}
+
+int OpenSynthJucedEditor::keyToNote(int keyCode)
+{
+    switch (keyCode)
+    {
+        case 'z': return 48;
+        case 's': return 49;
+        case 'x': return 50;
+        case 'd': return 51;
+        case 'c': return 52;
+        case 'v': return 53;
+        case 'g': return 54;
+        case 'b': return 55;
+        case 'h': return 56;
+        case 'n': return 57;
+        case 'j': return 58;
+        case 'm': return 59;
+        case 'q': return 60;
+        case '2': return 61;
+        case 'w': return 62;
+        case '3': return 63;
+        case 'e': return 64;
+        case 'r': return 65;
+        case '5': return 66;
+        case 't': return 67;
+        case '6': return 68;
+        case 'y': return 69;
+        case '7': return 70;
+        case 'u': return 71;
+        default:  return -1;
+    }
+}
+
+} // namespace openamp
+
+// ── SetlistOverlay ──────────────────────────────────────────────────────────
+
+namespace openamp {
+
+SetlistOverlay::SetlistOverlay()
+{
+    setOpaque(true);
+
+    titleLabel_.setText("SETLIST MODE", juce::dontSendNotification);
+    titleLabel_.setFont(juce::Font(juce::FontOptions(20.0f, juce::Font::bold)));
+    titleLabel_.setColour(juce::Label::textColourId, SynthColors::cyan());
+    addAndMakeVisible(titleLabel_);
+
+    closeButton_.setButtonText("X");
+    closeButton_.setColour(juce::TextButton::buttonColourId, SynthColors::danger());
+    closeButton_.onClick = [this]() { setVisible(false); };
+    addAndMakeVisible(closeButton_);
+
+    clearButton_.setButtonText("Clear All");
+    clearButton_.setColour(juce::TextButton::buttonColourId, SynthColors::card());
+    clearButton_.setColour(juce::TextButton::textColourOffId, SynthColors::textDim());
+    clearButton_.onClick = [this]() { clearAll(); };
+    addAndMakeVisible(clearButton_);
+
+    for (int i = 0; i < kNumSlots; ++i)
+    {
+        slotPresetNames_[i] = "Empty";
+        slotButtons_[i].setButtonText(juce::String(i + 1) + ": Empty");
+        slotButtons_[i].setColour(juce::TextButton::buttonColourId, SynthColors::card());
+        slotButtons_[i].setColour(juce::TextButton::textColourOffId, SynthColors::textDim());
+        slotButtons_[i].onClick = [this, i]() { slotClicked(i); };
+        addAndMakeVisible(slotButtons_[i]);
+    }
+}
+
+void SetlistOverlay::paint(juce::Graphics& g)
+{
+    g.fillAll(SynthColors::background().withAlpha(0.95f));
+
     g.setColour(SynthColors::gridLine());
     for (int x = 0; x < getWidth(); x += 40)
         g.drawVerticalLine(x, 0, getHeight());
@@ -1062,52 +1976,79 @@ void OpenSynthEditor::paint(juce::Graphics& g)
         g.drawHorizontalLine(y, 0, getWidth());
 }
 
-void OpenSynthEditor::resized()
+void SetlistOverlay::resized()
 {
-    auto b = getLocalBounds().reduced(12);
+    auto b = getLocalBounds().reduced(20);
+    titleLabel_.setBounds(b.removeFromTop(30));
+    closeButton_.setBounds(getWidth() - 50, 20, 30, 30);
 
-    // Header row
-    auto header = b.removeFromTop(40);
-    titleLabel_.setBounds(header.removeFromLeft(200));
-    favorites_.setBounds(header.removeFromLeft(320));
-    meters_.setBounds(header.removeFromLeft(200));
-    presetButton_.setBounds(header.removeFromRight(90));
-    setlistButton_.setBounds(header.removeFromRight(90));
+    auto controls = b.removeFromTop(30);
+    clearButton_.setBounds(controls.removeFromLeft(100));
+    b.removeFromTop(12);
 
-    b.removeFromTop(8);
+    int cols = 4;
+    int rows = kNumSlots / cols;
+    int btnWidth = (b.getWidth() - (cols - 1) * 12) / cols;
+    int btnHeight = (b.getHeight() - (rows - 1) * 12) / rows;
 
-    // Top row: Oscillators + Filter + Arp
-    auto topRow = b.removeFromTop(200);
-    osc1Panel_.setBounds(topRow.removeFromLeft(260));
-    topRow.removeFromLeft(8);
-    osc2Panel_.setBounds(topRow.removeFromLeft(260));
-    topRow.removeFromLeft(8);
-    filterPanel_.setBounds(topRow.removeFromLeft(260));
-    topRow.removeFromLeft(8);
-    arpPanel_.setBounds(topRow);
+    for (int i = 0; i < kNumSlots; ++i)
+    {
+        int col = i % cols;
+        int row = i / cols;
+        slotButtons_[i].setBounds(
+            b.getX() + col * (btnWidth + 12),
+            b.getY() + row * (btnHeight + 12),
+            btnWidth, btnHeight);
+    }
+}
 
-    b.removeFromTop(8);
+void SetlistOverlay::setVisible(bool shouldBeVisible)
+{
+    juce::Component::setVisible(shouldBeVisible);
+}
 
-    // Middle row: Envelopes + FX slots
-    auto midRow = b.removeFromTop(200);
-    ampEnvPanel_.setBounds(midRow.removeFromLeft(200));
-    midRow.removeFromLeft(8);
-    filterEnvPanel_.setBounds(midRow.removeFromLeft(200));
-    midRow.removeFromLeft(8);
-    fx1Panel_.setBounds(midRow.removeFromLeft(200));
-    midRow.removeFromLeft(8);
-    fx2Panel_.setBounds(midRow.removeFromLeft(200));
-    midRow.removeFromLeft(8);
-    fx3Panel_.setBounds(midRow);
+void SetlistOverlay::slotClicked(int index)
+{
+    if (juce::ModifierKeys::getCurrentModifiers().isShiftDown())
+    {
+        if (onSlotAssigned)
+            onSlotAssigned(index);
+    }
+    else
+    {
+        if (onSlotSelected)
+            onSlotSelected(index);
+    }
+}
 
-    b.removeFromTop(8);
+void SetlistOverlay::assignPresetToSlot(int slotIndex, const juce::String& presetName)
+{
+    if (slotIndex >= 0 && slotIndex < kNumSlots)
+    {
+        slotPresetNames_[slotIndex] = presetName.isEmpty() ? "Empty" : presetName;
+        slotButtons_[slotIndex].setButtonText(juce::String(slotIndex + 1) + ": " + slotPresetNames_[slotIndex]);
+        slotButtons_[slotIndex].setColour(juce::TextButton::textColourOffId,
+            presetName.isEmpty() ? SynthColors::textDim() : SynthColors::neonYellow());
+    }
+}
 
-    // Bottom: Keyboard
-    keyboard_.setBounds(b);
+juce::String SetlistOverlay::getSlotPresetName(int slotIndex) const
+{
+    if (slotIndex >= 0 && slotIndex < kNumSlots)
+        return slotPresetNames_[slotIndex];
+    return {};
+}
 
-    // Overlays fill entire editor
-    presetBrowser_.setBounds(getLocalBounds());
-    splitOverlay_.setBounds(keyboard_.getBounds());
+void SetlistOverlay::clearSlot(int slotIndex)
+{
+    if (slotIndex >= 0 && slotIndex < kNumSlots)
+        assignPresetToSlot(slotIndex, "Empty");
+}
+
+void SetlistOverlay::clearAll()
+{
+    for (int i = 0; i < kNumSlots; ++i)
+        assignPresetToSlot(i, "Empty");
 }
 
 } // namespace openamp

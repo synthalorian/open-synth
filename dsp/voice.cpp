@@ -39,6 +39,12 @@ void Voice::noteOn(int note, float vel) {
         osc1Phase[i] = 0.0f;
         osc2Phase[i] = 0.0f;
     }
+    // Reset filter state to prevent DC thump / static when stealing voices
+    filterState.lp = 0.0f;
+    filterState.bp = 0.0f;
+    filterState.hp = 0.0f;
+    // Reset physical model so old delay-line data doesn't leak
+    physicalModel.reset();
     ampEnv.noteOn();
     filterEnv.noteOn();
     pitchEnv.noteOn();

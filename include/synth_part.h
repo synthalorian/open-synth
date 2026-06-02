@@ -76,6 +76,11 @@ struct SynthPart {
     int   realismAttackCurve = 0;
     float realismBrightnessSens = 0.0f;
 
+    // ── MIDI performance state ──
+    float pitchBend = 0.0f;   // -1.0 .. +1.0
+    float modWheel = 0.0f;    // 0.0 .. 1.0
+    float aftertouch = 0.0f;  // 0.0 .. 1.0
+
     void reset();
 };
 

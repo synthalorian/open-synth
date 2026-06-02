@@ -14,6 +14,7 @@
 #include "fx_gated_reverb.h"
 #include "fx_amp_sim.h"
 #include "fx_stereo_widener.h"
+#include "fx_vocoder.h"
 #include <cmath>
 #include <cstring>
 #include <algorithm>
@@ -203,6 +204,7 @@ void SynthEngine::process(AudioBuffer& output) {
                 if (part.lfo2.target() == LFO::Target::PITCH) pitchMod += lfo2Val;
             }
             pitchMod += pitchEnv * part.pitchEnvAmount;
+            pitchMod += part.pitchBend * 2.0f; // +/- 2 semitones
             float modFreq = voice->baseFreq * std::pow(2.0f, pitchMod * 2.0f);
 
             // Get unison configs from the voice's part
@@ -269,11 +271,13 @@ void SynthEngine::process(AudioBuffer& output) {
 
             // Apply amp envelope with velocity
             float ampGain = ampEnv * voice->velocity;
+            ampGain *= (1.0f + part.aftertouch * 0.5f); // aftertouch adds up to 50% gain
 
             // Apply filter
             float filterMod = 0.0f;
             if (part.lfo1.target() == LFO::Target::FILTER) filterMod += lfo1Val;
             if (part.lfo2.target() == LFO::Target::FILTER) filterMod += lfo2Val;
+            filterMod += part.modWheel; // map mod wheel to filter cutoff
 
             float monoMix = (voiceLeft + voiceRight) * 0.5f;
             float filtered = part.filter.process(monoMix, filterEnv + filterMod, sampleRate_, voice->midiNote, voice->filterState);
@@ -830,6 +834,7 @@ FxProcessor* SynthEngine::createFxProcessor(int fxTypeId) {
     case 19: proc = new GatedReverbProcessor();   break; // Gated reverb
     case 20: proc = new AmpSimulatorProcessor();  break; // Amp simulator
     case 21: proc = new StereoWidenerProcessor(); break; // Stereo widener
+    case 22: proc = new VocoderProcessor();      break; // Vocoder
     default: return nullptr;
     }
     // Forward the actual sample rate so processors can pre-compute

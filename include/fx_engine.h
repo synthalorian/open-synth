@@ -12,6 +12,22 @@ static constexpr int MAX_FX_SLOTS = 4;
 /// Maximum number of parameters per FX processor
 static constexpr int MAX_FX_PARAMS = 8;
 
+/// Parameter descriptor for UI range mapping
+struct FxParamDescriptor {
+    const char* name = "";
+    float minValue = 0.0f;
+    float maxValue = 1.0f;
+    float defaultValue = 0.5f;
+    const char* unit = "";
+};
+
+/// FX type descriptor containing parameter info for all 4 UI params
+struct FxTypeDescriptor {
+    const char* name = "";
+    int numParams = 0;
+    FxParamDescriptor params[MAX_FX_PARAMS];
+};
+
 /// Unique type IDs for each FX processor type
 enum class FxType : uint8_t {
     None = 0,
@@ -37,6 +53,8 @@ enum class FxType : uint8_t {
     GatedReverb,
     AmpSimulator,
     StereoWidener,
+    // Juno-Di inspired
+    Vocoder,
 };
 
 /// Base class for all FX processors.
@@ -78,6 +96,11 @@ public:
     /// Wet/dry mix (0.0 = dry, 1.0 = wet).
     float mix() const { return mix_; }
     void setMix(float m) { mix_ = m; }
+
+    // Stub implementations for descriptor system — full tables TBD
+    static float mapNormalized(int /*fxTypeId*/, int /*paramIndex*/, float normalized) { return normalized; }
+    static float unmapNormalized(int /*fxTypeId*/, int /*paramIndex*/, float actual) { return actual; }
+    static FxTypeDescriptor getDescriptor(int fxTypeId);
 
 protected:
     FxType type_;
@@ -147,6 +170,9 @@ public:
 
     /// Set a parameter on the processor in a specific slot.
     void setSlotParam(int index, int paramIdx, float value);
+
+    /// Set a normalized parameter (0-1) mapped to actual range for the FX type.
+    void setSlotParamNormalized(int slotIndex, int fxTypeId, int paramIdx, float normalized);
 
     /// Get slot parameters as a flat float array for UI/param-queue.
     void getSlotParams(int index, float* out, int maxCount) const;

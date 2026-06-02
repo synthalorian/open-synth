@@ -56,6 +56,14 @@ public:
     void setFxEnabled(int slot, bool e);
     void setFxParam(int slot, int param, float value);
 
+    // Arpeggiator
+    void setArpEnabled(bool e);
+    void setArpPattern(int p);
+    void setArpTempo(float bpm);
+    void setArpGate(float g);
+    void setArpSwing(float s);
+    void setArpOctaveRange(int o);
+
     // Instrument realism
     void setRealismBodyType(int t);
     void setRealismBodyMix(float m);
