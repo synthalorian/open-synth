@@ -54,6 +54,7 @@ public:
     void setMasterVolume(float vol);
 
     void setFxEnabled(int slot, bool e);
+    void setFxType(int slot, int type);
     void setFxParam(int slot, int param, float value);
 
     // Arpeggiator

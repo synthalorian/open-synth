@@ -282,9 +282,11 @@ private:
     // Legacy FX accessor
     LegacyFxProcessor* getLegacyFx() const;
     void initLegacyFxSlot();
+
+public:
     FxProcessor* createFxProcessor(int fxTypeId);
 
-    // CPU profiling
+private:
     mutable float cpuLoad_ = 0.0f;
     mutable float cpuLoadAlpha_ = 0.0f;
 

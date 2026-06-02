@@ -5,67 +5,70 @@ namespace openamp {
 
 void applyPresetToEngine(const PresetData& p, SynthEngineWrapper& e)
 {
+    // Sanitize extreme values that cause harsh/static sounds
+    auto clamp = [](float v, float lo, float hi) { return v < lo ? lo : (v > hi ? hi : v); };
+
     // Osc 1
     e.setOsc1Waveform(p.osc1Waveform);
     e.setOsc1Octave(p.osc1Octave);
     e.setOsc1Detune(p.osc1Detune);
-    e.setOsc1Volume(p.osc1Volume);
+    e.setOsc1Volume(clamp(p.osc1Volume, 0.0f, 1.0f));
 
     // Osc 2
     e.setOsc2Waveform(p.osc2Waveform);
     e.setOsc2Octave(p.osc2Octave);
     e.setOsc2Detune(p.osc2Detune);
-    e.setOsc2Volume(p.osc2Volume);
-    e.setOscMix(p.oscMix);
+    e.setOsc2Volume(clamp(p.osc2Volume, 0.0f, 1.0f));
+    e.setOscMix(clamp(p.oscMix, 0.0f, 1.0f));
 
-    // Filter
-    e.setFilterCutoff(p.filterCutoff);
-    e.setFilterResonance(p.filterResonance);
-    e.setFilterEnvAmount(p.filterEnvAmount);
-    e.setFilterDrive(p.filterDrive);
+    // Filter — clamp resonance to prevent ear-bleed
+    e.setFilterCutoff(clamp(p.filterCutoff, 20.0f, 20000.0f));
+    e.setFilterResonance(clamp(p.filterResonance, 0.0f, 0.75f)); // was up to 0.95
+    e.setFilterEnvAmount(clamp(p.filterEnvAmount, -1.0f, 1.0f));
+    e.setFilterDrive(clamp(p.filterDrive, 0.0f, 0.8f));
 
-    // Amp envelope
-    e.setAmpAttack(p.ampAttack);
-    e.setAmpDecay(p.ampDecay);
-    e.setAmpSustain(p.ampSustain);
-    e.setAmpRelease(p.ampRelease);
+    // Amp envelope — clamp attack to prevent 3-second silence
+    e.setAmpAttack(clamp(p.ampAttack, 0.1f, 2000.0f)); // was up to 5000ms
+    e.setAmpDecay(clamp(p.ampDecay, 0.1f, 3000.0f));
+    e.setAmpSustain(clamp(p.ampSustain, 0.0f, 1.0f));
+    e.setAmpRelease(clamp(p.ampRelease, 0.1f, 5000.0f));
 
     // Filter envelope
-    e.setFilterAttack(p.filterAttack);
-    e.setFilterDecay(p.filterDecay);
-    e.setFilterSustain(p.filterSustain);
-    e.setFilterRelease(p.filterRelease);
+    e.setFilterAttack(clamp(p.filterAttack, 0.1f, 2000.0f));
+    e.setFilterDecay(clamp(p.filterDecay, 0.1f, 3000.0f));
+    e.setFilterSustain(clamp(p.filterSustain, 0.0f, 1.0f));
+    e.setFilterRelease(clamp(p.filterRelease, 0.1f, 5000.0f));
 
     // LFO 1
-    e.setLfo1Rate(p.lfo1Rate);
-    e.setLfo1Depth(p.lfo1Depth);
+    e.setLfo1Rate(clamp(p.lfo1Rate, 0.1f, 20.0f));
+    e.setLfo1Depth(clamp(p.lfo1Depth, 0.0f, 1.0f));
 
-    // Master
-    e.setMasterVolume(p.masterVolume);
+    // Master — ensure we don't blow ears out
+    e.setMasterVolume(clamp(p.masterVolume, 0.0f, 1.0f));
 
     // FX slots
     for (int slot = 0; slot < 3; ++slot)
     {
         e.setFxEnabled(slot + 1, p.fxSlotEnabled[slot]);
         for (int param = 0; param < 4; ++param)
-            e.setFxParam(slot + 1, param, p.fxSlotParam[slot][param]);
+            e.setFxParam(slot + 1, param, clamp(p.fxSlotParam[slot][param], 0.0f, 1.0f));
     }
 
     // Instrument realism
     e.setRealismBodyType(p.realismBodyType);
-    e.setRealismBodyMix(p.realismBodyMix);
-    e.setRealismClickMix(p.realismClickMix);
-    e.setRealismSympatheticMix(p.realismSympatheticMix);
+    e.setRealismBodyMix(clamp(p.realismBodyMix, 0.0f, 1.0f));
+    e.setRealismClickMix(clamp(p.realismClickMix, 0.0f, 1.0f));
+    e.setRealismSympatheticMix(clamp(p.realismSympatheticMix, 0.0f, 1.0f));
     e.setRealismAttackCurve(p.realismAttackCurve);
-    e.setRealismBrightnessSens(p.realismBrightnessSens);
+    e.setRealismBrightnessSens(clamp(p.realismBrightnessSens, 0.0f, 1.0f));
 
     // Arpeggiator
     e.setArpEnabled(p.arpEnabled);
     e.setArpPattern(p.arpPattern);
-    e.setArpTempo(p.arpTempo);
-    e.setArpGate(p.arpGate);
-    e.setArpSwing(p.arpSwing);
-    e.setArpOctaveRange(p.arpOctave);
+    e.setArpTempo(clamp(p.arpTempo, 20.0f, 300.0f));
+    e.setArpGate(clamp(p.arpGate, 0.0f, 1.0f));
+    e.setArpSwing(clamp(p.arpSwing, 0.0f, 1.0f));
+    e.setArpOctaveRange(p.arpOctave > 4 ? 4 : (p.arpOctave < 1 ? 1 : p.arpOctave));
 }
 
 void applyPresetToAPVTS(const PresetData& p, juce::AudioProcessorValueTreeState& apvts)
