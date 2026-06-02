@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.22)
-project(OpenSynthJUCE VERSION 1.0.0)
+project(OpenSynthJuced VERSION 1.0.0)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -7,13 +7,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Add JUCE
 add_subdirectory(/home/synth/projects/juce JUCE_BUILD)
 
-# OpenSynth Plugin + Standalone
-juce_add_plugin(OpenSynth
+# Open Synth Juced Plugin + Standalone
+juce_add_plugin(OpenSynthJuced
     COMPANY_NAME "SynthShark Audio"
     PLUGIN_MANUFACTURER_CODE "SynS"
-    PLUGIN_CODE "OpSy"
+    PLUGIN_CODE "OpSj"
     FORMATS Standalone VST3
-    PRODUCT_NAME "OpenSynth"
+    PRODUCT_NAME "Open Synth Juced"
     MICROPHONE_PERMISSION_ENABLED TRUE
 )
 
@@ -24,6 +24,7 @@ set(OPENSYNTH_SOURCES
     src/synth_engine_wrapper.cpp
     src/preset_data.cpp
     src/instrument_realism.cpp
+    src/user_preset_manager.cpp
 )
 
 # DSP engine sources (ported from Flutter FFI)
@@ -64,21 +65,22 @@ set(DSP_SOURCES
     dsp/fx_gated_reverb.cpp
     dsp/fx_amp_sim.cpp
     dsp/fx_stereo_widener.cpp
+    dsp/fx_vocoder.cpp
 )
 
-target_sources(OpenSynth PRIVATE 
+target_sources(OpenSynthJuced PRIVATE 
     ${OPENSYNTH_SOURCES}
     ${DSP_SOURCES}
 )
 
-target_include_directories(OpenSynth PRIVATE 
+target_include_directories(OpenSynthJuced PRIVATE 
     src
     dsp
     include
 )
 
 # JUCE modules
-target_link_libraries(OpenSynth PRIVATE
+target_link_libraries(OpenSynthJuced PRIVATE
     juce::juce_audio_utils
     juce::juce_audio_processors
     juce::juce_audio_devices
@@ -88,7 +90,7 @@ target_link_libraries(OpenSynth PRIVATE
 )
 
 # Compile definitions
-target_compile_definitions(OpenSynth PRIVATE
+target_compile_definitions(OpenSynthJuced PRIVATE
     JUCE_WEB_BROWSER=0
     JUCE_USE_CURL=0
     JUCE_VST3_CAN_REPLACE_VST2=0
@@ -97,5 +99,5 @@ target_compile_definitions(OpenSynth PRIVATE
 
 # Linux specific
 if(UNIX AND NOT APPLE)
-    target_link_libraries(OpenSynth PRIVATE pthread dl)
+    target_link_libraries(OpenSynthJuced PRIVATE pthread dl)
 endif()

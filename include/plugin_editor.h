@@ -1,8 +1,10 @@
 #pragma once
 #include <juce_gui_basics/juce_gui_basics.h>
 #include <juce_audio_processors/juce_audio_processors.h>
+#include <juce_audio_formats/juce_audio_formats.h>
 #include "plugin_processor.h"
 #include "preset_library.h"
+#include "user_preset_manager.h"
 
 namespace openamp {
 
@@ -118,6 +120,82 @@ private:
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> tempoAttach_, gateAttach_, swingAttach_, octaveAttach_;
 };
 
+// ── D-Beam Controller (Juno-Di inspired) ──────────────────────────────────
+class DBeamPanel : public juce::Component {
+public:
+    DBeamPanel(juce::AudioProcessorValueTreeState& apvts);
+    void paint(juce::Graphics& g) override;
+    void resized() override;
+
+    std::function<void(float)> onValueChanged;
+
+private:
+    juce::AudioProcessorValueTreeState& apvts_;
+    juce::ComboBox targetSelector_;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> targetAttach_;
+
+    float currentValue_ = 0.0f;
+    bool dragging_ = false;
+
+    void mouseDown(const juce::MouseEvent& e) override;
+    void mouseDrag(const juce::MouseEvent& e) override;
+    void mouseUp(const juce::MouseEvent& e) override;
+    void updateValueFromY(int y);
+};
+
+// ── Phrase Sampler / Audio Player (stub) ──────────────────────────────────
+class PhraseSamplerPanel : public juce::Component,
+                           private juce::Timer {
+public:
+    PhraseSamplerPanel();
+    ~PhraseSamplerPanel() override;
+    void paint(juce::Graphics& g) override;
+    void resized() override;
+
+private:
+    juce::TextButton loadButton_;
+    juce::TextButton playButton_;
+    juce::TextButton stopButton_;
+    juce::Label fileLabel_;
+    juce::Slider volumeSlider_;
+    juce::AudioFormatManager formatManager_;
+    juce::File currentFile_;
+
+    std::unique_ptr<juce::FileChooser> fileChooser_;
+
+    void timerCallback() override;
+    void loadFile();
+    void play();
+    void stop();
+};
+
+// ── Performance Controls (Juno-Di inspired) ────────────────────────────────
+class PerformancePanel : public juce::Component {
+public:
+    PerformancePanel(juce::AudioProcessorValueTreeState& apvts);
+    void paint(juce::Graphics& g) override;
+    void resized() override;
+
+    std::function<void(int)> onSplitChanged;
+    std::function<void(bool)> onLayerChanged;
+
+private:
+    juce::AudioProcessorValueTreeState& apvts_;
+
+    juce::Label splitLabel_;
+    juce::Slider splitSlider_;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> splitAttach_;
+
+    juce::ToggleButton layerButton_;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> layerAttach_;
+
+    juce::Label transposeLabel_;
+    juce::Slider transposeSlider_;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> transposeAttach_;
+
+    juce::Label titleLabel_;
+};
+
 // ── Performance Meters ────────────────────────────────────────────────────
 class PerformanceMeter : public juce::Component, private juce::Timer {
 public:
@@ -145,22 +223,31 @@ public:
     void setVisible(bool shouldBeVisible) override;
 
     std::function<void(const PresetInfo*)> onPresetSelected;
+    std::function<void()> onSavePresetRequested;
+    std::function<void(const UserPreset&)> onUserPresetSelected;
+
+    void refreshUserPresets();
 
 private:
     juce::TextEditor searchBox_;
     juce::ListBox presetList_;
     juce::TextButton closeButton_;
+    juce::TextButton savePresetButton_;
     juce::Label titleLabel_;
     juce::ComboBox categoryFilter_;
+    juce::ToggleButton showUserPresetsButton_;
 
-    std::vector<const PresetInfo*> filteredPresets_;
+    std::vector<const PresetInfo*> filteredFactoryPresets_;
+    std::vector<UserPreset> userPresets_;
+    std::vector<juce::var> displayList_;
+    bool showingUserPresets_ = false;
     juce::String currentSearch_;
     juce::String currentCategory_;
 
     void rebuildFilter();
 
     // ListBoxModel
-    int getNumRows() override { return (int)filteredPresets_.size(); }
+    int getNumRows() override { return (int)displayList_.size(); }
     void paintListBoxItem(int rowNumber, juce::Graphics& g, int width, int height, bool rowIsSelected) override;
     void selectedRowsChanged(int lastRowSelected) override;
 
@@ -207,10 +294,9 @@ private:
 };
 
 // ── Keyboard Component ────────────────────────────────────────────────────
-class PianoKeyboard : public juce::Component, public juce::MidiKeyboardState::Listener {
+class PianoKeyboard : public juce::Component {
 public:
-    explicit PianoKeyboard(juce::MidiKeyboardState& state);
-    ~PianoKeyboard() override;
+    explicit PianoKeyboard(OpenSynthJucedProcessor& processor);
 
     void paint(juce::Graphics& g) override;
     void resized() override;
@@ -218,14 +304,15 @@ public:
     void mouseUp(const juce::MouseEvent& e) override;
     void mouseDrag(const juce::MouseEvent& e) override;
 
-    void handleNoteOn(juce::MidiKeyboardState*, int midiChannel, int midiNoteNumber, float velocity) override;
-    void handleNoteOff(juce::MidiKeyboardState*, int midiChannel, int midiNoteNumber, float velocity) override;
-
     void setSplitPoint(int note);
     void setShowSplit(bool show);
 
+    // Called from computer keyboard piano (Z-M, Q-U)
+    void setKeyPressed(int note);
+    void setKeyReleased(int note);
+
 private:
-    juce::MidiKeyboardState& state_;
+    OpenSynthJucedProcessor& processor_;
     int hoveredNote_ = -1;
     int pressedNote_ = -1;
     int splitPoint_ = 60;
@@ -284,24 +371,58 @@ private:
     void showContextMenu();
 };
 
-// ── Main Editor ───────────────────────────────────────────────────────────
-class OpenSynthEditor : public juce::AudioProcessorEditor,
-                         private juce::Timer {
+// ── Setlist Overlay ───────────────────────────────────────────────────────
+class SetlistOverlay : public juce::Component {
 public:
-    explicit OpenSynthEditor(OpenSynthProcessor& processor);
-    ~OpenSynthEditor() override = default;
-
+    SetlistOverlay();
     void paint(juce::Graphics& g) override;
     void resized() override;
 
+    void setVisible(bool shouldBeVisible) override;
+
+    std::function<void(int)> onSlotSelected;   // click to load
+    std::function<void(int)> onSlotAssigned;   // right-click or shift-click to assign current preset
+
+    void assignPresetToSlot(int slotIndex, const juce::String& presetName);
+    juce::String getSlotPresetName(int slotIndex) const;
+    void clearSlot(int slotIndex);
+    void clearAll();
+
 private:
-    OpenSynthProcessor& processor_;
-    juce::MidiKeyboardState keyboardState_;
+    static constexpr int kNumSlots = 16;
+    juce::TextButton slotButtons_[kNumSlots];
+    juce::String slotPresetNames_[kNumSlots];
+    juce::TextButton closeButton_;
+    juce::Label titleLabel_;
+    juce::TextButton clearButton_;
+
+    void slotClicked(int index);
+    void slotRightClicked(int index);
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SetlistOverlay)
+};
+
+// ── Main Editor ───────────────────────────────────────────────────────────
+class OpenSynthJucedEditor : public juce::AudioProcessorEditor,
+                         private juce::Timer {
+public:
+    explicit OpenSynthJucedEditor(OpenSynthJucedProcessor& processor);
+    ~OpenSynthJucedEditor() override = default;
+
+    void paint(juce::Graphics& g) override;
+    void resized() override;
+    bool keyPressed(const juce::KeyPress& key) override;
+    bool keyStateChanged(bool isKeyDown) override;
+
+private:
+    OpenSynthJucedProcessor& processor_;
 
     // Header
     juce::Label titleLabel_;
     juce::TextButton presetButton_;
     juce::TextButton setlistButton_;
+    juce::TextButton undoButton_;
+    juce::TextButton redoButton_;
     PerformanceMeter meters_;
     FavoritesBar favorites_;
 
@@ -311,14 +432,32 @@ private:
     EnvelopePanel ampEnvPanel_, filterEnvPanel_;
     FxSlotPanel fx1Panel_, fx2Panel_, fx3Panel_;
     ArpPanel arpPanel_;
+    DBeamPanel dbeamPanel_;
+    PhraseSamplerPanel phraseSamplerPanel_;
+    PerformancePanel performancePanel_;
     PianoKeyboard keyboard_;
 
     // Overlay components
     PresetBrowser presetBrowser_;
     SplitKeyboardOverlay splitOverlay_;
+    SetlistOverlay setlistOverlay_;
 
     // MIDI Learn
     MidiLearnManager midiLearnManager_;
+
+    // Keyboard tracking
+    std::unordered_set<int> heldKeys_;
+    static int keyToNote(int keyCode);
+
+    // Preset navigation
+    int currentPresetIndex_ = 0;
+
+    // Undo/Redo visual feedback
+    juce::Label undoFeedbackLabel_;
+    int undoFeedbackCounter_ = 0;
+
+    // User preset manager
+    UserPresetManager userPresetManager_;
 
     void timerCallback() override;
     void handleMidiCC(int ccNumber, float value);
@@ -327,8 +466,10 @@ private:
     void loadFavoritePreset(int index);
     void loadPresetByIndex(int index);
     void loadPresetByID(const juce::String& id);
+    void saveCurrentPreset();
+    void showUndoFeedback(const juce::String& text);
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(OpenSynthEditor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(OpenSynthJucedEditor)
 };
 
 } // namespace openamp

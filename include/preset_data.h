@@ -165,6 +165,14 @@ struct PresetData {
     int   realismAttackCurve = 0;
     // Velocity brightness sensitivity: 0-1
     float realismBrightnessSens = 0.0f;
+
+    // Arpeggiator (added at end to preserve preset library aggregate initializers)
+    bool  arpEnabled = false;
+    int   arpPattern = 0;
+    float arpTempo = 120.0f;
+    float arpGate = 0.5f;
+    float arpSwing = 0.0f;
+    int   arpOctave = 1;
 };
 
 // Parameter-applier helper.

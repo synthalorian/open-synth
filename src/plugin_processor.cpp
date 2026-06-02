@@ -3,84 +3,153 @@
 
 namespace openamp {
 
-OpenSynthProcessor::OpenSynthProcessor()
+OpenSynthJucedProcessor::OpenSynthJucedProcessor()
     : AudioProcessor(BusesProperties()
                          .withOutput("Output", juce::AudioChannelSet::stereo(), true)
                          .withInput("Input", juce::AudioChannelSet::stereo(), false)),
-      apvts_(*this, nullptr, "PARAMETERS", createParameterLayout())
+      apvts_(*this, &undoManager_, "PARAMETERS", createParameterLayout())
 {
 }
 
-juce::AudioProcessorValueTreeState::ParameterLayout OpenSynthProcessor::createParameterLayout()
+juce::AudioProcessorValueTreeState::ParameterLayout OpenSynthJucedProcessor::createParameterLayout()
 {
-    std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
+    juce::AudioProcessorValueTreeState::ParameterLayout layout;
 
-    // Oscillator 1
-    params.push_back(std::make_unique<juce::AudioParameterInt>("osc1Waveform", "Osc1 Waveform", 0, 23, 0));
-    params.push_back(std::make_unique<juce::AudioParameterInt>("osc1Octave", "Osc1 Octave", -2, 2, 0));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("osc1Detune", "Osc1 Detune", -100.0f, 100.0f, 0.0f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("osc1Volume", "Osc1 Volume", 0.0f, 1.0f, 0.8f));
+    // ── Oscillator 1 ─────────────────────────────────────────────────────────
+    {
+        auto osc1Group = std::make_unique<juce::AudioProcessorParameterGroup>("osc1", "Oscillator 1", "|");
+        osc1Group->addChild(std::make_unique<juce::AudioParameterInt>("osc1Waveform", "Waveform", 0, 23, 0));
+        osc1Group->addChild(std::make_unique<juce::AudioParameterInt>("osc1Octave", "Octave", -2, 2, 0));
+        osc1Group->addChild(std::make_unique<juce::AudioParameterFloat>("osc1Detune", "Detune", juce::NormalisableRange<float>(-100.0f, 100.0f, 0.1f), 0.0f, "cents"));
+        osc1Group->addChild(std::make_unique<juce::AudioParameterFloat>("osc1Volume", "Volume", juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f), 0.8f));
+        layout.add(std::move(osc1Group));
+    }
 
-    // Oscillator 2
-    params.push_back(std::make_unique<juce::AudioParameterInt>("osc2Waveform", "Osc2 Waveform", 0, 23, 0));
-    params.push_back(std::make_unique<juce::AudioParameterInt>("osc2Octave", "Osc2 Octave", -2, 2, 0));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("osc2Detune", "Osc2 Detune", -100.0f, 100.0f, 0.0f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("osc2Volume", "Osc2 Volume", 0.0f, 1.0f, 0.0f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("oscMix", "Osc Mix", 0.0f, 1.0f, 0.5f));
+    // ── Oscillator 2 ─────────────────────────────────────────────────────────
+    {
+        auto osc2Group = std::make_unique<juce::AudioProcessorParameterGroup>("osc2", "Oscillator 2", "|");
+        osc2Group->addChild(std::make_unique<juce::AudioParameterInt>("osc2Waveform", "Waveform", 0, 23, 0));
+        osc2Group->addChild(std::make_unique<juce::AudioParameterInt>("osc2Octave", "Octave", -2, 2, 0));
+        osc2Group->addChild(std::make_unique<juce::AudioParameterFloat>("osc2Detune", "Detune", juce::NormalisableRange<float>(-100.0f, 100.0f, 0.1f), 0.0f, "cents"));
+        osc2Group->addChild(std::make_unique<juce::AudioParameterFloat>("osc2Volume", "Volume", juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f), 0.0f));
+        osc2Group->addChild(std::make_unique<juce::AudioParameterFloat>("oscMix", "Osc Mix", juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f), 0.5f));
+        layout.add(std::move(osc2Group));
+    }
 
-    // Filter
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("filterCutoff", "Filter Cutoff", 20.0f, 20000.0f, 2000.0f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("filterResonance", "Filter Resonance", 0.0f, 1.0f, 0.3f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("filterEnvAmt", "Filter Env Amt", -1.0f, 1.0f, 0.5f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("filterDrive", "Filter Drive", 0.0f, 1.0f, 0.0f));
+    // ── Filter ───────────────────────────────────────────────────────────────
+    {
+        auto filterGroup = std::make_unique<juce::AudioProcessorParameterGroup>("filter", "Filter", "|");
+        filterGroup->addChild(std::make_unique<juce::AudioParameterFloat>("filterCutoff", "Cutoff", juce::NormalisableRange<float>(20.0f, 20000.0f, 1.0f, 0.3f), 2000.0f, "Hz"));
+        filterGroup->addChild(std::make_unique<juce::AudioParameterFloat>("filterResonance", "Resonance", juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f), 0.3f));
+        filterGroup->addChild(std::make_unique<juce::AudioParameterFloat>("filterEnvAmt", "Env Amt", juce::NormalisableRange<float>(-1.0f, 1.0f, 0.01f), 0.5f));
+        filterGroup->addChild(std::make_unique<juce::AudioParameterFloat>("filterDrive", "Drive", juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f), 0.0f));
+        layout.add(std::move(filterGroup));
+    }
 
-    // Amp Envelope
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("ampAttack", "Amp Attack", 0.1f, 5000.0f, 10.0f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("ampDecay", "Amp Decay", 0.1f, 5000.0f, 200.0f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("ampSustain", "Amp Sustain", 0.0f, 1.0f, 0.7f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("ampRelease", "Amp Release", 0.1f, 10000.0f, 300.0f));
+    // ── Amp Envelope ─────────────────────────────────────────────────────────
+    {
+        auto ampEnvGroup = std::make_unique<juce::AudioProcessorParameterGroup>("ampEnv", "Amp Envelope", "|");
+        ampEnvGroup->addChild(std::make_unique<juce::AudioParameterFloat>("ampAttack", "Attack", juce::NormalisableRange<float>(0.1f, 5000.0f, 0.1f, 0.3f), 10.0f, "ms"));
+        ampEnvGroup->addChild(std::make_unique<juce::AudioParameterFloat>("ampDecay", "Decay", juce::NormalisableRange<float>(0.1f, 5000.0f, 0.1f, 0.3f), 200.0f, "ms"));
+        ampEnvGroup->addChild(std::make_unique<juce::AudioParameterFloat>("ampSustain", "Sustain", juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f), 0.7f));
+        ampEnvGroup->addChild(std::make_unique<juce::AudioParameterFloat>("ampRelease", "Release", juce::NormalisableRange<float>(0.1f, 10000.0f, 0.1f, 0.3f), 300.0f, "ms"));
+        layout.add(std::move(ampEnvGroup));
+    }
 
-    // Filter Envelope
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("filterAttack", "Filter Attack", 0.1f, 5000.0f, 10.0f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("filterDecay", "Filter Decay", 0.1f, 5000.0f, 200.0f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("filterSustain", "Filter Sustain", 0.0f, 1.0f, 0.5f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("filterRelease", "Filter Release", 0.1f, 10000.0f, 300.0f));
+    // ── Filter Envelope ──────────────────────────────────────────────────────
+    {
+        auto filterEnvGroup = std::make_unique<juce::AudioProcessorParameterGroup>("filterEnv", "Filter Envelope", "|");
+        filterEnvGroup->addChild(std::make_unique<juce::AudioParameterFloat>("filterAttack", "Attack", juce::NormalisableRange<float>(0.1f, 5000.0f, 0.1f, 0.3f), 10.0f, "ms"));
+        filterEnvGroup->addChild(std::make_unique<juce::AudioParameterFloat>("filterDecay", "Decay", juce::NormalisableRange<float>(0.1f, 5000.0f, 0.1f, 0.3f), 200.0f, "ms"));
+        filterEnvGroup->addChild(std::make_unique<juce::AudioParameterFloat>("filterSustain", "Sustain", juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f), 0.5f));
+        filterEnvGroup->addChild(std::make_unique<juce::AudioParameterFloat>("filterRelease", "Release", juce::NormalisableRange<float>(0.1f, 10000.0f, 0.1f, 0.3f), 300.0f, "ms"));
+        layout.add(std::move(filterEnvGroup));
+    }
 
-    // LFO
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("lfo1Rate", "LFO1 Rate", 0.1f, 20.0f, 4.0f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("lfo1Depth", "LFO1 Depth", 0.0f, 1.0f, 0.3f));
+    // ── LFO ──────────────────────────────────────────────────────────────────
+    {
+        auto lfoGroup = std::make_unique<juce::AudioProcessorParameterGroup>("lfo", "LFO", "|");
+        lfoGroup->addChild(std::make_unique<juce::AudioParameterFloat>("lfo1Rate", "Rate", juce::NormalisableRange<float>(0.1f, 20.0f, 0.01f, 0.5f), 4.0f, "Hz"));
+        lfoGroup->addChild(std::make_unique<juce::AudioParameterFloat>("lfo1Depth", "Depth", juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f), 0.3f));
+        layout.add(std::move(lfoGroup));
+    }
 
-    // Master
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("masterVolume", "Master Volume", 0.0f, 1.0f, 0.8f));
+    // ── Master ───────────────────────────────────────────────────────────────
+    {
+        auto masterGroup = std::make_unique<juce::AudioProcessorParameterGroup>("master", "Master", "|");
+        masterGroup->addChild(std::make_unique<juce::AudioParameterFloat>("masterVolume", "Volume", juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f), 0.8f));
+        layout.add(std::move(masterGroup));
+    }
 
-    // FX Slot 1
-    params.push_back(std::make_unique<juce::AudioParameterInt>("fx1Type", "FX1 Type", 0, 21, 0));
-    params.push_back(std::make_unique<juce::AudioParameterBool>("fx1Enabled", "FX1 On", false));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("fx1Param0", "FX1 P1", 0.0f, 1.0f, 0.5f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("fx1Param1", "FX1 P2", 0.0f, 1.0f, 0.5f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("fx1Param2", "FX1 P3", 0.0f, 1.0f, 0.5f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("fx1Param3", "FX1 P4", 0.0f, 1.0f, 0.5f));
+    // ── FX Slot 1 ────────────────────────────────────────────────────────────
+    {
+        auto fx1Group = std::make_unique<juce::AudioProcessorParameterGroup>("fx1", "FX 1", "|");
+        fx1Group->addChild(std::make_unique<juce::AudioParameterInt>("fx1Type", "Type", 0, 22, 0));
+        fx1Group->addChild(std::make_unique<juce::AudioParameterBool>("fx1Enabled", "On", false));
+        fx1Group->addChild(std::make_unique<juce::AudioParameterFloat>("fx1Param0", "P1", juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f), 0.5f));
+        fx1Group->addChild(std::make_unique<juce::AudioParameterFloat>("fx1Param1", "P2", juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f), 0.5f));
+        fx1Group->addChild(std::make_unique<juce::AudioParameterFloat>("fx1Param2", "P3", juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f), 0.5f));
+        fx1Group->addChild(std::make_unique<juce::AudioParameterFloat>("fx1Param3", "P4", juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f), 0.5f));
+        layout.add(std::move(fx1Group));
+    }
 
-    // FX Slot 2
-    params.push_back(std::make_unique<juce::AudioParameterInt>("fx2Type", "FX2 Type", 0, 21, 0));
-    params.push_back(std::make_unique<juce::AudioParameterBool>("fx2Enabled", "FX2 On", false));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("fx2Param0", "FX2 P1", 0.0f, 1.0f, 0.5f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("fx2Param1", "FX2 P2", 0.0f, 1.0f, 0.5f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("fx2Param2", "FX2 P3", 0.0f, 1.0f, 0.5f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("fx2Param3", "FX2 P4", 0.0f, 1.0f, 0.5f));
+    // ── FX Slot 2 ────────────────────────────────────────────────────────────
+    {
+        auto fx2Group = std::make_unique<juce::AudioProcessorParameterGroup>("fx2", "FX 2", "|");
+        fx2Group->addChild(std::make_unique<juce::AudioParameterInt>("fx2Type", "Type", 0, 22, 0));
+        fx2Group->addChild(std::make_unique<juce::AudioParameterBool>("fx2Enabled", "On", false));
+        fx2Group->addChild(std::make_unique<juce::AudioParameterFloat>("fx2Param0", "P1", juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f), 0.5f));
+        fx2Group->addChild(std::make_unique<juce::AudioParameterFloat>("fx2Param1", "P2", juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f), 0.5f));
+        fx2Group->addChild(std::make_unique<juce::AudioParameterFloat>("fx2Param2", "P3", juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f), 0.5f));
+        fx2Group->addChild(std::make_unique<juce::AudioParameterFloat>("fx2Param3", "P4", juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f), 0.5f));
+        layout.add(std::move(fx2Group));
+    }
 
-    // FX Slot 3
-    params.push_back(std::make_unique<juce::AudioParameterInt>("fx3Type", "FX3 Type", 0, 21, 0));
-    params.push_back(std::make_unique<juce::AudioParameterBool>("fx3Enabled", "FX3 On", false));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("fx3Param0", "FX3 P1", 0.0f, 1.0f, 0.5f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("fx3Param1", "FX3 P2", 0.0f, 1.0f, 0.5f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("fx3Param2", "FX3 P3", 0.0f, 1.0f, 0.5f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("fx3Param3", "FX3 P4", 0.0f, 1.0f, 0.5f));
+    // ── FX Slot 3 ────────────────────────────────────────────────────────────
+    {
+        auto fx3Group = std::make_unique<juce::AudioProcessorParameterGroup>("fx3", "FX 3", "|");
+        fx3Group->addChild(std::make_unique<juce::AudioParameterInt>("fx3Type", "Type", 0, 22, 0));
+        fx3Group->addChild(std::make_unique<juce::AudioParameterBool>("fx3Enabled", "On", false));
+        fx3Group->addChild(std::make_unique<juce::AudioParameterFloat>("fx3Param0", "P1", juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f), 0.5f));
+        fx3Group->addChild(std::make_unique<juce::AudioParameterFloat>("fx3Param1", "P2", juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f), 0.5f));
+        fx3Group->addChild(std::make_unique<juce::AudioParameterFloat>("fx3Param2", "P3", juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f), 0.5f));
+        fx3Group->addChild(std::make_unique<juce::AudioParameterFloat>("fx3Param3", "P4", juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f), 0.5f));
+        layout.add(std::move(fx3Group));
+    }
 
-    return { params.begin(), params.end() };
+    // ── Arpeggiator ──────────────────────────────────────────────────────────
+    {
+        auto arpGroup = std::make_unique<juce::AudioProcessorParameterGroup>("arp", "Arpeggiator", "|");
+        arpGroup->addChild(std::make_unique<juce::AudioParameterBool>("arpEnabled", "On", false));
+        arpGroup->addChild(std::make_unique<juce::AudioParameterInt>("arpPattern", "Pattern", 0, 4, 0));
+        arpGroup->addChild(std::make_unique<juce::AudioParameterFloat>("arpTempo", "Tempo", juce::NormalisableRange<float>(20.0f, 300.0f, 0.1f), 120.0f, "BPM"));
+        arpGroup->addChild(std::make_unique<juce::AudioParameterFloat>("arpGate", "Gate", juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f), 0.5f));
+        arpGroup->addChild(std::make_unique<juce::AudioParameterFloat>("arpSwing", "Swing", juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f), 0.0f));
+        arpGroup->addChild(std::make_unique<juce::AudioParameterInt>("arpOctave", "Octave", 1, 4, 1));
+        layout.add(std::move(arpGroup));
+    }
+
+    // ── D-Beam Controller ────────────────────────────────────────────────────
+    {
+        auto dbeamGroup = std::make_unique<juce::AudioProcessorParameterGroup>("dbeam", "D-Beam", "|");
+        dbeamGroup->addChild(std::make_unique<juce::AudioParameterInt>("dbeamTarget", "Target", 0, 3, 0));
+        dbeamGroup->addChild(std::make_unique<juce::AudioParameterFloat>("dbeamValue", "Value", juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f), 0.0f));
+        layout.add(std::move(dbeamGroup));
+    }
+
+    // ── Performance Controls ─────────────────────────────────────────────────
+    {
+        auto perfGroup = std::make_unique<juce::AudioProcessorParameterGroup>("perf", "Performance", "|");
+        perfGroup->addChild(std::make_unique<juce::AudioParameterInt>("perfSplitPoint", "Split Point", 21, 108, 60));
+        perfGroup->addChild(std::make_unique<juce::AudioParameterBool>("perfLayerEnabled", "Layer On", false));
+        perfGroup->addChild(std::make_unique<juce::AudioParameterInt>("perfTranspose", "Transpose", -12, 12, 0));
+        layout.add(std::move(perfGroup));
+    }
+
+    return layout;
 }
 
-void OpenSynthProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
+void OpenSynthJucedProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
     synth_.prepare(sampleRate, samplesPerBlock);
 
@@ -93,12 +162,12 @@ void OpenSynthProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
     outputLimiter_.setRelease(100.0f);
 }
 
-void OpenSynthProcessor::releaseResources()
+void OpenSynthJucedProcessor::releaseResources()
 {
     synth_.reset();
 }
 
-void OpenSynthProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
+void OpenSynthJucedProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
     juce::ScopedNoDenormals noDenormals;
 
@@ -107,6 +176,16 @@ void OpenSynthProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::Mi
 
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear(i, 0, buffer.getNumSamples());
+
+    // Merge UI-injected MIDI (from on-screen keyboard) into host MIDI buffer
+    {
+        juce::ScopedLock lock(midiLock_);
+        if (!uiMidiBuffer_.isEmpty())
+        {
+            midiMessages.addEvents(uiMidiBuffer_, 0, buffer.getNumSamples(), 0);
+            uiMidiBuffer_.clear();
+        }
+    }
 
     // Pull parameters from APVTS into engine
     synth_.setOsc1Waveform(*apvts_.getRawParameterValue("osc1Waveform"));
@@ -159,6 +238,14 @@ void OpenSynthProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::Mi
     synth_.setFxParam(3, 2, *apvts_.getRawParameterValue("fx3Param2"));
     synth_.setFxParam(3, 3, *apvts_.getRawParameterValue("fx3Param3"));
 
+    // Arpeggiator
+    synth_.setArpEnabled(*apvts_.getRawParameterValue("arpEnabled") > 0.5f);
+    synth_.setArpPattern(static_cast<int>(*apvts_.getRawParameterValue("arpPattern")));
+    synth_.setArpTempo(*apvts_.getRawParameterValue("arpTempo"));
+    synth_.setArpGate(*apvts_.getRawParameterValue("arpGate"));
+    synth_.setArpSwing(*apvts_.getRawParameterValue("arpSwing"));
+    synth_.setArpOctaveRange(static_cast<int>(*apvts_.getRawParameterValue("arpOctave")));
+
     // Render audio
     synth_.render(buffer, midiMessages);
 
@@ -171,10 +258,10 @@ void OpenSynthProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::Mi
     }
 }
 
-void OpenSynthProcessor::handleMidiCC(int ccNumber, float value)
+void OpenSynthJucedProcessor::handleMidiCC(int ccNumber, float value)
 {
     // Route to editor if it exists for MIDI Learn
-    if (auto* editor = dynamic_cast<OpenSynthEditor*>(getActiveEditor()))
+    if (auto* editor = dynamic_cast<OpenSynthJucedEditor*>(getActiveEditor()))
     {
         // Editor will handle mapping and parameter updates
         juce::ignoreUnused(editor);
@@ -182,19 +269,25 @@ void OpenSynthProcessor::handleMidiCC(int ccNumber, float value)
     juce::ignoreUnused(ccNumber, value);
 }
 
-juce::AudioProcessorEditor* OpenSynthProcessor::createEditor()
+void OpenSynthJucedProcessor::injectMidiMessage(const juce::MidiMessage& msg)
 {
-    return new OpenSynthEditor(*this);
+    juce::ScopedLock lock(midiLock_);
+    uiMidiBuffer_.addEvent(msg, 0);
 }
 
-void OpenSynthProcessor::getStateInformation(juce::MemoryBlock& destData)
+juce::AudioProcessorEditor* OpenSynthJucedProcessor::createEditor()
+{
+    return new OpenSynthJucedEditor(*this);
+}
+
+void OpenSynthJucedProcessor::getStateInformation(juce::MemoryBlock& destData)
 {
     auto state = apvts_.copyState();
     std::unique_ptr<juce::XmlElement> xml(state.createXml());
     copyXmlToBinary(*xml, destData);
 }
 
-void OpenSynthProcessor::setStateInformation(const void* data, int sizeInBytes)
+void OpenSynthJucedProcessor::setStateInformation(const void* data, int sizeInBytes)
 {
     std::unique_ptr<juce::XmlElement> xmlState(getXmlFromBinary(data, sizeInBytes));
     if (xmlState != nullptr)
@@ -202,10 +295,51 @@ void OpenSynthProcessor::setStateInformation(const void* data, int sizeInBytes)
             apvts_.replaceState(juce::ValueTree::fromXml(*xmlState));
 }
 
+juce::File OpenSynthJucedProcessor::getUserPresetsDir() const
+{
+    auto dir = juce::File::getSpecialLocation(juce::File::userApplicationDataDirectory)
+                   .getChildFile("open-synth-juced")
+                   .getChildFile("presets");
+    dir.createDirectory();
+    return dir;
+}
+
+void OpenSynthJucedProcessor::saveUserPreset(const juce::String& name, const juce::String& category)
+{
+    auto file = getUserPresetsDir().getChildFile(name + ".osj");
+    auto state = apvts_.copyState();
+    std::unique_ptr<juce::XmlElement> xml(state.createXml());
+    xml->setAttribute("presetName", name);
+    xml->setAttribute("presetCategory", category);
+    xml->writeTo(file);
+}
+
+std::vector<juce::String> OpenSynthJucedProcessor::getUserPresetNames() const
+{
+    std::vector<juce::String> names;
+    auto dir = getUserPresetsDir();
+    for (auto& f : dir.findChildFiles(juce::File::findFiles, false, "*.osj"))
+        names.push_back(f.getFileNameWithoutExtension());
+    return names;
+}
+
+bool OpenSynthJucedProcessor::loadUserPreset(const juce::String& name)
+{
+    auto file = getUserPresetsDir().getChildFile(name + ".osj");
+    if (!file.existsAsFile()) return false;
+    auto xml = juce::XmlDocument::parse(file);
+    if (xml != nullptr && xml->hasTagName(apvts_.state.getType()))
+    {
+        apvts_.replaceState(juce::ValueTree::fromXml(*xml));
+        return true;
+    }
+    return false;
+}
+
 } // namespace openamp
 
 // ── Factory function ────────────────────────────────────────────────────────
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
-    return new openamp::OpenSynthProcessor();
+    return new openamp::OpenSynthJucedProcessor();
 }

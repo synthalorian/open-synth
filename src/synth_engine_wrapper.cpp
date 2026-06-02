@@ -33,9 +33,38 @@ void SynthEngineWrapper::render(juce::AudioBuffer<float>& output, const juce::Mi
         {
             engine_->noteOff(midiMsg.getNoteNumber(), midiMsg.getChannel() - 1);
         }
-        else if (midiMsg.isAllNotesOff())
+        else if (midiMsg.isAllNotesOff() || midiMsg.isResetAllControllers())
         {
             engine_->allNotesOff();
+        }
+        else if (midiMsg.isSustainPedalOn())
+        {
+            engine_->allocator().sustain(true);
+        }
+        else if (midiMsg.isSustainPedalOff())
+        {
+            engine_->allocator().sustain(false);
+        }
+        else if (midiMsg.isPitchWheel())
+        {
+            engine_->setPitchBend(midiMsg.getPitchWheelValue());
+        }
+        else if (midiMsg.isController())
+        {
+            int cc = midiMsg.getControllerNumber();
+            float value = midiMsg.getControllerValue() / 127.0f;
+            if (cc == 1)       // Modulation wheel
+                engine_->setModWheel(value);
+            else if (cc == 64) // Sustain pedal (already handled above, but belt-and-suspenders)
+                engine_->allocator().sustain(value >= 0.5f);
+        }
+        else if (midiMsg.isChannelPressure())
+        {
+            engine_->setAftertouch(midiMsg.getChannelPressureValue() / 127.0f);
+        }
+        else if (midiMsg.isAftertouch())
+        {
+            engine_->setPolyAftertouch(midiMsg.getNoteNumber(), midiMsg.getAfterTouchValue() / 127.0f);
         }
     }
 
@@ -112,6 +141,13 @@ void SynthEngineWrapper::setFxEnabled(int slot, bool e)
         engine_->fxEngine().setSlotEnabled(slot, e);
     }
 }
+
+void SynthEngineWrapper::setArpEnabled(bool e) { if (engine_) engine_->setArpEnabled(e); }
+void SynthEngineWrapper::setArpPattern(int p) { if (engine_) engine_->setArpPattern(p); }
+void SynthEngineWrapper::setArpTempo(float bpm) { if (engine_) engine_->setArpTempo(bpm); }
+void SynthEngineWrapper::setArpGate(float g) { if (engine_) engine_->setArpGate(g); }
+void SynthEngineWrapper::setArpSwing(float s) { if (engine_) engine_->setArpSwing(s); }
+void SynthEngineWrapper::setArpOctaveRange(int o) { if (engine_) engine_->setArpOctaveRange(o); }
 
 void SynthEngineWrapper::setFxParam(int slot, int param, float value)
 {

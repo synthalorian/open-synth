@@ -58,6 +58,14 @@ void applyPresetToEngine(const PresetData& p, SynthEngineWrapper& e)
     e.setRealismSympatheticMix(p.realismSympatheticMix);
     e.setRealismAttackCurve(p.realismAttackCurve);
     e.setRealismBrightnessSens(p.realismBrightnessSens);
+
+    // Arpeggiator
+    e.setArpEnabled(p.arpEnabled);
+    e.setArpPattern(p.arpPattern);
+    e.setArpTempo(p.arpTempo);
+    e.setArpGate(p.arpGate);
+    e.setArpSwing(p.arpSwing);
+    e.setArpOctaveRange(p.arpOctave);
 }
 
 void applyPresetToAPVTS(const PresetData& p, juce::AudioProcessorValueTreeState& apvts)
@@ -126,6 +134,13 @@ void applyPresetToAPVTS(const PresetData& p, juce::AudioProcessorValueTreeState&
     setFloat("fx3Param1", p.fxSlotParam[2][1]);
     setFloat("fx3Param2", p.fxSlotParam[2][2]);
     setFloat("fx3Param3", p.fxSlotParam[2][3]);
+
+    setBool("arpEnabled", p.arpEnabled);
+    setInt("arpPattern", p.arpPattern);
+    setFloat("arpTempo", p.arpTempo);
+    setFloat("arpGate", p.arpGate);
+    setFloat("arpSwing", p.arpSwing);
+    setInt("arpOctave", p.arpOctave);
 }
 
 } // namespace openamp

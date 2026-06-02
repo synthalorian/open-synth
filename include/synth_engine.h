@@ -197,6 +197,22 @@ public:
     void setMasterVolume(float vol) { masterVolume_ = vol; }
     int getActiveVoiceCount() const { return allocator_.activeVoiceCount(); }
 
+    // ── MIDI performance controls (part 0 for now) ──
+    void setPitchBend(int wheelValue) {
+        // wheelValue is 0..16383, center = 8192
+        float normalized = (wheelValue - 8192) / 8192.0f;
+        parts_[0].pitchBend = normalized;
+    }
+    void setModWheel(float value) {
+        parts_[0].modWheel = value;
+    }
+    void setAftertouch(float value) {
+        parts_[0].aftertouch = value;
+    }
+    void setPolyAftertouch(int /*note*/, float value) {
+        parts_[0].aftertouch = value; // mono for now
+    }
+
     // CPU profiling
     float getCpuLoad() const { return cpuLoad_; }
     void resetCpuLoad() { cpuLoad_ = 0.0f; cpuLoadAlpha_ = 0.0f; }
