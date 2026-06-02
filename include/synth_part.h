@@ -68,6 +68,14 @@ struct SynthPart {
     // ── FX send ──
     float fxSend = 1.0f;      // amount to global FX bus
 
+    // ── Instrument Realism ─────────────────────────────────────────────
+    int   realismBodyType = 0;
+    float realismBodyMix = 0.0f;
+    float realismClickMix = 0.0f;
+    float realismSympatheticMix = 0.0f;
+    int   realismAttackCurve = 0;
+    float realismBrightnessSens = 0.0f;
+
     void reset();
 };
 

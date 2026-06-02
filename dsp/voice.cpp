@@ -24,6 +24,7 @@ void Voice::reset() {
     ampEnv.reset();
     filterEnv.reset();
     pitchEnv.reset();
+    realism.reset();
 }
 
 void Voice::noteOn(int note, float vel) {
@@ -41,6 +42,7 @@ void Voice::noteOn(int note, float vel) {
     ampEnv.noteOn();
     filterEnv.noteOn();
     pitchEnv.noteOn();
+    realism.click.trigger(velocity, 15.0f, 48000.0);
 }
 
 void Voice::noteOff() {

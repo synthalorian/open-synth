@@ -5,6 +5,7 @@
 #include "oscillator.h"
 #include "filter.h"
 #include "physical_model.h"
+#include "instrument_realism.h"
 
 namespace openamp {
 
@@ -42,6 +43,9 @@ struct Voice {
 
     // Physical modeling voice (for Karplus-Strong, modal synthesis)
     PhysicalModelVoice physicalModel;
+
+    // Instrument realism (body resonance, key click, etc.)
+    InstrumentRealism realism;
 
     void reset();
     void noteOn(int note, float vel);

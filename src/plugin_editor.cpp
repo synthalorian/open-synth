@@ -1,5 +1,7 @@
 #include "plugin_editor.h"
 #include "plugin_processor.h"
+#include "preset_library_full.h"
+#include "preset_data.h"
 
 namespace openamp {
 
@@ -1029,18 +1031,22 @@ void OpenSynthEditor::loadFavoritePreset(int index)
 
 void OpenSynthEditor::loadPresetByIndex(int index)
 {
-    if (index >= 0 && index < kNumPresets)
-        loadPresetByID(kPresets[index].id);
+    if (index >= 0 && index < kNumFullPresets)
+        loadPresetByID(kFullPresets[index].id);
 }
 
 void OpenSynthEditor::loadPresetByID(const juce::String& id)
 {
-    // Find preset in library
-    for (int i = 0; i < kNumPresets; ++i) {
-        if (kPresets[i].id == id) {
+    // Find preset in full library
+    for (int i = 0; i < kNumFullPresets; ++i) {
+        if (juce::String(kFullPresets[i].id) == id) {
+            const auto& p = kFullPresets[i];
             // Update title
-            titleLabel_.setText(kPresets[i].name, juce::dontSendNotification);
-            // TODO: Load full parameter set into APVTS when preset data includes parameters
+            titleLabel_.setText(p.name, juce::dontSendNotification);
+            // Push to APVTS (UI updates automatically via attachments)
+            applyPresetToAPVTS(p, processor_.getParameters());
+            // Push to engine (immediate audio update)
+            applyPresetToEngine(p, processor_.getSynth());
             break;
         }
     }

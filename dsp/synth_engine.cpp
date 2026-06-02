@@ -92,6 +92,18 @@ void SynthEngine::noteOn(int midiNote, float velocity, int channel) {
                 voice->physicalModel.setType(static_cast<PhysicalModelType>(wf2 - 17));
                 voice->physicalModel.noteOn(voice->baseFreq, voice->velocity);
             }
+            // Copy instrument realism settings from part to voice
+            voice->realism.bodyType = part.realismBodyType;
+            voice->realism.bodyMix = part.realismBodyMix;
+            voice->realism.clickMix = part.realismClickMix;
+            voice->realism.sympatheticMix = part.realismSympatheticMix;
+            voice->realism.attackCurve = part.realismAttackCurve;
+            voice->realism.brightnessSens = part.realismBrightnessSens;
+            // Trigger sympathetic resonance
+            if (part.realismSympatheticMix > 0.0f) {
+                // Note: sympathetic resonator is global, would need engine-level access
+                // For now, mark that this voice should contribute
+            }
         }
     }
 }
@@ -266,17 +278,8 @@ void SynthEngine::process(AudioBuffer& output) {
             float monoMix = (voiceLeft + voiceRight) * 0.5f;
             float filtered = part.filter.process(monoMix, filterEnv + filterMod, sampleRate_, voice->midiNote, voice->filterState);
 
-            // Piano hammer transient for part 0 legacy compat
-            if (partIdx == 0 && isPiano && voice->noteAge < 0.015f) {
-                float clickDecay = std::exp(-voice->noteAge * 300.0f);
-                float clickAmt = clickDecay * 0.25f * voice->velocity;
-                float hammerSine = (std::sin(voice->noteAge * 12000.0f) * 0.4f +
-                                    std::sin(voice->noteAge * 18432.0f) * 0.2f) * clickAmt;
-                float hash = std::sin(voice->noteAge * 15453.789f + voice->midiNote * 7.13f) * 43758.5453f;
-                float hammerNoise = (hash - std::floor(hash)) * 2.0f - 1.0f;
-                hammerNoise *= clickAmt * 0.4f;
-                filtered += hammerSine + hammerNoise;
-            }
+            // Instrument realism processing (body resonance, key click)
+            filtered = voice->realism.process(filtered, voice->velocity, sampleRate_, voice->noteAge);
 
             // Apply part volume/pan
             float partPanL = std::cos((part.pan + 1.0f) * M_PI / 4.0f);

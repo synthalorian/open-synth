@@ -40,6 +40,13 @@ void SynthPart::reset() {
 
     lfoPerVoice = false;
     fxSend = 1.0f;
+
+    realismBodyType = 0;
+    realismBodyMix = 0.0f;
+    realismClickMix = 0.0f;
+    realismSympatheticMix = 0.0f;
+    realismAttackCurve = 0;
+    realismBrightnessSens = 0.0f;
 }
 
 } // namespace openamp

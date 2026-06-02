@@ -119,6 +119,13 @@ void SynthEngineWrapper::setFxParam(int slot, int param, float value)
     engine_->fxEngine().setSlotParam(slot, param, value);
 }
 
+void SynthEngineWrapper::setRealismBodyType(int t) { if (engine_) engine_->part(0).realismBodyType = t; }
+void SynthEngineWrapper::setRealismBodyMix(float m) { if (engine_) engine_->part(0).realismBodyMix = m; }
+void SynthEngineWrapper::setRealismClickMix(float m) { if (engine_) engine_->part(0).realismClickMix = m; }
+void SynthEngineWrapper::setRealismSympatheticMix(float m) { if (engine_) engine_->part(0).realismSympatheticMix = m; }
+void SynthEngineWrapper::setRealismAttackCurve(int c) { if (engine_) engine_->part(0).realismAttackCurve = c; }
+void SynthEngineWrapper::setRealismBrightnessSens(float s) { if (engine_) engine_->part(0).realismBrightnessSens = s; }
+
 int SynthEngineWrapper::getActiveVoiceCount() const
 {
     return engine_ ? engine_->getActiveVoiceCount() : 0;
