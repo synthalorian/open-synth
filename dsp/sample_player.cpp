@@ -1,6 +1,7 @@
 #include "sample_player.h"
 #include <juce_audio_formats/juce_audio_formats.h>
 #include <cmath>
+#include <cstring>
 
 namespace opensynth {
 
@@ -54,11 +55,13 @@ float SampleVoice::process(double /*sampleRate*/) {
             break;
     }
 
-    // Linear interpolation sample read
+    // Linear interpolation sample read from stream
     int pos = static_cast<int>(position);
     float frac = static_cast<float>(position - pos);
 
-    int numFrames = static_cast<int>(zone->data[0].size());
+    if (!zone->stream || !zone->stream->isOpen()) return 0.0f;
+
+    int64_t numFrames = zone->stream->getTotalSamples();
     if (numFrames == 0) return 0.0f;
 
     if (pos >= numFrames - 1) {
@@ -72,11 +75,32 @@ float SampleVoice::process(double /*sampleRate*/) {
         }
     }
 
-    float s0 = zone->data[0][pos];
-    float s1 = (pos + 1 < numFrames) ? zone->data[0][pos + 1] : s0;
-    float sample = s0 + frac * (s1 - s0);
+    float s0l = 0.0f, s0r = 0.0f;
+    float s1l = 0.0f, s1r = 0.0f;
+
+    float temp0[2] = {0.0f, 0.0f};
+    float temp1[2] = {0.0f, 0.0f};
+
+    zone->stream->readSample(pos, temp0);
+    s0l = temp0[0];
+    s0r = temp0[1];
+
+    if (pos + 1 < numFrames) {
+        zone->stream->readSample(pos + 1, temp1);
+        s1l = temp1[0];
+        s1r = temp1[1];
+    } else {
+        s1l = s0l;
+        s1r = s0r;
+    }
+
+    float sampleL = s0l + frac * (s1l - s0l);
+    float sampleR = s0r + frac * (s1r - s0r);
 
     position += pitchRatio;
+
+    // Mix to mono for return (stereo handled in SamplePlayer::process)
+    float sample = (sampleL + sampleR) * 0.5f;
     return sample * ampEnv * velocity;
 }
 
@@ -85,34 +109,17 @@ float SampleVoice::process(double /*sampleRate*/) {
 SamplePlayer::SamplePlayer() = default;
 
 bool SamplePlayer::loadSample(const std::string& path, int rootNote, int minNote, int maxNote) {
-    juce::AudioFormatManager formatManager;
-    formatManager.registerBasicFormats();
-
-    juce::File file(path);
-    std::unique_ptr<juce::AudioFormatReader> reader(formatManager.createReaderFor(file));
-    if (!reader) return false;
+    auto stream = std::make_shared<SampleStream>();
+    if (!stream->open(path, streamBufferSize_)) {
+        return false;
+    }
 
     auto zone = std::make_unique<SampleZone>();
     zone->rootNote = rootNote;
     zone->minNote = minNote;
     zone->maxNote = maxNote;
-    zone->sampleRate = reader->sampleRate;
-
-    int numSamples = static_cast<int>(reader->lengthInSamples);
-    int numChannels = static_cast<int>(reader->numChannels);
-
-    zone->data[0].resize(numSamples);
-    zone->data[1].resize(numSamples);
-
-    // Read into a JUCE AudioBuffer, then copy to our planar format
-    juce::AudioBuffer<float> buffer(numChannels, numSamples);
-    reader->read(buffer.getArrayOfWritePointers(), numChannels, 0, numSamples);
-
-    for (int ch = 0; ch < 2; ++ch) {
-        int srcCh = (ch < numChannels) ? ch : 0;
-        zone->data[ch].resize(numSamples);
-        std::memcpy(zone->data[ch].data(), buffer.getReadPointer(srcCh), numSamples * sizeof(float));
-    }
+    zone->sampleRate = stream->getSampleRate();
+    zone->stream = std::move(stream);
 
     zones_.push_back(std::move(zone));
     return true;

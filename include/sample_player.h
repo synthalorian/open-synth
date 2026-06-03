@@ -1,4 +1,5 @@
 #pragma once
+#include "sample_stream.h"
 #include <juce_audio_basics/juce_audio_basics.h>
 #include <vector>
 #include <memory>
@@ -13,6 +14,7 @@ namespace opensynth {
 //
 // Features:
 //   - WAV/AIFF file loading via JUCE AudioFormatManager
+//   - Disk streaming for large samples (memory-mapped with preload cache)
 //   - Multi-sample key mapping (one sample per zone or full keyboard stretch)
 //   - Pitch-shifted playback with linear interpolation
 //   - ADSR envelope per voice
@@ -32,8 +34,8 @@ struct SampleZone {
     int loopStart = 0;
     int loopEnd = 0;
 
-    // Audio data (interleaved, planar per channel)
-    std::vector<float> data[2];  // Left, Right
+    // Disk streamer (replaces in-memory data)
+    std::shared_ptr<SampleStream> stream;
     double sampleRate = 48000.0;
 };
 
@@ -92,6 +94,10 @@ public:
     void setSustain(float level);
     void setRelease(float ms);
 
+    // Stream buffer size configuration (applies to future loads)
+    void setStreamBufferSize(int size) { streamBufferSize_ = size; }
+    int getStreamBufferSize() const { return streamBufferSize_; }
+
     // Status
     int activeVoiceCount() const;
     int zoneCount() const { return static_cast<int>(zones_.size()); }
@@ -101,6 +107,7 @@ private:
     std::array<SampleVoice, MAX_VOICES> voices_;
     double sampleRate_ = 48000.0;
     float mixLevel_ = 0.0f;
+    int streamBufferSize_ = SampleStream::DEFAULT_BUFFER_SIZE;
 
     // Global envelope params
     float attackMs_ = 10.0f;
