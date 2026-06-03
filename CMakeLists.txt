@@ -94,6 +94,7 @@ set(DSP_SOURCES
     dsp/recorder.cpp
     dsp/midi_file.cpp
     dsp/sample_player.cpp
+    dsp/sample_stream.cpp
     dsp/fx_engine.cpp
     dsp/legacy_fx.cpp
     dsp/fx_eq.cpp
