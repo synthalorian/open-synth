@@ -48,7 +48,7 @@ UserPresetManager::UserPresetManager()
 juce::File UserPresetManager::getPresetsDirectory()
 {
     return juce::File::getSpecialLocation(juce::File::userApplicationDataDirectory)
-        .getChildFile("open-synth-juced")
+        .getChildFile("open-synth")
         .getChildFile("presets");
 }
 

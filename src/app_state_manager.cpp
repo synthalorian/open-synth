@@ -74,7 +74,7 @@ AppStateManager::AppStateManager()
 juce::File AppStateManager::getStateDirectory()
 {
     return juce::File::getSpecialLocation(juce::File::userApplicationDataDirectory)
-        .getChildFile("open-synth-juced");
+        .getChildFile("open-synth");
 }
 
 juce::File AppStateManager::getSetlistFile() const
