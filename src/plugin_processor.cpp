@@ -301,7 +301,7 @@ void OpenSynthProcessor::setStateInformation(const void* data, int sizeInBytes)
 juce::File OpenSynthProcessor::getUserPresetsDir() const
 {
     auto dir = juce::File::getSpecialLocation(juce::File::userApplicationDataDirectory)
-                   .getChildFile("open-synth-juced")
+                   .getChildFile("open-synth")
                    .getChildFile("presets");
     dir.createDirectory();
     return dir;
