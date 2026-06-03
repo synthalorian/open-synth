@@ -1,6 +1,7 @@
 #pragma once
 #include <cstdint>
 #include <array>
+#include <memory>
 #include "audio_buffer.h"
 #include "oscillator.h"
 #include "filter.h"
@@ -13,6 +14,7 @@
 #include "fx_engine.h"
 #include "synth_part.h"
 #include "recorder.h"
+#include "sample_player.h"
 
 namespace opensynth {
 
@@ -272,6 +274,12 @@ public:
 
 private:
     FxEngine fxEngine_;
+
+    // Global sympathetic resonance — shared across all voices
+    SympatheticResonator sympatheticResonator_;
+
+    // Sample playback / ROMpler layer
+    std::unique_ptr<SamplePlayer> samplePlayer_;
 
     float masterVolume_ = 0.8f;
 

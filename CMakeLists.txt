@@ -50,6 +50,7 @@ set(DSP_SOURCES
     dsp/synth_mixer.cpp
     dsp/recorder.cpp
     dsp/midi_file.cpp
+    dsp/sample_player.cpp
     dsp/fx_engine.cpp
     dsp/legacy_fx.cpp
     dsp/fx_eq.cpp

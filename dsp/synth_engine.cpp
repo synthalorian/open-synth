@@ -15,6 +15,7 @@
 #include "fx_amp_sim.h"
 #include "fx_stereo_widener.h"
 #include "fx_vocoder.h"
+#include "sample_player.h"
 #include <cmath>
 #include <cstring>
 #include <algorithm>
@@ -60,6 +61,7 @@ void SynthEngine::reset() {
         parts_[i].lfo2.reset();
     }
     fxEngine_.reset();
+    sympatheticResonator_.reset();
     for (int v = 0; v < VoiceAllocator::MAX_VOICES; v++) {
         Voice* voice = allocator_.voice(v);
         if (voice) {
@@ -82,7 +84,6 @@ void SynthEngine::noteOn(int midiNote, float velocity, int channel) {
         Voice* voice = allocator_.noteOn(midiNote, velocity, partIdx);
         if (voice) {
             SynthPart& part = parts_[partIdx];
-            // Set up physical model if oscillator is using one
             int wf1 = part.osc1.waveform();
             if (wf1 >= 18 && wf1 <= 23) {
                 voice->physicalModel.setType(static_cast<PhysicalModelType>(wf1 - 17));
@@ -93,18 +94,18 @@ void SynthEngine::noteOn(int midiNote, float velocity, int channel) {
                 voice->physicalModel.setType(static_cast<PhysicalModelType>(wf2 - 17));
                 voice->physicalModel.noteOn(voice->baseFreq, voice->velocity);
             }
-            // Copy instrument realism settings from part to voice
             voice->realism.bodyType = part.realismBodyType;
             voice->realism.bodyMix = part.realismBodyMix;
             voice->realism.clickMix = part.realismClickMix;
             voice->realism.sympatheticMix = part.realismSympatheticMix;
             voice->realism.attackCurve = part.realismAttackCurve;
             voice->realism.brightnessSens = part.realismBrightnessSens;
-            // Trigger sympathetic resonance
             if (part.realismSympatheticMix > 0.0f) {
-                // Note: sympathetic resonator is global, would need engine-level access
-                // For now, mark that this voice should contribute
+                sympatheticResonator_.noteOn(voice->baseFreq, voice->velocity);
             }
+        }
+        if (samplePlayer_ && samplePlayer_->getMixLevel() > 0.0f) {
+            samplePlayer_->noteOn(midiNote, velocity);
         }
     }
 }
@@ -116,12 +117,15 @@ void SynthEngine::noteOff(int midiNote, int channel) {
     arpeggiator_.noteOff(midiNote);
     if (!arpeggiator_.enabled()) {
         allocator_.noteOff(midiNote, partIdx);
-        // Physical models handle their own release via note-off
         for (int v = 0; v < VoiceAllocator::MAX_VOICES; ++v) {
             Voice* voice = allocator_.voice(v);
             if (voice->active && voice->midiNote == midiNote && voice->partIndex == partIdx) {
                 voice->physicalModel.noteOff();
+                sympatheticResonator_.noteOff(voice->baseFreq);
             }
+        }
+        if (samplePlayer_) {
+            samplePlayer_->noteOff(midiNote);
         }
     }
 }
@@ -306,6 +310,14 @@ void SynthEngine::process(AudioBuffer& output) {
         leftOut *= ampMod;
         rightOut *= ampMod;
 
+        // Global sympathetic resonance (mixed from all held notes)
+        float sympatheticMix = parts_[0].realismSympatheticMix;
+        if (sympatheticMix > 0.0f) {
+            float sym = sympatheticResonator_.process(sampleRate_);
+            leftOut += sym * sympatheticMix;
+            rightOut += sym * sympatheticMix;
+        }
+
             // Apply FX engine (multi-FX slots processed in series)
         // Slot 0 is the LegacyFxProcessor, slots 1-3 are user-assignable types
         fxEngine_.process(leftOut, rightOut, sampleRate_);
@@ -313,6 +325,14 @@ void SynthEngine::process(AudioBuffer& output) {
         // Master volume
         leftOut *= masterVolume_;
         rightOut *= masterVolume_;
+
+        // Sample player mix-in
+        if (samplePlayer_ && samplePlayer_->getMixLevel() > 0.0f) {
+            float sampleLeft = 0.0f, sampleRight = 0.0f;
+            samplePlayer_->process(sampleLeft, sampleRight, 1);
+            leftOut += sampleLeft;
+            rightOut += sampleRight;
+        }
 
         // NaN/inf guard — if anything went sideways, zero it out
         if (!std::isfinite(leftOut)) leftOut = 0.0f;
