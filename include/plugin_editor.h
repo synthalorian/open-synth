@@ -33,6 +33,9 @@ public:
     void paint(juce::Graphics& g) override;
     void resized() override;
 
+    void setName(const juce::String& name) { name_ = name; }
+    juce::String getName() const { return name_; }
+
 private:
     juce::String name_;
     juce::Colour accent_;
@@ -102,6 +105,7 @@ private:
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> paramAttaches_[4];
 
     void populateFxTypes();
+    void updateParamLabels(int fxTypeId);
 };
 
 // ── Arpeggiator Panel ─────────────────────────────────────────────────────

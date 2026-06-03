@@ -1,6 +1,7 @@
 #include "synth_engine_wrapper.h"
 #include "synth_engine.h"
 #include "legacy_fx.h"
+#include "fx_engine.h"
 #include "audio_buffer.h"
 #include <cstring>
 
@@ -141,24 +142,37 @@ void SynthEngineWrapper::setMasterVolume(float vol) { if (engine_) engine_->setM
 void SynthEngineWrapper::setFxEnabled(int slot, bool e)
 {
     if (!engine_) return;
-    if (slot == 0) {
-        // Legacy FX slot - use engine's public method
-        engine_->setChorusEnabled(e); // This is a simplification
-    } else {
-        engine_->fxEngine().setSlotEnabled(slot, e);
-    }
+    engine_->fxEngine().setSlotEnabled(slot, e);
 }
 
 void SynthEngineWrapper::setFxType(int slot, int type)
 {
     if (!engine_) return;
-    if (slot >= 1 && slot <= 3) {
-        // Only recreate processor if type changed
+    // Legacy FX types (1-7) go to slot 0 via LegacyFxProcessor
+    // MFX types (8-22) go to slots 1-3
+    if (type >= 1 && type <= 7) {
+        // Legacy FX: route to slot 0 and enable the specific effect
+        if (auto* legacy = engine_->getLegacyFx()) {
+            legacy->setChorusEnabled(false);
+            legacy->setDelayEnabled(false);
+            legacy->setReverbEnabled(false);
+            legacy->setPhaserEnabled(false);
+            legacy->setFlangerEnabled(false);
+            legacy->setCompressorEnabled(false);
+            legacy->setDriveEnabled(false);
+            switch (type) {
+                case 1: legacy->setChorusEnabled(true); break;
+                case 2: legacy->setDelayEnabled(true); break;
+                case 3: legacy->setReverbEnabled(true); break;
+                case 4: legacy->setPhaserEnabled(true); break;
+                case 5: legacy->setFlangerEnabled(true); break;
+                case 6: legacy->setCompressorEnabled(true); break;
+                case 7: legacy->setDriveEnabled(true); break;
+            }
+        }
+    } else if (slot >= 1 && slot <= 3 && type >= 8) {
         auto currentType = engine_->fxEngine().slotType(slot);
         auto newType = static_cast<FxType>(type);
-        // Map: UI combo index (0=None, 1=Chorus, ...) -> FxType enum
-        // UI sends 0-22, but our enum starts at None=0, Chorus=1, etc.
-        // They're already aligned!
         if (currentType != newType) {
             engine_->fxEngine().setSlotProcessor(slot, engine_->createFxProcessor(type));
         }

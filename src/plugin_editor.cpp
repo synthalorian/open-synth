@@ -3,6 +3,7 @@
 #include "preset_library_full.h"
 #include "preset_data.h"
 #include "user_preset_manager.h"
+#include "fx_engine.h"
 
 namespace openamp {
 
@@ -240,6 +241,11 @@ FxSlotPanel::FxSlotPanel(juce::AudioProcessorValueTreeState& apvts, int slotInde
         paramAttaches_[i] = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
             apvts_, prefix + "Param" + juce::String(i), paramKnobs_[i]);
     }
+
+    // Update knob labels when FX type changes
+    typeSelector_.onChange = [this]() {
+        updateParamLabels(typeSelector_.getSelectedItemIndex());
+    };
 }
 
 void FxSlotPanel::populateFxTypes()
@@ -295,6 +301,25 @@ void FxSlotPanel::resized()
         knob.setBounds(x, y, knobSize, knobSize + 14);
         x += knobSize + gap;
     }
+}
+
+void FxSlotPanel::updateParamLabels(int fxTypeId)
+{
+    auto desc = openamp::FxProcessor::getDescriptor(fxTypeId);
+    for (int i = 0; i < 4; ++i)
+    {
+        if (i < desc.numParams)
+        {
+            paramKnobs_[i].setName(juce::String(desc.params[i].name));
+            paramKnobs_[i].setVisible(true);
+        }
+        else
+        {
+            paramKnobs_[i].setName("");
+            paramKnobs_[i].setVisible(fxTypeId == 0 ? false : true);
+        }
+    }
+    repaint();
 }
 
 // ── ArpPanel ────────────────────────────────────────────────────────────────

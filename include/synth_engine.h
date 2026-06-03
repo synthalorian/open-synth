@@ -280,7 +280,9 @@ private:
     void updateSoloState();
 
     // Legacy FX accessor
+public:
     LegacyFxProcessor* getLegacyFx() const;
+private:
     void initLegacyFxSlot();
 
 public:
