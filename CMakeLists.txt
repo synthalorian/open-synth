@@ -25,6 +25,7 @@ set(OPENSYNTH_SOURCES
     src/preset_data.cpp
     src/instrument_realism.cpp
     src/user_preset_manager.cpp
+    src/app_state_manager.cpp
 )
 
 # DSP engine sources (ported from Flutter FFI)

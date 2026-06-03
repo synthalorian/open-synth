@@ -83,6 +83,13 @@ void SynthEngineWrapper::render(juce::AudioBuffer<float>& output, const juce::Mi
 
     engine_->process(engineBuf);
 
+    // Copy to scope buffer for UI visualization (thread-safe)
+    {
+        juce::ScopedLock lock(scopeLock_);
+        scopeBuffer_.resize(numSamples * 2);
+        std::memcpy(scopeBuffer_.data(), tempBuffer_.data(), numSamples * 2 * sizeof(float));
+    }
+
     // Copy from interleaved to planar JUCE buffer
     for (int ch = 0; ch < numChannels && ch < 2; ++ch)
     {
@@ -186,6 +193,12 @@ int SynthEngineWrapper::getActiveVoiceCount() const
 float SynthEngineWrapper::getCpuLoad() const
 {
     return engine_ ? engine_->getCpuLoad() : 0.0f;
+}
+
+std::vector<float> SynthEngineWrapper::getLastAudioBuffer() const
+{
+    juce::ScopedLock lock(scopeLock_);
+    return scopeBuffer_;
 }
 
 } // namespace openamp
