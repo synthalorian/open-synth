@@ -3,7 +3,7 @@
 
 namespace opensynth {
 
-inline constexpr int kNumFullPresets = 1462;
+inline constexpr int kNumFullPresets = 1496;
 
 inline constexpr PresetData kFullPresets[] = {
     {
