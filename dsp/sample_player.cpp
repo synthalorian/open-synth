@@ -2,6 +2,7 @@
 #include <juce_audio_formats/juce_audio_formats.h>
 #include <cmath>
 #include <cstring>
+#include <algorithm>
 
 namespace opensynth {
 
@@ -19,6 +20,8 @@ void SampleVoice::noteOn(int note, float vel, const SampleZone* z, double sr) {
     inCrossfade = false;
     crossfadePos = 0.0;
     loopStartPos = static_cast<double>(z->loopStart);
+    aaStateL = 0.0f;
+    aaStateR = 0.0f;
 }
 
 void SampleVoice::noteOff() {
@@ -36,12 +39,37 @@ void SampleVoice::reset() {
     inCrossfade = false;
     crossfadePos = 0.0;
     loopStartPos = 0.0;
+    aaStateL = 0.0f;
+    aaStateR = 0.0f;
+}
+
+// Inline linear interpolation read — no lambdas, minimal branching
+static inline float readChannelLinear(const SampleStream* stream, double pos, int ch, int64_t numFrames) {
+    int64_t i = static_cast<int64_t>(pos);
+    float frac = static_cast<float>(pos - static_cast<double>(i));
+    if (i < 0) i = 0;
+    if (i >= numFrames - 1) i = numFrames - 2;
+    if (numFrames <= 1) return 0.0f;
+
+    float s0[2] = {0.0f, 0.0f};
+    float s1[2] = {0.0f, 0.0f};
+    stream->readSample(i, s0);
+    stream->readSample(i + 1, s1);
+    return s0[ch] + frac * (s1[ch] - s0[ch]);
+}
+
+// Inline anti-aliasing 1-pole LP (per-channel state passed by reference)
+static inline float applyAA(float in, float coeff, float& state) {
+    if (coeff >= 1.0f) return in;
+    float out = in * coeff + state * (1.0f - coeff);
+    state = out;
+    return out;
 }
 
 float SampleVoice::process(double /*sampleRate*/) {
     if (!active || !zone || envState == IDLE) return 0.0f;
 
-    // Advance envelope
+    // Advance envelope — reduced branching via switch still present but body is tight
     switch (envState) {
         case ATTACK:
             ampEnv += attackRate;
@@ -61,11 +89,12 @@ float SampleVoice::process(double /*sampleRate*/) {
             break;
     }
 
+    if (!active) return 0.0f;
+
     // Select velocity layer stream
     VelocityLayer layer = SamplePlayer::velocityToLayer(velocity);
     auto stream = zone->streams[static_cast<int>(layer)];
     if (!stream) {
-        // Fallback: use first available layer
         for (int i = 0; i < static_cast<int>(VelocityLayer::Count); ++i) {
             if (zone->streams[i]) {
                 stream = zone->streams[i];
@@ -88,51 +117,6 @@ float SampleVoice::process(double /*sampleRate*/) {
         loopEnd = stream->getLoopEnd();
     }
 
-    // ── Cubic interpolation helper ───────────────────────────────────────────
-    auto readChannel = [&](int64_t pos, int ch) -> float {
-        if (pos < 0 || pos >= numFrames) return 0.0f;
-        float temp[2] = {0.0f, 0.0f};
-        stream->readSample(pos, temp);
-        return temp[ch];
-    };
-
-    auto cubicInterpolate = [&](const float* p, float frac) -> float {
-        // Catmull-Rom spline (4-point, 3rd-order)
-        float a = -0.5f * p[0] + 1.5f * p[1] - 1.5f * p[2] + 0.5f * p[3];
-        float b = p[0] - 2.5f * p[1] + 2.0f * p[2] - 0.5f * p[3];
-        float c = -0.5f * p[0] + 0.5f * p[2];
-        float d = p[1];
-        return ((a * frac + b) * frac + c) * frac + d;
-    };
-
-    auto getSampleCubic = [&](double pos, int ch) -> float {
-        int64_t i = static_cast<int64_t>(pos);
-        float frac = static_cast<float>(pos - static_cast<double>(i));
-        float samples[4];
-        samples[0] = readChannel(i - 1, ch);
-        samples[1] = readChannel(i,     ch);
-        samples[2] = readChannel(i + 1, ch);
-        samples[3] = readChannel(i + 2, ch);
-        return cubicInterpolate(samples, frac);
-    };
-
-    // ── Anti-aliasing filter for down-pitched samples ────────────────────────
-    // Simple 1-pole lowpass whose cutoff tracks pitch ratio
-    // Higher pitchRatio = faster playback = more aliasing when > 1.0 (up-pitch is ok)
-    // When pitchRatio < 1.0 (down-pitch), we need to filter to avoid imaging.
-    // We apply a gentle 1-pole LP with cutoff = sr * 0.5 * pitchRatio
-    static float aaStateL = 0.0f; // per-voice would be better, but static is ok for demo
-    static float aaStateR = 0.0f;
-    auto applyAA = [&](float inL, float inR) -> std::pair<float, float> {
-        if (pitchRatio >= 1.0f) return {inL, inR};
-        float coeff = pitchRatio; // normalized cutoff ≈ pitchRatio * Nyquist
-        float outL = inL * coeff + aaStateL * (1.0f - coeff);
-        float outR = inR * coeff + aaStateR * (1.0f - coeff);
-        aaStateL = outL;
-        aaStateR = outR;
-        return {outL, outR};
-    };
-
     // ── Loop / crossfade logic ───────────────────────────────────────────────
     double effectivePos = position;
     double altPos = 0.0;
@@ -147,35 +131,35 @@ float SampleVoice::process(double /*sampleRate*/) {
         altPos = loopStartPos + crossfadePos;
         float cfFrac = static_cast<float>(crossfadePos / static_cast<double>(zone->crossfadeSamples));
         if (cfFrac > 1.0f) cfFrac = 1.0f;
-        crossfadeGain = cfFrac; // fade in loop-start, fade out tail
+        crossfadeGain = cfFrac;
     }
 
-    // ── Read samples ─────────────────────────────────────────────────────────
-    float sampleL = getSampleCubic(effectivePos, 0);
-    float sampleR = getSampleCubic(effectivePos, 1);
+    // ── Read samples with linear interpolation ───────────────────────────────
+    float sampleL = readChannelLinear(stream.get(), effectivePos, 0, numFrames);
+    float sampleR = readChannelLinear(stream.get(), effectivePos, 1, numFrames);
 
     if (inCrossfade) {
-        float altL = getSampleCubic(altPos, 0);
-        float altR = getSampleCubic(altPos, 1);
-        sampleL = sampleL * (1.0f - crossfadeGain) + altL * crossfadeGain;
-        sampleR = sampleR * (1.0f - crossfadeGain) + altR * crossfadeGain;
+        float altL = readChannelLinear(stream.get(), altPos, 0, numFrames);
+        float altR = readChannelLinear(stream.get(), altPos, 1, numFrames);
+        float invGain = 1.0f - crossfadeGain;
+        sampleL = sampleL * invGain + altL * crossfadeGain;
+        sampleR = sampleR * invGain + altR * crossfadeGain;
         crossfadePos += pitchRatio;
         if (crossfadePos >= static_cast<double>(zone->crossfadeSamples)) {
-            // Crossfade complete: snap to loop start
             position = loopStartPos + (crossfadePos - static_cast<double>(zone->crossfadeSamples));
             inCrossfade = false;
             crossfadePos = 0.0;
         }
     }
 
-    // Apply anti-aliasing filter
-    auto aaResult = applyAA(sampleL, sampleR);
-    sampleL = aaResult.first;
-    sampleR = aaResult.second;
+    // Apply anti-aliasing filter (per-voice state)
+    float aaCoeff = (pitchRatio >= 1.0f) ? 1.0f : static_cast<float>(pitchRatio);
+    sampleL = applyAA(sampleL, aaCoeff, aaStateL);
+    sampleR = applyAA(sampleR, aaCoeff, aaStateR);
 
     position += pitchRatio;
 
-    // If we've passed loop end without crossfade (e.g. very fast pitch ratio), hard loop
+    // Hard loop for very fast pitch ratios
     if (loopEnabled && position >= static_cast<double>(loopEnd)) {
         position = static_cast<double>(loopStart) + (position - static_cast<double>(loopEnd));
         inCrossfade = false;
@@ -189,9 +173,145 @@ float SampleVoice::process(double /*sampleRate*/) {
         return 0.0f;
     }
 
-    // Mix to mono for return (stereo handled in SamplePlayer::process)
+    // Mix to mono for return (stereo handled in SamplePlayer::processBlock)
     float sample = (sampleL + sampleR) * 0.5f;
     return sample * ampEnv * velocity;
+}
+
+// ── Block-based voice process ────────────────────────────────────────────────
+// Processes up to 'numFrames' samples into outL/outR. Returns frames written.
+int SampleVoice::processBlock(float* outL, float* outR, int numFrames, double /*sampleRate*/) {
+    if (!active || !zone || envState == IDLE || numFrames <= 0) return 0;
+
+    // Select stream
+    VelocityLayer layer = SamplePlayer::velocityToLayer(velocity);
+    auto stream = zone->streams[static_cast<int>(layer)];
+    if (!stream) {
+        for (int i = 0; i < static_cast<int>(VelocityLayer::Count); ++i) {
+            if (zone->streams[i]) {
+                stream = zone->streams[i];
+                break;
+            }
+        }
+    }
+    if (!stream || !stream->isOpen()) {
+        active = false;
+        envState = IDLE;
+        return 0;
+    }
+
+    int64_t totalFrames = stream->getTotalSamples();
+    if (totalFrames == 0) {
+        active = false;
+        envState = IDLE;
+        return 0;
+    }
+
+    bool loopEnabled = zone->loopEnabled;
+    int loopStart = zone->loopStart;
+    int loopEnd = zone->loopEnd;
+    if (!loopEnabled && stream->hasLoopPoints()) {
+        loopEnabled = true;
+        loopStart = stream->getLoopStart();
+        loopEnd = stream->getLoopEnd();
+    }
+
+    float aaCoeff = (pitchRatio >= 1.0f) ? 1.0f : static_cast<float>(pitchRatio);
+    int framesWritten = 0;
+
+    for (int n = 0; n < numFrames; ++n) {
+        // Envelope
+        switch (envState) {
+            case ATTACK:
+                ampEnv += attackRate;
+                if (ampEnv >= 1.0f) { ampEnv = 1.0f; envState = DECAY; }
+                break;
+            case DECAY:
+                ampEnv -= decayRate;
+                if (ampEnv <= sustainLevel) { ampEnv = sustainLevel; envState = SUSTAIN; }
+                break;
+            case SUSTAIN:
+                break;
+            case RELEASE:
+                ampEnv -= releaseRate;
+                if (ampEnv <= 0.0f) { ampEnv = 0.0f; active = false; envState = IDLE; }
+                break;
+            default:
+                break;
+        }
+
+        if (!active) {
+            outL[n] = 0.0f;
+            outR[n] = 0.0f;
+            framesWritten = n + 1;
+            continue;
+        }
+
+        // Crossfade logic
+        double effectivePos = position;
+        double altPos = 0.0;
+        float crossfadeGain = 0.0f;
+        bool doCrossfade = false;
+
+        if (loopEnabled && !inCrossfade && effectivePos >= static_cast<double>(loopEnd - zone->crossfadeSamples)) {
+            inCrossfade = true;
+            crossfadePos = 0.0;
+        }
+
+        if (inCrossfade) {
+            altPos = loopStartPos + crossfadePos;
+            float cfFrac = static_cast<float>(crossfadePos / static_cast<double>(zone->crossfadeSamples));
+            if (cfFrac > 1.0f) cfFrac = 1.0f;
+            crossfadeGain = cfFrac;
+            doCrossfade = true;
+        }
+
+        // Linear interpolation read
+        float sampleL = readChannelLinear(stream.get(), effectivePos, 0, totalFrames);
+        float sampleR = readChannelLinear(stream.get(), effectivePos, 1, totalFrames);
+
+        if (doCrossfade) {
+            float altL = readChannelLinear(stream.get(), altPos, 0, totalFrames);
+            float altR = readChannelLinear(stream.get(), altPos, 1, totalFrames);
+            float invGain = 1.0f - crossfadeGain;
+            sampleL = sampleL * invGain + altL * crossfadeGain;
+            sampleR = sampleR * invGain + altR * crossfadeGain;
+            crossfadePos += pitchRatio;
+            if (crossfadePos >= static_cast<double>(zone->crossfadeSamples)) {
+                position = loopStartPos + (crossfadePos - static_cast<double>(zone->crossfadeSamples));
+                inCrossfade = false;
+                crossfadePos = 0.0;
+            }
+        }
+
+        // Anti-aliasing
+        sampleL = applyAA(sampleL, aaCoeff, aaStateL);
+        sampleR = applyAA(sampleR, aaCoeff, aaStateR);
+
+        position += pitchRatio;
+
+        if (loopEnabled && position >= static_cast<double>(loopEnd)) {
+            position = static_cast<double>(loopStart) + (position - static_cast<double>(loopEnd));
+            inCrossfade = false;
+            crossfadePos = 0.0;
+        }
+
+        if (!loopEnabled && position >= static_cast<double>(totalFrames)) {
+            active = false;
+            envState = IDLE;
+            outL[n] = 0.0f;
+            outR[n] = 0.0f;
+            framesWritten = n + 1;
+            continue;
+        }
+
+        float envVel = ampEnv * velocity;
+        outL[n] = sampleL * envVel;
+        outR[n] = sampleR * envVel;
+        framesWritten = n + 1;
+    }
+
+    return framesWritten;
 }
 
 // ── SamplePlayer ─────────────────────────────────────────────────────────────
@@ -209,7 +329,6 @@ bool SamplePlayer::loadSample(const std::string& path, int rootNote, int minNote
     zone->minNote = minNote;
     zone->maxNote = maxNote;
     zone->sampleRate = stream->getSampleRate();
-    // Load into all velocity layers for backward compatibility
     for (int i = 0; i < static_cast<int>(VelocityLayer::Count); ++i) {
         zone->streams[i] = stream;
     }
@@ -342,18 +461,48 @@ void SamplePlayer::prepare(double sampleRate) {
     sampleRate_ = sampleRate;
 }
 
+// Legacy per-sample process (inefficient, kept for compat)
 void SamplePlayer::process(float& left, float& right, int numFrames) {
     if (mixLevel_ <= 0.0f || zones_.empty()) return;
 
-    float l = 0.0f, r = 0.0f;
+    for (int f = 0; f < numFrames; ++f) {
+        float l = 0.0f, r = 0.0f;
+        for (auto& voice : voices_) {
+            if (!voice.active) continue;
+            float s = voice.process(sampleRate_);
+            l += s;
+            r += s;
+        }
+        left += l * mixLevel_;
+        right += r * mixLevel_;
+    }
+}
+
+// Block-based process: render each voice into a temp buffer and accumulate.
+void SamplePlayer::processBlock(float* outL, float* outR, int numFrames) {
+    if (mixLevel_ <= 0.0f || zones_.empty() || numFrames <= 0) return;
+
+    // Temporary stereo buffers per voice on the stack (max 512 typical)
+    alignas(16) float voiceL[512];
+    alignas(16) float voiceR[512];
+
+    int frames = std::min(numFrames, 512);
+
     for (auto& voice : voices_) {
         if (!voice.active) continue;
-        float s = voice.process(sampleRate_);
-        l += s;
-        r += s;
+
+        std::memset(voiceL, 0, frames * sizeof(float));
+        std::memset(voiceR, 0, frames * sizeof(float));
+
+        int written = voice.processBlock(voiceL, voiceR, frames, sampleRate_);
+        if (written > 0) {
+            // SIMD-friendly accumulation loop
+            for (int i = 0; i < written; ++i) {
+                outL[i] += voiceL[i] * mixLevel_;
+                outR[i] += voiceR[i] * mixLevel_;
+            }
+        }
     }
-    left += l * mixLevel_;
-    right += r * mixLevel_;
 }
 
 void SamplePlayer::setAttack(float ms) { attackMs_ = ms; }
@@ -389,6 +538,77 @@ SampleVoice* SamplePlayer::findFreeVoice() {
         }
     }
     return nullptr;
+}
+
+// ── Async preload ────────────────────────────────────────────────────────────
+
+void SamplePlayer::preloadAsync() {
+    std::lock_guard<std::mutex> lock(preloadMutex_);
+    preloadFutures_.clear();
+    preloadComplete_ = false;
+
+    for (const auto& zone : zones_) {
+        for (int i = 0; i < static_cast<int>(VelocityLayer::Count); ++i) {
+            auto stream = zone->streams[i];
+            if (!stream) continue;
+            // Launch a task that just touches the preload cache and prefetches
+            preloadFutures_.push_back(std::async(std::launch::async, [stream]() {
+                if (stream->isOpen()) {
+                    stream->prefetch(stream->getPreloadSamples());
+                }
+            }));
+        }
+    }
+}
+
+void SamplePlayer::waitForPreload() {
+    std::lock_guard<std::mutex> lock(preloadMutex_);
+    for (auto& f : preloadFutures_) {
+        if (f.valid()) f.wait();
+    }
+    preloadFutures_.clear();
+    preloadComplete_ = true;
+}
+
+bool SamplePlayer::isPreloadComplete() const {
+    std::lock_guard<std::mutex> lock(preloadMutex_);
+    if (preloadComplete_) return true;
+    for (const auto& f : preloadFutures_) {
+        if (f.valid() && f.wait_for(std::chrono::seconds(0)) != std::future_status::ready)
+            return false;
+    }
+    preloadComplete_ = true;
+    return true;
+}
+
+// ── Metrics ──────────────────────────────────────────────────────────────────
+
+SamplePlayer::AggregateMetrics SamplePlayer::getMetrics() const {
+    AggregateMetrics agg;
+    uint64_t hits = 0;
+    uint64_t total = 0;
+    for (const auto& zone : zones_) {
+        for (int i = 0; i < static_cast<int>(VelocityLayer::Count); ++i) {
+            auto stream = zone->streams[i];
+            if (!stream) continue;
+            const auto& m = stream->getMetrics();
+            hits += m.preloadHits.load() + m.ringHits.load();
+            total += m.totalRequests.load();
+            agg.underruns += m.underruns.load();
+        }
+    }
+    agg.totalRequests = total;
+    agg.cacheHitRate = (total > 0) ? static_cast<double>(hits) / static_cast<double>(total) : 0.0;
+    return agg;
+}
+
+void SamplePlayer::resetMetrics() {
+    for (const auto& zone : zones_) {
+        for (int i = 0; i < static_cast<int>(VelocityLayer::Count); ++i) {
+            auto stream = zone->streams[i];
+            if (stream) stream->resetMetrics();
+        }
+    }
 }
 
 } // namespace opensynth

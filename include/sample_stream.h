@@ -5,8 +5,34 @@
 #include <memory>
 #include <atomic>
 #include <string>
+#include <cstdint>
 
 namespace opensynth {
+
+// ── StreamMetrics ────────────────────────────────────────────────────────────
+// Lightweight atomic counters for cache hit rate and underruns.
+struct StreamMetrics {
+    std::atomic<uint64_t> preloadHits{0};
+    std::atomic<uint64_t> ringHits{0};
+    std::atomic<uint64_t> misses{0};
+    std::atomic<uint64_t> underruns{0};
+    std::atomic<uint64_t> totalRequests{0};
+
+    void reset() {
+        preloadHits.store(0);
+        ringHits.store(0);
+        misses.store(0);
+        underruns.store(0);
+        totalRequests.store(0);
+    }
+
+    double cacheHitRate() const {
+        uint64_t total = totalRequests.load();
+        if (total == 0) return 0.0;
+        uint64_t hits = preloadHits.load() + ringHits.load();
+        return static_cast<double>(hits) / static_cast<double>(total);
+    }
+};
 
 // ── SampleStream ─────────────────────────────────────────────────────────────
 //
@@ -16,14 +42,16 @@ namespace opensynth {
 //   - Memory-mapped file access for efficient random seeking
 //   - Preload cache: first 100ms kept in RAM for instant attack
 //   - Configurable stream buffer size (default 4096 samples)
-//   - Double-buffered read-ahead for non-mapped fallback
+//   - Prefetch ring-buffer for non-mapped fallback with read-ahead
 //   - Loop point support
+//   - Stream metrics (cache hits, underruns)
 //
 // The stream is real-time safe for reading once opened.
 
 class SampleStream {
 public:
     static constexpr int DEFAULT_BUFFER_SIZE = 4096;
+    static constexpr int PREFETCH_BUFFER_SIZE = 32768; // ~0.7s at 48kHz
     static constexpr double PRELOAD_DURATION_SEC = 0.1; // 100ms
 
     SampleStream();
@@ -56,6 +84,9 @@ public:
     // Returns number of frames actually read.
     int readBlock(juce::AudioBuffer<float>& buffer, int startSample, int numSamples, int64_t filePosition);
 
+    // Prefetch / read-ahead: ensure the ring buffer covers [position, position + prefetchSize)
+    void prefetch(int64_t position);
+
     // Set/get stream buffer size (must be set before open)
     void setStreamBufferSize(int size) { streamBufferSize_ = size; }
     int getStreamBufferSize() const { return streamBufferSize_; }
@@ -67,6 +98,13 @@ public:
     bool hasLoopPoints() const { return hasLoopPoints_; }
     int getLoopStart() const { return loopStart_; }
     int getLoopEnd() const { return loopEnd_; }
+
+    // Metrics
+    const StreamMetrics& getMetrics() const { return metrics_; }
+    void resetMetrics() { metrics_.reset(); }
+
+    // True if using memory-mapped I/O
+    bool isMemoryMapped() const { return useMapping_; }
 
 private:
     std::unique_ptr<juce::MemoryMappedAudioFormatReader> mappedReader_;
@@ -89,16 +127,19 @@ private:
     int preloadSamples_ = 0;
     bool useMapping_ = false;
 
-    // Fallback ring-buffer state (non-mapped path)
+    // Prefetch ring-buffer state (non-mapped path)
     mutable std::vector<float> ringBuffer_[2];
     mutable std::atomic<int64_t> ringBufferStart_{0};
     mutable std::atomic<int64_t> ringBufferEnd_{0};
-    mutable int ringBufferSize_ = 0;
+    int ringBufferSize_ = 0;
+
+    mutable StreamMetrics metrics_;
 
     bool initMappedReader(const std::string& path);
     bool initFallbackReader(const std::string& path);
     void fillPreloadCache();
     void refillRingBuffer(int64_t startPos) const;
+    bool verifyMappingWorks();
 };
 
 } // namespace opensynth

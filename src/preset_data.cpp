@@ -117,6 +117,8 @@ void applyPresetToAPVTS(const PresetData& p, juce::AudioProcessorValueTreeState&
 
     setFloat("masterVolume", p.masterVolume);
 
+    setFloat("sampleMix", p.sampleMix);
+
     setBool("fx1Enabled", p.fxSlotEnabled[0]);
     setInt("fx1Type", p.fxSlotType[0]);
     setFloat("fx1Param0", p.fxSlotParam[0][0]);

@@ -215,6 +215,41 @@ private:
     void stop();
 };
 
+// ── Sample Panel (Multi-zone sample player UI) ────────────────────────────
+class SamplePanel : public juce::Component,
+                    private juce::Timer {
+public:
+    SamplePanel(juce::AudioProcessorValueTreeState& apvts, OpenSynthProcessor& processor);
+    void paint(juce::Graphics& g) override;
+    void resized() override;
+
+    void refresh();
+
+private:
+    juce::AudioProcessorValueTreeState& apvts_;
+    OpenSynthProcessor& processor_;
+
+    juce::Label titleLabel_;
+    juce::Label sampleNameLabel_;
+    juce::Label categoryLabel_;
+    juce::Label zoneCountLabel_;
+    SynthKnob mixKnob_;
+    juce::TextButton browseButton_;
+    juce::TextButton clearButton_;
+
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mixAttach_;
+    std::unique_ptr<juce::FileChooser> fileChooser_;
+
+    juce::Viewport zoneViewport_;
+    juce::Component zoneContainer_;
+    std::vector<std::unique_ptr<juce::Label>> zoneLabels_;
+
+    void browseForSample();
+    void clearSample();
+    void rebuildZoneList();
+    void timerCallback() override;
+};
+
 // ── Performance Controls (Juno-Di inspired) ────────────────────────────────
 class PerformancePanel : public juce::Component {
 public:
@@ -505,6 +540,7 @@ private:
     MpePanel mpePanel_;
     DBeamPanel dbeamPanel_;
     PhraseSamplerPanel phraseSamplerPanel_;
+    SamplePanel samplePanel_;
     PerformancePanel performancePanel_;
     PianoKeyboard keyboard_;
 

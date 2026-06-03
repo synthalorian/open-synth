@@ -1267,6 +1267,7 @@ OpenSynthEditor::OpenSynthEditor(OpenSynthProcessor& processor)
       mpePanel_(processor.getParameters()),
       dbeamPanel_(processor.getParameters()),
       performancePanel_(processor.getParameters()),
+      samplePanel_(processor.getParameters(), processor),
       keyboard_(processor)
 {
     setSize(1400, 900);
@@ -1375,6 +1376,7 @@ OpenSynthEditor::OpenSynthEditor(OpenSynthProcessor& processor)
     addAndMakeVisible(arpPanel_);
     addAndMakeVisible(realismPanel_);
     addAndMakeVisible(mpePanel_);
+    addAndMakeVisible(samplePanel_);
     addAndMakeVisible(dbeamPanel_);
     addAndMakeVisible(phraseSamplerPanel_);
     addAndMakeVisible(performancePanel_);
@@ -1807,9 +1809,11 @@ void OpenSynthEditor::resized()
 
     b.removeFromTop(gap);
 
-    // Bottom: Phrase sampler + Keyboard
+    // Bottom: Sample panel + Phrase sampler + Keyboard
     int samplerHeight = juce::jmin(160, b.getHeight() / 3);
     auto samplerRow = b.removeFromTop(samplerHeight);
+    samplePanel_.setBounds(samplerRow.removeFromLeft(juce::jmin(300, availWidth / 4)));
+    samplerRow.removeFromLeft(gap);
     phraseSamplerPanel_.setBounds(samplerRow.removeFromLeft(juce::jmin(300, availWidth / 4)));
     samplerRow.removeFromLeft(gap);
     keyboard_.setBounds(samplerRow);
@@ -2029,6 +2033,247 @@ void PhraseSamplerPanel::play()
 void PhraseSamplerPanel::stop()
 {
     // Stub: would stop transport
+}
+
+// ── Sample Panel ────────────────────────────────────────────────────────────
+
+SamplePanel::SamplePanel(juce::AudioProcessorValueTreeState& apvts, OpenSynthProcessor& processor)
+    : apvts_(apvts), processor_(processor),
+      mixKnob_("Mix", SynthColors::hotPink())
+{
+    setOpaque(false);
+
+    titleLabel_.setText("SAMPLE PLAYER", juce::dontSendNotification);
+    titleLabel_.setFont(juce::Font(juce::FontOptions(14.0f, juce::Font::bold)));
+    titleLabel_.setColour(juce::Label::textColourId, SynthColors::hotPink());
+    addAndMakeVisible(titleLabel_);
+
+    sampleNameLabel_.setText("No sample loaded", juce::dontSendNotification);
+    sampleNameLabel_.setFont(juce::Font(juce::FontOptions(11.0f)));
+    sampleNameLabel_.setColour(juce::Label::textColourId, SynthColors::textDim());
+    addAndMakeVisible(sampleNameLabel_);
+
+    categoryLabel_.setText("", juce::dontSendNotification);
+    categoryLabel_.setFont(juce::Font(juce::FontOptions(10.0f)));
+    categoryLabel_.setColour(juce::Label::textColourId, SynthColors::textDim());
+    addAndMakeVisible(categoryLabel_);
+
+    zoneCountLabel_.setText("Zones: 0", juce::dontSendNotification);
+    zoneCountLabel_.setFont(juce::Font(juce::FontOptions(10.0f)));
+    zoneCountLabel_.setColour(juce::Label::textColourId, SynthColors::textDim());
+    addAndMakeVisible(zoneCountLabel_);
+
+    mixKnob_.setRange(0.0, 1.0, 0.01);
+    mixKnob_.setValue(0.0);
+    addAndMakeVisible(mixKnob_);
+    mixAttach_ = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+        apvts_, "sampleMix", mixKnob_);
+
+    browseButton_.setButtonText("Browse...");
+    browseButton_.setColour(juce::TextButton::buttonColourId, SynthColors::card());
+    browseButton_.setColour(juce::TextButton::textColourOffId, SynthColors::neonYellow());
+    browseButton_.onClick = [this]() { browseForSample(); };
+    addAndMakeVisible(browseButton_);
+
+    clearButton_.setButtonText("Clear");
+    clearButton_.setColour(juce::TextButton::buttonColourId, SynthColors::card());
+    clearButton_.setColour(juce::TextButton::textColourOffId, SynthColors::danger());
+    clearButton_.onClick = [this]() { clearSample(); };
+    addAndMakeVisible(clearButton_);
+
+    zoneViewport_.setViewedComponent(&zoneContainer_, false);
+    zoneViewport_.setScrollBarsShown(true, false);
+    addAndMakeVisible(zoneViewport_);
+
+    startTimerHz(5);
+}
+
+void SamplePanel::paint(juce::Graphics& g)
+{
+    auto b = getLocalBounds().toFloat();
+    g.setColour(SynthColors::card());
+    g.fillRoundedRectangle(b, 8.0f);
+
+    g.setColour(SynthColors::hotPink());
+    g.setFont(juce::Font(juce::FontOptions(14.0f, juce::Font::bold)));
+    g.drawText("SAMPLE PLAYER", 12, 8, 150, 20, juce::Justification::left);
+    g.setColour(SynthColors::gridLine());
+    g.drawHorizontalLine(32, 8, getWidth() - 8);
+}
+
+void SamplePanel::resized()
+{
+    int y = 38;
+    sampleNameLabel_.setBounds(12, y, getWidth() - 24, 18);
+    y += 18;
+    categoryLabel_.setBounds(12, y, getWidth() - 24, 16);
+    y += 18;
+    zoneCountLabel_.setBounds(12, y, getWidth() - 24, 16);
+    y += 22;
+
+    mixKnob_.setBounds(12, y, 56, 72);
+    browseButton_.setBounds(74, y + 10, 70, 24);
+    clearButton_.setBounds(74, y + 40, 70, 24);
+    y += 80;
+
+    zoneViewport_.setBounds(12, y, getWidth() - 24, getHeight() - y - 8);
+    zoneContainer_.setBounds(0, 0, zoneViewport_.getWidth() - 4, 200);
+}
+
+void SamplePanel::refresh()
+{
+    rebuildZoneList();
+}
+
+void SamplePanel::timerCallback()
+{
+    refresh();
+}
+
+void SamplePanel::browseForSample()
+{
+    fileChooser_ = std::make_unique<juce::FileChooser>(
+        "Select a sample or manifest...",
+        juce::File::getSpecialLocation(juce::File::userMusicDirectory),
+        "*.wav;*.aiff;*.flac;*.json");
+
+    fileChooser_->launchAsync(
+        juce::FileBrowserComponent::openMode | juce::FileBrowserComponent::canSelectFiles,
+        [this](const juce::FileChooser& chooser)
+    {
+        auto file = chooser.getResult();
+        if (file == juce::File())
+            return;
+
+        auto* engine = processor_.getSynth().getEngine();
+        if (!engine)
+            return;
+
+        if (!engine->getSamplePlayer())
+        {
+            auto sp = std::make_unique<SamplePlayer>();
+            sp->prepare(engine->getSampleRate());
+            engine->setSamplePlayer(std::move(sp));
+        }
+
+        auto* player = engine->getSamplePlayer();
+        if (!player)
+            return;
+
+        if (file.getFileExtension() == ".json")
+        {
+            player->clear();
+            if (player->loadMultiSample(file.getFullPathName().toStdString()))
+            {
+                sampleNameLabel_.setText(file.getFileNameWithoutExtension(), juce::dontSendNotification);
+                sampleNameLabel_.setColour(juce::Label::textColourId, SynthColors::text());
+                categoryLabel_.setText("Multi-sample", juce::dontSendNotification);
+            }
+            else
+            {
+                sampleNameLabel_.setText("Failed to load manifest", juce::dontSendNotification);
+                sampleNameLabel_.setColour(juce::Label::textColourId, SynthColors::danger());
+            }
+        }
+        else
+        {
+            player->clear();
+            if (player->loadSample(file.getFullPathName().toStdString(), 60, 0, 127))
+            {
+                sampleNameLabel_.setText(file.getFileNameWithoutExtension(), juce::dontSendNotification);
+                sampleNameLabel_.setColour(juce::Label::textColourId, SynthColors::text());
+                categoryLabel_.setText("Single sample (C3 root)", juce::dontSendNotification);
+            }
+            else
+            {
+                sampleNameLabel_.setText("Failed to load sample", juce::dontSendNotification);
+                sampleNameLabel_.setColour(juce::Label::textColourId, SynthColors::danger());
+            }
+        }
+
+        rebuildZoneList();
+    });
+}
+
+void SamplePanel::clearSample()
+{
+    auto* engine = processor_.getSynth().getEngine();
+    if (engine && engine->getSamplePlayer())
+    {
+        engine->getSamplePlayer()->clear();
+        engine->getSamplePlayer()->setMixLevel(0.0f);
+    }
+
+    sampleNameLabel_.setText("No sample loaded", juce::dontSendNotification);
+    sampleNameLabel_.setColour(juce::Label::textColourId, SynthColors::textDim());
+    categoryLabel_.setText("", juce::dontSendNotification);
+    rebuildZoneList();
+}
+
+void SamplePanel::rebuildZoneList()
+{
+    zoneLabels_.clear();
+
+    auto* engine = processor_.getSynth().getEngine();
+    auto* player = engine ? engine->getSamplePlayer() : nullptr;
+    int zoneCount = player ? player->zoneCount() : 0;
+    zoneCountLabel_.setText("Zones: " + juce::String(zoneCount), juce::dontSendNotification);
+
+    if (!player || zoneCount == 0)
+    {
+        zoneContainer_.removeAllChildren();
+        zoneContainer_.setSize(zoneViewport_.getWidth() - 4, 20);
+        auto* emptyLabel = new juce::Label();
+        emptyLabel->setText("No zones loaded", juce::dontSendNotification);
+        emptyLabel->setFont(juce::Font(juce::FontOptions(10.0f)));
+        emptyLabel->setColour(juce::Label::textColourId, SynthColors::textDim());
+        zoneContainer_.addAndMakeVisible(emptyLabel);
+        emptyLabel->setBounds(4, 2, zoneContainer_.getWidth() - 8, 16);
+        return;
+    }
+
+    int rowH = 18;
+    int totalH = zoneCount * rowH + 4;
+    zoneContainer_.setSize(zoneViewport_.getWidth() - 4, totalH);
+    zoneContainer_.removeAllChildren();
+
+    int y = 2;
+    for (const auto& zone : player->getZones())
+    {
+        juce::String layers;
+        int layerCount = 0;
+        for (int i = 0; i < static_cast<int>(VelocityLayer::Count); ++i)
+        {
+            if (zone->streams[i])
+            {
+                if (layerCount > 0) layers += ", ";
+                switch (static_cast<VelocityLayer>(i))
+                {
+                    case VelocityLayer::Soft:   layers += "S"; break;
+                    case VelocityLayer::Medium: layers += "M"; break;
+                    case VelocityLayer::Loud:   layers += "L"; break;
+                    default: break;
+                }
+                ++layerCount;
+            }
+        }
+        if (layerCount == 0) layers = "-";
+
+        juce::String text = juce::String("Root ") + juce::MidiMessage::getMidiNoteName(zone->rootNote, true, true, 3)
+            + " | " + juce::MidiMessage::getMidiNoteName(zone->minNote, true, true, 3)
+            + "-" + juce::MidiMessage::getMidiNoteName(zone->maxNote, true, true, 3)
+            + " | Vel " + juce::String(static_cast<int>(zone->minVelocity * 127))
+            + "-" + juce::String(static_cast<int>(zone->maxVelocity * 127))
+            + " | " + layers;
+
+        auto* label = new juce::Label();
+        label->setText(text, juce::dontSendNotification);
+        label->setFont(juce::Font(juce::FontOptions(10.0f)));
+        label->setColour(juce::Label::textColourId, SynthColors::text());
+        zoneContainer_.addAndMakeVisible(label);
+        label->setBounds(4, y, zoneContainer_.getWidth() - 8, rowH);
+        y += rowH;
+    }
 }
 
 // ── Performance Panel ───────────────────────────────────────────────────────

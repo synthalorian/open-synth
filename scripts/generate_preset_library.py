@@ -32,6 +32,93 @@ CATEGORIES = {
     'other':       {'sampleMix': 0.0, 'bodyType': 0, 'bodyMix': 0.0, 'clickMix': 0.0, 'attackCurve': 0, 'brightness': 0.0},
 }
 
+# Set of available sample files (without .wav extension)
+SAMPLE_FILES = {
+    "12_String_Guitar",
+    "808_Tom",
+    "Accordian",
+    "Agogo",
+    "Alto_Sax",
+    "BagPipe",
+    "Baritone_Sax",
+    "Bassoon",
+    "Bird_Tweet",
+    "Brass_2",
+    "Brass_Section",
+    "Brush_1",
+    "Brush_2",
+    "Burst_Noise",
+    "Castanets",
+    "Cello",
+    "Church_Bell",
+    "Church_Organ_2",
+    "Concert_Bass_Drum",
+    "Coupled_Harpsichord",
+    "Detuned_EP_1",
+    "Detuned_EP_2",
+    "Detuned_Organ_1",
+    "Detuned_Organ_2",
+    "Distortion_Guitar",
+    "Feedback_Guitar",
+    "Flute",
+    "Fret_Noise",
+    "Funk_Guitar",
+    "Guitar_Feedback",
+    "Gun_Shot",
+    "Harmonica",
+    "Harpsichord",
+    "Hawaiian_Guitar",
+    "Helicopter",
+    "Italian_Accordion",
+    "Jazz_1",
+    "Jazz_2",
+    "Jazz_3",
+    "Jazz_4",
+    "Koto",
+    "Legend_EP_2",
+    "Mandolin",
+    "Melo_Tom_2",
+    "Melodic_Tom",
+    "Metal_Pad",
+    "Orchestral_Pad",
+    "Overdrive_Guitar",
+    "Pan_Flute",
+    "Piccolo",
+    "Pizzicato_Section",
+    "Polysynth",
+    "Pop_Bass",
+    "Power_1",
+    "Power_2",
+    "Power_3",
+    "Reed_Organ",
+    "Shakuhachi",
+    "Shamisen",
+    "Shenai",
+    "Sine_Wave",
+    "Sitar",
+    "Slap_Bass",
+    "Slow_Strings",
+    "Slow_Violin",
+    "Soprano_Sax",
+    "Strings",
+    "Synth_Bass_1",
+    "Synth_Bass_3",
+    "Synth_Bass_4",
+    "Synth_Brass_1",
+    "Synth_Brass_2",
+    "Synth_Brass_3",
+    "Synth_Brass_4",
+    "Synth_Strings_3",
+    "Taisho_Koto",
+    "Telephone",
+    "Tenor_Sax",
+    "Tinker_Bell",
+    "Tremolo",
+    "Ukulele",
+    "Viola",
+    "Violin",
+}
+
 # Base presets organized by category (GM2 + extras)
 BASE_PRESETS = {
     'piano': [
@@ -231,7 +318,19 @@ def generate_preset(idx, name, category, overrides=None):
     brightness = cat['brightness'] + overrides.get('brightness', 0.0)
     brightness = max(0.0, min(1.0, brightness))
 
-    sample_mix = cat['sampleMix'] + overrides.get('sampleMix', 0.0)
+    # Determine if a matching sample exists
+    base_name = name
+    for suffix in [' Bright', ' Dark', ' Soft', ' Hard', ' Vintage', ' Modern']:
+        if base_name.endswith(suffix):
+            base_name = base_name[:-len(suffix)]
+            break
+    safe_name = base_name.replace(' ', '_')
+    has_matching_sample = safe_name in SAMPLE_FILES
+
+    if has_matching_sample:
+        sample_mix = cat['sampleMix'] + overrides.get('sampleMix', 0.0)
+    else:
+        sample_mix = 0.0
     sample_mix = max(0.0, min(1.0, sample_mix))
 
     # Build the initializer

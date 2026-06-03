@@ -5,6 +5,10 @@
 #include <memory>
 #include <string>
 #include <array>
+#include <atomic>
+#include <thread>
+#include <future>
+#include <mutex>
 
 namespace opensynth {
 
@@ -21,6 +25,8 @@ namespace opensynth {
 //   - ADSR envelope per voice
 //   - Velocity layers (up to 4 per key zone)
 //   - Loop points for sustained sounds
+//   - Async sample preload on preset load
+//   - Block-based processing for efficiency
 //
 // This is intentionally simple — not a full Kontakt competitor, but enough
 // to layer a realistic piano sample under the subtractive synth for hybrid sounds.
@@ -71,10 +77,20 @@ struct SampleVoice {
     float sustainLevel = 1.0f;
     float releaseRate = 0.005f;
 
+    // Per-voice anti-aliasing filter state (was static — thread unsafe)
+    float aaStateL = 0.0f;
+    float aaStateR = 0.0f;
+
     void noteOn(int note, float vel, const SampleZone* z, double sr);
     void noteOff();
     void reset();
+
+    // Process a single sample (mono mix). Kept for backward compat.
     float process(double sampleRate);
+
+    // Process a block of samples into stereo output buffers.
+    // 'numFrames' <= 512 typical. Returns number of frames written.
+    int processBlock(float* outL, float* outR, int numFrames, double sampleRate);
 };
 
 class SamplePlayer {
@@ -103,7 +119,13 @@ public:
 
     // Audio
     void prepare(double sampleRate);
+
+    // Legacy per-sample process (inefficient, kept for compat)
     void process(float& left, float& right, int numFrames);
+
+    // Block-based process: render into a stereo buffer.
+    // 'numFrames' is the block size. Caller must ensure buffer is large enough.
+    void processBlock(float* outL, float* outR, int numFrames);
 
     // Mix level (0-1) into the synth output
     void setMixLevel(float level) { mixLevel_ = level; }
@@ -123,8 +145,26 @@ public:
     int activeVoiceCount() const;
     int zoneCount() const { return static_cast<int>(zones_.size()); }
 
+    // Zone access for UI
+    const std::vector<std::unique_ptr<SampleZone>>& getZones() const { return zones_; }
+
     // Velocity layer helper
     static VelocityLayer velocityToLayer(float velocity);
+
+    // Async preload: launch background threads to open all zone streams.
+    // Call waitForPreload() before playback to ensure readiness.
+    void preloadAsync();
+    void waitForPreload();
+    bool isPreloadComplete() const;
+
+    // Aggregate metrics from all streams
+    struct AggregateMetrics {
+        double cacheHitRate = 0.0;
+        uint64_t underruns = 0;
+        uint64_t totalRequests = 0;
+    };
+    AggregateMetrics getMetrics() const;
+    void resetMetrics();
 
 private:
     std::vector<std::unique_ptr<SampleZone>> zones_;
@@ -138,6 +178,11 @@ private:
     float decayMs_ = 100.0f;
     float sustainLevel_ = 1.0f;
     float releaseMs_ = 200.0f;
+
+    // Async preload state
+    mutable std::mutex preloadMutex_;
+    std::vector<std::future<void>> preloadFutures_;
+    mutable bool preloadComplete_ = true;
 
     const SampleZone* findZone(int midiNote, float velocity) const;
     SampleVoice* findFreeVoice();

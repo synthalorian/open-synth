@@ -1,6 +1,7 @@
 #include "sample_stream.h"
 #include <cmath>
 #include <algorithm>
+#include <cstring>
 
 namespace opensynth {
 
@@ -25,11 +26,11 @@ bool SampleStream::open(const std::string& path, int streamBufferSize) {
 
     fillPreloadCache();
 
-    // Setup fallback ring buffer if needed
+    // Setup prefetch ring buffer if needed
     if (!useMapping_) {
-        ringBufferSize_ = streamBufferSize_ * 2;
-        ringBuffer_[0].resize(ringBufferSize_);
-        ringBuffer_[1].resize(ringBufferSize_);
+        ringBufferSize_ = PREFETCH_BUFFER_SIZE;
+        ringBuffer_[0].resize(ringBufferSize_, 0.0f);
+        ringBuffer_[1].resize(ringBufferSize_, 0.0f);
         ringBufferStart_.store(0);
         ringBufferEnd_.store(0);
     }
@@ -57,6 +58,7 @@ void SampleStream::close() {
     ringBufferStart_.store(0);
     ringBufferEnd_.store(0);
     ringBufferSize_ = 0;
+    metrics_.reset();
 }
 
 bool SampleStream::isOpen() const {
@@ -79,6 +81,8 @@ bool SampleStream::readSample(int64_t position, float* dest) const {
     if (!isOpen() || position < 0 || position >= totalSamples_ || dest == nullptr)
         return false;
 
+    metrics_.totalRequests.fetch_add(1);
+
     // Preload cache: first 100ms in RAM
     if (position < preloadSamples_) {
         for (int ch = 0; ch < numChannels_; ++ch) {
@@ -88,6 +92,7 @@ bool SampleStream::readSample(int64_t position, float* dest) const {
         // Zero remaining channels if < 2
         for (int ch = numChannels_; ch < 2; ++ch)
             dest[ch] = 0.0f;
+        metrics_.preloadHits.fetch_add(1);
         return true;
     }
 
@@ -98,8 +103,10 @@ bool SampleStream::readSample(int64_t position, float* dest) const {
             // Zero remaining channels if reader has 1 channel but caller expects 2
             for (int ch = numChannels_; ch < 2; ++ch)
                 dest[ch] = 0.0f;
+            metrics_.ringHits.fetch_add(1);
             return true;
         }
+        metrics_.misses.fetch_add(1);
         return false;
     }
 
@@ -117,8 +124,10 @@ bool SampleStream::readSample(int64_t position, float* dest) const {
         bufEnd = ringBufferEnd_.load();
     }
 
-    if (position < bufStart || position >= bufEnd)
+    if (position < bufStart || position >= bufEnd) {
+        metrics_.misses.fetch_add(1);
         return false;
+    }
 
     int idx = static_cast<int>((position - bufStart) % ringBufferSize_);
     for (int ch = 0; ch < numChannels_; ++ch) {
@@ -127,6 +136,7 @@ bool SampleStream::readSample(int64_t position, float* dest) const {
     }
     for (int ch = numChannels_; ch < 2; ++ch)
         dest[ch] = 0.0f;
+    metrics_.ringHits.fetch_add(1);
     return true;
 }
 
@@ -153,11 +163,14 @@ int SampleStream::readBlock(juce::AudioBuffer<float>& buffer,
         if (numChannels_ == 1 && buffer.getNumChannels() > 1) {
             buffer.copyFrom(1, startSample, buffer.getReadPointer(0), framesToRead);
         }
+        metrics_.totalRequests.fetch_add(framesToRead);
+        metrics_.ringHits.fetch_add(framesToRead);
         return framesToRead;
     }
 
     // Fallback: sample-by-sample via ring buffer
     float temp[2];
+    int underruns = 0;
     for (int i = 0; i < framesToRead; ++i) {
         if (readSample(filePosition + i, temp)) {
             for (int ch = 0; ch < buffer.getNumChannels(); ++ch) {
@@ -167,9 +180,26 @@ int SampleStream::readBlock(juce::AudioBuffer<float>& buffer,
         } else {
             for (int ch = 0; ch < buffer.getNumChannels(); ++ch)
                 buffer.setSample(ch, startSample + i, 0.0f);
+            ++underruns;
         }
     }
+    if (underruns > 0)
+        metrics_.underruns.fetch_add(underruns);
     return framesToRead;
+}
+
+void SampleStream::prefetch(int64_t position) {
+    if (useMapping_ || !fallbackReader_ || ringBufferSize_ <= 0)
+        return;
+
+    int64_t bufStart = ringBufferStart_.load();
+    int64_t bufEnd = ringBufferEnd_.load();
+
+    // If requested position is already covered, nothing to do
+    if (position >= bufStart && position + streamBufferSize_ < bufEnd)
+        return;
+
+    refillRingBuffer(position);
 }
 
 bool SampleStream::initMappedReader(const std::string& path) {
@@ -178,16 +208,13 @@ bool SampleStream::initMappedReader(const std::string& path) {
 
     file_ = juce::File(juce::String(path));
 
-    juce::AudioFormatReader* createdReader = nullptr;
     int numFormats = formatManager.getNumKnownFormats();
     for (int i = 0; i < numFormats; ++i) {
         auto* fmt = formatManager.getKnownFormat(i);
         if (!fmt) continue;
         mappedReader_.reset(fmt->createMemoryMappedReader(file_));
-        if (mappedReader_) {
-            createdReader = fmt->createReaderFor(file_.createInputStream().release(), true);
+        if (mappedReader_)
             break;
-        }
     }
 
     if (!mappedReader_)
@@ -209,7 +236,31 @@ bool SampleStream::initMappedReader(const std::string& path) {
         loopEnd_ = mappedReader_->metadataValues["Loop0End"].getIntValue();
     }
 
-    delete createdReader;
+    // Verify mapping actually works by reading one sample
+    if (!verifyMappingWorks()) {
+        mappedReader_.reset();
+        return false;
+    }
+
+    return true;
+}
+
+bool SampleStream::verifyMappingWorks() {
+    if (!mappedReader_ || totalSamples_ <= 0)
+        return false;
+
+    float temp[2] = {0.0f, 0.0f};
+    auto mappedSection = mappedReader_->getMappedSection();
+    if (mappedSection.getLength() <= 0)
+        return false;
+
+    int64_t testPos = mappedSection.getStart();
+    if (testPos >= totalSamples_)
+        testPos = 0;
+
+    mappedReader_->getSample(testPos, temp);
+    // We consider it working if we get here without crash.
+    // Optionally check for NaN, but zero is valid for silent files.
     return true;
 }
 
