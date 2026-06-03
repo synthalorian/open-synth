@@ -5,8 +5,10 @@
 #include <juce_audio_devices/juce_audio_devices.h>
 #include "plugin_processor.h"
 #include "preset_library.h"
+#include "preset_data.h"
 #include "user_preset_manager.h"
 #include "app_state_manager.h"
+#include "sample_player.h"
 
 namespace opensynth {
 
@@ -535,6 +537,8 @@ private:
     void loadFavoritePreset(int index);
     void loadPresetByIndex(int index);
     void loadPresetByID(const juce::String& id);
+    void configureSamplePlayerForPreset(const PresetData& p);
+    void loadSampleForPreset(const PresetData& p, SamplePlayer& player);
     void saveCurrentPreset();
     void showUndoFeedback(const juce::String& text);
 

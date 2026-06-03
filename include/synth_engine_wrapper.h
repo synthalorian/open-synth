@@ -82,6 +82,9 @@ public:
     int getActiveVoiceCount() const;
     float getCpuLoad() const;
 
+    // Engine access (for sample player configuration)
+    SynthEngine* getEngine() const { return engine_.get(); }
+
     // Oscilloscope: get the last rendered interleaved buffer (left + right mixed)
     std::vector<float> getLastAudioBuffer() const;
 

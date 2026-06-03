@@ -4,6 +4,7 @@
 #include "preset_data.h"
 #include "user_preset_manager.h"
 #include "fx_engine.h"
+#include "synth_engine.h"
 
 namespace opensynth {
 
@@ -1630,7 +1631,52 @@ void OpenSynthEditor::loadPresetByID(const juce::String& id)
             applyPresetToAPVTS(p, processor_.getParameters());
             // Push to engine (immediate audio update)
             applyPresetToEngine(p, processor_.getSynth());
+            // Configure sample player for acoustic presets
+            configureSamplePlayerForPreset(p);
             break;
+        }
+    }
+}
+
+void OpenSynthEditor::configureSamplePlayerForPreset(const PresetData& p)
+{
+    auto& synth = processor_.getSynth();
+    auto* engine = synth.getEngine();
+    if (!engine) return;
+
+    // If sampleMix > 0, we need a sample player
+    if (p.sampleMix > 0.0f) {
+        if (!engine->getSamplePlayer()) {
+            auto sp = std::make_unique<SamplePlayer>();
+            sp->prepare(engine->getSampleRate());
+            engine->setSamplePlayer(std::move(sp));
+        }
+        engine->getSamplePlayer()->setMixLevel(p.sampleMix);
+        // Try to load a matching sample from the factory library
+        loadSampleForPreset(p, *engine->getSamplePlayer());
+    } else {
+        // Disable sample player for pure synth presets
+        if (engine->getSamplePlayer()) {
+            engine->getSamplePlayer()->setMixLevel(0.0f);
+            engine->getSamplePlayer()->clear();
+        }
+    }
+}
+
+void OpenSynthEditor::loadSampleForPreset(const PresetData& p, SamplePlayer& player)
+{
+    // Build sample path: samples/<category>/<name>.wav
+    juce::File sampleDir = juce::File::getSpecialLocation(juce::File::currentExecutableFile)
+                               .getParentDirectory()
+                               .getChildFile("samples")
+                               .getChildFile(p.category);
+    juce::String safeName = juce::String(p.name).replaceCharacter(' ', '_');
+    juce::File sampleFile = sampleDir.getChildFile(safeName + ".wav");
+
+    if (sampleFile.existsAsFile()) {
+        player.clear();
+        if (player.loadSample(sampleFile.getFullPathName().toStdString(), 60, 0, 127)) {
+            // Sample loaded successfully
         }
     }
 }

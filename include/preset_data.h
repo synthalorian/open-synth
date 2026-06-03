@@ -150,6 +150,9 @@ struct PresetData {
     // Master
     float masterVolume = 0.8f;
 
+    // Sample player mix (0 = synth only, 1 = sample only)
+    float sampleMix = 0.0f;
+
     // Meta
     bool  isBassPreset = false;
 
