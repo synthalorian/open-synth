@@ -437,6 +437,46 @@ void RealismPanel::resized()
     brightnessKnob_.setBounds(x, y, knobSize, knobSize + 14);
 }
 
+// ── MpePanel ────────────────────────────────────────────────────────────────
+
+MpePanel::MpePanel(juce::AudioProcessorValueTreeState& apvts)
+    : apvts_(apvts)
+    , bendRangeKnob_("Bend", juce::Colours::cyan)
+{
+    enableButton_.setButtonText("MPE");
+    enableButton_.setColour(juce::TextButton::buttonOnColourId, juce::Colours::cyan);
+    enableButton_.setColour(juce::TextButton::textColourOnId, juce::Colours::black);
+    addAndMakeVisible(enableButton_);
+
+    zoneSelector_.addItem("Lower (Ch 1)", 1);
+    zoneSelector_.addItem("Upper (Ch 16)", 2);
+    addAndMakeVisible(zoneSelector_);
+
+    addAndMakeVisible(bendRangeKnob_);
+
+    enableAttach_ = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(apvts_, "mpeEnabled", enableButton_);
+    zoneAttach_ = std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment>(apvts_, "mpeZone", zoneSelector_);
+    bendRangeAttach_ = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(apvts_, "mpeBendRange", bendRangeKnob_);
+}
+
+void MpePanel::paint(juce::Graphics& g)
+{
+    auto b = getLocalBounds().toFloat();
+    g.setColour(SynthColors::card());
+    g.fillRoundedRectangle(b, 6.0f);
+
+    g.setColour(juce::Colours::cyan);
+    g.setFont(juce::Font(14.0f, juce::Font::bold));
+    g.drawText("MPE", b.removeFromTop(28).reduced(8, 0), juce::Justification::centredLeft);
+}
+
+void MpePanel::resized()
+{
+    enableButton_.setBounds(12, 36, 60, 24);
+    zoneSelector_.setBounds(78, 36, 110, 24);
+    bendRangeKnob_.setBounds(196, 28, 48, 48 + 14);
+}
+
 // ── PerformanceMeter ────────────────────────────────────────────────────────
 
 PerformanceMeter::PerformanceMeter()
@@ -1223,6 +1263,7 @@ OpenSynthEditor::OpenSynthEditor(OpenSynthProcessor& processor)
       fx3Panel_(processor.getParameters(), 3),
       arpPanel_(processor.getParameters()),
       realismPanel_(processor.getParameters()),
+      mpePanel_(processor.getParameters()),
       dbeamPanel_(processor.getParameters()),
       performancePanel_(processor.getParameters()),
       keyboard_(processor)
@@ -1332,6 +1373,7 @@ OpenSynthEditor::OpenSynthEditor(OpenSynthProcessor& processor)
     addAndMakeVisible(fx3Panel_);
     addAndMakeVisible(arpPanel_);
     addAndMakeVisible(realismPanel_);
+    addAndMakeVisible(mpePanel_);
     addAndMakeVisible(dbeamPanel_);
     addAndMakeVisible(phraseSamplerPanel_);
     addAndMakeVisible(performancePanel_);
@@ -1687,9 +1729,9 @@ void OpenSynthEditor::resized()
 
     b.removeFromTop(gap);
 
-    // Middle row: Envelopes + FX slots + Realism + D-Beam + Performance
+    // Middle row: Envelopes + FX slots + Realism + MPE + D-Beam + Performance
     auto midRow = b.removeFromTop(midHeight);
-    int midPanelWidth = (availWidth - gap * 6) / 7;
+    int midPanelWidth = (availWidth - gap * 7) / 8;
     ampEnvPanel_.setBounds(midRow.removeFromLeft(midPanelWidth));
     midRow.removeFromLeft(gap);
     filterEnvPanel_.setBounds(midRow.removeFromLeft(midPanelWidth));
@@ -1701,6 +1743,8 @@ void OpenSynthEditor::resized()
     fx3Panel_.setBounds(midRow.removeFromLeft(midPanelWidth));
     midRow.removeFromLeft(gap);
     realismPanel_.setBounds(midRow.removeFromLeft(midPanelWidth));
+    midRow.removeFromLeft(gap);
+    mpePanel_.setBounds(midRow.removeFromLeft(midPanelWidth));
     midRow.removeFromLeft(gap);
     dbeamPanel_.setBounds(midRow.removeFromLeft(midPanelWidth));
     midRow.removeFromLeft(gap);

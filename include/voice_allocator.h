@@ -19,8 +19,8 @@ public:
 
     VoiceAllocator();
 
-    Voice* noteOn(int midiNote, float velocity, int partIndex = 0);
-    void noteOff(int midiNote, int partIndex = -1);
+    Voice* noteOn(int midiNote, float velocity, int partIndex = 0, int mpeChannel = -1);
+    void noteOff(int midiNote, int partIndex = -1, int mpeChannel = -1);
     void allNotesOff(int partIndex = -1);
     void sustain(bool on);
     int activeVoiceCount() const;

@@ -158,6 +158,15 @@ juce::AudioProcessorValueTreeState::ParameterLayout OpenSynthProcessor::createPa
         layout.add(std::move(realismGroup));
     }
 
+    // ── MPE Settings ─────────────────────────────────────────────────────────
+    {
+        auto mpeGroup = std::make_unique<juce::AudioProcessorParameterGroup>("mpe", "MPE", "|");
+        mpeGroup->addChild(std::make_unique<juce::AudioParameterBool>("mpeEnabled", "MPE On", false));
+        mpeGroup->addChild(std::make_unique<juce::AudioParameterInt>("mpeZone", "Zone", 0, 1, 0));
+        mpeGroup->addChild(std::make_unique<juce::AudioParameterFloat>("mpeBendRange", "Bend Range", juce::NormalisableRange<float>(2.0f, 96.0f, 1.0f), 48.0f, "st"));
+        layout.add(std::move(mpeGroup));
+    }
+
     return layout;
 }
 
@@ -268,6 +277,11 @@ void OpenSynthProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::Mi
     synth_.setRealismSympatheticMix(*apvts_.getRawParameterValue("realismSympatheticMix"));
     synth_.setRealismAttackCurve(static_cast<int>(*apvts_.getRawParameterValue("realismAttackCurve")));
     synth_.setRealismBrightnessSens(*apvts_.getRawParameterValue("realismBrightnessSens"));
+
+    // MPE
+    synth_.setMpeEnabled(*apvts_.getRawParameterValue("mpeEnabled") > 0.5f);
+    synth_.setMpeZone(static_cast<int>(*apvts_.getRawParameterValue("mpeZone")));
+    synth_.setMpeBendRange(*apvts_.getRawParameterValue("mpeBendRange"));
 
     // Render audio
     synth_.render(buffer, midiMessages);

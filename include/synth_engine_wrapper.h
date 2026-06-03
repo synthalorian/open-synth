@@ -74,6 +74,11 @@ public:
     void setRealismAttackCurve(int c);
     void setRealismBrightnessSens(float s);
 
+    // MPE
+    void setMpeEnabled(bool e);
+    void setMpeZone(int z);
+    void setMpeBendRange(float semitones);
+
     int getActiveVoiceCount() const;
     float getCpuLoad() const;
 
