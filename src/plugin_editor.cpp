@@ -1673,6 +1673,15 @@ void OpenSynthEditor::loadSampleForPreset(const PresetData& p, SamplePlayer& pla
     juce::String safeName = juce::String(p.name).replaceCharacter(' ', '_');
     juce::File sampleFile = sampleDir.getChildFile(safeName + ".wav");
 
+    // First try multi-sample manifest
+    juce::File manifestFile = sampleDir.getChildFile(safeName + ".json");
+    if (manifestFile.existsAsFile()) {
+        player.clear();
+        if (player.loadMultiSample(manifestFile.getFullPathName().toStdString())) {
+            return;
+        }
+    }
+
     if (sampleFile.existsAsFile()) {
         player.clear();
         if (player.loadSample(sampleFile.getFullPathName().toStdString(), 60, 0, 127)) {

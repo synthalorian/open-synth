@@ -4,6 +4,7 @@
 #include <vector>
 #include <memory>
 #include <string>
+#include <array>
 
 namespace opensynth {
 
@@ -24,18 +25,26 @@ namespace opensynth {
 // This is intentionally simple — not a full Kontakt competitor, but enough
 // to layer a realistic piano sample under the subtractive synth for hybrid sounds.
 
+enum class VelocityLayer {
+    Soft = 0,    // 0-50
+    Medium,      // 51-90
+    Loud,        // 91-127
+    Count
+};
+
 struct SampleZone {
     int rootNote = 60;           // MIDI note the sample was recorded at
     int minNote = 0;             // Lowest note this zone covers
     int maxNote = 127;           // Highest note this zone covers
-    float minVelocity = 0.0f;    // Velocity range for this layer
+    float minVelocity = 0.0f;    // Velocity range for this layer (0.0-1.0 normalized)
     float maxVelocity = 1.0f;
     bool loopEnabled = false;
     int loopStart = 0;
     int loopEnd = 0;
 
-    // Disk streamer (replaces in-memory data)
-    std::shared_ptr<SampleStream> stream;
+    // Velocity layers: up to 3 streams per zone (soft/medium/loud)
+    // Index by static_cast<int>(VelocityLayer)
+    std::array<std::shared_ptr<SampleStream>, static_cast<int>(VelocityLayer::Count)> streams;
     double sampleRate = 48000.0;
 };
 
@@ -69,8 +78,14 @@ public:
     SamplePlayer();
     ~SamplePlayer() = default;
 
-    // Load a single sample file into a zone
+    // Load a single sample file into a zone (backward compat)
     bool loadSample(const std::string& path, int rootNote, int minNote, int maxNote);
+
+    // Load multiple zones from a directory or JSON manifest
+    bool loadMultiSample(const std::string& manifestPath);
+
+    // Add a zone programmatically (used by loadMultiSample)
+    bool addZone(const SampleZone& zone);
 
     // Clear all zones
     void clear();
@@ -101,6 +116,9 @@ public:
     // Status
     int activeVoiceCount() const;
     int zoneCount() const { return static_cast<int>(zones_.size()); }
+
+    // Velocity layer helper
+    static VelocityLayer velocityToLayer(float velocity);
 
 private:
     std::vector<std::unique_ptr<SampleZone>> zones_;

@@ -59,9 +59,21 @@ float SampleVoice::process(double /*sampleRate*/) {
     int pos = static_cast<int>(position);
     float frac = static_cast<float>(position - pos);
 
-    if (!zone->stream || !zone->stream->isOpen()) return 0.0f;
+    // Select velocity layer stream
+    VelocityLayer layer = SamplePlayer::velocityToLayer(velocity);
+    auto stream = zone->streams[static_cast<int>(layer)];
+    if (!stream) {
+        // Fallback: use first available layer
+        for (int i = 0; i < static_cast<int>(VelocityLayer::Count); ++i) {
+            if (zone->streams[i]) {
+                stream = zone->streams[i];
+                break;
+            }
+        }
+    }
+    if (!stream || !stream->isOpen()) return 0.0f;
 
-    int64_t numFrames = zone->stream->getTotalSamples();
+    int64_t numFrames = stream->getTotalSamples();
     if (numFrames == 0) return 0.0f;
 
     if (pos >= numFrames - 1) {
@@ -81,12 +93,12 @@ float SampleVoice::process(double /*sampleRate*/) {
     float temp0[2] = {0.0f, 0.0f};
     float temp1[2] = {0.0f, 0.0f};
 
-    zone->stream->readSample(pos, temp0);
+    stream->readSample(pos, temp0);
     s0l = temp0[0];
     s0r = temp0[1];
 
     if (pos + 1 < numFrames) {
-        zone->stream->readSample(pos + 1, temp1);
+        stream->readSample(pos + 1, temp1);
         s1l = temp1[0];
         s1r = temp1[1];
     } else {
@@ -119,10 +131,95 @@ bool SamplePlayer::loadSample(const std::string& path, int rootNote, int minNote
     zone->minNote = minNote;
     zone->maxNote = maxNote;
     zone->sampleRate = stream->getSampleRate();
-    zone->stream = std::move(stream);
+    // Load into all velocity layers for backward compatibility
+    for (int i = 0; i < static_cast<int>(VelocityLayer::Count); ++i) {
+        zone->streams[i] = stream;
+    }
 
     zones_.push_back(std::move(zone));
     return true;
+}
+
+bool SamplePlayer::addZone(const SampleZone& zone) {
+    auto z = std::make_unique<SampleZone>(zone);
+    zones_.push_back(std::move(z));
+    return true;
+}
+
+bool SamplePlayer::loadMultiSample(const std::string& manifestPath) {
+    juce::File manifestFile(manifestPath);
+    if (!manifestFile.existsAsFile()) {
+        return false;
+    }
+
+    auto json = juce::JSON::parse(manifestFile);
+    if (json.isVoid()) {
+        return false;
+    }
+
+    auto* obj = json.getDynamicObject();
+    if (!obj) return false;
+
+    auto* zonesArray = obj->getProperty("zones").getArray();
+    if (!zonesArray) return false;
+
+    juce::File baseDir = manifestFile.getParentDirectory();
+
+    for (const auto& zoneVal : *zonesArray) {
+        auto* zoneObj = zoneVal.getDynamicObject();
+        if (!zoneObj) continue;
+
+        SampleZone zone;
+        zone.rootNote = zoneObj->getProperty("rootNote");
+        zone.minNote = zoneObj->getProperty("minNote");
+        zone.maxNote = zoneObj->getProperty("maxNote");
+        zone.minVelocity = static_cast<float>(zoneObj->getProperty("minVelocity"));
+        zone.maxVelocity = static_cast<float>(zoneObj->getProperty("maxVelocity"));
+        zone.loopEnabled = zoneObj->getProperty("loopEnabled");
+        zone.loopStart = zoneObj->getProperty("loopStart");
+        zone.loopEnd = zoneObj->getProperty("loopEnd");
+
+        auto* layers = zoneObj->getProperty("layers").getArray();
+        if (!layers) continue;
+
+        bool anyLoaded = false;
+        for (const auto& layerVal : *layers) {
+            auto* layerObj = layerVal.getDynamicObject();
+            if (!layerObj) continue;
+
+            juce::String layerName = layerObj->getProperty("layer").toString();
+            juce::String fileName = layerObj->getProperty("file").toString();
+            juce::File sampleFile = baseDir.getChildFile(fileName);
+
+            VelocityLayer layer = VelocityLayer::Soft;
+            if (layerName == "soft") layer = VelocityLayer::Soft;
+            else if (layerName == "medium") layer = VelocityLayer::Medium;
+            else if (layerName == "loud") layer = VelocityLayer::Loud;
+            else continue;
+
+            auto stream = std::make_shared<SampleStream>();
+            if (stream->open(sampleFile.getFullPathName().toStdString(), streamBufferSize_)) {
+                zone.streams[static_cast<int>(layer)] = std::move(stream);
+                if (zone.sampleRate == 48000.0) {
+                    zone.sampleRate = zone.streams[static_cast<int>(layer)]->getSampleRate();
+                }
+                anyLoaded = true;
+            }
+        }
+
+        if (anyLoaded) {
+            zones_.push_back(std::make_unique<SampleZone>(zone));
+        }
+    }
+
+    return !zones_.empty();
+}
+
+VelocityLayer SamplePlayer::velocityToLayer(float velocity) {
+    int v = static_cast<int>(velocity * 127.0f);
+    if (v <= 50) return VelocityLayer::Soft;
+    if (v <= 90) return VelocityLayer::Medium;
+    return VelocityLayer::Loud;
 }
 
 void SamplePlayer::clear() {
