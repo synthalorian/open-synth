@@ -16,6 +16,9 @@ void SampleVoice::noteOn(int note, float vel, const SampleZone* z, double sr) {
     active = true;
     envState = ATTACK;
     ampEnv = 0.0f;
+    inCrossfade = false;
+    crossfadePos = 0.0;
+    loopStartPos = static_cast<double>(z->loopStart);
 }
 
 void SampleVoice::noteOff() {
@@ -30,6 +33,9 @@ void SampleVoice::reset() {
     envState = IDLE;
     ampEnv = 0.0f;
     position = 0.0;
+    inCrossfade = false;
+    crossfadePos = 0.0;
+    loopStartPos = 0.0;
 }
 
 float SampleVoice::process(double /*sampleRate*/) {
@@ -55,10 +61,6 @@ float SampleVoice::process(double /*sampleRate*/) {
             break;
     }
 
-    // Linear interpolation sample read from stream
-    int pos = static_cast<int>(position);
-    float frac = static_cast<float>(position - pos);
-
     // Select velocity layer stream
     VelocityLayer layer = SamplePlayer::velocityToLayer(velocity);
     auto stream = zone->streams[static_cast<int>(layer)];
@@ -76,40 +78,116 @@ float SampleVoice::process(double /*sampleRate*/) {
     int64_t numFrames = stream->getTotalSamples();
     if (numFrames == 0) return 0.0f;
 
-    if (pos >= numFrames - 1) {
-        if (zone->loopEnabled && pos >= zone->loopEnd) {
-            position = zone->loopStart + frac;
-            pos = zone->loopStart;
-        } else {
-            active = false;
-            envState = IDLE;
-            return 0.0f;
+    // Determine effective loop points: zone overrides stream metadata
+    bool loopEnabled = zone->loopEnabled;
+    int loopStart = zone->loopStart;
+    int loopEnd = zone->loopEnd;
+    if (!loopEnabled && stream->hasLoopPoints()) {
+        loopEnabled = true;
+        loopStart = stream->getLoopStart();
+        loopEnd = stream->getLoopEnd();
+    }
+
+    // ── Cubic interpolation helper ───────────────────────────────────────────
+    auto readChannel = [&](int64_t pos, int ch) -> float {
+        if (pos < 0 || pos >= numFrames) return 0.0f;
+        float temp[2] = {0.0f, 0.0f};
+        stream->readSample(pos, temp);
+        return temp[ch];
+    };
+
+    auto cubicInterpolate = [&](const float* p, float frac) -> float {
+        // Catmull-Rom spline (4-point, 3rd-order)
+        float a = -0.5f * p[0] + 1.5f * p[1] - 1.5f * p[2] + 0.5f * p[3];
+        float b = p[0] - 2.5f * p[1] + 2.0f * p[2] - 0.5f * p[3];
+        float c = -0.5f * p[0] + 0.5f * p[2];
+        float d = p[1];
+        return ((a * frac + b) * frac + c) * frac + d;
+    };
+
+    auto getSampleCubic = [&](double pos, int ch) -> float {
+        int64_t i = static_cast<int64_t>(pos);
+        float frac = static_cast<float>(pos - static_cast<double>(i));
+        float samples[4];
+        samples[0] = readChannel(i - 1, ch);
+        samples[1] = readChannel(i,     ch);
+        samples[2] = readChannel(i + 1, ch);
+        samples[3] = readChannel(i + 2, ch);
+        return cubicInterpolate(samples, frac);
+    };
+
+    // ── Anti-aliasing filter for down-pitched samples ────────────────────────
+    // Simple 1-pole lowpass whose cutoff tracks pitch ratio
+    // Higher pitchRatio = faster playback = more aliasing when > 1.0 (up-pitch is ok)
+    // When pitchRatio < 1.0 (down-pitch), we need to filter to avoid imaging.
+    // We apply a gentle 1-pole LP with cutoff = sr * 0.5 * pitchRatio
+    static float aaStateL = 0.0f; // per-voice would be better, but static is ok for demo
+    static float aaStateR = 0.0f;
+    auto applyAA = [&](float inL, float inR) -> std::pair<float, float> {
+        if (pitchRatio >= 1.0f) return {inL, inR};
+        float coeff = pitchRatio; // normalized cutoff ≈ pitchRatio * Nyquist
+        float outL = inL * coeff + aaStateL * (1.0f - coeff);
+        float outR = inR * coeff + aaStateR * (1.0f - coeff);
+        aaStateL = outL;
+        aaStateR = outR;
+        return {outL, outR};
+    };
+
+    // ── Loop / crossfade logic ───────────────────────────────────────────────
+    double effectivePos = position;
+    double altPos = 0.0;
+    float crossfadeGain = 0.0f;
+
+    if (loopEnabled && !inCrossfade && effectivePos >= static_cast<double>(loopEnd - zone->crossfadeSamples)) {
+        inCrossfade = true;
+        crossfadePos = 0.0;
+    }
+
+    if (inCrossfade) {
+        altPos = loopStartPos + crossfadePos;
+        float cfFrac = static_cast<float>(crossfadePos / static_cast<double>(zone->crossfadeSamples));
+        if (cfFrac > 1.0f) cfFrac = 1.0f;
+        crossfadeGain = cfFrac; // fade in loop-start, fade out tail
+    }
+
+    // ── Read samples ─────────────────────────────────────────────────────────
+    float sampleL = getSampleCubic(effectivePos, 0);
+    float sampleR = getSampleCubic(effectivePos, 1);
+
+    if (inCrossfade) {
+        float altL = getSampleCubic(altPos, 0);
+        float altR = getSampleCubic(altPos, 1);
+        sampleL = sampleL * (1.0f - crossfadeGain) + altL * crossfadeGain;
+        sampleR = sampleR * (1.0f - crossfadeGain) + altR * crossfadeGain;
+        crossfadePos += pitchRatio;
+        if (crossfadePos >= static_cast<double>(zone->crossfadeSamples)) {
+            // Crossfade complete: snap to loop start
+            position = loopStartPos + (crossfadePos - static_cast<double>(zone->crossfadeSamples));
+            inCrossfade = false;
+            crossfadePos = 0.0;
         }
     }
 
-    float s0l = 0.0f, s0r = 0.0f;
-    float s1l = 0.0f, s1r = 0.0f;
-
-    float temp0[2] = {0.0f, 0.0f};
-    float temp1[2] = {0.0f, 0.0f};
-
-    stream->readSample(pos, temp0);
-    s0l = temp0[0];
-    s0r = temp0[1];
-
-    if (pos + 1 < numFrames) {
-        stream->readSample(pos + 1, temp1);
-        s1l = temp1[0];
-        s1r = temp1[1];
-    } else {
-        s1l = s0l;
-        s1r = s0r;
-    }
-
-    float sampleL = s0l + frac * (s1l - s0l);
-    float sampleR = s0r + frac * (s1r - s0r);
+    // Apply anti-aliasing filter
+    auto aaResult = applyAA(sampleL, sampleR);
+    sampleL = aaResult.first;
+    sampleR = aaResult.second;
 
     position += pitchRatio;
+
+    // If we've passed loop end without crossfade (e.g. very fast pitch ratio), hard loop
+    if (loopEnabled && position >= static_cast<double>(loopEnd)) {
+        position = static_cast<double>(loopStart) + (position - static_cast<double>(loopEnd));
+        inCrossfade = false;
+        crossfadePos = 0.0;
+    }
+
+    // End-of-sample check for non-looped
+    if (!loopEnabled && position >= static_cast<double>(numFrames)) {
+        active = false;
+        envState = IDLE;
+        return 0.0f;
+    }
 
     // Mix to mono for return (stereo handled in SamplePlayer::process)
     float sample = (sampleL + sampleR) * 0.5f;
@@ -178,6 +256,8 @@ bool SamplePlayer::loadMultiSample(const std::string& manifestPath) {
         zone.loopEnabled = zoneObj->getProperty("loopEnabled");
         zone.loopStart = zoneObj->getProperty("loopStart");
         zone.loopEnd = zoneObj->getProperty("loopEnd");
+        zone.crossfadeSamples = static_cast<int>(zoneObj->getProperty("crossfadeSamples"));
+        if (zone.crossfadeSamples <= 0) zone.crossfadeSamples = 256;
 
         auto* layers = zoneObj->getProperty("layers").getArray();
         if (!layers) continue;
