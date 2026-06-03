@@ -2,7 +2,7 @@
 #include <algorithm>
 #include <cmath>
 
-namespace openamp {
+namespace opensynth {
 
 WavetableOscillator::WavetableOscillator() = default;
 WavetableOscillator::~WavetableOscillator() = default;
@@ -98,4 +98,4 @@ float WavetableOscillator::interpolate(double index) const {
     return ((c3 * frac + c2) * frac + c1) * frac + c0;
 }
 
-} // namespace openamp
+} // namespace opensynth

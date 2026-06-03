@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <cmath>
 
-namespace openamp {
+namespace opensynth {
 
 void SynthPreset::setParam(const std::string& key, float value) {
     for (auto& p : params_) {
@@ -78,4 +78,4 @@ int SynthPreset::load(const std::string& path, SynthPreset& preset, std::string&
     return 0;
 }
 
-} // namespace openamp
+} // namespace opensynth

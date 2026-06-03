@@ -1,7 +1,7 @@
 #include "fx_gated_reverb.h"
 #include <algorithm>
 
-namespace openamp {
+namespace opensynth {
 
 GatedReverbProcessor::GatedReverbProcessor()
     : FxProcessor(FxType::GatedReverb) {
@@ -114,4 +114,4 @@ const char* GatedReverbProcessor::paramName(int index) const {
     }
 }
 
-} // namespace openamp
+} // namespace opensynth

@@ -2,7 +2,7 @@
 #include <cmath>
 #include <cstdlib>
 
-namespace openamp {
+namespace opensynth {
 
 Arpeggiator::Arpeggiator() {
     heldNotes_.reserve(32);
@@ -242,4 +242,4 @@ int Arpeggiator::totalSteps() const {
     return stepsPerCycle;
 }
 
-} // namespace openamp
+} // namespace opensynth

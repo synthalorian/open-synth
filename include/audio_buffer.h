@@ -2,7 +2,7 @@
 #include <cstdint>
 #include <cstddef>
 
-namespace openamp {
+namespace opensynth {
 
 struct AudioBuffer {
     float* data;
@@ -14,4 +14,4 @@ struct AudioBuffer {
         : data(d), numFrames(f), numChannels(c) {}
 };
 
-} // namespace openamp
+} // namespace opensynth

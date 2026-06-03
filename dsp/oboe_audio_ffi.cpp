@@ -24,13 +24,13 @@ void* audio_stream_create_for_synth(void* synthHandle, double sampleRate,
                                      uint32_t blockSize, int32_t deviceIndex) {
     (void)deviceIndex; // Android always uses the default output device.
 
-    auto* engine = static_cast<openamp::SynthEngine*>(synthHandle);
+    auto* engine = static_cast<opensynth::SynthEngine*>(synthHandle);
     if (engine == nullptr) return nullptr;
 
-    auto* stream = new openamp::OboeAudioStream(
+    auto* stream = new opensynth::OboeAudioStream(
         engine,
-        [](void* ctx, openamp::AudioBuffer& buf) {
-            static_cast<openamp::SynthEngine*>(ctx)->process(buf);
+        [](void* ctx, opensynth::AudioBuffer& buf) {
+            static_cast<opensynth::SynthEngine*>(ctx)->process(buf);
         },
         sampleRate, blockSize);
     return static_cast<void*>(stream);
@@ -40,44 +40,44 @@ void* audio_stream_create_for_pair(void* pairHandle, double sampleRate,
                                     uint32_t blockSize, int32_t deviceIndex) {
     (void)deviceIndex; // Android always uses the default output device.
 
-    auto* pair = static_cast<openamp::SynthEnginePair*>(pairHandle);
+    auto* pair = static_cast<opensynth::SynthEnginePair*>(pairHandle);
     if (pair == nullptr) return nullptr;
 
-    auto* stream = new openamp::OboeAudioStream(
+    auto* stream = new opensynth::OboeAudioStream(
         pair,
-        [](void* ctx, openamp::AudioBuffer& buf) {
-            static_cast<openamp::SynthEnginePair*>(ctx)->process(buf);
+        [](void* ctx, opensynth::AudioBuffer& buf) {
+            static_cast<opensynth::SynthEnginePair*>(ctx)->process(buf);
         },
         sampleRate, blockSize);
     return static_cast<void*>(stream);
 }
 
 void audio_stream_destroy(void* stream) {
-    delete static_cast<openamp::OboeAudioStream*>(stream);
+    delete static_cast<opensynth::OboeAudioStream*>(stream);
 }
 
 int32_t audio_stream_start(void* stream) {
-    auto* s = static_cast<openamp::OboeAudioStream*>(stream);
+    auto* s = static_cast<opensynth::OboeAudioStream*>(stream);
     return s ? (s->start() ? 1 : 0) : 0;
 }
 
 void audio_stream_stop(void* stream) {
-    auto* s = static_cast<openamp::OboeAudioStream*>(stream);
+    auto* s = static_cast<opensynth::OboeAudioStream*>(stream);
     if (s) s->stop();
 }
 
 int32_t audio_stream_is_running(void* stream) {
-    auto* s = static_cast<openamp::OboeAudioStream*>(stream);
+    auto* s = static_cast<opensynth::OboeAudioStream*>(stream);
     return s ? (s->isRunning() ? 1 : 0) : 0;
 }
 
 uint64_t audio_stream_callback_count(void* stream) {
-    auto* s = static_cast<openamp::OboeAudioStream*>(stream);
+    auto* s = static_cast<opensynth::OboeAudioStream*>(stream);
     return s ? s->callbackCount() : 0;
 }
 
 const char* audio_stream_last_error(void* stream) {
-    auto* s = static_cast<openamp::OboeAudioStream*>(stream);
+    auto* s = static_cast<opensynth::OboeAudioStream*>(stream);
     return s ? s->lastError() : "null stream";
 }
 

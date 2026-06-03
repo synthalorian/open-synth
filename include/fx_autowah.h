@@ -2,7 +2,7 @@
 #include "fx_engine.h"
 #include <cmath>
 
-namespace openamp {
+namespace opensynth {
 
 /// Auto-wah / envelope filter.
 /// A resonant lowpass filter whose cutoff tracks the input signal envelope.
@@ -46,4 +46,4 @@ private:
     float processFilter(float input, float& lp, float& bp, float cutoff, float q);
 };
 
-} // namespace openamp
+} // namespace opensynth

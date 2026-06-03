@@ -10,7 +10,7 @@
 #include "fx_tremolo.h"
 #include "legacy_fx.h"
 
-using namespace openamp;
+using namespace opensynth;
 
 static int tests_passed = 0;
 static int tests_failed = 0;

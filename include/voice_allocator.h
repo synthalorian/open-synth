@@ -2,7 +2,7 @@
 #include <array>
 #include "voice.h"
 
-namespace openamp {
+namespace opensynth {
 
 /// Voice stealing priority mode.
 enum class VoicePriorityMode : int {
@@ -46,4 +46,4 @@ private:
     Voice* stealQuietestVoice();   // QUIETEST
 };
 
-} // namespace openamp
+} // namespace opensynth

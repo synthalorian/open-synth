@@ -2,7 +2,7 @@
 #include <algorithm>
 #include <cmath>
 
-namespace openamp {
+namespace opensynth {
 
 void EqProcessor::process(float& left, float& right, double sampleRate) {
     if (dirty_ || sampleRate != cachedSampleRate_) {
@@ -145,4 +145,4 @@ void EqProcessor::updateCoefficients(double sampleRate) {
     }
 }
 
-} // namespace openamp
+} // namespace opensynth

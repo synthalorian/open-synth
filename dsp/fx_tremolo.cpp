@@ -3,7 +3,7 @@
 #include <cmath>
 #include <cstdlib>
 
-namespace openamp {
+namespace opensynth {
 
 static const double TWO_PI = 6.283185307179586;
 
@@ -111,4 +111,4 @@ const char* TremoloProcessor::paramName(int index) const {
     return "";
 }
 
-} // namespace openamp
+} // namespace opensynth

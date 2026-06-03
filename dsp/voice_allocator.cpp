@@ -1,7 +1,7 @@
 #include "voice_allocator.h"
 #include <algorithm>
 
-namespace openamp {
+namespace opensynth {
 
 VoiceAllocator::VoiceAllocator() {
     for (auto& v : voices_) {
@@ -199,4 +199,4 @@ Voice* VoiceAllocator::stealQuietestVoice() {
     return best ? best : &voices_[0];
 }
 
-} // namespace openamp
+} // namespace opensynth

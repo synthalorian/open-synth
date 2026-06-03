@@ -1,7 +1,7 @@
 #include "fx_autowah.h"
 #include <algorithm>
 
-namespace openamp {
+namespace opensynth {
 
 AutoWahProcessor::AutoWahProcessor()
     : FxProcessor(FxType::AutoWah) {}
@@ -93,4 +93,4 @@ const char* AutoWahProcessor::paramName(int index) const {
     }
 }
 
-} // namespace openamp
+} // namespace opensynth

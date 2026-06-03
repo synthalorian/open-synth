@@ -4,7 +4,7 @@
 #include <algorithm>
 #include "voice_allocator.h"
 
-namespace openamp {
+namespace opensynth {
 
 class Arpeggiator {
 public:
@@ -107,4 +107,4 @@ private:
     unsigned int fastRand() const;
 };
 
-} // namespace openamp
+} // namespace opensynth

@@ -3,7 +3,7 @@
 #include <cmath>
 #include <cstdint>
 
-namespace openamp {
+namespace opensynth {
 
 /// Bitcrusher + sample rate reducer for lo-fi grit.
 class BitcrusherProcessor : public FxProcessor {
@@ -37,4 +37,4 @@ private:
     float crush(float sample);
 };
 
-} // namespace openamp
+} // namespace opensynth

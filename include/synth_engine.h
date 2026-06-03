@@ -14,7 +14,7 @@
 #include "synth_part.h"
 #include "recorder.h"
 
-namespace openamp {
+namespace opensynth {
 
 // Forward declaration for the LegacyFxProcessor used in slot 0 of the FxEngine.
 class LegacyFxProcessor;
@@ -302,4 +302,4 @@ private:
     int channelToPart(int channel) const;
 };
 
-} // namespace openamp
+} // namespace opensynth

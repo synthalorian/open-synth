@@ -2,7 +2,7 @@
 #include <cmath>
 #include <algorithm>
 
-namespace openamp {
+namespace opensynth {
 
 void StateVariableFilter::setType(int type) {
     type_ = std::clamp(type, 0, 6);
@@ -108,4 +108,4 @@ void StateVariableFilter::reset(FilterState& state) {
     state.hp = 0.0f;
 }
 
-} // namespace openamp
+} // namespace opensynth

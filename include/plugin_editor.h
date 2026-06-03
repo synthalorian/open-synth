@@ -8,7 +8,7 @@
 #include "user_preset_manager.h"
 #include "app_state_manager.h"
 
-namespace openamp {
+namespace opensynth {
 
 // ── Synthwave Color Palette ───────────────────────────────────────────────
 struct SynthColors {
@@ -320,7 +320,7 @@ private:
 // ── Keyboard Component ────────────────────────────────────────────────────
 class PianoKeyboard : public juce::Component {
 public:
-    explicit PianoKeyboard(OpenSynthJucedProcessor& processor);
+    explicit PianoKeyboard(OpenSynthProcessor& processor);
 
     void paint(juce::Graphics& g) override;
     void resized() override;
@@ -336,7 +336,7 @@ public:
     void setKeyReleased(int note);
 
 private:
-    OpenSynthJucedProcessor& processor_;
+    OpenSynthProcessor& processor_;
     int hoveredNote_ = -1;
     int pressedNote_ = -1;
     int splitPoint_ = 60;
@@ -427,12 +427,12 @@ private:
 };
 
 // ── Main Editor ───────────────────────────────────────────────────────────
-class OpenSynthJucedEditor : public juce::AudioProcessorEditor,
+class OpenSynthEditor : public juce::AudioProcessorEditor,
                          private juce::Timer,
                          private juce::MidiInputCallback {
 public:
-    explicit OpenSynthJucedEditor(OpenSynthJucedProcessor& processor);
-    ~OpenSynthJucedEditor() override
+    explicit OpenSynthEditor(OpenSynthProcessor& processor);
+    ~OpenSynthEditor() override
     {
         saveAppState();
     }
@@ -443,7 +443,7 @@ public:
     bool keyStateChanged(bool isKeyDown) override;
 
 private:
-    OpenSynthJucedProcessor& processor_;
+    OpenSynthProcessor& processor_;
 
     // Header
     juce::Label titleLabel_;
@@ -508,7 +508,7 @@ private:
     void handleIncomingMidiMessage(juce::MidiInput* source, const juce::MidiMessage& message) override;
     void openDefaultMidiInput();
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(OpenSynthJucedEditor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(OpenSynthEditor)
 };
 
-} // namespace openamp
+} // namespace opensynth

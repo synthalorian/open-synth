@@ -1,7 +1,7 @@
 #pragma once
 #include "wavetable_oscillator.h"
 
-namespace openamp {
+namespace opensynth {
 
 // Returns a const pointer to a built-in wavetable by type index.
 // 0 = Piano, 1 = Guitar, 2 = Choir, 3 = Brass, 4 = Strings,
@@ -21,4 +21,4 @@ int getBuiltinWavetableCount();
 // Get the display name for a wavetable type.
 const char* getBuiltinWavetableName(int type);
 
-} // namespace openamp
+} // namespace opensynth

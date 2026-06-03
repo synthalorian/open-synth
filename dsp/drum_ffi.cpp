@@ -1,6 +1,6 @@
 #include "drum_synth.h"
 
-using namespace openamp;
+using namespace opensynth;
 
 extern "C" {
 

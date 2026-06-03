@@ -4,7 +4,7 @@
 #include "synth_engine.h"
 #include "synth_mixer.h"
 
-using openamp::AudioSystem;
+using opensynth::AudioSystem;
 
 // ── Audio system lifecycle ────────────────────────────────────────────────────
 
@@ -24,14 +24,14 @@ int32_t audio_system_is_initialized() {
 
 void* audio_stream_create_for_synth(void* synthHandle, double sampleRate,
                                      uint32_t blockSize, int32_t deviceIndex) {
-    auto* engine = static_cast<openamp::SynthEngine*>(synthHandle);
+    auto* engine = static_cast<opensynth::SynthEngine*>(synthHandle);
     if (engine == nullptr) return nullptr;
 
     // Create a generic processor that calls SynthEngine::process
-    auto* stream = new openamp::AudioStream(
+    auto* stream = new opensynth::AudioStream(
         engine,
-        [](void* ctx, openamp::AudioBuffer& buf) {
-            static_cast<openamp::SynthEngine*>(ctx)->process(buf);
+        [](void* ctx, opensynth::AudioBuffer& buf) {
+            static_cast<opensynth::SynthEngine*>(ctx)->process(buf);
         },
         sampleRate, blockSize,
         static_cast<int>(deviceIndex));
@@ -40,13 +40,13 @@ void* audio_stream_create_for_synth(void* synthHandle, double sampleRate,
 
 void* audio_stream_create_for_pair(void* pairHandle, double sampleRate,
                                     uint32_t blockSize, int32_t deviceIndex) {
-    auto* pair = static_cast<openamp::SynthEnginePair*>(pairHandle);
+    auto* pair = static_cast<opensynth::SynthEnginePair*>(pairHandle);
     if (pair == nullptr) return nullptr;
 
-    auto* stream = new openamp::AudioStream(
+    auto* stream = new opensynth::AudioStream(
         pair,
-        [](void* ctx, openamp::AudioBuffer& buf) {
-            static_cast<openamp::SynthEnginePair*>(ctx)->process(buf);
+        [](void* ctx, opensynth::AudioBuffer& buf) {
+            static_cast<opensynth::SynthEnginePair*>(ctx)->process(buf);
         },
         sampleRate, blockSize,
         static_cast<int>(deviceIndex));
@@ -54,31 +54,31 @@ void* audio_stream_create_for_pair(void* pairHandle, double sampleRate,
 }
 
 void audio_stream_destroy(void* stream) {
-    delete static_cast<openamp::AudioStream*>(stream);
+    delete static_cast<opensynth::AudioStream*>(stream);
 }
 
 int32_t audio_stream_start(void* stream) {
-    auto* s = static_cast<openamp::AudioStream*>(stream);
+    auto* s = static_cast<opensynth::AudioStream*>(stream);
     return s ? (s->start() ? 1 : 0) : 0;
 }
 
 void audio_stream_stop(void* stream) {
-    auto* s = static_cast<openamp::AudioStream*>(stream);
+    auto* s = static_cast<opensynth::AudioStream*>(stream);
     if (s) s->stop();
 }
 
 int32_t audio_stream_is_running(void* stream) {
-    auto* s = static_cast<openamp::AudioStream*>(stream);
+    auto* s = static_cast<opensynth::AudioStream*>(stream);
     return s ? (s->isRunning() ? 1 : 0) : 0;
 }
 
 uint64_t audio_stream_callback_count(void* stream) {
-    auto* s = static_cast<openamp::AudioStream*>(stream);
+    auto* s = static_cast<opensynth::AudioStream*>(stream);
     return s ? s->callbackCount() : 0;
 }
 
 const char* audio_stream_last_error(void* stream) {
-    auto* s = static_cast<openamp::AudioStream*>(stream);
+    auto* s = static_cast<opensynth::AudioStream*>(stream);
     return s ? s->lastError() : "null stream";
 }
 

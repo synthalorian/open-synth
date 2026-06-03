@@ -2,7 +2,7 @@
 #include "fx_engine.h"
 #include <cmath>
 
-namespace openamp {
+namespace opensynth {
 
 /// Brickwall limiter with look-ahead, attack/release, and makeup gain.
 class LimiterProcessor : public FxProcessor {
@@ -34,4 +34,4 @@ private:
     double sampleRate_ = 48000.0;
 };
 
-} // namespace openamp
+} // namespace opensynth

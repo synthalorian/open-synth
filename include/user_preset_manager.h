@@ -2,7 +2,7 @@
 #include <juce_core/juce_core.h>
 #include <juce_audio_processors/juce_audio_processors.h>
 
-namespace openamp {
+namespace opensynth {
 
 struct UserPreset {
     juce::String name;
@@ -41,4 +41,4 @@ private:
     void writePresetsToDisk(const std::vector<UserPreset>& presets) const;
 };
 
-} // namespace openamp
+} // namespace opensynth

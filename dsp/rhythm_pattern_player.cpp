@@ -4,7 +4,7 @@
 #include <cmath>
 #include <cstring>
 
-namespace openamp {
+namespace opensynth {
 
 // ── GM2 Drum Note Constants ───────────────────────────────────────────────────
 static constexpr uint8_t KICK   = 36;
@@ -1119,4 +1119,4 @@ void RhythmPatternPlayer::advanceVariation() {
     nextVariation();
 }
 
-} // namespace openamp
+} // namespace opensynth

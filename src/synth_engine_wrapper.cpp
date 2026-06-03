@@ -5,7 +5,7 @@
 #include "audio_buffer.h"
 #include <cstring>
 
-namespace openamp {
+namespace opensynth {
 
 SynthEngineWrapper::SynthEngineWrapper() = default;
 SynthEngineWrapper::~SynthEngineWrapper() = default;
@@ -215,4 +215,4 @@ std::vector<float> SynthEngineWrapper::getLastAudioBuffer() const
     return scopeBuffer_;
 }
 
-} // namespace openamp
+} // namespace opensynth

@@ -2,7 +2,7 @@
 #include <cmath>
 #include <algorithm>
 
-namespace openamp {
+namespace opensynth {
 
 /// Envelope curve type for attack, decay, release stages.
 enum class EnvCurve : int {
@@ -60,4 +60,4 @@ private:
     float applyCurve(float linearPhase, EnvCurve curve) const;
 };
 
-} // namespace openamp
+} // namespace opensynth

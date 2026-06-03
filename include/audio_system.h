@@ -5,7 +5,7 @@
 #include <mutex>
 #include <portaudio.h>
 
-namespace openamp {
+namespace opensynth {
 
 /// Cached info about a single audio output device.
 struct DeviceInfo {
@@ -69,4 +69,4 @@ private:
     mutable std::mutex mutex_;
 };
 
-} // namespace openamp
+} // namespace opensynth

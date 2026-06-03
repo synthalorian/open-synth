@@ -5,7 +5,7 @@
 #include <cstring>
 #include <string>
 
-using namespace openamp;
+using namespace opensynth;
 
 // ── Lifecycle ─────────────────────────────────────────────────────────────────
 

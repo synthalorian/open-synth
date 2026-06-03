@@ -1,7 +1,7 @@
 #include "fx_spring_reverb.h"
 #include <algorithm>
 
-namespace openamp {
+namespace opensynth {
 
 SpringReverbProcessor::SpringReverbProcessor()
     : FxProcessor(FxType::SpringReverb) {
@@ -110,4 +110,4 @@ const char* SpringReverbProcessor::paramName(int index) const {
     }
 }
 
-} // namespace openamp
+} // namespace opensynth

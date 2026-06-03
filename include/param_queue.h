@@ -3,7 +3,7 @@
 #include <cstring>
 #include <atomic>
 
-namespace openamp {
+namespace opensynth {
 
 /// Lock-free single-producer single-consumer (SPSC) parameter queue.
 ///
@@ -324,4 +324,4 @@ private:
     alignas(64) std::atomic<size_t> tail_;
 };
 
-} // namespace openamp
+} // namespace opensynth

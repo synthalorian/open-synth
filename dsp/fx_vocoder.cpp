@@ -2,7 +2,7 @@
 #include <cmath>
 #include <cstdlib>
 
-namespace openamp {
+namespace opensynth {
 
 VocoderProcessor::VocoderProcessor()
     : FxProcessor(FxType::Vocoder)
@@ -81,4 +81,4 @@ float VocoderProcessor::noise() const
     return (static_cast<float>(std::rand()) / RAND_MAX) * 2.0f - 1.0f;
 }
 
-} // namespace openamp
+} // namespace opensynth

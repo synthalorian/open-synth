@@ -3,7 +3,7 @@
 #include <cmath>
 #include <cstring>
 
-namespace openamp {
+namespace opensynth {
 
 // ── Physical modeling synthesis types ────────────────────────────────────────
 
@@ -149,4 +149,4 @@ private:
     ModalVoice modalVoice_;
 };
 
-} // namespace openamp
+} // namespace opensynth

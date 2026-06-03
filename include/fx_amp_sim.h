@@ -2,7 +2,7 @@
 #include "fx_engine.h"
 #include <cmath>
 
-namespace openamp {
+namespace opensynth {
 
 /// Guitar amp simulator: preamp distortion + tone stack.
 class AmpSimulatorProcessor : public FxProcessor {
@@ -44,4 +44,4 @@ private:
     float toneFilter(float input, float& state, float freq, float gain, double sr);
 };
 
-} // namespace openamp
+} // namespace opensynth

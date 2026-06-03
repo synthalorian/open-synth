@@ -2,7 +2,7 @@
 #include <cstdint>
 #include <cmath>
 
-namespace openamp {
+namespace opensynth {
 
 // ── Drum type identifiers ───────────────────────────────────────────────────
 
@@ -125,4 +125,4 @@ private:
     static float fastRand(float& seed);
 };
 
-} // namespace openamp
+} // namespace opensynth

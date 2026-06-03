@@ -2,7 +2,7 @@
 #include <cstring>
 #include <algorithm>
 
-namespace openamp {
+namespace opensynth {
 
 // ── Body Resonance ───────────────────────────────────────────────────────────
 
@@ -209,4 +209,4 @@ float InstrumentRealism::process(float input, float velocity, double sampleRate,
     return out;
 }
 
-} // namespace openamp
+} // namespace opensynth

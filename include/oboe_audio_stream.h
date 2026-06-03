@@ -5,7 +5,7 @@
 #include <oboe/Oboe.h>
 #include "audio_buffer.h"
 
-namespace openamp {
+namespace opensynth {
 
 // Same AudioProcessor callback type as audio_stream.h
 using AudioProcessor = void(*)(void* context, AudioBuffer& output);
@@ -43,4 +43,4 @@ private:
     char errorBuf_[512] = {};
 };
 
-} // namespace openamp
+} // namespace opensynth

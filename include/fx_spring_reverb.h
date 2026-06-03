@@ -3,7 +3,7 @@
 #include <cmath>
 #include <array>
 
-namespace openamp {
+namespace opensynth {
 
 /// Spring reverb emulation using cascaded comb filters + allpass.
 class SpringReverbProcessor : public FxProcessor {
@@ -46,4 +46,4 @@ private:
     int apDelay(int index) const;
 };
 
-} // namespace openamp
+} // namespace opensynth

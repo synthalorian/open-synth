@@ -3,7 +3,7 @@
 #include <cmath>
 #include <array>
 
-namespace openamp {
+namespace opensynth {
 
 /// Stereo widener using Haas effect (micro-delay) + mid/side processing.
 class StereoWidenerProcessor : public FxProcessor {
@@ -40,4 +40,4 @@ private:
     float lpfR_ = 0.0f;
 };
 
-} // namespace openamp
+} // namespace opensynth

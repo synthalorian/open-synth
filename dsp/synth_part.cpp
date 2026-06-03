@@ -1,6 +1,6 @@
 #include "synth_part.h"
 
-namespace openamp {
+namespace opensynth {
 
 void SynthPart::reset() {
     midiChannel = 0;
@@ -49,4 +49,4 @@ void SynthPart::reset() {
     realismBrightnessSens = 0.0f;
 }
 
-} // namespace openamp
+} // namespace opensynth

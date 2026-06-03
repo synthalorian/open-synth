@@ -3,7 +3,7 @@
 #include <cmath>
 #include <array>
 
-namespace openamp {
+namespace opensynth {
 
 /// Ping-pong delay: input to left, feedback crosses to right.
 class PingPongDelayProcessor : public FxProcessor {
@@ -37,4 +37,4 @@ private:
     double sampleRate_ = 48000.0;
 };
 
-} // namespace openamp
+} // namespace opensynth

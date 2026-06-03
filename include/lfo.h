@@ -2,7 +2,7 @@
 #include <cstdint>
 #include <cmath>
 
-namespace openamp {
+namespace opensynth {
 
 class LFO {
 public:
@@ -78,4 +78,4 @@ private:
     float randomValue();
 };
 
-} // namespace openamp
+} // namespace opensynth

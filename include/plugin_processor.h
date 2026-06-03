@@ -3,12 +3,12 @@
 #include <juce_dsp/juce_dsp.h>
 #include "synth_engine_wrapper.h"
 
-namespace openamp {
+namespace opensynth {
 
-class OpenSynthJucedProcessor : public juce::AudioProcessor {
+class OpenSynthProcessor : public juce::AudioProcessor {
 public:
-    OpenSynthJucedProcessor();
-    ~OpenSynthJucedProcessor() override = default;
+    OpenSynthProcessor();
+    ~OpenSynthProcessor() override = default;
 
     void prepareToPlay(double sampleRate, int samplesPerBlock) override;
     void releaseResources() override;
@@ -17,7 +17,7 @@ public:
     juce::AudioProcessorEditor* createEditor() override;
     bool hasEditor() const override { return true; }
 
-    const juce::String getName() const override { return "Open Synth Juced"; }
+    const juce::String getName() const override { return "Open Synth"; }
     bool acceptsMidi() const override { return true; }
     bool producesMidi() const override { return false; }
     bool isMidiEffect() const override { return false; }
@@ -64,7 +64,7 @@ private:
     juce::MidiBuffer uiMidiBuffer_;
     juce::CriticalSection midiLock_;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(OpenSynthJucedProcessor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(OpenSynthProcessor)
 };
 
-} // namespace openamp
+} // namespace opensynth

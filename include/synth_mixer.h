@@ -4,7 +4,7 @@
 #include "synth_engine.h"
 #include "audio_buffer.h"
 
-namespace openamp {
+namespace opensynth {
 
 /// Wraps two SynthEngine instances (Zone A and Zone B) and mixes their
 /// audio outputs together with per-zone volume control.
@@ -64,4 +64,4 @@ private:
     std::vector<float> tempStorage_;
 };
 
-} // namespace openamp
+} // namespace opensynth

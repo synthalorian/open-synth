@@ -1,7 +1,7 @@
 #include "drum_kit_mapping.h"
 #include "drum_synth.h"
 
-namespace openamp {
+namespace opensynth {
 
 // ── GM2 Percussion Note → DrumType mapping ──────────────────────────────────
 
@@ -380,4 +380,4 @@ void initDrumKitPresets(DrumKitPreset kits[10]) {
     }
 }
 
-} // namespace openamp
+} // namespace opensynth

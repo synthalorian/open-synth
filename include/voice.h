@@ -7,7 +7,7 @@
 #include "physical_model.h"
 #include "instrument_realism.h"
 
-namespace openamp {
+namespace opensynth {
 
 struct Voice {
     bool active = false;
@@ -52,4 +52,4 @@ struct Voice {
     void noteOff();
 };
 
-} // namespace openamp
+} // namespace opensynth

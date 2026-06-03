@@ -2,7 +2,7 @@
 #include <juce_core/juce_core.h>
 #include <array>
 
-namespace openamp {
+namespace opensynth {
 
 // ── Setlist State ─────────────────────────────────────────────────────────
 struct SetlistState {
@@ -51,4 +51,4 @@ private:
     juce::File getLastPresetFile() const;
 };
 
-} // namespace openamp
+} // namespace opensynth

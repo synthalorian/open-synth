@@ -2,7 +2,7 @@
 #include <cstdio>
 #include <cstring>
 
-namespace openamp {
+namespace opensynth {
 
 OboeAudioStream::OboeAudioStream(void* processorContext, AudioProcessor processorFn,
                                    double sampleRate, uint32_t blockSize)
@@ -115,4 +115,4 @@ oboe::DataCallbackResult OboeAudioStream::onAudioReady(
     return oboe::DataCallbackResult::Continue;
 }
 
-} // namespace openamp
+} // namespace opensynth
