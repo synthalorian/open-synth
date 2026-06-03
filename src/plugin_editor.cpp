@@ -396,6 +396,63 @@ void PerformanceMeter::paint(juce::Graphics& g)
 
 void PerformanceMeter::resized() {}
 
+// ── ScopeComponent ──────────────────────────────────────────────────────────
+
+ScopeComponent::ScopeComponent()
+{
+    startTimerHz(30);
+}
+
+void ScopeComponent::pushBuffer(const std::vector<float>& interleavedBuffer, int numChannels)
+{
+    if (numChannels < 1 || interleavedBuffer.empty()) return;
+
+    juce::ScopedLock lock(bufferLock_);
+    size_t numFrames = interleavedBuffer.size() / numChannels;
+    displayBuffer_.resize(numFrames);
+
+    // Mix down to mono for display
+    for (size_t i = 0; i < numFrames; ++i)
+    {
+        float sum = 0.0f;
+        for (int ch = 0; ch < numChannels; ++ch)
+            sum += interleavedBuffer[i * numChannels + ch];
+        displayBuffer_[i] = sum / numChannels;
+    }
+}
+
+void ScopeComponent::timerCallback()
+{
+    repaint();
+}
+
+void ScopeComponent::paint(juce::Graphics& g)
+{
+    auto b = getLocalBounds().toFloat();
+    g.setColour(SynthColors::card());
+    g.fillRoundedRectangle(b, 6.0f);
+
+    g.setColour(SynthColors::gridLine().withAlpha(0.3f));
+    g.drawHorizontalLine(getHeight() / 2, 0, getWidth());
+
+    juce::ScopedLock lock(bufferLock_);
+    if (displayBuffer_.size() < 2) return;
+
+    g.setColour(SynthColors::neonYellow());
+    juce::Path path;
+    float xStep = b.getWidth() / (float)(displayBuffer_.size() - 1);
+    float centerY = b.getCentreY();
+    float scale = b.getHeight() * 0.45f;
+
+    path.startNewSubPath(b.getX(), centerY - displayBuffer_[0] * scale);
+    for (size_t i = 1; i < displayBuffer_.size(); ++i)
+        path.lineTo(b.getX() + i * xStep, centerY - displayBuffer_[i] * scale);
+
+    g.strokePath(path, juce::PathStrokeType(2.0f));
+}
+
+void ScopeComponent::resized() {}
+
 // ── PresetBrowser ───────────────────────────────────────────────────────────
 
 PresetBrowser::PresetBrowser()
@@ -661,7 +718,32 @@ void FavoritesBar::resized()
 void FavoritesBar::buttonClicked(int index)
 {
     if (onPresetSelected)
-        onPresetSelected(index);
+        onPresetSelected(presetIndices_[index]);
+}
+
+void FavoritesBar::assignPresetIndex(int slot, int presetIndex)
+{
+    if (slot >= 0 && slot < 8)
+    {
+        presetIndices_[slot] = presetIndex;
+        if (presetIndex >= 0 && presetIndex < kNumFullPresets)
+        {
+            favButtons_[slot].setButtonText(juce::String(slot + 1) + ": " + kFullPresets[presetIndex].name);
+            favButtons_[slot].setColour(juce::TextButton::textColourOffId, SynthColors::neonYellow());
+        }
+        else
+        {
+            favButtons_[slot].setButtonText(juce::String(slot + 1));
+            favButtons_[slot].setColour(juce::TextButton::textColourOffId, SynthColors::textDim());
+        }
+    }
+}
+
+int FavoritesBar::getPresetIndex(int slot) const
+{
+    if (slot >= 0 && slot < 8)
+        return presetIndices_[slot];
+    return -1;
 }
 
 // ── SplitKeyboardOverlay ────────────────────────────────────────────────────
@@ -1131,7 +1213,7 @@ OpenSynthJucedEditor::OpenSynthJucedEditor(OpenSynthJucedProcessor& processor)
 
     // Favorites bar
     favorites_.onPresetSelected = [this](int idx) {
-        if (idx >= 0 && idx < kNumPresets)
+        if (idx >= 0 && idx < kNumFullPresets)
             loadPresetByIndex(idx);
     };
     addAndMakeVisible(favorites_);
@@ -1152,8 +1234,9 @@ OpenSynthJucedEditor::OpenSynthJucedEditor(OpenSynthJucedProcessor& processor)
         presetBrowser_.setVisible(false);
     };
 
-    // Meters
+    // Meters + Scope
     addAndMakeVisible(meters_);
+    addAndMakeVisible(scope_);
 
     // Panels
     addAndMakeVisible(osc1Panel_);
@@ -1244,11 +1327,110 @@ OpenSynthJucedEditor::OpenSynthJucedEditor(OpenSynthJucedProcessor& processor)
 
     // Start meter timer
     startTimerHz(10);
+
+    // Load persisted app state (setlist, favorites, last preset)
+    loadAppState();
+
+    // Open default MIDI input device
+    openDefaultMidiInput();
+}
+
+void OpenSynthJucedEditor::loadAppState()
+{
+    // Load setlist
+    auto setlist = appStateManager_.loadSetlist();
+    for (int i = 0; i < SetlistState::kNumSlots; ++i)
+        setlistOverlay_.assignPresetToSlot(i, setlist.slotPresetNames[i]);
+
+    // Load favorites
+    auto favorites = appStateManager_.loadFavorites();
+    for (int i = 0; i < FavoritesState::kNumSlots; ++i)
+    {
+        int idx = favorites.presetIndices[i];
+        if (idx >= 0 && idx < kNumFullPresets)
+            favorites_.assignPresetIndex(i, idx);
+    }
+
+    // Load last preset
+    auto lastID = appStateManager_.loadLastPresetID();
+    if (lastID.isNotEmpty())
+        loadPresetByID(lastID);
+    else
+        loadPresetByIndex(0);
+
+    // Refresh user presets in browser
+    presetBrowser_.refreshUserPresets();
+}
+
+void OpenSynthJucedEditor::saveAppState()
+{
+    // Save setlist
+    SetlistState setlist;
+    for (int i = 0; i < SetlistState::kNumSlots; ++i)
+        setlist.slotPresetNames[i] = setlistOverlay_.getSlotPresetName(i);
+    appStateManager_.saveSetlist(setlist);
+
+    // Save favorites
+    FavoritesState favorites;
+    for (int i = 0; i < FavoritesState::kNumSlots; ++i)
+        favorites.presetIndices[i] = favorites_.getPresetIndex(i);
+    appStateManager_.saveFavorites(favorites);
+
+    // Save last preset ID
+    if (currentPresetIndex_ >= 0 && currentPresetIndex_ < kNumFullPresets)
+        appStateManager_.saveLastPresetID(kFullPresets[currentPresetIndex_].id);
 }
 
 void OpenSynthJucedEditor::handleMidiCC(int ccNumber, float value)
 {
     midiLearnManager_.handleMidiCC(ccNumber, value, processor_.getParameters());
+}
+
+void OpenSynthJucedEditor::openDefaultMidiInput()
+{
+    auto devices = juce::MidiInput::getAvailableDevices();
+    if (devices.isEmpty()) return;
+
+    // Prefer the first non-virtual device, or just the first one
+    for (const auto& device : devices)
+    {
+        midiInput_ = juce::MidiInput::openDevice(device.identifier, this);
+        if (midiInput_ != nullptr)
+        {
+            midiInput_->start();
+            break;
+        }
+    }
+}
+
+void OpenSynthJucedEditor::handleIncomingMidiMessage(juce::MidiInput* source, const juce::MidiMessage& message)
+{
+    juce::ignoreUnused(source);
+
+    if (message.isNoteOn())
+    {
+        int note = message.getNoteNumber();
+        processor_.injectMidiMessage(juce::MidiMessage::noteOn(1, note, message.getFloatVelocity()));
+        keyboard_.setKeyPressed(note);
+    }
+    else if (message.isNoteOff())
+    {
+        int note = message.getNoteNumber();
+        processor_.injectMidiMessage(juce::MidiMessage::noteOff(1, note, 0.0f));
+        keyboard_.setKeyReleased(note);
+    }
+    else if (message.isController())
+    {
+        handleMidiCC(message.getControllerNumber(), message.getControllerValue() / 127.0f);
+    }
+    else if (message.isPitchWheel())
+    {
+        processor_.injectMidiMessage(message);
+    }
+    else if (message.isSustainPedalOn() || message.isSustainPedalOff())
+    {
+        processor_.injectMidiMessage(message);
+    }
 }
 
 void OpenSynthJucedEditor::timerCallback()
@@ -1257,6 +1439,11 @@ void OpenSynthJucedEditor::timerCallback()
     float cpu = processor_.getSynth().getCpuLoad() * 100.0f;
     meters_.setVoiceCount(voices);
     meters_.setCpuLoad(cpu);
+
+    // Push audio buffer to scope
+    auto buffer = processor_.getSynth().getLastAudioBuffer();
+    if (!buffer.empty())
+        scope_.pushBuffer(buffer, 2);
 
     // Update undo/redo button states
     undoButton_.setEnabled(processor_.getUndoManager().canUndo());
@@ -1291,7 +1478,9 @@ void OpenSynthJucedEditor::showSetlistMode()
 
 void OpenSynthJucedEditor::loadFavoritePreset(int index)
 {
-    juce::ignoreUnused(index);
+    int presetIdx = favorites_.getPresetIndex(index);
+    if (presetIdx >= 0 && presetIdx < kNumFullPresets)
+        loadPresetByIndex(presetIdx);
 }
 
 void OpenSynthJucedEditor::loadPresetByIndex(int index)
@@ -1382,6 +1571,7 @@ void OpenSynthJucedEditor::resized()
     titleLabel_.setBounds(header.removeFromLeft(220));
     favorites_.setBounds(header.removeFromLeft(320));
     meters_.setBounds(header.removeFromLeft(180));
+    scope_.setBounds(header.removeFromLeft(120));
     undoButton_.setBounds(header.removeFromRight(60));
     redoButton_.setBounds(header.removeFromRight(60));
     presetButton_.setBounds(header.removeFromRight(90));

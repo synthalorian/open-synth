@@ -2,9 +2,11 @@
 #include <juce_gui_basics/juce_gui_basics.h>
 #include <juce_audio_processors/juce_audio_processors.h>
 #include <juce_audio_formats/juce_audio_formats.h>
+#include <juce_audio_devices/juce_audio_devices.h>
 #include "plugin_processor.h"
 #include "preset_library.h"
 #include "user_preset_manager.h"
+#include "app_state_manager.h"
 
 namespace openamp {
 
@@ -196,6 +198,20 @@ private:
     juce::Label titleLabel_;
 };
 
+// ── Scope Component (Oscilloscope) ────────────────────────────────────────
+class ScopeComponent : public juce::Component, private juce::Timer {
+public:
+    ScopeComponent();
+    void paint(juce::Graphics& g) override;
+    void resized() override;
+    void pushBuffer(const std::vector<float>& interleavedBuffer, int numChannels);
+
+private:
+    std::vector<float> displayBuffer_;
+    juce::CriticalSection bufferLock_;
+    void timerCallback() override;
+};
+
 // ── Performance Meters ────────────────────────────────────────────────────
 class PerformanceMeter : public juce::Component, private juce::Timer {
 public:
@@ -266,8 +282,12 @@ public:
 
     std::function<void(int)> onPresetSelected;
 
+    void assignPresetIndex(int slot, int presetIndex);
+    int getPresetIndex(int slot) const;
+
 private:
     juce::TextButton favButtons_[8];
+    int presetIndices_[8] = {-1, -1, -1, -1, -1, -1, -1, -1};
     void buttonClicked(int index);
 };
 
@@ -404,10 +424,14 @@ private:
 
 // ── Main Editor ───────────────────────────────────────────────────────────
 class OpenSynthJucedEditor : public juce::AudioProcessorEditor,
-                         private juce::Timer {
+                         private juce::Timer,
+                         private juce::MidiInputCallback {
 public:
     explicit OpenSynthJucedEditor(OpenSynthJucedProcessor& processor);
-    ~OpenSynthJucedEditor() override = default;
+    ~OpenSynthJucedEditor() override
+    {
+        saveAppState();
+    }
 
     void paint(juce::Graphics& g) override;
     void resized() override;
@@ -424,6 +448,7 @@ private:
     juce::TextButton undoButton_;
     juce::TextButton redoButton_;
     PerformanceMeter meters_;
+    ScopeComponent scope_;
     FavoritesBar favorites_;
 
     // Main sections
@@ -468,6 +493,16 @@ private:
     void loadPresetByID(const juce::String& id);
     void saveCurrentPreset();
     void showUndoFeedback(const juce::String& text);
+
+    // App state persistence
+    AppStateManager appStateManager_;
+    void loadAppState();
+    void saveAppState();
+
+    // MIDI device input
+    std::unique_ptr<juce::MidiInput> midiInput_;
+    void handleIncomingMidiMessage(juce::MidiInput* source, const juce::MidiMessage& message) override;
+    void openDefaultMidiInput();
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(OpenSynthJucedEditor)
 };

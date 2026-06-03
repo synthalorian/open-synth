@@ -1,5 +1,6 @@
 #pragma once
 #include <juce_audio_basics/juce_audio_basics.h>
+#include <vector>
 #include <memory>
 
 // Forward declarations for our existing C++ engine
@@ -76,9 +77,14 @@ public:
     int getActiveVoiceCount() const;
     float getCpuLoad() const;
 
+    // Oscilloscope: get the last rendered interleaved buffer (left + right mixed)
+    std::vector<float> getLastAudioBuffer() const;
+
 private:
     std::unique_ptr<SynthEngine> engine_;
     std::vector<float> tempBuffer_;
+    std::vector<float> scopeBuffer_; // copy for thread-safe UI read
+    mutable juce::CriticalSection scopeLock_;
     double sampleRate_ = 48000.0;
     int blockSize_ = 512;
 };
