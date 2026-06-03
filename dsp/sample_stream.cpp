@@ -46,6 +46,9 @@ void SampleStream::close() {
     numChannels_ = 0;
     totalSamples_ = 0;
     preloadSamples_ = 0;
+    hasLoopPoints_ = false;
+    loopStart_ = 0;
+    loopEnd_ = 0;
     useMapping_ = false;
     for (int ch = 0; ch < 2; ++ch) {
         preloadCache_[ch].clear();
@@ -175,14 +178,16 @@ bool SampleStream::initMappedReader(const std::string& path) {
 
     file_ = juce::File(juce::String(path));
 
-    // Try each registered format for a memory-mapped reader
+    juce::AudioFormatReader* createdReader = nullptr;
     int numFormats = formatManager.getNumKnownFormats();
     for (int i = 0; i < numFormats; ++i) {
         auto* fmt = formatManager.getKnownFormat(i);
         if (!fmt) continue;
         mappedReader_.reset(fmt->createMemoryMappedReader(file_));
-        if (mappedReader_)
+        if (mappedReader_) {
+            createdReader = fmt->createReaderFor(file_.createInputStream().release(), true);
             break;
+        }
     }
 
     if (!mappedReader_)
@@ -196,6 +201,15 @@ bool SampleStream::initMappedReader(const std::string& path) {
     sampleRate_ = mappedReader_->sampleRate;
     numChannels_ = static_cast<int>(mappedReader_->numChannels);
     totalSamples_ = static_cast<int64_t>(mappedReader_->lengthInSamples);
+
+    // Read loop points from JUCE AudioFormatReader metadata (e.g. WAV smpl chunk)
+    if (mappedReader_->metadataValues.containsKey("Loop0Start")) {
+        hasLoopPoints_ = true;
+        loopStart_ = mappedReader_->metadataValues["Loop0Start"].getIntValue();
+        loopEnd_ = mappedReader_->metadataValues["Loop0End"].getIntValue();
+    }
+
+    delete createdReader;
     return true;
 }
 
@@ -212,6 +226,13 @@ bool SampleStream::initFallbackReader(const std::string& path) {
     sampleRate_ = fallbackReader_->sampleRate;
     numChannels_ = static_cast<int>(fallbackReader_->numChannels);
     totalSamples_ = static_cast<int64_t>(fallbackReader_->lengthInSamples);
+
+    if (fallbackReader_->metadataValues.containsKey("Loop0Start")) {
+        hasLoopPoints_ = true;
+        loopStart_ = fallbackReader_->metadataValues["Loop0Start"].getIntValue();
+        loopEnd_ = fallbackReader_->metadataValues["Loop0End"].getIntValue();
+    }
+
     return true;
 }
 

@@ -63,6 +63,11 @@ public:
     // Preload cache info
     int getPreloadSamples() const { return preloadSamples_; }
 
+    // Loop points read from file metadata (e.g. WAV smpl chunk)
+    bool hasLoopPoints() const { return hasLoopPoints_; }
+    int getLoopStart() const { return loopStart_; }
+    int getLoopEnd() const { return loopEnd_; }
+
 private:
     std::unique_ptr<juce::MemoryMappedAudioFormatReader> mappedReader_;
     std::unique_ptr<juce::AudioFormatReader> fallbackReader_;
@@ -73,6 +78,11 @@ private:
     int numChannels_ = 0;
     int64_t totalSamples_ = 0;
     int streamBufferSize_ = DEFAULT_BUFFER_SIZE;
+
+    // Loop points read from file metadata
+    bool hasLoopPoints_ = false;
+    int loopStart_ = 0;
+    int loopEnd_ = 0;
 
     // Preload cache: first N samples kept in RAM for instant attack
     std::vector<float> preloadCache_[2]; // planar: L, R

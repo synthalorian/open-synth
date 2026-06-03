@@ -41,6 +41,7 @@ struct SampleZone {
     bool loopEnabled = false;
     int loopStart = 0;
     int loopEnd = 0;
+    int crossfadeSamples = 256; // Crossfade length for smooth looping
 
     // Velocity layers: up to 3 streams per zone (soft/medium/loud)
     // Index by static_cast<int>(VelocityLayer)
@@ -55,6 +56,11 @@ struct SampleVoice {
     double position = 0.0;       // Fractional sample position
     double pitchRatio = 1.0;     // Playback speed for pitch shift
     const SampleZone* zone = nullptr;
+
+    // Crossfade looping state
+    bool inCrossfade = false;
+    double crossfadePos = 0.0;   // Position in crossfade zone (0..crossfadeSamples)
+    double loopStartPos = 0.0;   // Where to jump back to
 
     // Simple ADSR
     float amp = 0.0f;
