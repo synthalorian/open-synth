@@ -286,6 +286,15 @@ private:
     // Global sympathetic resonance — shared across all voices
     SympatheticResonator sympatheticResonator_;
 
+public:
+    // Sample player accessor
+    SamplePlayer* getSamplePlayer() const { return samplePlayer_.get(); }
+    void setSamplePlayer(std::unique_ptr<SamplePlayer> sp) { samplePlayer_ = std::move(sp); }
+
+    // Sample rate accessor
+    double getSampleRate() const { return sampleRate_; }
+
+private:
     // Sample playback / ROMpler layer
     std::unique_ptr<SamplePlayer> samplePlayer_;
 
