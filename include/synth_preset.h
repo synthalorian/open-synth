@@ -3,7 +3,7 @@
 #include <vector>
 #include <cstdint>
 
-namespace openamp {
+namespace opensynth {
 
 class SynthPreset {
 public:
@@ -27,4 +27,4 @@ private:
     std::vector<Param> params_;
 };
 
-} // namespace openamp
+} // namespace opensynth

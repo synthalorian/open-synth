@@ -3,7 +3,7 @@
 #include <cmath>
 #include <array>
 
-namespace openamp {
+namespace opensynth {
 
 /// Parametric EQ with low-shelf, peak (parametric), and high-shelf bands.
 class EqProcessor : public FxProcessor {
@@ -77,4 +77,4 @@ private:
     double cachedSampleRate_ = 0.0;
 };
 
-} // namespace openamp
+} // namespace opensynth

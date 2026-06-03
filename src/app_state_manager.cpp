@@ -1,6 +1,6 @@
 #include "app_state_manager.h"
 
-namespace openamp {
+namespace opensynth {
 
 // ── SetlistState ──────────────────────────────────────────────────────────
 
@@ -138,4 +138,4 @@ void AppStateManager::saveLastPresetID(const juce::String& id)
     file.replaceWithText(id);
 }
 
-} // namespace openamp
+} // namespace opensynth

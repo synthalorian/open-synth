@@ -4,7 +4,7 @@
 #include <cstring>
 #include <algorithm>
 
-namespace openamp {
+namespace opensynth {
 
 AudioStream::AudioStream(void* processorContext, AudioProcessor processorFn,
                          double sampleRate, uint32_t blockSize, int deviceIndex)
@@ -150,4 +150,4 @@ int AudioStream::paCallback(const void* input, void* output,
     return paContinue;
 }
 
-} // namespace openamp
+} // namespace opensynth

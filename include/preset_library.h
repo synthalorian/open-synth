@@ -1,7 +1,7 @@
 #pragma once
 #include <juce_core/juce_core.h>
 
-namespace openamp {
+namespace opensynth {
 
 struct PresetInfo {
     juce::String id;
@@ -1438,4 +1438,4 @@ inline const PresetInfo kPresets[] = {
     {"factory-eth-04", "Erhu", "ethnic"},
 };
 
-} // namespace openamp
+} // namespace opensynth

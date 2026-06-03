@@ -2,7 +2,7 @@
 #include <cstdint>
 #include <cmath>
 
-namespace openamp {
+namespace opensynth {
 
 // ── Instrument Realism Engine ────────────────────────────────────────────────
 //
@@ -139,4 +139,4 @@ struct InstrumentRealism {
     float process(float input, float velocity, double sampleRate, float noteAge);
 };
 
-} // namespace openamp
+} // namespace opensynth

@@ -1,7 +1,7 @@
 #include "preset_data.h"
 #include "synth_engine_wrapper.h"
 
-namespace openamp {
+namespace opensynth {
 
 void applyPresetToEngine(const PresetData& p, SynthEngineWrapper& e)
 {
@@ -146,4 +146,4 @@ void applyPresetToAPVTS(const PresetData& p, juce::AudioProcessorValueTreeState&
     setInt("arpOctave", p.arpOctave);
 }
 
-} // namespace openamp
+} // namespace opensynth

@@ -1,7 +1,7 @@
 #include "envelope.h"
 #include <algorithm>
 
-namespace openamp {
+namespace opensynth {
 
 void Envelope::setAttack(float ms) { attackMs_ = ms < 0.1f ? 0.1f : ms; }
 void Envelope::setDecay(float ms) { decayMs_ = ms < 1.0f ? 1.0f : ms; }
@@ -133,4 +133,4 @@ float Envelope::process(double sampleRate) {
     return level_;
 }
 
-} // namespace openamp
+} // namespace opensynth

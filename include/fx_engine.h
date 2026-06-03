@@ -4,7 +4,7 @@
 #include <functional>
 #include "audio_buffer.h"
 
-namespace openamp {
+namespace opensynth {
 
 /// Maximum number of MFX (multi-FX) slots
 static constexpr int MAX_FX_SLOTS = 4;
@@ -197,4 +197,4 @@ private:
     float masterMix_ = 1.0f;
 };
 
-} // namespace openamp
+} // namespace opensynth

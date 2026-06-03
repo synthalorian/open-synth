@@ -1,6 +1,6 @@
 #include "fx_ringmod.h"
 
-namespace openamp {
+namespace opensynth {
 
 RingModProcessor::RingModProcessor()
     : FxProcessor(FxType::RingMod) {}
@@ -62,4 +62,4 @@ const char* RingModProcessor::paramName(int index) const {
     }
 }
 
-} // namespace openamp
+} // namespace opensynth

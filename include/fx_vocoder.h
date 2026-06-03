@@ -3,7 +3,7 @@
 #include <array>
 #include <cmath>
 
-namespace openamp {
+namespace opensynth {
 
 /// Vocoder FX stub.
 /// Uses a carrier (synth oscillator) + modulator (simulated with noise/secondary osc)
@@ -42,4 +42,4 @@ private:
     float noise() const;
 };
 
-} // namespace openamp
+} // namespace opensynth

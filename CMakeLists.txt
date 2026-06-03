@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.22)
-project(OpenSynthJuced VERSION 1.0.0)
+project(OpenSynth VERSION 1.0.0)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -7,13 +7,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Add JUCE
 add_subdirectory(/home/synth/projects/juce JUCE_BUILD)
 
-# Open Synth Juced Plugin + Standalone
-juce_add_plugin(OpenSynthJuced
+# Open Synth Plugin + Standalone
+juce_add_plugin(OpenSynth
     COMPANY_NAME "SynthShark Audio"
     PLUGIN_MANUFACTURER_CODE "SynS"
-    PLUGIN_CODE "OpSj"
+    PLUGIN_CODE "OpSy"
     FORMATS Standalone VST3
-    PRODUCT_NAME "Open Synth Juced"
+    PRODUCT_NAME "Open Synth"
     MICROPHONE_PERMISSION_ENABLED TRUE
 )
 
@@ -69,19 +69,19 @@ set(DSP_SOURCES
     dsp/fx_vocoder.cpp
 )
 
-target_sources(OpenSynthJuced PRIVATE 
+target_sources(OpenSynth PRIVATE 
     ${OPENSYNTH_SOURCES}
     ${DSP_SOURCES}
 )
 
-target_include_directories(OpenSynthJuced PRIVATE 
+target_include_directories(OpenSynth PRIVATE 
     src
     dsp
     include
 )
 
 # JUCE modules
-target_link_libraries(OpenSynthJuced PRIVATE
+target_link_libraries(OpenSynth PRIVATE
     juce::juce_audio_utils
     juce::juce_audio_processors
     juce::juce_audio_devices
@@ -91,7 +91,7 @@ target_link_libraries(OpenSynthJuced PRIVATE
 )
 
 # Compile definitions
-target_compile_definitions(OpenSynthJuced PRIVATE
+target_compile_definitions(OpenSynth PRIVATE
     JUCE_WEB_BROWSER=0
     JUCE_USE_CURL=0
     JUCE_VST3_CAN_REPLACE_VST2=0
@@ -100,5 +100,5 @@ target_compile_definitions(OpenSynthJuced PRIVATE
 
 # Linux specific
 if(UNIX AND NOT APPLE)
-    target_link_libraries(OpenSynthJuced PRIVATE pthread dl)
+    target_link_libraries(OpenSynth PRIVATE pthread dl)
 endif()

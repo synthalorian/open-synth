@@ -1,7 +1,7 @@
 #pragma once
 #include "preset_data.h"
 
-namespace openamp {
+namespace opensynth {
 
 inline constexpr int kNumFullPresets = 1459;
 
@@ -33565,4 +33565,4 @@ inline constexpr PresetData kFullPresets[] = {
     },
 };
 
-} // namespace openamp
+} // namespace opensynth

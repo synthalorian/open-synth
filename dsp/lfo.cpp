@@ -2,7 +2,7 @@
 #include <algorithm>
 #include <cstdlib>
 
-namespace openamp {
+namespace opensynth {
 
 void LFO::setWaveform(int w) {
     waveform_ = static_cast<Waveform>(std::clamp(w, 0, 6));
@@ -144,4 +144,4 @@ float LFO::process() {
     return value_;
 }
 
-} // namespace openamp
+} // namespace opensynth

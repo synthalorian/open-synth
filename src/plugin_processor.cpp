@@ -1,9 +1,9 @@
 #include "plugin_processor.h"
 #include "plugin_editor.h"
 
-namespace openamp {
+namespace opensynth {
 
-OpenSynthJucedProcessor::OpenSynthJucedProcessor()
+OpenSynthProcessor::OpenSynthProcessor()
     : AudioProcessor(BusesProperties()
                          .withOutput("Output", juce::AudioChannelSet::stereo(), true)
                          .withInput("Input", juce::AudioChannelSet::stereo(), false)),
@@ -11,7 +11,7 @@ OpenSynthJucedProcessor::OpenSynthJucedProcessor()
 {
 }
 
-juce::AudioProcessorValueTreeState::ParameterLayout OpenSynthJucedProcessor::createParameterLayout()
+juce::AudioProcessorValueTreeState::ParameterLayout OpenSynthProcessor::createParameterLayout()
 {
     juce::AudioProcessorValueTreeState::ParameterLayout layout;
 
@@ -149,7 +149,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout OpenSynthJucedProcessor::cre
     return layout;
 }
 
-void OpenSynthJucedProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
+void OpenSynthProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
     synth_.prepare(sampleRate, samplesPerBlock);
 
@@ -162,12 +162,12 @@ void OpenSynthJucedProcessor::prepareToPlay(double sampleRate, int samplesPerBlo
     outputLimiter_.setRelease(100.0f);
 }
 
-void OpenSynthJucedProcessor::releaseResources()
+void OpenSynthProcessor::releaseResources()
 {
     synth_.reset();
 }
 
-void OpenSynthJucedProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
+void OpenSynthProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
     juce::ScopedNoDenormals noDenormals;
 
@@ -261,10 +261,10 @@ void OpenSynthJucedProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
     }
 }
 
-void OpenSynthJucedProcessor::handleMidiCC(int ccNumber, float value)
+void OpenSynthProcessor::handleMidiCC(int ccNumber, float value)
 {
     // Route to editor if it exists for MIDI Learn
-    if (auto* editor = dynamic_cast<OpenSynthJucedEditor*>(getActiveEditor()))
+    if (auto* editor = dynamic_cast<OpenSynthEditor*>(getActiveEditor()))
     {
         // Editor will handle mapping and parameter updates
         juce::ignoreUnused(editor);
@@ -272,25 +272,25 @@ void OpenSynthJucedProcessor::handleMidiCC(int ccNumber, float value)
     juce::ignoreUnused(ccNumber, value);
 }
 
-void OpenSynthJucedProcessor::injectMidiMessage(const juce::MidiMessage& msg)
+void OpenSynthProcessor::injectMidiMessage(const juce::MidiMessage& msg)
 {
     juce::ScopedLock lock(midiLock_);
     uiMidiBuffer_.addEvent(msg, 0);
 }
 
-juce::AudioProcessorEditor* OpenSynthJucedProcessor::createEditor()
+juce::AudioProcessorEditor* OpenSynthProcessor::createEditor()
 {
-    return new OpenSynthJucedEditor(*this);
+    return new OpenSynthEditor(*this);
 }
 
-void OpenSynthJucedProcessor::getStateInformation(juce::MemoryBlock& destData)
+void OpenSynthProcessor::getStateInformation(juce::MemoryBlock& destData)
 {
     auto state = apvts_.copyState();
     std::unique_ptr<juce::XmlElement> xml(state.createXml());
     copyXmlToBinary(*xml, destData);
 }
 
-void OpenSynthJucedProcessor::setStateInformation(const void* data, int sizeInBytes)
+void OpenSynthProcessor::setStateInformation(const void* data, int sizeInBytes)
 {
     std::unique_ptr<juce::XmlElement> xmlState(getXmlFromBinary(data, sizeInBytes));
     if (xmlState != nullptr)
@@ -298,7 +298,7 @@ void OpenSynthJucedProcessor::setStateInformation(const void* data, int sizeInBy
             apvts_.replaceState(juce::ValueTree::fromXml(*xmlState));
 }
 
-juce::File OpenSynthJucedProcessor::getUserPresetsDir() const
+juce::File OpenSynthProcessor::getUserPresetsDir() const
 {
     auto dir = juce::File::getSpecialLocation(juce::File::userApplicationDataDirectory)
                    .getChildFile("open-synth-juced")
@@ -307,7 +307,7 @@ juce::File OpenSynthJucedProcessor::getUserPresetsDir() const
     return dir;
 }
 
-void OpenSynthJucedProcessor::saveUserPreset(const juce::String& name, const juce::String& category)
+void OpenSynthProcessor::saveUserPreset(const juce::String& name, const juce::String& category)
 {
     auto file = getUserPresetsDir().getChildFile(name + ".osj");
     auto state = apvts_.copyState();
@@ -317,7 +317,7 @@ void OpenSynthJucedProcessor::saveUserPreset(const juce::String& name, const juc
     xml->writeTo(file);
 }
 
-std::vector<juce::String> OpenSynthJucedProcessor::getUserPresetNames() const
+std::vector<juce::String> OpenSynthProcessor::getUserPresetNames() const
 {
     std::vector<juce::String> names;
     auto dir = getUserPresetsDir();
@@ -326,7 +326,7 @@ std::vector<juce::String> OpenSynthJucedProcessor::getUserPresetNames() const
     return names;
 }
 
-bool OpenSynthJucedProcessor::loadUserPreset(const juce::String& name)
+bool OpenSynthProcessor::loadUserPreset(const juce::String& name)
 {
     auto file = getUserPresetsDir().getChildFile(name + ".osj");
     if (!file.existsAsFile()) return false;
@@ -339,10 +339,10 @@ bool OpenSynthJucedProcessor::loadUserPreset(const juce::String& name)
     return false;
 }
 
-} // namespace openamp
+} // namespace opensynth
 
 // ── Factory function ────────────────────────────────────────────────────────
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
-    return new openamp::OpenSynthJucedProcessor();
+    return new opensynth::OpenSynthProcessor();
 }

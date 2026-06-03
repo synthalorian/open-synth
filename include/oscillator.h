@@ -4,7 +4,7 @@
 #include <algorithm>
 #include "wavetable_oscillator.h"
 
-namespace openamp {
+namespace opensynth {
 
 enum class OscWaveform : int {
     SAW = 0,
@@ -123,4 +123,4 @@ private:
     float generateWaveform(float phase) const;
 };
 
-} // namespace openamp
+} // namespace opensynth

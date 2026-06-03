@@ -3,7 +3,7 @@
 #include <cmath>
 #include <array>
 
-namespace openamp {
+namespace opensynth {
 
 /// Multi-tap delay with 4 independently timed taps.
 class MultitapDelayProcessor : public FxProcessor {
@@ -43,4 +43,4 @@ private:
     int tapOffset(int tapIndex) const;
 };
 
-} // namespace openamp
+} // namespace opensynth

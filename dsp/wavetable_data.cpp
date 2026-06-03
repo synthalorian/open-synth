@@ -3,7 +3,7 @@
 #include <cstring>
 #include <cstdio>
 
-namespace openamp {
+namespace opensynth {
 
 static constexpr int kWavetableSize = 2048;
 static constexpr int kMaxHarmonics = 64;
@@ -311,4 +311,4 @@ const char* getBuiltinWavetableName(int type) {
     return gWavetables[type].medium->name;
 }
 
-} // namespace openamp
+} // namespace opensynth

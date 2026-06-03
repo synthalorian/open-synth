@@ -3,7 +3,7 @@
 #include <cmath>
 #include <algorithm>
 
-namespace openamp {
+namespace opensynth {
 
 // ── WAV Writer ────────────────────────────────────────────────────────────────
 
@@ -150,4 +150,4 @@ void Recorder::process(const float* left, const float* right, uint32_t numFrames
     recordedFrames_.fetch_add(numFrames);
 }
 
-} // namespace openamp
+} // namespace opensynth

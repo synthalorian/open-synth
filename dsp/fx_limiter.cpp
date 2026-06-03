@@ -2,7 +2,7 @@
 #include <algorithm>
 #include <cmath>
 
-namespace openamp {
+namespace opensynth {
 
 LimiterProcessor::LimiterProcessor()
     : FxProcessor(FxType::Limiter) {}
@@ -95,4 +95,4 @@ const char* LimiterProcessor::paramName(int index) const {
     return "";
 }
 
-} // namespace openamp
+} // namespace opensynth

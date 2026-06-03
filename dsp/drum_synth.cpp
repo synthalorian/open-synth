@@ -4,7 +4,7 @@
 #include <cstring>
 #include <algorithm>
 
-namespace openamp {
+namespace opensynth {
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -781,4 +781,4 @@ void DrumKit::allNotesOff() {
     }
 }
 
-} // namespace openamp
+} // namespace opensynth

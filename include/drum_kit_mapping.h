@@ -2,7 +2,7 @@
 
 struct DrumKitPreset;  // forward declaration from drum_synth.h
 
-namespace openamp {
+namespace opensynth {
 
 /// Map a GM2 percussion MIDI note to a DrumType index (0-15).
 /// Returns -1 if the note is not mapped to any drum type.
@@ -15,4 +15,4 @@ const char* drumTypeName(int type);
 /// Called from DrumKit constructor.
 void initDrumKitPresets(DrumKitPreset* kits);
 
-} // namespace openamp
+} // namespace opensynth

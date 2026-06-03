@@ -2,7 +2,7 @@
 #include <cstring>
 #include <algorithm>
 
-namespace openamp {
+namespace opensynth {
 
 SynthEnginePair::SynthEnginePair(double sampleRate, uint32_t blockSize)
     : engineA_(sampleRate, blockSize)
@@ -69,4 +69,4 @@ void SynthEnginePair::reset() {
     }
 }
 
-} // namespace openamp
+} // namespace opensynth

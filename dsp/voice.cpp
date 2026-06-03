@@ -1,7 +1,7 @@
 #include "voice.h"
 #include <algorithm>
 
-namespace openamp {
+namespace opensynth {
 
 void Voice::reset() {
     active = false;
@@ -58,4 +58,4 @@ void Voice::noteOff() {
     pitchEnv.noteOff();
 }
 
-} // namespace openamp
+} // namespace opensynth

@@ -3,7 +3,7 @@
 #include <cstdlib>
 #include <algorithm>
 
-namespace openamp {
+namespace opensynth {
 
 void Oscillator::setWaveform(int w) {
     // Map from Dart Waveform enum to internal OscWaveform enum.
@@ -265,4 +265,4 @@ float Oscillator::process(float phase, int voiceIndex, float freq, double sample
     return sample * volume_;
 }
 
-} // namespace openamp
+} // namespace opensynth

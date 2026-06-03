@@ -2,7 +2,7 @@
 #include "fx_engine.h"
 #include <cmath>
 
-namespace openamp {
+namespace opensynth {
 
 /// Rotary speaker emulation (Leslie cabinet).
 /// Combines Doppler pitch shift, tremolo (volume modulation), and
@@ -40,4 +40,4 @@ private:
     float drumLpf_ = 0.0f;
 };
 
-} // namespace openamp
+} // namespace opensynth

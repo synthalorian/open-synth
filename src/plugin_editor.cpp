@@ -5,7 +5,7 @@
 #include "user_preset_manager.h"
 #include "fx_engine.h"
 
-namespace openamp {
+namespace opensynth {
 
 // ── SynthKnob ───────────────────────────────────────────────────────────────
 
@@ -305,7 +305,7 @@ void FxSlotPanel::resized()
 
 void FxSlotPanel::updateParamLabels(int fxTypeId)
 {
-    auto desc = openamp::FxProcessor::getDescriptor(fxTypeId);
+    auto desc = opensynth::FxProcessor::getDescriptor(fxTypeId);
     for (int i = 0; i < 4; ++i)
     {
         if (i < desc.numParams)
@@ -844,7 +844,7 @@ int SplitKeyboardOverlay::noteAtX(int x) const
 
 // ── PianoKeyboard ───────────────────────────────────────────────────────────
 
-PianoKeyboard::PianoKeyboard(OpenSynthJucedProcessor& processor)
+PianoKeyboard::PianoKeyboard(OpenSynthProcessor& processor)
     : processor_(processor)
 {
 }
@@ -1016,11 +1016,11 @@ int PianoKeyboard::getNoteAtPosition(juce::Point<int> pos) const
     return -1;
 }
 
-} // namespace openamp
+} // namespace opensynth
 
 // ── MidiLearnManager ────────────────────────────────────────────────────────
 
-namespace openamp {
+namespace opensynth {
 
 void MidiLearnManager::startLearning(const juce::String& paramID)
 {
@@ -1148,13 +1148,13 @@ void MidiLearnableKnob::paint(juce::Graphics& g)
     }
 }
 
-} // namespace openamp
+} // namespace opensynth
 
-// ── OpenSynthJucedEditor ────────────────────────────────────────────────────
+// ── OpenSynthEditor ────────────────────────────────────────────────────
 
-namespace openamp {
+namespace opensynth {
 
-OpenSynthJucedEditor::OpenSynthJucedEditor(OpenSynthJucedProcessor& processor)
+OpenSynthEditor::OpenSynthEditor(OpenSynthProcessor& processor)
     : AudioProcessorEditor(&processor), processor_(processor),
       osc1Panel_(processor.getParameters(), 1),
       osc2Panel_(processor.getParameters(), 2),
@@ -1173,7 +1173,7 @@ OpenSynthJucedEditor::OpenSynthJucedEditor(OpenSynthJucedProcessor& processor)
     setResizable(false, false);
 
     // Title
-    titleLabel_.setText("Open Synth Juced", juce::dontSendNotification);
+    titleLabel_.setText("Open Synth", juce::dontSendNotification);
     titleLabel_.setFont(juce::Font(juce::FontOptions(28.0f, juce::Font::bold)));
     titleLabel_.setColour(juce::Label::textColourId, SynthColors::neonPurple());
     addAndMakeVisible(titleLabel_);
@@ -1360,7 +1360,7 @@ OpenSynthJucedEditor::OpenSynthJucedEditor(OpenSynthJucedProcessor& processor)
     openDefaultMidiInput();
 }
 
-void OpenSynthJucedEditor::loadAppState()
+void OpenSynthEditor::loadAppState()
 {
     // Load setlist
     auto setlist = appStateManager_.loadSetlist();
@@ -1387,7 +1387,7 @@ void OpenSynthJucedEditor::loadAppState()
     presetBrowser_.refreshUserPresets();
 }
 
-void OpenSynthJucedEditor::saveAppState()
+void OpenSynthEditor::saveAppState()
 {
     // Save setlist
     SetlistState setlist;
@@ -1406,12 +1406,12 @@ void OpenSynthJucedEditor::saveAppState()
         appStateManager_.saveLastPresetID(kFullPresets[currentPresetIndex_].id);
 }
 
-void OpenSynthJucedEditor::handleMidiCC(int ccNumber, float value)
+void OpenSynthEditor::handleMidiCC(int ccNumber, float value)
 {
     midiLearnManager_.handleMidiCC(ccNumber, value, processor_.getParameters());
 }
 
-void OpenSynthJucedEditor::openDefaultMidiInput()
+void OpenSynthEditor::openDefaultMidiInput()
 {
     auto devices = juce::MidiInput::getAvailableDevices();
     if (devices.isEmpty()) return;
@@ -1428,7 +1428,7 @@ void OpenSynthJucedEditor::openDefaultMidiInput()
     }
 }
 
-void OpenSynthJucedEditor::handleIncomingMidiMessage(juce::MidiInput* source, const juce::MidiMessage& message)
+void OpenSynthEditor::handleIncomingMidiMessage(juce::MidiInput* source, const juce::MidiMessage& message)
 {
     juce::ignoreUnused(source);
 
@@ -1458,7 +1458,7 @@ void OpenSynthJucedEditor::handleIncomingMidiMessage(juce::MidiInput* source, co
     }
 }
 
-void OpenSynthJucedEditor::timerCallback()
+void OpenSynthEditor::timerCallback()
 {
     int voices = processor_.getSynth().getActiveVoiceCount();
     float cpu = processor_.getSynth().getCpuLoad() * 100.0f;
@@ -1487,28 +1487,28 @@ void OpenSynthJucedEditor::timerCallback()
     }
 }
 
-void OpenSynthJucedEditor::showPresetBrowser()
+void OpenSynthEditor::showPresetBrowser()
 {
     presetBrowser_.setVisible(true);
     presetBrowser_.setBounds(getLocalBounds());
     presetBrowser_.toFront(true);
 }
 
-void OpenSynthJucedEditor::showSetlistMode()
+void OpenSynthEditor::showSetlistMode()
 {
     setlistOverlay_.setVisible(true);
     setlistOverlay_.setBounds(getLocalBounds());
     setlistOverlay_.toFront(true);
 }
 
-void OpenSynthJucedEditor::loadFavoritePreset(int index)
+void OpenSynthEditor::loadFavoritePreset(int index)
 {
     int presetIdx = favorites_.getPresetIndex(index);
     if (presetIdx >= 0 && presetIdx < kNumFullPresets)
         loadPresetByIndex(presetIdx);
 }
 
-void OpenSynthJucedEditor::loadPresetByIndex(int index)
+void OpenSynthEditor::loadPresetByIndex(int index)
 {
     if (index >= 0 && index < kNumFullPresets) {
         currentPresetIndex_ = index;
@@ -1516,7 +1516,7 @@ void OpenSynthJucedEditor::loadPresetByIndex(int index)
     }
 }
 
-void OpenSynthJucedEditor::loadPresetByID(const juce::String& id)
+void OpenSynthEditor::loadPresetByID(const juce::String& id)
 {
     // Find preset in full library
     for (int i = 0; i < kNumFullPresets; ++i) {
@@ -1534,7 +1534,7 @@ void OpenSynthJucedEditor::loadPresetByID(const juce::String& id)
     }
 }
 
-void OpenSynthJucedEditor::saveCurrentPreset()
+void OpenSynthEditor::saveCurrentPreset()
 {
     auto* alert = new juce::AlertWindow("Save Preset", "Enter a name for your preset:", juce::AlertWindow::QuestionIcon, this);
     alert->addTextEditor("name", titleLabel_.getText(), "Preset Name");
@@ -1560,13 +1560,13 @@ void OpenSynthJucedEditor::saveCurrentPreset()
     }), true);
 }
 
-void OpenSynthJucedEditor::showUndoFeedback(const juce::String& text)
+void OpenSynthEditor::showUndoFeedback(const juce::String& text)
 {
     undoFeedbackLabel_.setText(text, juce::dontSendNotification);
     undoFeedbackCounter_ = 30; // ~3 seconds at 10Hz timer
 }
 
-void OpenSynthJucedEditor::paint(juce::Graphics& g)
+void OpenSynthEditor::paint(juce::Graphics& g)
 {
     g.fillAll(SynthColors::background());
 
@@ -1587,7 +1587,7 @@ void OpenSynthJucedEditor::paint(juce::Graphics& g)
     g.drawHorizontalLine((int)horizonY + 1, 0, (float)getWidth());
 }
 
-void OpenSynthJucedEditor::resized()
+void OpenSynthEditor::resized()
 {
     auto b = getLocalBounds().reduced(12);
 
@@ -1956,7 +1956,7 @@ void PerformancePanel::resized()
     transposeSlider_.setBounds(74, y, getWidth() - 86, 20);
 }
 
-bool OpenSynthJucedEditor::keyPressed(const juce::KeyPress& key)
+bool OpenSynthEditor::keyPressed(const juce::KeyPress& key)
 {
     // Undo/Redo
     auto mods = juce::ModifierKeys::getCurrentModifiers();
@@ -2086,7 +2086,7 @@ bool OpenSynthJucedEditor::keyPressed(const juce::KeyPress& key)
     return false;
 }
 
-bool OpenSynthJucedEditor::keyStateChanged(bool isKeyDown)
+bool OpenSynthEditor::keyStateChanged(bool isKeyDown)
 {
     juce::ignoreUnused(isKeyDown);
 
@@ -2110,7 +2110,7 @@ bool OpenSynthJucedEditor::keyStateChanged(bool isKeyDown)
     return false; // allow other handlers
 }
 
-int OpenSynthJucedEditor::keyToNote(int keyCode)
+int OpenSynthEditor::keyToNote(int keyCode)
 {
     switch (keyCode)
     {
@@ -2142,11 +2142,11 @@ int OpenSynthJucedEditor::keyToNote(int keyCode)
     }
 }
 
-} // namespace openamp
+} // namespace opensynth
 
 // ── SetlistOverlay ──────────────────────────────────────────────────────────
 
-namespace openamp {
+namespace opensynth {
 
 SetlistOverlay::SetlistOverlay()
 {
@@ -2265,4 +2265,4 @@ void SetlistOverlay::clearAll()
         assignPresetToSlot(i, "Empty");
 }
 
-} // namespace openamp
+} // namespace opensynth

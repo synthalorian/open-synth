@@ -3,7 +3,7 @@
 #include <cmath>
 #include <array>
 
-namespace openamp {
+namespace opensynth {
 
 /// Simple pitch shifter using delay-line crossfade (PSOLA-style).
 class PitchShiftProcessor : public FxProcessor {
@@ -41,4 +41,4 @@ private:
     float readDelay(const std::array<float, MAX_DELAY>& buf, float pos);
 };
 
-} // namespace openamp
+} // namespace opensynth

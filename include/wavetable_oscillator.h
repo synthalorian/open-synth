@@ -2,7 +2,7 @@
 #include <cstdint>
 #include <cmath>
 
-namespace openamp {
+namespace opensynth {
 
 struct Wavetable {
     float* samples;        // 2048 samples, heap-allocated
@@ -53,4 +53,4 @@ private:
     float interpolate(double index) const;
 };
 
-} // namespace openamp
+} // namespace opensynth

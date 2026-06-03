@@ -6,7 +6,7 @@
 #include "lfo.h"
 #include "envelope.h"
 
-namespace openamp {
+namespace opensynth {
 
 // ── Per-part synthesis configuration ─────────────────────────────────────────
 //
@@ -84,4 +84,4 @@ struct SynthPart {
     void reset();
 };
 
-} // namespace openamp
+} // namespace opensynth

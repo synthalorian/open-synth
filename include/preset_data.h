@@ -3,7 +3,7 @@
 
 #include <juce_audio_processors/juce_audio_processors.h>
 
-namespace openamp {
+namespace opensynth {
 
 // Full parameter set for a single preset.
 // Mirrors the Dart SynthPreset model but uses POD types for compile-time embedding.
@@ -183,4 +183,4 @@ void applyPresetToEngine(const PresetData& preset, SynthEngineWrapper& engine);
 // APVTS applier — updates all parameters in the value tree so the UI reflects the preset.
 void applyPresetToAPVTS(const PresetData& preset, juce::AudioProcessorValueTreeState& apvts);
 
-} // namespace openamp
+} // namespace opensynth

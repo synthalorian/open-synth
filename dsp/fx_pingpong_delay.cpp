@@ -1,7 +1,7 @@
 #include "fx_pingpong_delay.h"
 #include <algorithm>
 
-namespace openamp {
+namespace opensynth {
 
 PingPongDelayProcessor::PingPongDelayProcessor()
     : FxProcessor(FxType::PingPongDelay) {
@@ -74,4 +74,4 @@ const char* PingPongDelayProcessor::paramName(int index) const {
     }
 }
 
-} // namespace openamp
+} // namespace opensynth

@@ -3,7 +3,7 @@
 #include <cmath>
 #include <utility>
 
-namespace openamp {
+namespace opensynth {
 
 enum class FilterType : int {
     LOW_PASS = 0,
@@ -58,4 +58,4 @@ private:
     float hp_ = 0.0f;
 };
 
-} // namespace openamp
+} // namespace opensynth

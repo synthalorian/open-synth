@@ -1,7 +1,7 @@
 #include "fx_multitap_delay.h"
 #include <algorithm>
 
-namespace openamp {
+namespace opensynth {
 
 MultitapDelayProcessor::MultitapDelayProcessor()
     : FxProcessor(FxType::MultitapDelay) {
@@ -99,4 +99,4 @@ const char* MultitapDelayProcessor::paramName(int index) const {
     }
 }
 
-} // namespace openamp
+} // namespace opensynth

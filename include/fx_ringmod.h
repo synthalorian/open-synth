@@ -2,7 +2,7 @@
 #include "fx_engine.h"
 #include <cmath>
 
-namespace openamp {
+namespace opensynth {
 
 /// Ring modulator: multiplies input by a carrier sine wave.
 class RingModProcessor : public FxProcessor {
@@ -31,4 +31,4 @@ private:
     double sampleRate_ = 48000.0;
 };
 
-} // namespace openamp
+} // namespace opensynth

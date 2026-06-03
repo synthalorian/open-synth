@@ -2,7 +2,7 @@
 #include "fx_engine.h"
 #include <cmath>
 
-namespace openamp {
+namespace opensynth {
 
 /// Stereo tremolo with multiple waveform shapes and stereo phase offset.
 class TremoloProcessor : public FxProcessor {
@@ -38,4 +38,4 @@ private:
     float randWave();
 };
 
-} // namespace openamp
+} // namespace opensynth

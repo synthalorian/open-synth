@@ -4,12 +4,12 @@
 #include <memory>
 
 // Forward declarations for our existing C++ engine
-namespace openamp {
+namespace opensynth {
 class SynthEngine;
 class FxProcessor;
 }
 
-namespace openamp {
+namespace opensynth {
 
 /// Bridges the existing OpenSynth C++ engine to JUCE's audio pipeline.
 /// Owns a SynthEngine instance and feeds it MIDI + pulls audio blocks.
@@ -89,4 +89,4 @@ private:
     int blockSize_ = 512;
 };
 
-} // namespace openamp
+} // namespace opensynth

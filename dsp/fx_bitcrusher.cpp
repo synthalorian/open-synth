@@ -1,7 +1,7 @@
 #include "fx_bitcrusher.h"
 #include <algorithm>
 
-namespace openamp {
+namespace opensynth {
 
 BitcrusherProcessor::BitcrusherProcessor()
     : FxProcessor(FxType::Bitcrusher) {}
@@ -69,4 +69,4 @@ const char* BitcrusherProcessor::paramName(int index) const {
     }
 }
 
-} // namespace openamp
+} // namespace opensynth

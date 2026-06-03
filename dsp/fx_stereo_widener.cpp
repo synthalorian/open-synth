@@ -1,7 +1,7 @@
 #include "fx_stereo_widener.h"
 #include <algorithm>
 
-namespace openamp {
+namespace opensynth {
 
 StereoWidenerProcessor::StereoWidenerProcessor()
     : FxProcessor(FxType::StereoWidener) {
@@ -92,4 +92,4 @@ const char* StereoWidenerProcessor::paramName(int index) const {
     }
 }
 
-} // namespace openamp
+} // namespace opensynth

@@ -3,7 +3,7 @@
 #include <cstring>
 #include <algorithm>
 
-namespace openamp {
+namespace opensynth {
 
 // ── MidiFile helpers ──────────────────────────────────────────────────────────
 
@@ -288,4 +288,4 @@ void iterateMidiEvents(const MidiFile& midi, MidiEventCallback callback) {
     }
 }
 
-} // namespace openamp
+} // namespace opensynth

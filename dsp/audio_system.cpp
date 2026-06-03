@@ -1,7 +1,7 @@
 #include "audio_system.h"
 #include <algorithm>
 
-namespace openamp {
+namespace opensynth {
 
 AudioSystem& AudioSystem::instance() {
     static AudioSystem inst;
@@ -79,4 +79,4 @@ const DeviceInfo* AudioSystem::deviceAt(int index) const {
     return nullptr;
 }
 
-} // namespace openamp
+} // namespace opensynth

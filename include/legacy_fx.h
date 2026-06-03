@@ -3,7 +3,7 @@
 #include <cmath>
 #include <algorithm>
 
-namespace openamp {
+namespace opensynth {
 
 /// Legacy FX processor — wraps the original inline effects (Chorus, Delay,
 /// Reverb, Phaser, Flanger, Compressor, Drive) into a single FxProcessor
@@ -224,4 +224,4 @@ private:
     void updateDelayBufferSize(double sampleRate);
 };
 
-} // namespace openamp
+} // namespace opensynth

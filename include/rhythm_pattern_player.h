@@ -4,7 +4,7 @@
 #include <array>
 #include <atomic>
 
-namespace openamp {
+namespace opensynth {
 
 class DrumKit;
 
@@ -112,4 +112,4 @@ private:
     void advanceVariation();
 };
 
-} // namespace openamp
+} // namespace opensynth

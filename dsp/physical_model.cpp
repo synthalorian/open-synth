@@ -3,7 +3,7 @@
 #include <cstring>
 #include <algorithm>
 
-namespace openamp {
+namespace opensynth {
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -362,4 +362,4 @@ bool PhysicalModelVoice::isActive() const {
     }
 }
 
-} // namespace openamp
+} // namespace opensynth

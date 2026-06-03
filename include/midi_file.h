@@ -4,7 +4,7 @@
 #include <string>
 #include <functional>
 
-namespace openamp {
+namespace opensynth {
 
 // ── MIDI event types ─────────────────────────────────────────────────────────
 
@@ -84,4 +84,4 @@ using MidiEventCallback = std::function<void(const MidiEvent& event, float secon
 // Useful for scheduling playback.
 void iterateMidiEvents(const MidiFile& midi, MidiEventCallback callback);
 
-} // namespace openamp
+} // namespace opensynth

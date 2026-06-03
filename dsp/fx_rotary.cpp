@@ -2,7 +2,7 @@
 #include <algorithm>
 #include <cmath>
 
-namespace openamp {
+namespace opensynth {
 
 RotaryProcessor::RotaryProcessor()
     : FxProcessor(FxType::Rotary) {}
@@ -107,4 +107,4 @@ const char* RotaryProcessor::paramName(int index) const {
     return "";
 }
 
-} // namespace openamp
+} // namespace opensynth

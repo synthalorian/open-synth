@@ -6,7 +6,7 @@
 #include <atomic>
 #include <mutex>
 
-namespace openamp {
+namespace opensynth {
 
 // ── WAV file writer ──────────────────────────────────────────────────────────
 
@@ -92,4 +92,4 @@ private:
     std::mutex bufMutex_;
 };
 
-} // namespace openamp
+} // namespace opensynth

@@ -1,6 +1,6 @@
 #include "user_preset_manager.h"
 
-namespace openamp {
+namespace opensynth {
 
 juce::var UserPreset::toJSON() const
 {
@@ -173,4 +173,4 @@ bool UserPresetManager::deletePreset(const juce::String& name)
     return true;
 }
 
-} // namespace openamp
+} // namespace opensynth

@@ -5,7 +5,7 @@
 #include "audio_stream.h"
 #include "audio_buffer.h"
 
-using namespace openamp;
+using namespace opensynth;
 
 static int tests_passed = 0;
 static int tests_failed = 0;

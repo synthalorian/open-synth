@@ -5,7 +5,7 @@
 #include <portaudio.h>
 #include "audio_buffer.h"
 
-namespace openamp {
+namespace opensynth {
 
 /// Process callback type — a function that fills an AudioBuffer with audio.
 /// Used to abstract over SynthEngine, SynthEnginePair, or any other processor.
@@ -49,4 +49,4 @@ private:
     // Does NOT own the PortAudio session — AudioSystem singleton does
 };
 
-} // namespace openamp
+} // namespace opensynth

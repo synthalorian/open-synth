@@ -1,7 +1,7 @@
 #include "fx_pitchshift.h"
 #include <algorithm>
 
-namespace openamp {
+namespace opensynth {
 
 PitchShiftProcessor::PitchShiftProcessor()
     : FxProcessor(FxType::PitchShift) {
@@ -105,4 +105,4 @@ const char* PitchShiftProcessor::paramName(int index) const {
     }
 }
 
-} // namespace openamp
+} // namespace opensynth

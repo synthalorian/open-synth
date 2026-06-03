@@ -23,7 +23,7 @@
 #include <iostream>
 #include <chrono>
 
-namespace openamp {
+namespace opensynth {
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -1118,4 +1118,4 @@ void SynthEngine::updateSoloState() {
     }
 }
 
-} // namespace openamp
+} // namespace opensynth

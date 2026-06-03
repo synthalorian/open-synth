@@ -2,7 +2,7 @@
 #include <algorithm>
 #include <cmath>
 
-namespace openamp {
+namespace opensynth {
 
 // ── FX Type Descriptor Table ────────────────────────────────────────────────
 
@@ -285,4 +285,4 @@ int FxEngine::activeSlotCount() const {
     return count;
 }
 
-} // namespace openamp
+} // namespace opensynth

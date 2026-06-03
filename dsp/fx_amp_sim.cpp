@@ -1,7 +1,7 @@
 #include "fx_amp_sim.h"
 #include <algorithm>
 
-namespace openamp {
+namespace opensynth {
 
 AmpSimulatorProcessor::AmpSimulatorProcessor()
     : FxProcessor(FxType::AmpSimulator) {}
@@ -94,4 +94,4 @@ const char* AmpSimulatorProcessor::paramName(int index) const {
     }
 }
 
-} // namespace openamp
+} // namespace opensynth

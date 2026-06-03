@@ -2,7 +2,7 @@
 #include <cstring>
 #include <cmath>
 
-namespace openamp {
+namespace opensynth {
 
 // ── Construction ─────────────────────────────────────────────────────────────
 
@@ -354,4 +354,4 @@ void LegacyFxProcessor::processCompressor(float& left, float& right) {
     right *= compressorEnvelope_ * (1.0f + compressorMakeupGain_);
 }
 
-} // namespace openamp
+} // namespace opensynth

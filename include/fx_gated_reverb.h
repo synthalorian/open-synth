@@ -3,7 +3,7 @@
 #include <cmath>
 #include <array>
 
-namespace openamp {
+namespace opensynth {
 
 /// Gated reverb: big reverb sound cut by noise gate.
 class GatedReverbProcessor : public FxProcessor {
@@ -47,4 +47,4 @@ private:
     void updateEnvelope(float input);
 };
 
-} // namespace openamp
+} // namespace opensynth
