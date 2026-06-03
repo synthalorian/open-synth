@@ -15,6 +15,7 @@
 #include "synth_part.h"
 #include "recorder.h"
 #include "sample_player.h"
+#include "mpe_voice.h"
 
 namespace opensynth {
 
@@ -233,6 +234,10 @@ public:
     bool isRecording() const { return recorder_.state() == TransportState::RECORDING; }
     double recordedSeconds() const { return recorder_.recordedSeconds(); }
 
+    // MPE controller
+    MpeController& mpeController() { return mpeController_; }
+    const MpeController& mpeController() const { return mpeController_; }
+
 private:
     double sampleRate_;
     uint32_t blockSize_;
@@ -245,6 +250,9 @@ private:
 
     // Global voice pool (dynamically allocated across parts)
     VoiceAllocator allocator_;
+
+    // MPE controller
+    MpeController mpeController_;
 
     // Arpeggiator
     Arpeggiator arpeggiator_;

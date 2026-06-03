@@ -145,6 +145,25 @@ private:
     std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> attackCurveAttach_;
 };
 
+// ── MPE Panel ─────────────────────────────────────────────────────────────
+class MpePanel : public juce::Component {
+public:
+    explicit MpePanel(juce::AudioProcessorValueTreeState& apvts);
+    void paint(juce::Graphics& g) override;
+    void resized() override;
+
+private:
+    juce::AudioProcessorValueTreeState& apvts_;
+
+    juce::ToggleButton enableButton_;
+    juce::ComboBox zoneSelector_;
+    SynthKnob bendRangeKnob_;
+
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> enableAttach_;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> zoneAttach_;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> bendRangeAttach_;
+};
+
 // ── D-Beam Controller (Juno-Di inspired) ──────────────────────────────────
 class DBeamPanel : public juce::Component {
 public:
@@ -481,6 +500,7 @@ private:
     FxSlotPanel fx1Panel_, fx2Panel_, fx3Panel_;
     ArpPanel arpPanel_;
     RealismPanel realismPanel_;
+    MpePanel mpePanel_;
     DBeamPanel dbeamPanel_;
     PhraseSamplerPanel phraseSamplerPanel_;
     PerformancePanel performancePanel_;

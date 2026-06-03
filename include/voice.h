@@ -6,6 +6,7 @@
 #include "filter.h"
 #include "physical_model.h"
 #include "instrument_realism.h"
+#include "mpe_voice.h"
 
 namespace opensynth {
 
@@ -46,6 +47,9 @@ struct Voice {
 
     // Instrument realism (body resonance, key click, etc.)
     InstrumentRealism realism;
+
+    // MPE per-note expression state
+    MpeVoiceState mpe;
 
     void reset();
     void noteOn(int note, float vel);

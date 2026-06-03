@@ -79,9 +79,15 @@ void SynthEngine::noteOn(int midiNote, float velocity, int channel) {
     int partIdx = channelToPart(channel);
     if (partIdx < 0) return;
 
+    // MPE: if MPE is enabled and this is a member channel, route per-note
+    int mpeChannel = -1;
+    if (mpeController_.enabled() && mpeController_.isMemberChannel(channel)) {
+        mpeChannel = channel;
+    }
+
     arpeggiator_.noteOn(midiNote, velocity);
     if (!arpeggiator_.enabled()) {
-        Voice* voice = allocator_.noteOn(midiNote, velocity, partIdx);
+        Voice* voice = allocator_.noteOn(midiNote, velocity, partIdx, mpeChannel);
         if (voice) {
             SynthPart& part = parts_[partIdx];
             int wf1 = part.osc1.waveform();
@@ -114,9 +120,15 @@ void SynthEngine::noteOff(int midiNote, int channel) {
     int partIdx = channelToPart(channel);
     if (partIdx < 0) return;
 
+    // MPE: if MPE is enabled and this is a member channel, route per-note
+    int mpeChannel = -1;
+    if (mpeController_.enabled() && mpeController_.isMemberChannel(channel)) {
+        mpeChannel = channel;
+    }
+
     arpeggiator_.noteOff(midiNote);
     if (!arpeggiator_.enabled()) {
-        allocator_.noteOff(midiNote, partIdx);
+        allocator_.noteOff(midiNote, partIdx, mpeChannel);
         for (int v = 0; v < VoiceAllocator::MAX_VOICES; ++v) {
             Voice* voice = allocator_.voice(v);
             if (voice->active && voice->midiNote == midiNote && voice->partIndex == partIdx) {
@@ -209,7 +221,11 @@ void SynthEngine::process(AudioBuffer& output) {
             }
             pitchMod += pitchEnv * part.pitchEnvAmount;
             pitchMod += part.pitchBend * 2.0f; // +/- 2 semitones
-            float modFreq = voice->baseFreq * std::pow(2.0f, pitchMod * 2.0f);
+            // MPE per-note pitch bend (adds to global pitch bend)
+            if (voice->mpe.mpeEnabled) {
+                pitchMod += voice->mpe.perNotePitchBend;
+            }
+            float modFreq = voice->baseFreq * std::pow(2.0f, pitchMod / 12.0f);
 
             // Get unison configs from the voice's part
             const UnisonConfig& u1 = part.osc1.unison();
@@ -276,6 +292,10 @@ void SynthEngine::process(AudioBuffer& output) {
             // Apply amp envelope with velocity
             float ampGain = ampEnv * voice->velocity;
             ampGain *= (1.0f + part.aftertouch * 0.5f); // aftertouch adds up to 50% gain
+            // MPE per-note pressure adds up to 50% gain (independent per note)
+            if (voice->mpe.mpeEnabled) {
+                ampGain *= (1.0f + voice->mpe.perNotePressure * 0.5f);
+            }
 
             // Apply filter
             float filterMod = 0.0f;

@@ -3,6 +3,7 @@
 #include "legacy_fx.h"
 #include "fx_engine.h"
 #include "audio_buffer.h"
+#include "voice_allocator.h"
 #include <cstring>
 
 namespace opensynth {
@@ -48,20 +49,55 @@ void SynthEngineWrapper::render(juce::AudioBuffer<float>& output, const juce::Mi
         }
         else if (midiMsg.isPitchWheel())
         {
-            engine_->setPitchBend(midiMsg.getPitchWheelValue());
+            int channel = midiMsg.getChannel() - 1;
+            if (engine_->mpeController().enabled() && engine_->mpeController().isMemberChannel(channel)) {
+                // Per-note pitch bend in MPE mode
+                float semitones = engine_->mpeController().pitchWheelToSemitones(midiMsg.getPitchWheelValue());
+                // Find the voice on this channel and update its per-note pitch
+                for (int v = 0; v < VoiceAllocator::MAX_VOICES; ++v) {
+                    Voice* voice = engine_->allocator().voice(v);
+                    if (voice->active && voice->mpe.mpeNoteChannel == channel) {
+                        voice->mpe.perNotePitchBend = semitones;
+                    }
+                }
+            } else {
+                engine_->setPitchBend(midiMsg.getPitchWheelValue());
+            }
         }
         else if (midiMsg.isController())
         {
             int cc = midiMsg.getControllerNumber();
             float value = midiMsg.getControllerValue() / 127.0f;
+            int channel = midiMsg.getChannel() - 1;
             if (cc == 1)       // Modulation wheel
                 engine_->setModWheel(value);
-            else if (cc == 64) // Sustain pedal (already handled above, but belt-and-suspenders)
+            else if (cc == 64) // Sustain pedal
                 engine_->allocator().sustain(value >= 0.5f);
+            else if (cc == 74 && engine_->mpeController().enabled() && engine_->mpeController().isMemberChannel(channel)) {
+                // MPE per-note slide (CC74)
+                for (int v = 0; v < VoiceAllocator::MAX_VOICES; ++v) {
+                    Voice* voice = engine_->allocator().voice(v);
+                    if (voice->active && voice->mpe.mpeNoteChannel == channel) {
+                        voice->mpe.perNoteSlide = value;
+                    }
+                }
+            }
         }
         else if (midiMsg.isChannelPressure())
         {
-            engine_->setAftertouch(midiMsg.getChannelPressureValue() / 127.0f);
+            int channel = midiMsg.getChannel() - 1;
+            float pressure = midiMsg.getChannelPressureValue() / 127.0f;
+            if (engine_->mpeController().enabled() && engine_->mpeController().isMemberChannel(channel)) {
+                // MPE per-note pressure
+                for (int v = 0; v < VoiceAllocator::MAX_VOICES; ++v) {
+                    Voice* voice = engine_->allocator().voice(v);
+                    if (voice->active && voice->mpe.mpeNoteChannel == channel) {
+                        voice->mpe.perNotePressure = pressure;
+                    }
+                }
+            } else {
+                engine_->setAftertouch(pressure);
+            }
         }
         else if (midiMsg.isAftertouch())
         {
@@ -198,6 +234,10 @@ void SynthEngineWrapper::setRealismClickMix(float m) { if (engine_) engine_->par
 void SynthEngineWrapper::setRealismSympatheticMix(float m) { if (engine_) engine_->part(0).realismSympatheticMix = m; }
 void SynthEngineWrapper::setRealismAttackCurve(int c) { if (engine_) engine_->part(0).realismAttackCurve = c; }
 void SynthEngineWrapper::setRealismBrightnessSens(float s) { if (engine_) engine_->part(0).realismBrightnessSens = s; }
+
+void SynthEngineWrapper::setMpeEnabled(bool e) { if (engine_) engine_->mpeController().setEnabled(e); }
+void SynthEngineWrapper::setMpeZone(int z) { if (engine_) engine_->mpeController().setLowerZone(z == 0); }
+void SynthEngineWrapper::setMpeBendRange(float semitones) { if (engine_) engine_->mpeController().setPitchBendRange(semitones); }
 
 int SynthEngineWrapper::getActiveVoiceCount() const
 {

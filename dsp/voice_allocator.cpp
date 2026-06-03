@@ -10,13 +10,25 @@ VoiceAllocator::VoiceAllocator() {
     }
 }
 
-Voice* VoiceAllocator::noteOn(int midiNote, float velocity, int partIndex) {
-    // Check if note already active on this part — retrigger
-    for (auto& v : voices_) {
-        if (v.active && v.midiNote == midiNote && v.partIndex == partIndex) {
-            v.noteOn(midiNote, velocity);
-            v.partIndex = partIndex;
-            return &v;
+Voice* VoiceAllocator::noteOn(int midiNote, float velocity, int partIndex, int mpeChannel) {
+    // In MPE mode, check if note already active on this exact channel
+    if (mpeChannel >= 0) {
+        for (auto& v : voices_) {
+            if (v.active && v.midiNote == midiNote && v.mpe.mpeNoteChannel == mpeChannel) {
+                v.noteOn(midiNote, velocity);
+                v.partIndex = partIndex;
+                v.mpe.mpeNoteChannel = mpeChannel;
+                return &v;
+            }
+        }
+    } else {
+        // Check if note already active on this part — retrigger
+        for (auto& v : voices_) {
+            if (v.active && v.midiNote == midiNote && v.partIndex == partIndex) {
+                v.noteOn(midiNote, velocity);
+                v.partIndex = partIndex;
+                return &v;
+            }
         }
     }
 
@@ -26,18 +38,27 @@ Voice* VoiceAllocator::noteOn(int midiNote, float velocity, int partIndex) {
         Voice* stolen = stealVoice();
         stolen->noteOn(midiNote, velocity);
         stolen->partIndex = partIndex;
+        if (mpeChannel >= 0) {
+            stolen->mpe.mpeEnabled = true;
+            stolen->mpe.mpeNoteChannel = mpeChannel;
+        }
         return stolen;
     }
 
     voices_[idx].noteOn(midiNote, velocity);
     voices_[idx].partIndex = partIndex;
+    if (mpeChannel >= 0) {
+        voices_[idx].mpe.mpeEnabled = true;
+        voices_[idx].mpe.mpeNoteChannel = mpeChannel;
+    }
     return &voices_[idx];
 }
 
-void VoiceAllocator::noteOff(int midiNote, int partIndex) {
+void VoiceAllocator::noteOff(int midiNote, int partIndex, int mpeChannel) {
     for (auto& v : voices_) {
         if (v.active && v.midiNote == midiNote) {
             if (partIndex >= 0 && v.partIndex != partIndex) continue;
+            if (mpeChannel >= 0 && v.mpe.mpeNoteChannel != mpeChannel) continue;
             if (sustain_) {
                 v.sustained = true;
             } else {
