@@ -37,6 +37,22 @@ struct BodyResonance {
     static constexpr float kViolinQs[3] = {12.0f, 10.0f, 8.0f};
     static constexpr float kViolinAmps[3] = {0.35f, 0.25f, 0.15f};
 
+    static constexpr float kOrganModes[3] = {80.0f, 160.0f, 240.0f};
+    static constexpr float kOrganQs[3] = {6.0f, 5.0f, 4.0f};
+    static constexpr float kOrganAmps[3] = {0.5f, 0.3f, 0.15f};
+
+    static constexpr float kBrassModes[3] = {180.0f, 350.0f, 520.0f};
+    static constexpr float kBrassQs[3] = {7.0f, 6.0f, 5.0f};
+    static constexpr float kBrassAmps[3] = {0.45f, 0.3f, 0.15f};
+
+    static constexpr float kPluckedModes[3] = {150.0f, 300.0f, 450.0f};
+    static constexpr float kPluckedQs[3] = {9.0f, 7.0f, 5.0f};
+    static constexpr float kPluckedAmps[3] = {0.35f, 0.25f, 0.15f};
+
+    static constexpr float kMalletModes[3] = {200.0f, 400.0f, 600.0f};
+    static constexpr float kMalletQs[3] = {11.0f, 9.0f, 7.0f};
+    static constexpr float kMalletAmps[3] = {0.3f, 0.2f, 0.1f};
+
     // State variable filter states for 3 parallel resonators
     struct ModeState {
         float bp = 0.0f;
@@ -128,7 +144,7 @@ struct InstrumentRealism {
     SympatheticResonator sympathetic;  // Note: this is global-ish, shared across voices
 
     // Configuration
-    int bodyType = 0;        // 0=none, 1=piano, 2=guitar, 3=violin
+    int bodyType = 0;        // 0=none, 1=piano, 2=guitar, 3=violin, 4=organ, 5=brass, 6=plucked, 7=mallet
     float bodyMix = 0.0f;    // 0-1, amount of body resonance
     float clickMix = 0.0f;   // 0-1, amount of key click
     float sympatheticMix = 0.0f;  // 0-1, amount of sympathetic resonance

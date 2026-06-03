@@ -146,6 +146,18 @@ juce::AudioProcessorValueTreeState::ParameterLayout OpenSynthProcessor::createPa
         layout.add(std::move(perfGroup));
     }
 
+    // ── Instrument Realism ───────────────────────────────────────────────────
+    {
+        auto realismGroup = std::make_unique<juce::AudioProcessorParameterGroup>("realism", "Instrument Realism", "|");
+        realismGroup->addChild(std::make_unique<juce::AudioParameterInt>("realismBodyType", "Body Type", 0, 7, 0));
+        realismGroup->addChild(std::make_unique<juce::AudioParameterFloat>("realismBodyMix", "Body Mix", juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f), 0.0f));
+        realismGroup->addChild(std::make_unique<juce::AudioParameterFloat>("realismClickMix", "Click Mix", juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f), 0.0f));
+        realismGroup->addChild(std::make_unique<juce::AudioParameterFloat>("realismSympatheticMix", "Sympathetic", juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f), 0.0f));
+        realismGroup->addChild(std::make_unique<juce::AudioParameterInt>("realismAttackCurve", "Attack Curve", 0, 3, 0));
+        realismGroup->addChild(std::make_unique<juce::AudioParameterFloat>("realismBrightnessSens", "Brightness", juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f), 0.0f));
+        layout.add(std::move(realismGroup));
+    }
+
     return layout;
 }
 
@@ -248,6 +260,14 @@ void OpenSynthProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::Mi
     synth_.setArpGate(*apvts_.getRawParameterValue("arpGate"));
     synth_.setArpSwing(*apvts_.getRawParameterValue("arpSwing"));
     synth_.setArpOctaveRange(static_cast<int>(*apvts_.getRawParameterValue("arpOctave")));
+
+    // Instrument Realism
+    synth_.setRealismBodyType(static_cast<int>(*apvts_.getRawParameterValue("realismBodyType")));
+    synth_.setRealismBodyMix(*apvts_.getRawParameterValue("realismBodyMix"));
+    synth_.setRealismClickMix(*apvts_.getRawParameterValue("realismClickMix"));
+    synth_.setRealismSympatheticMix(*apvts_.getRawParameterValue("realismSympatheticMix"));
+    synth_.setRealismAttackCurve(static_cast<int>(*apvts_.getRawParameterValue("realismAttackCurve")));
+    synth_.setRealismBrightnessSens(*apvts_.getRawParameterValue("realismBrightnessSens"));
 
     // Render audio
     synth_.render(buffer, midiMessages);

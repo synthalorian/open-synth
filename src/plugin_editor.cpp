@@ -380,6 +380,63 @@ void ArpPanel::resized()
     octaveKnob_.setBounds(x, y, knobSize, knobSize + 14);
 }
 
+// ── RealismPanel ────────────────────────────────────────────────────────────
+
+RealismPanel::RealismPanel(juce::AudioProcessorValueTreeState& apvts)
+    : apvts_(apvts),
+      bodyMixKnob_("Body Mix", SynthColors::neonPurple()),
+      clickMixKnob_("Click", SynthColors::hotPink()),
+      sympatheticKnob_("Sympathetic", SynthColors::cyan()),
+      brightnessKnob_("Brightness", SynthColors::neonYellow())
+{
+    bodyTypeSelector_.addItemList({"None", "Piano", "Guitar", "Violin", "Organ", "Brass", "Plucked", "Mallet"}, 1);
+    addAndMakeVisible(bodyTypeSelector_);
+
+    addAndMakeVisible(bodyMixKnob_);
+    addAndMakeVisible(clickMixKnob_);
+    addAndMakeVisible(sympatheticKnob_);
+    addAndMakeVisible(brightnessKnob_);
+
+    attackCurveSelector_.addItemList({"Linear", "Exponential", "Logarithmic", "Double-Exp"}, 1);
+    addAndMakeVisible(attackCurveSelector_);
+
+    bodyTypeAttach_ = std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment>(
+        apvts_, "realismBodyType", bodyTypeSelector_);
+    bodyMixAttach_ = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+        apvts_, "realismBodyMix", bodyMixKnob_);
+    clickMixAttach_ = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+        apvts_, "realismClickMix", clickMixKnob_);
+    sympatheticAttach_ = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+        apvts_, "realismSympatheticMix", sympatheticKnob_);
+    brightnessAttach_ = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+        apvts_, "realismBrightnessSens", brightnessKnob_);
+    attackCurveAttach_ = std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment>(
+        apvts_, "realismAttackCurve", attackCurveSelector_);
+}
+
+void RealismPanel::paint(juce::Graphics& g)
+{
+    g.setColour(SynthColors::card());
+    g.fillRoundedRectangle(getLocalBounds().toFloat(), 8.0f);
+    g.setColour(SynthColors::neonYellow());
+    g.setFont(juce::Font(juce::FontOptions(14.0f)));
+    g.drawText("INSTRUMENT REALISM", 12, 8, 160, 20, juce::Justification::left);
+    g.setColour(SynthColors::gridLine());
+    g.drawHorizontalLine(32, 8, getWidth() - 8);
+}
+
+void RealismPanel::resized()
+{
+    bodyTypeSelector_.setBounds(12, 36, 110, 24);
+    attackCurveSelector_.setBounds(128, 36, 120, 24);
+
+    int knobSize = 48, gap = 6, x = 12, y = 68;
+    bodyMixKnob_.setBounds(x, y, knobSize, knobSize + 14); x += knobSize + gap;
+    clickMixKnob_.setBounds(x, y, knobSize, knobSize + 14); x += knobSize + gap;
+    sympatheticKnob_.setBounds(x, y, knobSize, knobSize + 14); x += knobSize + gap;
+    brightnessKnob_.setBounds(x, y, knobSize, knobSize + 14);
+}
+
 // ── PerformanceMeter ────────────────────────────────────────────────────────
 
 PerformanceMeter::PerformanceMeter()
@@ -1165,6 +1222,7 @@ OpenSynthEditor::OpenSynthEditor(OpenSynthProcessor& processor)
       fx2Panel_(processor.getParameters(), 2),
       fx3Panel_(processor.getParameters(), 3),
       arpPanel_(processor.getParameters()),
+      realismPanel_(processor.getParameters()),
       dbeamPanel_(processor.getParameters()),
       performancePanel_(processor.getParameters()),
       keyboard_(processor)
@@ -1273,6 +1331,7 @@ OpenSynthEditor::OpenSynthEditor(OpenSynthProcessor& processor)
     addAndMakeVisible(fx2Panel_);
     addAndMakeVisible(fx3Panel_);
     addAndMakeVisible(arpPanel_);
+    addAndMakeVisible(realismPanel_);
     addAndMakeVisible(dbeamPanel_);
     addAndMakeVisible(phraseSamplerPanel_);
     addAndMakeVisible(performancePanel_);
@@ -1624,11 +1683,11 @@ void OpenSynthEditor::resized()
     topRow.removeFromLeft(gap);
     filterPanel_.setBounds(topRow.removeFromLeft(panelWidth));
     topRow.removeFromLeft(gap);
-    arpPanel_.setBounds(topRow);
+    arpPanel_.setBounds(topRow.removeFromLeft(panelWidth));
 
     b.removeFromTop(gap);
 
-    // Middle row: Envelopes + FX slots + D-Beam + Performance
+    // Middle row: Envelopes + FX slots + Realism + D-Beam + Performance
     auto midRow = b.removeFromTop(midHeight);
     int midPanelWidth = (availWidth - gap * 6) / 7;
     ampEnvPanel_.setBounds(midRow.removeFromLeft(midPanelWidth));
@@ -1640,6 +1699,8 @@ void OpenSynthEditor::resized()
     fx2Panel_.setBounds(midRow.removeFromLeft(midPanelWidth));
     midRow.removeFromLeft(gap);
     fx3Panel_.setBounds(midRow.removeFromLeft(midPanelWidth));
+    midRow.removeFromLeft(gap);
+    realismPanel_.setBounds(midRow.removeFromLeft(midPanelWidth));
     midRow.removeFromLeft(gap);
     dbeamPanel_.setBounds(midRow.removeFromLeft(midPanelWidth));
     midRow.removeFromLeft(gap);
