@@ -7,6 +7,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Add JUCE
 add_subdirectory(/home/synth/projects/juce JUCE_BUILD)
 
+# Add CLAP JUCE extensions
+add_subdirectory(libs/clap-juce-extensions EXCLUDE_FROM_ALL)
+
 # Open Synth Plugin + Standalone
 juce_add_plugin(OpenSynth
     COMPANY_NAME "SynthShark Audio"
@@ -15,6 +18,12 @@ juce_add_plugin(OpenSynth
     FORMATS Standalone VST3
     PRODUCT_NAME "Open Synth"
     MICROPHONE_PERMISSION_ENABLED TRUE
+)
+
+# Add CLAP target
+clap_juce_extensions_plugin(TARGET OpenSynth
+    CLAP_ID "audio.synthshark.opensynth"
+    CLAP_FEATURES instrument synthesizer
 )
 
 # Source files

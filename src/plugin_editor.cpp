@@ -621,7 +621,7 @@ PresetBrowser::PresetBrowser()
         "Synthwave", "Organ", "Strings", "Brass", "Piano", "Guitar", "Choir",
         "Percussion", "Electric Guitar", "Drums", "Ethnic", "Mallets",
         "Electric Piano", "Acoustic Guitar", "Bass Guitar", "Woodwinds",
-        "Custom", "Clavinet"}, 2);
+        "Custom", "Clavinet", "Orchestral", "EDM", "Retro"}, 2);
     categoryFilter_.onChange = [this]() {
         int idx = categoryFilter_.getSelectedItemIndex();
         currentCategory_ = (idx <= 0) ? "" : categoryFilter_.getItemText(idx);
