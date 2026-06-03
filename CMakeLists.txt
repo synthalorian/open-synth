@@ -10,21 +10,55 @@ add_subdirectory(/home/synth/projects/juce JUCE_BUILD)
 # Add CLAP JUCE extensions
 add_subdirectory(libs/clap-juce-extensions EXCLUDE_FROM_ALL)
 
-# Open Synth Plugin + Standalone
+# ── iOS / Android detection ──────────────────────────────────────────────────
+set(IS_IOS FALSE)
+set(IS_ANDROID FALSE)
+if(CMAKE_SYSTEM_NAME STREQUAL "iOS")
+    set(IS_IOS TRUE)
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Android")
+    set(IS_ANDROID TRUE)
+endif()
+
+# ── Determine formats ────────────────────────────────────────────────────────
+# On iOS/Android we build only Standalone (AUv3 is also possible on iOS via Xcode).
+# On desktop we build Standalone + VST3 + CLAP.
+if(IS_IOS OR IS_ANDROID)
+    set(OPEN_SYNTH_FORMATS Standalone)
+else()
+    set(OPEN_SYNTH_FORMATS Standalone VST3)
+endif()
+
+# ── Open Synth Plugin + Standalone ───────────────────────────────────────────
 juce_add_plugin(OpenSynth
     COMPANY_NAME "SynthShark Audio"
     PLUGIN_MANUFACTURER_CODE "SynS"
     PLUGIN_CODE "OpSy"
-    FORMATS Standalone VST3
+    FORMATS ${OPEN_SYNTH_FORMATS}
     PRODUCT_NAME "Open Synth"
+    BUNDLE_ID "com.synthshark.opensynth"
     MICROPHONE_PERMISSION_ENABLED TRUE
+    MICROPHONE_PERMISSION_TEXT "Open Synth needs microphone access for audio recording."
+    # iOS specific
+    BACKGROUND_AUDIO_ENABLED TRUE
+    STATUS_BAR_HIDDEN TRUE
+    REQUIRES_FULL_SCREEN FALSE
+    IPHONE_SCREEN_ORIENTATIONS UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight
+    IPAD_SCREEN_ORIENTATIONS UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight
+    TARGETED_DEVICE_FAMILY "1,2"
+    ICON_BIG "${CMAKE_CURRENT_SOURCE_DIR}/assets/icon_1024.png"
+    ICON_SMALL "${CMAKE_CURRENT_SOURCE_DIR}/assets/icon_512.png"
+    # Android specific (no-op on other platforms)
+    NEEDS_CURL FALSE
+    NEEDS_WEB_BROWSER FALSE
 )
 
-# Add CLAP target
-clap_juce_extensions_plugin(TARGET OpenSynth
-    CLAP_ID "audio.synthshark.opensynth"
-    CLAP_FEATURES instrument synthesizer
-)
+# Add CLAP target (desktop only)
+if(NOT IS_IOS AND NOT IS_ANDROID)
+    clap_juce_extensions_plugin(TARGET OpenSynth
+        CLAP_ID "audio.synthshark.opensynth"
+        CLAP_FEATURES instrument synthesizer
+    )
+endif()
 
 # Source files
 set(OPENSYNTH_SOURCES
@@ -91,6 +125,7 @@ target_include_directories(OpenSynth PRIVATE
 )
 
 # JUCE modules
+# juce_audio_devices is required for mobile audio I/O (CoreAudio on iOS, Oboe/AAudio on Android)
 target_link_libraries(OpenSynth PRIVATE
     juce::juce_audio_utils
     juce::juce_audio_processors
@@ -101,14 +136,32 @@ target_link_libraries(OpenSynth PRIVATE
 )
 
 # Compile definitions
+# JUCE_USE_ANDROID_OBOE ensures AAudio/Oboe path on Android when available.
 target_compile_definitions(OpenSynth PRIVATE
     JUCE_WEB_BROWSER=0
     JUCE_USE_CURL=0
     JUCE_VST3_CAN_REPLACE_VST2=0
     JUCE_DISPLAY_SPLASH_SCREEN=0
+    JUCE_USE_ANDROID_OBOE=1
 )
 
 # Linux specific
-if(UNIX AND NOT APPLE)
+if(UNIX AND NOT APPLE AND NOT IS_ANDROID)
     target_link_libraries(OpenSynth PRIVATE pthread dl)
+endif()
+
+# iOS / Android specific linker/framework tweaks
+if(IS_IOS)
+    # Ensure we link the required iOS frameworks for audio
+    target_link_libraries(OpenSynth PRIVATE
+        "-framework AudioToolbox"
+        "-framework AVFoundation"
+        "-framework CoreAudio"
+        "-framework CoreMIDI"
+        "-framework Accelerate"
+    )
+elseif(IS_ANDROID)
+    # Android NDK already provides OpenSL ES / AAudio via juce_audio_devices,
+    # but we explicitly ensure log linking.
+    target_link_libraries(OpenSynth PRIVATE log)
 endif()
