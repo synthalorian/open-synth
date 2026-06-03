@@ -165,12 +165,25 @@ void InstrumentRealism::reset() {
 float InstrumentRealism::process(float input, float velocity, double sampleRate, float noteAge) {
     float out = input;
 
-    // 1. Key click (only during attack phase)
+    // 1. Velocity brightness — boost high frequencies based on strike velocity
+    if (brightnessSens > 0.0f && velocity > 0.0f) {
+        float brightness = velocityBrightness(velocity, brightnessSens);
+        out *= brightness;
+    }
+
+    // 2. Attack transient shaping — apply instrument-specific attack curve
+    if (attackCurve != 0 && noteAge < 0.1f) {
+        float phase = noteAge / 0.1f; // normalize to 0-1 over first 100ms
+        float curve = applyAttackCurve(phase, attackCurve);
+        out *= curve;
+    }
+
+    // 3. Key click (only during attack phase)
     if (clickMix > 0.0f && noteAge < 0.05f) {
         out += click.process(sampleRate) * clickMix;
     }
 
-    // 2. Body resonance
+    // 4. Body resonance
     if (bodyMix > 0.0f && bodyType > 0) {
         const float* freqs = nullptr;
         const float* qs = nullptr;
@@ -192,6 +205,26 @@ float InstrumentRealism::process(float input, float velocity, double sampleRate,
                 qs = BodyResonance::kViolinQs;
                 amps = BodyResonance::kViolinAmps;
                 break;
+            case 4:  // Organ
+                freqs = BodyResonance::kOrganModes;
+                qs = BodyResonance::kOrganQs;
+                amps = BodyResonance::kOrganAmps;
+                break;
+            case 5:  // Brass
+                freqs = BodyResonance::kBrassModes;
+                qs = BodyResonance::kBrassQs;
+                amps = BodyResonance::kBrassAmps;
+                break;
+            case 6:  // Plucked
+                freqs = BodyResonance::kPluckedModes;
+                qs = BodyResonance::kPluckedQs;
+                amps = BodyResonance::kPluckedAmps;
+                break;
+            case 7:  // Mallet
+                freqs = BodyResonance::kMalletModes;
+                qs = BodyResonance::kMalletQs;
+                amps = BodyResonance::kMalletAmps;
+                break;
             default:
                 break;
         }
@@ -202,7 +235,7 @@ float InstrumentRealism::process(float input, float velocity, double sampleRate,
         }
     }
 
-    // 3. Sympathetic resonance (global, mixed in post)
+    // 5. Sympathetic resonance (global, mixed in post)
     // Note: sympathetic is typically processed at the engine level and mixed globally
     // We return the contribution here but the engine mixes it
 

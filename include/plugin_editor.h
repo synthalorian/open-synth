@@ -126,6 +126,25 @@ private:
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> tempoAttach_, gateAttach_, swingAttach_, octaveAttach_;
 };
 
+// ── Instrument Realism Panel ──────────────────────────────────────────────
+class RealismPanel : public juce::Component {
+public:
+    explicit RealismPanel(juce::AudioProcessorValueTreeState& apvts);
+    void paint(juce::Graphics& g) override;
+    void resized() override;
+
+private:
+    juce::AudioProcessorValueTreeState& apvts_;
+
+    juce::ComboBox bodyTypeSelector_;
+    SynthKnob bodyMixKnob_, clickMixKnob_, sympatheticKnob_, brightnessKnob_;
+    juce::ComboBox attackCurveSelector_;
+
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> bodyTypeAttach_;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> bodyMixAttach_, clickMixAttach_, sympatheticAttach_, brightnessAttach_;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> attackCurveAttach_;
+};
+
 // ── D-Beam Controller (Juno-Di inspired) ──────────────────────────────────
 class DBeamPanel : public juce::Component {
 public:
@@ -461,6 +480,7 @@ private:
     EnvelopePanel ampEnvPanel_, filterEnvPanel_;
     FxSlotPanel fx1Panel_, fx2Panel_, fx3Panel_;
     ArpPanel arpPanel_;
+    RealismPanel realismPanel_;
     DBeamPanel dbeamPanel_;
     PhraseSamplerPanel phraseSamplerPanel_;
     PerformancePanel performancePanel_;
