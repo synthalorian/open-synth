@@ -3,7 +3,7 @@
 
 namespace opensynth {
 
-inline constexpr int kNumFullPresets = 1459;
+inline constexpr int kNumFullPresets = 1462;
 
 inline constexpr PresetData kFullPresets[] = {
     {
@@ -281,6 +281,75 @@ inline constexpr PresetData kFullPresets[] = {
         0.80f,
         false,
         2, 0.30f, 0.15f, 0.20f, 3, 0.35f
+    },
+    {
+        "pm-organ-01", "Pipe Organ PM", "organ",
+        9, 0, 0.0f, 0.5f, 0.80f, 0, 0, 0.0f, false, 0.0f, 1, 0.0f, 0.0f, 0.0f,
+        0, 1, 0.0f, 0.5f, 0.20f, 0, 0, 0.0f, false, 0.0f, 1, 0.0f, 0.0f, 0.0f,
+        0.50f,
+        0, 5000.0f, 0.10f, 0.50f, 0.60f, 0.00f,
+        8.0f, 600.0f, 0.40f, 500.0f, 0.0f, 0.0f, 0, 0, 0,
+        10.0f, 200.0f, 0.70f, 300.0f, 0.0f, 0.0f, 0, 0, 0,
+        0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        0, 4.00f, 0.30f, 0, 0.0f, false, 4,
+        0, 4.00f, 0.30f, 0, 0.0f, false, 4,
+        false, 1.00f, 0.30f, 0.50f,
+        false, 400.0f, 0.30f, 0.30f,
+        true, 0.70f, 0.30f, 0.40f,
+        false, 0.50f, 0.50f, 0.30f, 0.30f,
+        false, 0.30f, 0.50f, 0.30f, 0.30f,
+        false, -20.0f, 4.0f, 10.0f, 100.0f, 0.0f,
+        false, 0.30f, 0,
+        {0, 0, 0}, {false, false, false}, {{0.0f}},
+        0.80f,
+        false,
+        4, 0.40f, 0.10f, 0.25f, 2, 0.30f
+    },
+    {
+        "pm-brass-01", "French Horn PM", "brass",
+        9, 0, 0.0f, 0.5f, 0.85f, 0, 0, 0.0f, false, 0.0f, 1, 0.0f, 0.0f, 0.0f,
+        0, 1, 3.0f, 0.5f, 0.15f, 0, 0, 0.0f, false, 0.0f, 1, 0.0f, 0.0f, 0.0f,
+        0.50f,
+        0, 4500.0f, 0.20f, 0.50f, 0.50f, 0.00f,
+        15.0f, 500.0f, 0.45f, 400.0f, 0.0f, 0.0f, 0, 0, 0,
+        10.0f, 200.0f, 0.70f, 300.0f, 0.0f, 0.0f, 0, 0, 0,
+        0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        0, 4.00f, 0.30f, 0, 0.0f, false, 4,
+        0, 4.00f, 0.30f, 0, 0.0f, false, 4,
+        false, 1.00f, 0.30f, 0.50f,
+        false, 400.0f, 0.30f, 0.30f,
+        true, 0.50f, 0.40f, 0.30f,
+        false, 0.50f, 0.50f, 0.30f, 0.30f,
+        false, 0.30f, 0.50f, 0.30f, 0.30f,
+        false, -20.0f, 4.0f, 10.0f, 100.0f, 0.0f,
+        false, 0.30f, 0,
+        {0, 0, 0}, {false, false, false}, {{0.0f}},
+        0.80f,
+        false,
+        5, 0.35f, 0.10f, 0.20f, 1, 0.40f
+    },
+    {
+        "pm-banjo-01", "Banjo PM", "plucked",
+        9, 0, 0.0f, 0.5f, 0.80f, 0, 0, 0.0f, false, 0.0f, 1, 0.0f, 0.0f, 0.0f,
+        0, 1, 0.0f, 0.5f, 0.20f, 0, 0, 0.0f, false, 0.0f, 1, 0.0f, 0.0f, 0.0f,
+        0.50f,
+        0, 6500.0f, 0.15f, 0.50f, 0.55f, 0.00f,
+        2.0f, 400.0f, 0.30f, 300.0f, 0.0f, 0.0f, 0, 0, 0,
+        10.0f, 200.0f, 0.70f, 300.0f, 0.0f, 0.0f, 0, 0, 0,
+        0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        0, 4.00f, 0.30f, 0, 0.0f, false, 4,
+        0, 4.00f, 0.30f, 0, 0.0f, false, 4,
+        false, 1.00f, 0.30f, 0.50f,
+        false, 400.0f, 0.30f, 0.30f,
+        true, 0.45f, 0.35f, 0.30f,
+        false, 0.50f, 0.50f, 0.30f, 0.30f,
+        false, 0.30f, 0.50f, 0.30f, 0.30f,
+        false, -20.0f, 4.0f, 10.0f, 100.0f, 0.0f,
+        false, 0.30f, 0,
+        {0, 0, 0}, {false, false, false}, {{0.0f}},
+        0.80f,
+        false,
+        6, 0.40f, 0.15f, 0.25f, 3, 0.35f
     },
     {
         "factory-01", "Blade Runner Pad", "pads",
