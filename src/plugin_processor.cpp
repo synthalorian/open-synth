@@ -1,5 +1,6 @@
 #include "plugin_processor.h"
 #include "plugin_editor.h"
+#include "synth_engine.h"
 
 namespace opensynth {
 
@@ -79,6 +80,13 @@ juce::AudioProcessorValueTreeState::ParameterLayout OpenSynthProcessor::createPa
         auto masterGroup = std::make_unique<juce::AudioProcessorParameterGroup>("master", "Master", "|");
         masterGroup->addChild(std::make_unique<juce::AudioParameterFloat>("masterVolume", "Volume", juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f), 0.8f));
         layout.add(std::move(masterGroup));
+    }
+
+    // ── Sample Player ────────────────────────────────────────────────────────
+    {
+        auto sampleGroup = std::make_unique<juce::AudioProcessorParameterGroup>("sample", "Sample Player", "|");
+        sampleGroup->addChild(std::make_unique<juce::AudioParameterFloat>("sampleMix", "Sample Mix", juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f), 0.0f));
+        layout.add(std::move(sampleGroup));
     }
 
     // ── FX Slot 1 ────────────────────────────────────────────────────────────
@@ -239,6 +247,13 @@ void OpenSynthProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::Mi
     synth_.setLfo1Depth(*apvts_.getRawParameterValue("lfo1Depth"));
 
     synth_.setMasterVolume(*apvts_.getRawParameterValue("masterVolume"));
+
+    // Sample player mix
+    if (auto* engine = synth_.getEngine())
+    {
+        if (auto* sp = engine->getSamplePlayer())
+            sp->setMixLevel(*apvts_.getRawParameterValue("sampleMix"));
+    }
 
     // FX slots
     synth_.setFxEnabled(1, *apvts_.getRawParameterValue("fx1Enabled") > 0.5f);
