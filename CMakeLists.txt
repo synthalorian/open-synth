@@ -283,3 +283,19 @@ target_compile_definitions(sample_player_block_test PRIVATE
     JUCE_WEB_BROWSER=0
     JUCE_USE_CURL=0
 )
+
+# ── FLAC Decode Test ─────────────────────────────────────────────────────────
+add_executable(flac_test
+    tests/flac_test.cpp
+)
+target_include_directories(flac_test PRIVATE src dsp include)
+target_link_libraries(flac_test PRIVATE
+    juce::juce_audio_basics
+    juce::juce_audio_formats
+    juce::juce_core
+)
+target_compile_definitions(flac_test PRIVATE
+    JUCE_WEB_BROWSER=0
+    JUCE_USE_CURL=0
+    JUCE_USE_FLAC=1
+)

@@ -87,6 +87,9 @@ def parse_opcodes(line, zone):
             zone['loopEnd'] = int(val)
         elif key == 'loop_mode':
             zone['loopEnabled'] = (val == 'loop_continuous')
+        elif key.startswith('locc') or key.startswith('hicc'):
+            # Skip zones with CC conditions we can't evaluate (e.g., sustain pedal)
+            zone['_skip'] = True
 
 def parse_define(line, macros):
     """Parse #define statements. Returns True if a define was found."""
@@ -184,11 +187,16 @@ def parse_sfz(path):
                 current_zone = dict(group_defaults)
             parse_opcodes(line, current_zone)
 
-    if current_zone and 'file' in current_zone:
+    if current_zone and 'file' in current_zone and not current_zone.get('_skip'):
         zones.append(current_zone)
+
+    # Filter out skipped zones
+    zones = [z for z in zones if not z.get('_skip')]
 
     # Resolve paths
     for z in zones:
+        if z.get('_skip'):
+            continue
         if 'file' in z:
             f = z['file']
             if f.startswith('/'):
