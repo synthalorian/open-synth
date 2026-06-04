@@ -1317,6 +1317,7 @@ OpenSynthEditor::OpenSynthEditor(OpenSynthProcessor& processor)
       dbeamPanel_(processor.getParameters()),
       performancePanel_(processor.getParameters()),
       samplePanel_(processor.getParameters(), processor),
+      phraseSamplerPanel_(processor),
       keyboard_(processor)
 {
     setSize(1400, 900);
@@ -1965,11 +1966,12 @@ void DBeamPanel::updateValueFromY(int y)
 
 // ── Phrase Sampler Panel ────────────────────────────────────────────────────
 
-PhraseSamplerPanel::PhraseSamplerPanel()
+PhraseSamplerPanel::PhraseSamplerPanel(OpenSynthProcessor& processor)
+    : processor_(processor)
 {
     setOpaque(false);
 
-    loadButton_.setButtonText("Load WAV");
+    loadButton_.setButtonText("Load");
     loadButton_.setColour(juce::TextButton::buttonColourId, SynthColors::card());
     loadButton_.setColour(juce::TextButton::textColourOffId, SynthColors::neonYellow());
     loadButton_.onClick = [this]() { loadFile(); };
@@ -1987,20 +1989,37 @@ PhraseSamplerPanel::PhraseSamplerPanel()
     stopButton_.onClick = [this]() { stop(); };
     addAndMakeVisible(stopButton_);
 
+    loopButton_.setButtonText("Loop");
+    loopButton_.setColour(juce::ToggleButton::textColourId, SynthColors::textDim());
+    loopButton_.setColour(juce::ToggleButton::tickColourId, SynthColors::hotPink());
+    loopButton_.onClick = [this]() {
+        processor_.phraseSample.looping.store(loopButton_.getToggleState(),
+                                               std::memory_order_release);
+    };
+    addAndMakeVisible(loopButton_);
+
     fileLabel_.setText("No file loaded", juce::dontSendNotification);
     fileLabel_.setColour(juce::Label::textColourId, SynthColors::textDim());
     fileLabel_.setFont(juce::Font(juce::FontOptions(11.0f)));
     addAndMakeVisible(fileLabel_);
 
+    posLabel_.setText("", juce::dontSendNotification);
+    posLabel_.setColour(juce::Label::textColourId, SynthColors::cyan());
+    posLabel_.setFont(juce::Font(juce::FontOptions(10.0f)));
+    addAndMakeVisible(posLabel_);
+
     volumeSlider_.setSliderStyle(juce::Slider::LinearHorizontal);
     volumeSlider_.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
     volumeSlider_.setRange(0.0, 1.0, 0.01);
     volumeSlider_.setValue(0.8);
+    volumeSlider_.onValueChange = [this]() {
+        processor_.phraseSample.volume = static_cast<float>(volumeSlider_.getValue());
+    };
     addAndMakeVisible(volumeSlider_);
 
     formatManager_.registerBasicFormats();
 
-    startTimerHz(10);
+    startTimerHz(15);
 }
 
 PhraseSamplerPanel::~PhraseSamplerPanel() = default;
@@ -2008,6 +2027,9 @@ PhraseSamplerPanel::~PhraseSamplerPanel() = default;
 void PhraseSamplerPanel::paint(juce::Graphics& g)
 {
     auto b = getLocalBounds().toFloat();
+    float w = b.getWidth();
+    float h = b.getHeight();
+
     g.setColour(SynthColors::card());
     g.fillRoundedRectangle(b, 8.0f);
 
@@ -2015,77 +2037,183 @@ void PhraseSamplerPanel::paint(juce::Graphics& g)
     g.setFont(juce::Font(juce::FontOptions(14.0f, juce::Font::bold)));
     g.drawText("PHRASE SAMPLER", 12, 8, 150, 20, juce::Justification::left);
     g.setColour(SynthColors::gridLine());
-    g.drawHorizontalLine(32, 8, getWidth() - 8);
+    g.drawHorizontalLine(32, 8, w - 8);
 
-    // Simple waveform placeholder
+    // Waveform area
+    float waveY = 92.0f;
+    float waveH = 42.0f;
     g.setColour(SynthColors::surface());
-    g.fillRoundedRectangle(12.0f, 90.0f, (float)getWidth() - 24.0f, 40.0f, 4.0f);
+    g.fillRoundedRectangle(12.0f, waveY, w - 24.0f, waveH, 4.0f);
 
-    g.setColour(SynthColors::neonPurple().withAlpha(0.3f));
-    float cx = getWidth() * 0.5f;
-    float cy = 110.0f;
-    for (int i = 0; i < getWidth() - 24; i += 4)
+    // Draw real waveform thumbnail
+    if (!thumbnail_.empty())
     {
-        float y = cy + std::sin(i * 0.1f + juce::Time::getMillisecondCounter() / 500.0f) * 10.0f;
-        g.fillEllipse((float)(12 + i), y, 2.0f, 2.0f);
+        float cy = waveY + waveH * 0.5f;
+        float scale = waveH * 0.45f;
+        int numSamples = static_cast<int>(thumbnail_.size());
+
+        // Center line
+        g.setColour(SynthColors::gridLine().withAlpha(0.3f));
+        g.drawHorizontalLine(static_cast<int>(cy), 12.0f, w - 12.0f);
+
+        // Waveform
+        g.setColour(SynthColors::hotPink());
+        juce::Path path;
+        float xStep = (w - 24.0f) / static_cast<float>(numSamples - 1);
+        path.startNewSubPath(12.0f, cy - thumbnail_[0] * scale);
+        for (int i = 1; i < numSamples; ++i)
+            path.lineTo(12.0f + i * xStep, cy - thumbnail_[i] * scale);
+        g.strokePath(path, juce::PathStrokeType(1.5f));
+
+        // Playhead position
+        if (processor_.phraseSample.playing.load(std::memory_order_acquire))
+        {
+            int pos = processor_.phraseSample.playPosition.load(std::memory_order_relaxed);
+            int total = processor_.phraseSample.getNumSamples();
+            if (total > 0)
+            {
+                float px = 12.0f + (w - 24.0f) * static_cast<float>(pos) / static_cast<float>(total);
+                g.setColour(SynthColors::neonYellow());
+                g.drawVerticalLine(static_cast<int>(px), waveY, waveY + waveH);
+            }
+        }
+    }
+    else
+    {
+        // Empty state — animated placeholder dots
+        g.setColour(SynthColors::neonPurple().withAlpha(0.3f));
+        float cy = waveY + waveH * 0.5f;
+        for (int i = 0; i < static_cast<int>(w) - 24; i += 4)
+        {
+            float y = cy + std::sin(i * 0.1f + juce::Time::getMillisecondCounter() / 500.0f) * 8.0f;
+            g.fillEllipse(12.0f + i, y, 2.0f, 2.0f);
+        }
     }
 }
 
 void PhraseSamplerPanel::resized()
 {
-    loadButton_.setBounds(12, 38, 70, 24);
-    playButton_.setBounds(88, 38, 50, 24);
-    stopButton_.setBounds(144, 38, 50, 24);
-    fileLabel_.setBounds(12, 66, getWidth() - 24, 20);
-    volumeSlider_.setBounds(12, 136, getWidth() - 24, 20);
+    int y = 38;
+    loadButton_.setBounds(12, y, 52, 22);
+    playButton_.setBounds(68, y, 44, 22);
+    stopButton_.setBounds(116, y, 44, 22);
+    loopButton_.setBounds(164, y, 50, 22);
+    y += 26;
+    fileLabel_.setBounds(12, y, getWidth() - 24, 16);
+    y += 18;
+    posLabel_.setBounds(12, y, getWidth() - 24, 14);
+    y += 16;
+    // Waveform area is drawn in paint() at fixed y
+    volumeSlider_.setBounds(12, 140, getWidth() - 24, 18);
 }
 
 void PhraseSamplerPanel::timerCallback()
 {
-    // Update playback position if playing
+    // Update playhead position label
+    if (processor_.phraseSample.playing.load(std::memory_order_acquire))
+    {
+        int pos = processor_.phraseSample.playPosition.load(std::memory_order_relaxed);
+        int total = processor_.phraseSample.getNumSamples();
+        double sr = processor_.phraseSample.sampleRate;
+        if (total > 0 && sr > 0)
+        {
+            double posSec = static_cast<double>(pos) / sr;
+            double totalSec = static_cast<double>(total) / sr;
+            auto fmtTime = [](double s) -> juce::String {
+                int min = static_cast<int>(s) / 60;
+                double sec = s - min * 60;
+                return juce::String::formatted("%d:%05.2f", min, sec);
+            };
+            posLabel_.setText(fmtTime(posSec) + " / " + fmtTime(totalSec),
+                              juce::dontSendNotification);
+        }
+        repaint();
+    }
+    else if (!posLabel_.getText().isEmpty())
+    {
+        posLabel_.setText("", juce::dontSendNotification);
+    }
 }
 
 void PhraseSamplerPanel::loadFile()
 {
     fileChooser_ = std::make_unique<juce::FileChooser>(
-        "Select a WAV file...",
+        "Select an audio file...",
         juce::File::getSpecialLocation(juce::File::userMusicDirectory),
-        "*.wav;*.aiff;*.flac");
+        "*.wav;*.aiff;*.flac;*.ogg");
 
     fileChooser_->launchAsync(juce::FileBrowserComponent::openMode | juce::FileBrowserComponent::canSelectFiles,
         [this](const juce::FileChooser& chooser)
     {
         auto file = chooser.getResult();
-        if (file != juce::File())
+        if (file == juce::File()) return;
+
+        auto* reader = formatManager_.createReaderFor(file);
+        if (reader == nullptr)
         {
-            auto* reader = formatManager_.createReaderFor(file);
-            if (reader != nullptr)
-            {
-                delete reader;
-                currentFile_ = file;
-                fileLabel_.setText(file.getFileNameWithoutExtension(), juce::dontSendNotification);
-                fileLabel_.setColour(juce::Label::textColourId, SynthColors::text());
-            }
-            else
-            {
-                fileLabel_.setText("Failed to load file", juce::dontSendNotification);
-                fileLabel_.setColour(juce::Label::textColourId, SynthColors::danger());
-            }
+            fileLabel_.setText("Failed to load", juce::dontSendNotification);
+            fileLabel_.setColour(juce::Label::textColourId, SynthColors::danger());
+            return;
         }
+
+        // Read entire file into the processor's phrase buffer
+        int numSamples = static_cast<int>(reader->lengthInSamples);
+        int numChannels = reader->numChannels;
+        double sampleRate = reader->sampleRate;
+
+        auto& buf = processor_.phraseSample.buffer;
+        buf.setSize(numChannels, numSamples);
+        reader->read(&buf, 0, numSamples, 0, true, true);
+        delete reader;
+
+        processor_.phraseSample.sampleRate = sampleRate;
+        processor_.phraseSample.stop();
+
+        currentFile_ = file;
+        fileLabel_.setText(file.getFileNameWithoutExtension(), juce::dontSendNotification);
+        fileLabel_.setColour(juce::Label::textColourId, SynthColors::text());
+
+        // Build waveform thumbnail (downsample for display)
+        const int kThumbnailSize = 256;
+        thumbnail_.resize(kThumbnailSize);
+        thumbnailSamples_ = numSamples;
+        const float* ch0 = buf.getReadPointer(0);
+        int samplesPerBucket = numSamples / kThumbnailSize;
+        if (samplesPerBucket < 1) samplesPerBucket = 1;
+        for (int i = 0; i < kThumbnailSize; ++i)
+        {
+            float maxVal = 0.0f;
+            int start = i * samplesPerBucket;
+            int end = std::min(start + samplesPerBucket, numSamples);
+            for (int s = start; s < end; ++s)
+                maxVal = std::max(maxVal, std::abs(ch0[s]));
+            thumbnail_[i] = maxVal;
+        }
+
+        repaint();
     });
 }
 
 void PhraseSamplerPanel::play()
 {
-    if (currentFile_.existsAsFile())
+    if (processor_.phraseSample.getNumSamples() > 0)
     {
-        fileLabel_.setText(currentFile_.getFileNameWithoutExtension() + " (playing)", juce::dontSendNotification);
+        processor_.phraseSample.start();
+        fileLabel_.setText(currentFile_.getFileNameWithoutExtension() + " (playing)",
+                           juce::dontSendNotification);
     }
 }
 
 void PhraseSamplerPanel::stop()
 {
-    // Stub: would stop transport
+    processor_.phraseSample.stop();
+    if (currentFile_.existsAsFile())
+    {
+        fileLabel_.setText(currentFile_.getFileNameWithoutExtension(),
+                           juce::dontSendNotification);
+    }
+    posLabel_.setText("", juce::dontSendNotification);
+    repaint();
 }
 
 // ── Sample Panel ────────────────────────────────────────────────────────────

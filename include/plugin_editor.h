@@ -190,23 +190,30 @@ private:
     void updateValueFromY(int y);
 };
 
-// ── Phrase Sampler / Audio Player (stub) ──────────────────────────────────
+// ── Phrase Sampler / Audio Player ──────────────────────────────────────────
 class PhraseSamplerPanel : public juce::Component,
                            private juce::Timer {
 public:
-    PhraseSamplerPanel();
+    PhraseSamplerPanel(OpenSynthProcessor& processor);
     ~PhraseSamplerPanel() override;
     void paint(juce::Graphics& g) override;
     void resized() override;
 
 private:
+    OpenSynthProcessor& processor_;
     juce::TextButton loadButton_;
     juce::TextButton playButton_;
     juce::TextButton stopButton_;
+    juce::ToggleButton loopButton_;
     juce::Label fileLabel_;
+    juce::Label posLabel_;
     juce::Slider volumeSlider_;
     juce::AudioFormatManager formatManager_;
     juce::File currentFile_;
+
+    // Waveform thumbnail for paint()
+    std::vector<float> thumbnail_;
+    int thumbnailSamples_ = 0;
 
     std::unique_ptr<juce::FileChooser> fileChooser_;
 
