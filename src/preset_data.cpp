@@ -1,7 +1,12 @@
 #include "preset_data.h"
 #include "synth_engine_wrapper.h"
+#include "synth_engine.h"
+#include <juce_core/juce_core.h>
 
 namespace opensynth {
+
+// Forward declaration
+juce::File getSampleManifestPath(const char* id);
 
 void applyPresetToEngine(const PresetData& p, SynthEngineWrapper& e)
 {
@@ -70,6 +75,35 @@ void applyPresetToEngine(const PresetData& p, SynthEngineWrapper& e)
     e.setArpGate(clamp(p.arpGate, 0.0f, 1.0f));
     e.setArpSwing(clamp(p.arpSwing, 0.0f, 1.0f));
     e.setArpOctaveRange(p.arpOctave > 4 ? 4 : (p.arpOctave < 1 ? 1 : p.arpOctave));
+
+    // Sample manifest loading
+    if (p.sampleManifestId[0] != '\0' && e.getEngine()) {
+        auto* player = e.getEngine()->getSamplePlayer();
+        if (player) {
+            juce::File manifestFile = getSampleManifestPath(p.sampleManifestId);
+            if (manifestFile.existsAsFile()) {
+                player->clear();
+                player->loadMultiSample(manifestFile.getFullPathName().toStdString());
+                player->setMixLevel(clamp(p.sampleMix, 0.0f, 1.0f));
+            }
+        }
+    }
+}
+
+// Helper to resolve manifest path relative to executable or dev tree
+juce::File getSampleManifestPath(const char* id)
+{
+    // Try plugin bundle directory first
+    juce::File exeDir = juce::File::getSpecialLocation(juce::File::currentExecutableFile).getParentDirectory();
+    juce::File manifest = exeDir.getChildFile("samples/manifests").getChildFile(juce::String(id) + ".json");
+    if (manifest.existsAsFile()) return manifest;
+
+    // Try one level up (macOS .app bundle structure)
+    manifest = exeDir.getParentDirectory().getChildFile("samples/manifests").getChildFile(juce::String(id) + ".json");
+    if (manifest.existsAsFile()) return manifest;
+
+    // Development fallback
+    return juce::File("/home/synth/projects/open-synth/samples/manifests").getChildFile(juce::String(id) + ".json");
 }
 
 void applyPresetToAPVTS(const PresetData& p, juce::AudioProcessorValueTreeState& apvts)

@@ -5,31 +5,31 @@ import os
 
 OUTPUT = '/home/synth/projects/open-synth/include/preset_library_full.h'
 
-# Category definitions with sampleMix values
+# Category definitions with sampleMix values and manifest IDs
 # Acoustic categories get 0.5-0.7 sampleMix, synth categories get 0.0
 CATEGORIES = {
-    'piano':       {'sampleMix': 0.6, 'bodyType': 1, 'bodyMix': 0.3, 'clickMix': 0.2, 'attackCurve': 1, 'brightness': 0.4},
-    'organ':       {'sampleMix': 0.5, 'bodyType': 4, 'bodyMix': 0.4, 'clickMix': 0.3, 'attackCurve': 2, 'brightness': 0.2},
-    'guitar':      {'sampleMix': 0.6, 'bodyType': 2, 'bodyMix': 0.35, 'clickMix': 0.15, 'attackCurve': 3, 'brightness': 0.3},
-    'bass':        {'sampleMix': 0.5, 'bodyType': 5, 'bodyMix': 0.3, 'clickMix': 0.1, 'attackCurve': 3, 'brightness': 0.2},
-    'strings':     {'sampleMix': 0.7, 'bodyType': 3, 'bodyMix': 0.4, 'clickMix': 0.0, 'attackCurve': 1, 'brightness': 0.3},
-    'brass':       {'sampleMix': 0.6, 'bodyType': 6, 'bodyMix': 0.35, 'clickMix': 0.1, 'attackCurve': 1, 'brightness': 0.5},
-    'woodwind':    {'sampleMix': 0.7, 'bodyType': 7, 'bodyMix': 0.3, 'clickMix': 0.15, 'attackCurve': 1, 'brightness': 0.4},
-    'ethnic':      {'sampleMix': 0.6, 'bodyType': 0, 'bodyMix': 0.2, 'clickMix': 0.1, 'attackCurve': 3, 'brightness': 0.2},
-    'percussion':  {'sampleMix': 0.7, 'bodyType': 0, 'bodyMix': 0.0, 'clickMix': 0.0, 'attackCurve': 0, 'brightness': 0.1},
-    'chromatic':   {'sampleMix': 0.7, 'bodyType': 0, 'bodyMix': 0.0, 'clickMix': 0.0, 'attackCurve': 0, 'brightness': 0.2},
-    'orchestral':  {'sampleMix': 0.6, 'bodyType': 3, 'bodyMix': 0.3, 'clickMix': 0.0, 'attackCurve': 1, 'brightness': 0.3},
-    'synth_lead':  {'sampleMix': 0.0, 'bodyType': 0, 'bodyMix': 0.0, 'clickMix': 0.0, 'attackCurve': 0, 'brightness': 0.0},
-    'synth_pad':   {'sampleMix': 0.0, 'bodyType': 0, 'bodyMix': 0.0, 'clickMix': 0.0, 'attackCurve': 0, 'brightness': 0.0},
-    'fx':          {'sampleMix': 0.0, 'bodyType': 0, 'bodyMix': 0.0, 'clickMix': 0.0, 'attackCurve': 0, 'brightness': 0.0},
-    'drums':       {'sampleMix': 0.8, 'bodyType': 0, 'bodyMix': 0.0, 'clickMix': 0.0, 'attackCurve': 0, 'brightness': 0.0},
-    'synth_bass':  {'sampleMix': 0.0, 'bodyType': 0, 'bodyMix': 0.0, 'clickMix': 0.0, 'attackCurve': 0, 'brightness': 0.0},
-    'synth_organ': {'sampleMix': 0.0, 'bodyType': 0, 'bodyMix': 0.0, 'clickMix': 0.0, 'attackCurve': 0, 'brightness': 0.0},
-    'synth_piano': {'sampleMix': 0.0, 'bodyType': 0, 'bodyMix': 0.0, 'clickMix': 0.0, 'attackCurve': 0, 'brightness': 0.0},
-    'world':       {'sampleMix': 0.6, 'bodyType': 0, 'bodyMix': 0.2, 'clickMix': 0.1, 'attackCurve': 3, 'brightness': 0.2},
-    'sfx':         {'sampleMix': 0.0, 'bodyType': 0, 'bodyMix': 0.0, 'clickMix': 0.0, 'attackCurve': 0, 'brightness': 0.0},
-    'cinematic':   {'sampleMix': 0.5, 'bodyType': 3, 'bodyMix': 0.3, 'clickMix': 0.0, 'attackCurve': 1, 'brightness': 0.3},
-    'other':       {'sampleMix': 0.0, 'bodyType': 0, 'bodyMix': 0.0, 'clickMix': 0.0, 'attackCurve': 0, 'brightness': 0.0},
+    'piano':       {'sampleMix': 0.6, 'bodyType': 1, 'bodyMix': 0.3, 'clickMix': 0.2, 'attackCurve': 1, 'brightness': 0.4, 'manifest': 'splendid-grand-piano'},
+    'organ':       {'sampleMix': 0.5, 'bodyType': 4, 'bodyMix': 0.4, 'clickMix': 0.3, 'attackCurve': 2, 'brightness': 0.2, 'manifest': ''},
+    'guitar':      {'sampleMix': 0.6, 'bodyType': 2, 'bodyMix': 0.35, 'clickMix': 0.15, 'attackCurve': 3, 'brightness': 0.3, 'manifest': 'spanishclassicalguitar-20190618'},
+    'bass':        {'sampleMix': 0.5, 'bodyType': 5, 'bodyMix': 0.3, 'clickMix': 0.1, 'attackCurve': 3, 'brightness': 0.2, 'manifest': 'fingerbassyr-20190930'},
+    'strings':     {'sampleMix': 0.7, 'bodyType': 3, 'bodyMix': 0.4, 'clickMix': 0.0, 'attackCurve': 1, 'brightness': 0.3, 'manifest': ''},
+    'brass':       {'sampleMix': 0.6, 'bodyType': 6, 'bodyMix': 0.35, 'clickMix': 0.1, 'attackCurve': 1, 'brightness': 0.5, 'manifest': ''},
+    'woodwind':    {'sampleMix': 0.7, 'bodyType': 7, 'bodyMix': 0.3, 'clickMix': 0.15, 'attackCurve': 1, 'brightness': 0.4, 'manifest': ''},
+    'ethnic':      {'sampleMix': 0.6, 'bodyType': 0, 'bodyMix': 0.2, 'clickMix': 0.1, 'attackCurve': 3, 'brightness': 0.2, 'manifest': ''},
+    'percussion':  {'sampleMix': 0.7, 'bodyType': 0, 'bodyMix': 0.0, 'clickMix': 0.0, 'attackCurve': 0, 'brightness': 0.1, 'manifest': ''},
+    'chromatic':   {'sampleMix': 0.7, 'bodyType': 0, 'bodyMix': 0.0, 'clickMix': 0.0, 'attackCurve': 0, 'brightness': 0.2, 'manifest': ''},
+    'orchestral':  {'sampleMix': 0.6, 'bodyType': 3, 'bodyMix': 0.3, 'clickMix': 0.0, 'attackCurve': 1, 'brightness': 0.3, 'manifest': ''},
+    'synth_lead':  {'sampleMix': 0.0, 'bodyType': 0, 'bodyMix': 0.0, 'clickMix': 0.0, 'attackCurve': 0, 'brightness': 0.0, 'manifest': ''},
+    'synth_pad':   {'sampleMix': 0.0, 'bodyType': 0, 'bodyMix': 0.0, 'clickMix': 0.0, 'attackCurve': 0, 'brightness': 0.0, 'manifest': ''},
+    'fx':          {'sampleMix': 0.0, 'bodyType': 0, 'bodyMix': 0.0, 'clickMix': 0.0, 'attackCurve': 0, 'brightness': 0.0, 'manifest': ''},
+    'drums':       {'sampleMix': 0.8, 'bodyType': 0, 'bodyMix': 0.0, 'clickMix': 0.0, 'attackCurve': 0, 'brightness': 0.0, 'manifest': 'muldjordkit-20201018'},
+    'synth_bass':  {'sampleMix': 0.0, 'bodyType': 0, 'bodyMix': 0.0, 'clickMix': 0.0, 'attackCurve': 0, 'brightness': 0.0, 'manifest': ''},
+    'synth_organ': {'sampleMix': 0.0, 'bodyType': 0, 'bodyMix': 0.0, 'clickMix': 0.0, 'attackCurve': 0, 'brightness': 0.0, 'manifest': ''},
+    'synth_piano': {'sampleMix': 0.0, 'bodyType': 0, 'bodyMix': 0.0, 'clickMix': 0.0, 'attackCurve': 0, 'brightness': 0.0, 'manifest': ''},
+    'world':       {'sampleMix': 0.6, 'bodyType': 0, 'bodyMix': 0.2, 'clickMix': 0.1, 'attackCurve': 3, 'brightness': 0.2, 'manifest': ''},
+    'sfx':         {'sampleMix': 0.0, 'bodyType': 0, 'bodyMix': 0.0, 'clickMix': 0.0, 'attackCurve': 0, 'brightness': 0.0, 'manifest': ''},
+    'cinematic':   {'sampleMix': 0.5, 'bodyType': 3, 'bodyMix': 0.3, 'clickMix': 0.0, 'attackCurve': 1, 'brightness': 0.3, 'manifest': ''},
+    'other':       {'sampleMix': 0.0, 'bodyType': 0, 'bodyMix': 0.0, 'clickMix': 0.0, 'attackCurve': 0, 'brightness': 0.0, 'manifest': ''},
 }
 
 # Set of available sample files (without .wav extension)
@@ -385,7 +385,10 @@ def generate_preset(idx, name, category, overrides=None):
     # Realism
     lines.append(f'        {cat["bodyType"]}, {cat["bodyMix"]:.2f}, {cat["clickMix"]:.2f}, {cat.get("sympathetic", 0.0):.2f}, {cat["attackCurve"]}, {brightness:.2f},')
     # Arpeggiator
-    lines.append(f'        false, 0, 120.0, 0.50, 0.00, 1')
+    lines.append(f'        false, 0, 120.0, 0.50, 0.00, 1,')
+    # sampleManifestId (last field)
+    manifest_id = cat.get('manifest', '')
+    lines.append(f'        "{manifest_id}"')
     lines.append(f'    }}')
 
     return '\n'.join(lines)

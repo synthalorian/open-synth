@@ -176,6 +176,10 @@ struct PresetData {
     float arpGate = 0.5f;
     float arpSwing = 0.0f;
     int   arpOctave = 1;
+
+    // Sample manifest ID (empty = no samples, use synthesis only)
+    // Added at the very end to preserve aggregate initializer ordering
+    const char* sampleManifestId = "";
 };
 
 // Parameter-applier helper.
