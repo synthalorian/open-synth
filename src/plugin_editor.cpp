@@ -1070,10 +1070,22 @@ void PianoKeyboard::paint(juce::Graphics& g)
             bool pressed = pressedNote_ == note;
             bool isSplit = showSplit_ && note >= splitPoint_;
 
-            g.setColour(pressed ? SynthColors::hotPink() :
-                        isSplit ? SynthColors::cyan().withAlpha(0.5f) :
-                        juce::Colours::black);
+            juce::Colour keyColour = pressed ? SynthColors::hotPink() :
+                                     isSplit ? SynthColors::cyan().withAlpha(0.7f) :
+                                     juce::Colour(0xFF1a1a1a);
+            g.setColour(keyColour);
             g.fillRect(keyRect);
+
+            // Subtle highlight on left edge for 3D depth
+            g.setColour(keyColour.brighter(0.15f));
+            g.drawVerticalLine((int)keyRect.getX(), keyRect.getY(), keyRect.getBottom());
+
+            // Shadow on right edge
+            g.setColour(juce::Colours::black.withAlpha(0.6f));
+            g.drawVerticalLine((int)keyRect.getRight() - 1, keyRect.getY(), keyRect.getBottom());
+
+            // Bottom shadow
+            g.drawHorizontalLine((int)keyRect.getBottom() - 1, keyRect.getX(), keyRect.getRight());
         }
     }
 
