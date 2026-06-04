@@ -2,44 +2,61 @@
 #include "fx_engine.h"
 #include <array>
 #include <cmath>
+#include <algorithm>
 
 namespace opensynth {
 
-/// Vocoder FX stub.
-/// Uses a carrier (synth oscillator) + modulator (simulated with noise/secondary osc)
-/// to create a vocoder effect. Full DSP not yet implemented.
+/// Vocoder: filter bank on modulator, envelope follow each band, apply to carrier.
 class VocoderProcessor : public FxProcessor {
 public:
     enum Param {
-        BANDS = 0,      // Number of filter bands (4-32)
-        CARRIER_TYPE,   // 0=noise, 1=osc
-        CARRIER_FREQ,   // Carrier oscillator freq
-        FORMANT_SHIFT,  // Formant shift
-        MIX             // Wet/dry
+        BANDS = 0,       // Number of filter bands (4-16)
+        RANGE = 1,       // Frequency range (0-1)
+        MIX = 2,         // Wet/dry
+        CARRIER = 3,     // 0=noise, 1=saw, 2=square
     };
 
     explicit VocoderProcessor();
-
-    void setSampleRate(double sampleRate) override;
     void process(float& left, float& right, double sampleRate) override;
     void reset() override;
 
     void setParam(int index, float value) override;
     float getParam(int index) const override;
-    int paramCount() const override { return 5; }
+    int paramCount() const override { return 4; }
     const char* paramName(int index) const override;
 
 private:
-    double sampleRate_ = 48000.0;
-    int bands_ = 16;
+    static constexpr int MAX_BANDS = 16;
+
+    int bands_ = 8;
+    float range_ = 0.5f;
     int carrierType_ = 0;
-    float carrierFreq_ = 440.0f;
-    float formantShift_ = 0.0f;
-    float mix_ = 0.5f;
+
+    double sampleRate_ = 48000.0;
     float phase_ = 0.0f;
 
-    // Simple noise generator
-    float noise() const;
+    // Bandpass filter states (2-pole state variable filter per band per channel)
+    // y[n] = b0*x[n] + b1*x[n-1] + b2*x[n-2] - a1*y[n-1] - a2*y[n-2]
+    struct FilterState {
+        float x1 = 0.0f, x2 = 0.0f;
+        float y1 = 0.0f, y2 = 0.0f;
+    };
+    std::array<FilterState, MAX_BANDS> modL_;
+    std::array<FilterState, MAX_BANDS> modR_;
+    std::array<FilterState, MAX_BANDS> carL_;
+    std::array<FilterState, MAX_BANDS> carR_;
+
+    // Envelope followers per band per channel
+    std::array<float, MAX_BANDS> envL_;
+    std::array<float, MAX_BANDS> envR_;
+
+    // Filter coefficients per band
+    std::array<float, MAX_BANDS> b0_, b1_, b2_, a1_, a2_;
+
+    void updateFilters();
+    float processFilter(float input, FilterState& s, float b0, float b1, float b2, float a1, float a2);
+    float generateCarrier();
+    float noise();
 };
 
 } // namespace opensynth

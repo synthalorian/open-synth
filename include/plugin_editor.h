@@ -217,6 +217,7 @@ private:
 
 // ── Sample Panel (Multi-zone sample player UI) ────────────────────────────
 class SamplePanel : public juce::Component,
+                    public juce::FileDragAndDropTarget,
                     private juce::Timer {
 public:
     SamplePanel(juce::AudioProcessorValueTreeState& apvts, OpenSynthProcessor& processor);
@@ -224,6 +225,10 @@ public:
     void resized() override;
 
     void refresh();
+
+    // FileDragAndDropTarget
+    bool isInterestedInFileDrag(const juce::StringArray& files) override;
+    void filesDropped(const juce::StringArray& files, int x, int y) override;
 
 private:
     juce::AudioProcessorValueTreeState& apvts_;
@@ -236,6 +241,7 @@ private:
     SynthKnob mixKnob_;
     juce::TextButton browseButton_;
     juce::TextButton clearButton_;
+    juce::TextButton editZonesButton_;
 
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mixAttach_;
     std::unique_ptr<juce::FileChooser> fileChooser_;
@@ -244,10 +250,16 @@ private:
     juce::Component zoneContainer_;
     std::vector<std::unique_ptr<juce::Label>> zoneLabels_;
 
+    // Zone editor overlay
+    std::unique_ptr<juce::Component> zoneEditor_;
+    void showZoneEditor();
+    void hideZoneEditor();
+
     void browseForSample();
     void clearSample();
     void rebuildZoneList();
     void timerCallback() override;
+    void loadFile(const juce::File& file);
 };
 
 // ── Performance Controls (Juno-Di inspired) ────────────────────────────────
