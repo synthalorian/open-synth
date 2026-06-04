@@ -223,6 +223,42 @@ private:
     void stop();
 };
 
+// ── Zone Editor Overlay ───────────────────────────────────────────────────
+class ZoneEditor : public juce::Component {
+public:
+    ZoneEditor(OpenSynthProcessor& processor, std::function<void()> onClose);
+    void paint(juce::Graphics& g) override;
+    void resized() override;
+
+    void mouseDown(const juce::MouseEvent& e) override;
+
+private:
+    OpenSynthProcessor& processor_;
+    std::function<void()> onClose_;
+    int selectedZone_ = -1;
+
+    // Edit controls
+    juce::Label titleLabel_;
+    juce::TextButton closeButton_;
+    juce::Label selLabel_;
+    juce::Slider rootNoteSlider_, minNoteSlider_, maxNoteSlider_;
+    juce::Slider minVelSlider_, maxVelSlider_;
+    juce::ToggleButton loopToggle_;
+    juce::Slider volumeSlider_;
+    juce::TextButton deleteButton_;
+
+    // Key map area
+    static constexpr int kKeyStart = 24;  // C1
+    static constexpr int kKeyEnd = 108;   // C8
+    static constexpr int kNumKeys = kKeyEnd - kKeyStart;
+
+    // Helpers
+    float noteToX(int note, float width) const;
+    int xToNote(float x, float width) const;
+    void updateSlidersFromZone();
+    void applySlidersToZone();
+};
+
 // ── Sample Panel (Multi-zone sample player UI) ────────────────────────────
 class SamplePanel : public juce::Component,
                     public juce::FileDragAndDropTarget,

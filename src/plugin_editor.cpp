@@ -2590,14 +2590,314 @@ void SamplePanel::loadFile(const juce::File& file)
     rebuildZoneList();
 }
 
+// ── Zone Editor ─────────────────────────────────────────────────────────────
+
+static const juce::Colour zoneColors[] = {
+    juce::Colour(0xFF00F0FF),  // cyan
+    juce::Colour(0xFFFF7EDB),  // hot pink
+    juce::Colour(0xFFF3E70F),  // yellow
+    juce::Colour(0xFF8F00FF),  // purple
+    juce::Colour(0xFF00FF7F),  // green
+    juce::Colour(0xFFFF6600),  // orange
+    juce::Colour(0xFF6666FF),  // blue
+    juce::Colour(0xFFFF0066),  // red
+};
+
+ZoneEditor::ZoneEditor(OpenSynthProcessor& processor, std::function<void()> onClose)
+    : processor_(processor), onClose_(std::move(onClose))
+{
+    setOpaque(false);
+
+    titleLabel_.setText("ZONE EDITOR", juce::dontSendNotification);
+    titleLabel_.setFont(juce::Font(juce::FontOptions(16.0f, juce::Font::bold)));
+    titleLabel_.setColour(juce::Label::textColourId, SynthColors::cyan());
+    addAndMakeVisible(titleLabel_);
+
+    closeButton_.setButtonText("X");
+    closeButton_.setColour(juce::TextButton::buttonColourId, SynthColors::danger());
+    closeButton_.setColour(juce::TextButton::textColourOffId, SynthColors::text());
+    closeButton_.onClick = [this]() { onClose_(); };
+    addAndMakeVisible(closeButton_);
+
+    selLabel_.setText("No zone selected", juce::dontSendNotification);
+    selLabel_.setFont(juce::Font(juce::FontOptions(12.0f)));
+    selLabel_.setColour(juce::Label::textColourId, SynthColors::textDim());
+    addAndMakeVisible(selLabel_);
+
+    // Note sliders
+    auto makeNoteSlider = [this](juce::Slider& s, const juce::String& name) {
+        s.setSliderStyle(juce::Slider::LinearHorizontal);
+        s.setTextBoxStyle(juce::Slider::TextBoxRight, false, 42, 18);
+        s.setRange(0.0, 127.0, 1.0);
+        addAndMakeVisible(s);
+    };
+
+    rootNoteSlider_.onValueChange = [this]() { applySlidersToZone(); };
+    minNoteSlider_.onValueChange = [this]() { applySlidersToZone(); };
+    maxNoteSlider_.onValueChange = [this]() { applySlidersToZone(); };
+    minVelSlider_.onValueChange = [this]() { applySlidersToZone(); };
+    maxVelSlider_.onValueChange = [this]() { applySlidersToZone(); };
+
+    makeNoteSlider(rootNoteSlider_, "Root");
+    makeNoteSlider(minNoteSlider_, "Min");
+    makeNoteSlider(maxNoteSlider_, "Max");
+
+    minVelSlider_.setRange(0.0, 127.0, 1.0);
+    minVelSlider_.setSliderStyle(juce::Slider::LinearHorizontal);
+    minVelSlider_.setTextBoxStyle(juce::Slider::TextBoxRight, false, 42, 18);
+    addAndMakeVisible(minVelSlider_);
+
+    maxVelSlider_.setRange(0.0, 127.0, 1.0);
+    maxVelSlider_.setSliderStyle(juce::Slider::LinearHorizontal);
+    maxVelSlider_.setTextBoxStyle(juce::Slider::TextBoxRight, false, 42, 18);
+    addAndMakeVisible(maxVelSlider_);
+
+    loopToggle_.setButtonText("Loop");
+    loopToggle_.setColour(juce::ToggleButton::textColourId, SynthColors::text());
+    loopToggle_.setColour(juce::ToggleButton::tickColourId, SynthColors::hotPink());
+    loopToggle_.onClick = [this]() { applySlidersToZone(); };
+    addAndMakeVisible(loopToggle_);
+
+    deleteButton_.setButtonText("Delete Zone");
+    deleteButton_.setColour(juce::TextButton::buttonColourId, SynthColors::danger());
+    deleteButton_.setColour(juce::TextButton::textColourOffId, SynthColors::text());
+    deleteButton_.onClick = [this]() {
+        auto* engine = processor_.getSynth().getEngine();
+        auto* player = engine ? engine->getSamplePlayer() : nullptr;
+        if (player && selectedZone_ >= 0 && selectedZone_ < player->zoneCount()) {
+            player->removeZone(selectedZone_);
+            selectedZone_ = -1;
+            updateSlidersFromZone();
+            repaint();
+        }
+    };
+    addAndMakeVisible(deleteButton_);
+}
+
+float ZoneEditor::noteToX(int note, float width) const
+{
+    return (static_cast<float>(note - kKeyStart) / static_cast<float>(kNumKeys)) * width;
+}
+
+int ZoneEditor::xToNote(float x, float width) const
+{
+    int note = static_cast<int>((x / width) * kNumKeys) + kKeyStart;
+    return std::clamp(note, 0, 127);
+}
+
+void ZoneEditor::updateSlidersFromZone()
+{
+    auto* engine = processor_.getSynth().getEngine();
+    auto* player = engine ? engine->getSamplePlayer() : nullptr;
+    if (!player || selectedZone_ < 0 || selectedZone_ >= player->zoneCount()) {
+        selLabel_.setText("No zone selected", juce::dontSendNotification);
+        rootNoteSlider_.setEnabled(false);
+        minNoteSlider_.setEnabled(false);
+        maxNoteSlider_.setEnabled(false);
+        minVelSlider_.setEnabled(false);
+        maxVelSlider_.setEnabled(false);
+        loopToggle_.setEnabled(false);
+        deleteButton_.setEnabled(false);
+        return;
+    }
+
+    const auto& zones = player->getZones();
+    const auto& zone = zones[selectedZone_];
+    rootNoteSlider_.setValue(zone->rootNote, juce::dontSendNotification);
+    minNoteSlider_.setValue(zone->minNote, juce::dontSendNotification);
+    maxNoteSlider_.setValue(zone->maxNote, juce::dontSendNotification);
+    minVelSlider_.setValue(zone->minVelocity * 127.0f, juce::dontSendNotification);
+    maxVelSlider_.setValue(zone->maxVelocity * 127.0f, juce::dontSendNotification);
+    loopToggle_.setToggleState(zone->loopEnabled, juce::dontSendNotification);
+
+    juce::String name = juce::MidiMessage::getMidiNoteName(zone->rootNote, true, true, 3);
+    selLabel_.setText("Zone " + juce::String(selectedZone_) + " — Root " + name,
+                      juce::dontSendNotification);
+    selLabel_.setColour(juce::Label::textColourId, SynthColors::text());
+
+    rootNoteSlider_.setEnabled(true);
+    minNoteSlider_.setEnabled(true);
+    maxNoteSlider_.setEnabled(true);
+    minVelSlider_.setEnabled(true);
+    maxVelSlider_.setEnabled(true);
+    loopToggle_.setEnabled(true);
+    deleteButton_.setEnabled(true);
+}
+
+void ZoneEditor::applySlidersToZone()
+{
+    auto* engine = processor_.getSynth().getEngine();
+    auto* player = engine ? engine->getSamplePlayer() : nullptr;
+    if (!player || selectedZone_ < 0 || selectedZone_ >= player->zoneCount()) return;
+
+    auto& zones = player->getZones();
+    auto& zone = zones[selectedZone_];
+    zone->rootNote = static_cast<int>(rootNoteSlider_.getValue());
+    zone->minNote = static_cast<int>(minNoteSlider_.getValue());
+    zone->maxNote = static_cast<int>(maxNoteSlider_.getValue());
+    zone->minVelocity = static_cast<float>(minVelSlider_.getValue()) / 127.0f;
+    zone->maxVelocity = static_cast<float>(maxVelSlider_.getValue()) / 127.0f;
+    zone->loopEnabled = loopToggle_.getToggleState();
+    repaint();
+}
+
+void ZoneEditor::paint(juce::Graphics& g)
+{
+    auto b = getLocalBounds().toFloat();
+    g.setColour(SynthColors::surface().withAlpha(0.95f));
+    g.fillRoundedRectangle(b, 12.0f);
+
+    g.setColour(SynthColors::card());
+    g.drawRoundedRectangle(b, 12.0f, 2.0f);
+
+    // Keyboard map area (below title bar)
+    float mapTop = 44.0f;
+    float mapH = 120.0f;
+    float mapW = static_cast<float>(getWidth()) - 24.0f;
+    float mapX = 12.0f;
+
+    // Background
+    g.setColour(SynthColors::card());
+    g.fillRoundedRectangle(mapX, mapTop, mapW, mapH, 6.0f);
+
+    // Draw piano keys
+    for (int n = kKeyStart; n < kKeyEnd; ++n)
+    {
+        float x = mapX + noteToX(n, mapW);
+        float w = noteToX(n + 1, mapW) - noteToX(n, mapW);
+        int noteInOctave = n % 12;
+        bool isBlack = (noteInOctave == 1 || noteInOctave == 3 || noteInOctave == 6
+                        || noteInOctave == 8 || noteInOctave == 10);
+
+        g.setColour(isBlack ? juce::Colour(0xFF1A1A2E) : juce::Colour(0xFF2D2D44));
+        g.fillRect(x, mapTop + mapH - 20.0f, w, 20.0f);
+
+        // Note name for C notes
+        if (noteInOctave == 0) {
+            g.setColour(SynthColors::textDim());
+            g.setFont(juce::Font(juce::FontOptions(8.0f)));
+            int octave = n / 12 - 1;
+            g.drawText("C" + juce::String(octave), static_cast<int>(x), static_cast<int>(mapTop + mapH - 18), static_cast<int>(w), 16, juce::Justification::centred);
+        }
+    }
+
+    // Draw zone bars
+    auto* engine = processor_.getSynth().getEngine();
+    auto* player = engine ? engine->getSamplePlayer() : nullptr;
+    if (player) {
+        const auto& zones = player->getZones();
+        float zoneBarTop = mapTop + 8.0f;
+        float zoneBarH = 60.0f;
+
+        for (int i = 0; i < static_cast<int>(zones.size()); ++i) {
+            const auto& z = zones[i];
+            float x1 = mapX + noteToX(std::max(z->minNote, kKeyStart), mapW);
+            float x2 = mapX + noteToX(std::min(z->maxNote + 1, kKeyEnd), mapW);
+            float w = x2 - x1;
+            if (w < 1.0f) w = 1.0f;
+
+            juce::Colour color = zoneColors[i % 8];
+            float alpha = (i == selectedZone_) ? 0.9f : 0.5f;
+
+            g.setColour(color.withAlpha(alpha));
+            g.fillRoundedRectangle(x1, zoneBarTop, w, zoneBarH, 4.0f);
+
+            // Root note marker
+            float rootX = mapX + noteToX(z->rootNote, mapW);
+            g.setColour(SynthColors::text());
+            g.drawVerticalLine(static_cast<int>(rootX), zoneBarTop, zoneBarTop + zoneBarH);
+
+            // Zone label
+            if (w > 30.0f) {
+                g.setColour(SynthColors::text());
+                g.setFont(juce::Font(juce::FontOptions(9.0f)));
+                juce::String name = juce::MidiMessage::getMidiNoteName(z->rootNote, true, true, 3);
+                g.drawText("#" + juce::String(i) + " " + name,
+                           static_cast<int>(x1 + 4), static_cast<int>(zoneBarTop + 2),
+                           static_cast<int>(w - 8), 14, juce::Justification::left);
+            }
+
+            // Selection outline
+            if (i == selectedZone_) {
+                g.setColour(color);
+                g.drawRoundedRectangle(x1, zoneBarTop, w, zoneBarH, 4.0f, 2.0f);
+            }
+        }
+    }
+}
+
+void ZoneEditor::resized()
+{
+    int w = getWidth();
+    titleLabel_.setBounds(12, 10, 160, 28);
+    closeButton_.setBounds(w - 44, 10, 30, 28);
+
+    // Edit controls below the keyboard map (map is at y=44..164)
+    int y = 174;
+    int colW = (w - 24) / 2;
+
+    selLabel_.setBounds(12, y, w - 24, 18);
+    y += 22;
+
+    // Left column: note sliders
+    auto addSliderRow = [&](juce::Slider& s, int yy, const char* label) {
+        // Label drawn in paint, slider occupies full row
+        s.setBounds(56, yy, colW - 68, 22);
+    };
+
+    addSliderRow(rootNoteSlider_, y, "Root");   y += 26;
+    addSliderRow(minNoteSlider_, y, "Min Note"); y += 26;
+    addSliderRow(maxNoteSlider_, y, "Max Note"); y += 26;
+
+    // Right column: velocity + loop + delete
+    int rx = colW + 16;
+    minVelSlider_.setBounds(rx + 56, 196, colW - 68, 22);
+    maxVelSlider_.setBounds(rx + 56, 222, colW - 68, 22);
+    loopToggle_.setBounds(rx, 248, 80, 22);
+    deleteButton_.setBounds(rx + 90, 248, 100, 22);
+}
+
+void ZoneEditor::mouseDown(const juce::MouseEvent& e)
+{
+    // Check if click is in the zone map area
+    float mapTop = 44.0f;
+    float mapH = 120.0f;
+    float mapW = static_cast<float>(getWidth()) - 24.0f;
+    float mapX = 12.0f;
+
+    if (e.y < mapTop || e.y > mapTop + mapH + 68.0f) return;
+
+    auto* engine = processor_.getSynth().getEngine();
+    auto* player = engine ? engine->getSamplePlayer() : nullptr;
+    if (!player) return;
+
+    const auto& zones = player->getZones();
+    int clickNote = xToNote(static_cast<float>(e.x) - mapX, mapW);
+
+    // Find the zone that contains this note
+    for (int i = 0; i < static_cast<int>(zones.size()); ++i) {
+        if (clickNote >= zones[i]->minNote && clickNote <= zones[i]->maxNote) {
+            selectedZone_ = i;
+            updateSlidersFromZone();
+            repaint();
+            return;
+        }
+    }
+
+    // Clicked empty area — deselect
+    selectedZone_ = -1;
+    updateSlidersFromZone();
+    repaint();
+}
+
 // ── Zone Editor (stub) ─────────────────────────────────────────────────────
 
 void SamplePanel::showZoneEditor()
 {
-    // TODO: Implement full zone editor overlay with key-range sliders,
-    // velocity layer assignment, round-robin setup, start offset, etc.
-    // For now, just refresh the zone list.
-    rebuildZoneList();
+    auto* editor = new ZoneEditor(processor_, [this]() { hideZoneEditor(); });
+    zoneEditor_.reset(editor);
+    addAndMakeVisible(zoneEditor_.get());
+    zoneEditor_->setBounds(getLocalBounds());
 }
 
 void SamplePanel::hideZoneEditor()

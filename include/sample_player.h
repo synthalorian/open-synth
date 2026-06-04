@@ -170,6 +170,13 @@ public:
 
     // Zone access for UI
     const std::vector<std::unique_ptr<SampleZone>>& getZones() const { return zones_; }
+    std::vector<std::unique_ptr<SampleZone>>& getZones() { return zones_; }
+
+    // Remove a zone by index
+    void removeZone(int index) {
+        if (index >= 0 && index < static_cast<int>(zones_.size()))
+            zones_.erase(zones_.begin() + index);
+    }
 
     // Release zone access for UI
     const std::vector<std::unique_ptr<SampleZone>>& getReleaseZones() const { return releaseZones_; }
