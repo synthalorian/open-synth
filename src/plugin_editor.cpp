@@ -2088,7 +2088,11 @@ void PhraseSamplerPanel::stop()
 
 SamplePanel::SamplePanel(juce::AudioProcessorValueTreeState& apvts, OpenSynthProcessor& processor)
     : apvts_(apvts), processor_(processor),
-      mixKnob_("Mix", SynthColors::hotPink())
+      mixKnob_("Mix", SynthColors::hotPink()),
+      attackKnob_("Atk", SynthColors::cyan()),
+      decayKnob_("Dec", SynthColors::cyan()),
+      sustainKnob_("Sus", SynthColors::cyan()),
+      releaseKnob_("Rel", SynthColors::cyan())
 {
     setOpaque(false);
 
@@ -2117,6 +2121,34 @@ SamplePanel::SamplePanel(juce::AudioProcessorValueTreeState& apvts, OpenSynthPro
     addAndMakeVisible(mixKnob_);
     mixAttach_ = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
         apvts_, "sampleMix", mixKnob_);
+
+    // ADSR knobs for sample envelope
+    attackKnob_.setRange(0.1, 5000.0, 0.1);
+    attackKnob_.setSkewFactorFromMidPoint(100.0);
+    attackKnob_.setValue(10.0);
+    addAndMakeVisible(attackKnob_);
+    attackAttach_ = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+        apvts_, "sampleAttack", attackKnob_);
+
+    decayKnob_.setRange(1.0, 5000.0, 0.1);
+    decayKnob_.setSkewFactorFromMidPoint(200.0);
+    decayKnob_.setValue(100.0);
+    addAndMakeVisible(decayKnob_);
+    decayAttach_ = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+        apvts_, "sampleDecay", decayKnob_);
+
+    sustainKnob_.setRange(0.0, 1.0, 0.01);
+    sustainKnob_.setValue(1.0);
+    addAndMakeVisible(sustainKnob_);
+    sustainAttach_ = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+        apvts_, "sampleSustain", sustainKnob_);
+
+    releaseKnob_.setRange(1.0, 10000.0, 0.1);
+    releaseKnob_.setSkewFactorFromMidPoint(500.0);
+    releaseKnob_.setValue(200.0);
+    addAndMakeVisible(releaseKnob_);
+    releaseAttach_ = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+        apvts_, "sampleRelease", releaseKnob_);
 
     browseButton_.setButtonText("Browse...");
     browseButton_.setColour(juce::TextButton::buttonColourId, SynthColors::card());
@@ -2166,11 +2198,15 @@ void SamplePanel::resized()
     zoneCountLabel_.setBounds(12, y, getWidth() - 24, 16);
     y += 22;
 
-    mixKnob_.setBounds(12, y, 56, 72);
-    browseButton_.setBounds(74, y + 10, 70, 24);
-    clearButton_.setBounds(74, y + 40, 70, 24);
-    editZonesButton_.setBounds(148, y + 10, 80, 24);
-    y += 80;
+    mixKnob_.setBounds(12, y, 48, 64);
+    attackKnob_.setBounds(64, y, 48, 64);
+    decayKnob_.setBounds(116, y, 48, 64);
+    sustainKnob_.setBounds(168, y, 48, 64);
+    releaseKnob_.setBounds(220, y, 48, 64);
+    browseButton_.setBounds(274, y + 4, 66, 22);
+    clearButton_.setBounds(274, y + 30, 66, 22);
+    editZonesButton_.setBounds(274, y + 56, 66, 22);
+    y += 72;
 
     zoneViewport_.setBounds(12, y, getWidth() - 24, getHeight() - y - 8);
     zoneContainer_.setBounds(0, 0, zoneViewport_.getWidth() - 4, 200);
