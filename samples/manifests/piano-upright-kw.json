@@ -1,0 +1,604 @@
+{
+  "name": "UprightPianoKW-20220221",
+  "zones": [
+    {
+      "minNote": 21,
+      "maxNote": 22,
+      "rootNote": 21,
+      "loopStart": 244730,
+      "loopEnd": 333808,
+      "file": "samples/piano-upright-kw/samples/A0vL.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 23,
+      "maxNote": 25,
+      "rootNote": 24,
+      "loopStart": 325127,
+      "loopEnd": 471187,
+      "file": "samples/piano-upright-kw/samples/C1vL.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 26,
+      "maxNote": 28,
+      "rootNote": 27,
+      "loopStart": 412198,
+      "loopEnd": 566248,
+      "file": "samples/piano-upright-kw/samples/D#1vL.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 29,
+      "maxNote": 31,
+      "rootNote": 30,
+      "loopStart": 335793,
+      "loopEnd": 486976,
+      "file": "samples/piano-upright-kw/samples/F#1vL.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 32,
+      "maxNote": 34,
+      "rootNote": 33,
+      "loopStart": 348550,
+      "loopEnd": 524031,
+      "file": "samples/piano-upright-kw/samples/A1vL.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 35,
+      "maxNote": 37,
+      "rootNote": 36,
+      "loopStart": 397535,
+      "loopEnd": 510386,
+      "file": "samples/piano-upright-kw/samples/C2vL.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 38,
+      "maxNote": 40,
+      "rootNote": 39,
+      "loopStart": 425067,
+      "loopEnd": 585179,
+      "file": "samples/piano-upright-kw/samples/D#2vL.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 41,
+      "maxNote": 43,
+      "rootNote": 42,
+      "loopStart": 327987,
+      "loopEnd": 438561,
+      "file": "samples/piano-upright-kw/samples/F#2vL.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 44,
+      "maxNote": 46,
+      "rootNote": 45,
+      "loopStart": 240292,
+      "loopEnd": 361157,
+      "file": "samples/piano-upright-kw/samples/A2vL.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 47,
+      "maxNote": 49,
+      "rootNote": 48,
+      "loopStart": 137735,
+      "loopEnd": 212674,
+      "file": "samples/piano-upright-kw/samples/C3vL.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 50,
+      "maxNote": 52,
+      "rootNote": 51,
+      "loopStart": 188513,
+      "loopEnd": 255624,
+      "file": "samples/piano-upright-kw/samples/D#3vL.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 53,
+      "maxNote": 55,
+      "rootNote": 54,
+      "loopStart": 134294,
+      "loopEnd": 213980,
+      "file": "samples/piano-upright-kw/samples/F#3vL.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 56,
+      "maxNote": 58,
+      "rootNote": 57,
+      "loopStart": 173690,
+      "loopEnd": 283676,
+      "file": "samples/piano-upright-kw/samples/A3vL.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 59,
+      "maxNote": 61,
+      "rootNote": 60,
+      "loopStart": 199374,
+      "loopEnd": 354248,
+      "file": "samples/piano-upright-kw/samples/C4vL.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 62,
+      "maxNote": 64,
+      "rootNote": 63,
+      "loopStart": 111422,
+      "loopEnd": 184757,
+      "file": "samples/piano-upright-kw/samples/D#4vL.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 65,
+      "maxNote": 67,
+      "rootNote": 66,
+      "loopStart": 151730,
+      "loopEnd": 255601,
+      "file": "samples/piano-upright-kw/samples/F#4vL.flac",
+      "maxVelocity": 0.6299212598425197,
+      "loopEnabled": false,
+      "minVelocity": 0.0
+    },
+    {
+      "minNote": 68,
+      "maxNote": 70,
+      "rootNote": 69,
+      "file": "samples/piano-upright-kw/samples/A4vL.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 71,
+      "maxNote": 73,
+      "rootNote": 72,
+      "file": "samples/piano-upright-kw/samples/C5vL.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 74,
+      "maxNote": 76,
+      "rootNote": 75,
+      "file": "samples/piano-upright-kw/samples/D#5vL.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 77,
+      "maxNote": 79,
+      "rootNote": 78,
+      "file": "samples/piano-upright-kw/samples/F#5vL.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 80,
+      "maxNote": 82,
+      "rootNote": 81,
+      "file": "samples/piano-upright-kw/samples/A5vL.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 83,
+      "maxNote": 85,
+      "rootNote": 84,
+      "file": "samples/piano-upright-kw/samples/C6vL.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 86,
+      "maxNote": 88,
+      "rootNote": 87,
+      "file": "samples/piano-upright-kw/samples/D#6vL.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 89,
+      "maxNote": 91,
+      "rootNote": 90,
+      "file": "samples/piano-upright-kw/samples/F#6vL.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 92,
+      "maxNote": 94,
+      "rootNote": 93,
+      "file": "samples/piano-upright-kw/samples/A6vL.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 95,
+      "maxNote": 97,
+      "rootNote": 96,
+      "file": "samples/piano-upright-kw/samples/C7vL.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 98,
+      "maxNote": 100,
+      "rootNote": 99,
+      "file": "samples/piano-upright-kw/samples/D#7vL.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 101,
+      "maxNote": 103,
+      "rootNote": 102,
+      "file": "samples/piano-upright-kw/samples/F#7vL.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 104,
+      "maxNote": 106,
+      "rootNote": 105,
+      "file": "samples/piano-upright-kw/samples/A7vL.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 107,
+      "maxNote": 108,
+      "rootNote": 108,
+      "file": "samples/piano-upright-kw/samples/C8vL.flac",
+      "minVelocity": 0.6377952755905512,
+      "loopEnabled": true,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 21,
+      "maxNote": 22,
+      "rootNote": 21,
+      "loopStart": 226952,
+      "loopEnd": 310216,
+      "file": "samples/piano-upright-kw/samples/A0vH.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "loopStart": 238766,
+      "loopEnd": 332736,
+      "file": "samples/piano-upright-kw/samples/B0vH.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 24,
+      "maxNote": 25,
+      "rootNote": 24,
+      "loopStart": 306378,
+      "loopEnd": 424657,
+      "file": "samples/piano-upright-kw/samples/C1vH.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 26,
+      "maxNote": 28,
+      "rootNote": 27,
+      "loopStart": 345735,
+      "loopEnd": 461796,
+      "file": "samples/piano-upright-kw/samples/D#1vH.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 29,
+      "maxNote": 31,
+      "rootNote": 30,
+      "loopStart": 240705,
+      "loopEnd": 351556,
+      "file": "samples/piano-upright-kw/samples/F#1vH.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 32,
+      "maxNote": 33,
+      "rootNote": 33,
+      "loopStart": 332232,
+      "loopEnd": 442432,
+      "file": "samples/piano-upright-kw/samples/A1vH.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 34,
+      "maxNote": 35,
+      "rootNote": 35,
+      "loopStart": 256475,
+      "loopEnd": 366932,
+      "file": "samples/piano-upright-kw/samples/B1vH.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 36,
+      "maxNote": 37,
+      "rootNote": 36,
+      "loopStart": 256636,
+      "loopEnd": 376577,
+      "file": "samples/piano-upright-kw/samples/C2vH.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 38,
+      "maxNote": 40,
+      "rootNote": 39,
+      "loopStart": 288169,
+      "loopEnd": 398441,
+      "file": "samples/piano-upright-kw/samples/D#2vH.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 41,
+      "maxNote": 45,
+      "rootNote": 42,
+      "loopStart": 250236,
+      "loopEnd": 393511,
+      "file": "samples/piano-upright-kw/samples/F#2vH.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 46,
+      "maxNote": 47,
+      "rootNote": 47,
+      "loopStart": 238940,
+      "loopEnd": 341297,
+      "file": "samples/piano-upright-kw/samples/B2vH.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 48,
+      "maxNote": 49,
+      "rootNote": 48,
+      "loopStart": 196763,
+      "loopEnd": 307070,
+      "file": "samples/piano-upright-kw/samples/C3vH.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 50,
+      "maxNote": 52,
+      "rootNote": 51,
+      "loopStart": 162986,
+      "loopEnd": 240314,
+      "file": "samples/piano-upright-kw/samples/D#3vH.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 53,
+      "maxNote": 55,
+      "rootNote": 54,
+      "loopStart": 194343,
+      "loopEnd": 265634,
+      "file": "samples/piano-upright-kw/samples/F#3vH.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 56,
+      "maxNote": 57,
+      "rootNote": 57,
+      "loopStart": 120679,
+      "loopEnd": 186801,
+      "file": "samples/piano-upright-kw/samples/A3vH.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 58,
+      "maxNote": 61,
+      "rootNote": 59,
+      "loopStart": 163021,
+      "loopEnd": 227577,
+      "file": "samples/piano-upright-kw/samples/B3vH.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 62,
+      "maxNote": 64,
+      "rootNote": 63,
+      "loopStart": 151896,
+      "loopEnd": 217597,
+      "file": "samples/piano-upright-kw/samples/D#4vH.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 65,
+      "maxNote": 67,
+      "rootNote": 66,
+      "loopStart": 138527,
+      "loopEnd": 185330,
+      "file": "samples/piano-upright-kw/samples/F#4vH.flac",
+      "minVelocity": 0.6377952755905512,
+      "loopEnabled": false,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 68,
+      "maxNote": 69,
+      "rootNote": 69,
+      "file": "samples/piano-upright-kw/samples/A4vH.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 70,
+      "maxNote": 71,
+      "rootNote": 71,
+      "file": "samples/piano-upright-kw/samples/B4vH.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 72,
+      "maxNote": 73,
+      "rootNote": 72,
+      "file": "samples/piano-upright-kw/samples/C5vH.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 74,
+      "maxNote": 76,
+      "rootNote": 75,
+      "file": "samples/piano-upright-kw/samples/D#5vH.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 77,
+      "maxNote": 79,
+      "rootNote": 78,
+      "file": "samples/piano-upright-kw/samples/F#5vH.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 80,
+      "maxNote": 81,
+      "rootNote": 81,
+      "file": "samples/piano-upright-kw/samples/A5vH.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 82,
+      "maxNote": 83,
+      "rootNote": 83,
+      "file": "samples/piano-upright-kw/samples/B5vH.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 84,
+      "maxNote": 85,
+      "rootNote": 84,
+      "file": "samples/piano-upright-kw/samples/C6vH.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 86,
+      "maxNote": 88,
+      "rootNote": 87,
+      "file": "samples/piano-upright-kw/samples/D#6vH.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 89,
+      "maxNote": 91,
+      "rootNote": 90,
+      "file": "samples/piano-upright-kw/samples/F#6vH.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 92,
+      "maxNote": 93,
+      "rootNote": 93,
+      "file": "samples/piano-upright-kw/samples/A6vH.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 94,
+      "maxNote": 95,
+      "rootNote": 95,
+      "file": "samples/piano-upright-kw/samples/B6vH.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 96,
+      "maxNote": 97,
+      "rootNote": 96,
+      "file": "samples/piano-upright-kw/samples/C7vH.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 98,
+      "maxNote": 100,
+      "rootNote": 99,
+      "file": "samples/piano-upright-kw/samples/D#7vH.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 101,
+      "maxNote": 103,
+      "rootNote": 102,
+      "file": "samples/piano-upright-kw/samples/F#7vH.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 104,
+      "maxNote": 105,
+      "rootNote": 105,
+      "file": "samples/piano-upright-kw/samples/A7vH.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 106,
+      "maxNote": 107,
+      "rootNote": 107,
+      "file": "samples/piano-upright-kw/samples/B7vH.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/piano-upright-kw/samples/C8vH.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    }
+  ]
+}

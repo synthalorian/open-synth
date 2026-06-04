@@ -1,3 +1,24 @@
 [submodule "libs/clap-juce-extensions"]
 	path = libs/clap-juce-extensions
 	url = https://github.com/free-audio/clap-juce-extensions.git
+[submodule "samples/piano-upright-kw"]
+	path = samples/piano-upright-kw
+	url = https://github.com/freepats/upright-piano-KW.git
+[submodule "samples/piano-splendid-grand"]
+	path = samples/piano-splendid-grand
+	url = https://github.com/sfzinstruments/SplendidGrandPiano.git
+[submodule "samples/drums-muldjordkit"]
+	path = samples/drums-muldjordkit
+	url = https://github.com/freepats/muldjordkit.git
+[submodule "samples/bass-electric-yr"]
+	path = samples/bass-electric-yr
+	url = https://github.com/freepats/electric-bass-YR.git
+[submodule "samples/guitar-spanish-classical"]
+	path = samples/guitar-spanish-classical
+	url = https://github.com/freepats/spanish-classical-guitar.git
+[submodule "samples/drums-colombo-adk"]
+	path = samples/drums-colombo-adk
+	url = https://github.com/freepats/colomboADK.git
+[submodule "samples/guitar-electric-clean"]
+	path = samples/guitar-electric-clean
+	url = https://github.com/freepats/e-guitar-FSBS-clean.git
