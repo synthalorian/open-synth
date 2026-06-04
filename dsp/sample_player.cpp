@@ -631,13 +631,21 @@ int SamplePlayer::activeVoiceCount() const {
 }
 
 const SampleZone* SamplePlayer::findZone(int midiNote, float velocity) const {
+    const SampleZone* best = nullptr;
+    float bestRange = 2.0f; // larger than any possible range (0-1)
+    
     for (const auto& zone : zones_) {
         if (midiNote >= zone->minNote && midiNote <= zone->maxNote &&
             velocity >= zone->minVelocity && velocity <= zone->maxVelocity) {
-            return zone.get();
+            float range = zone->maxVelocity - zone->minVelocity;
+            // Prefer the most specific (smallest) velocity range
+            if (range < bestRange) {
+                best = zone.get();
+                bestRange = range;
+            }
         }
     }
-    return nullptr;
+    return best;
 }
 
 const SampleZone* SamplePlayer::findReleaseZone(int midiNote) const {
