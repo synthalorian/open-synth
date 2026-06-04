@@ -206,7 +206,7 @@ void SynthEngineWrapper::setFxType(int slot, int type)
                 case 7: legacy->setDriveEnabled(true); break;
             }
         }
-    } else if (slot >= 1 && slot <= 3 && type >= 8) {
+    } else if (slot >= 1 && slot <= 3 && type >= 8 && type <= 65) {
         auto currentType = engine_->fxEngine().slotType(slot);
         auto newType = static_cast<FxType>(type);
         if (currentType != newType) {
