@@ -2130,6 +2130,12 @@ SamplePanel::SamplePanel(juce::AudioProcessorValueTreeState& apvts, OpenSynthPro
     clearButton_.onClick = [this]() { clearSample(); };
     addAndMakeVisible(clearButton_);
 
+    editZonesButton_.setButtonText("Edit Zones");
+    editZonesButton_.setColour(juce::TextButton::buttonColourId, SynthColors::card());
+    editZonesButton_.setColour(juce::TextButton::textColourOffId, SynthColors::cyan());
+    editZonesButton_.onClick = [this]() { showZoneEditor(); };
+    addAndMakeVisible(editZonesButton_);
+
     zoneViewport_.setViewedComponent(&zoneContainer_, false);
     zoneViewport_.setScrollBarsShown(true, false);
     addAndMakeVisible(zoneViewport_);
@@ -2163,10 +2169,14 @@ void SamplePanel::resized()
     mixKnob_.setBounds(12, y, 56, 72);
     browseButton_.setBounds(74, y + 10, 70, 24);
     clearButton_.setBounds(74, y + 40, 70, 24);
+    editZonesButton_.setBounds(148, y + 10, 80, 24);
     y += 80;
 
     zoneViewport_.setBounds(12, y, getWidth() - 24, getHeight() - y - 8);
     zoneContainer_.setBounds(0, 0, zoneViewport_.getWidth() - 4, 200);
+
+    if (zoneEditor_)
+        zoneEditor_->setBounds(getLocalBounds());
 }
 
 void SamplePanel::refresh()
@@ -2313,7 +2323,10 @@ void SamplePanel::rebuildZoneList()
             + "-" + juce::MidiMessage::getMidiNoteName(zone->maxNote, true, true, 3)
             + " | Vel " + juce::String(static_cast<int>(zone->minVelocity * 127))
             + "-" + juce::String(static_cast<int>(zone->maxVelocity * 127))
-            + " | " + layers;
+            + " | " + layers
+            + (zone->rrGroup > 0 ? " | RR:" + juce::String(zone->rrGroup) : "")
+            + (zone->isReleaseSample ? " | REL" : "")
+            + (zone->startOffset > 0 ? " | Off:" + juce::String(zone->startOffset) : "");
 
         auto* label = new juce::Label();
         label->setText(text, juce::dontSendNotification);
@@ -2323,6 +2336,106 @@ void SamplePanel::rebuildZoneList()
         label->setBounds(4, y, zoneContainer_.getWidth() - 8, rowH);
         y += rowH;
     }
+
+    // Release zones
+    for (const auto& zone : player->getReleaseZones())
+    {
+        juce::String text = juce::String("REL ") + juce::MidiMessage::getMidiNoteName(zone->rootNote, true, true, 3)
+            + " | " + juce::MidiMessage::getMidiNoteName(zone->minNote, true, true, 3)
+            + "-" + juce::MidiMessage::getMidiNoteName(zone->maxNote, true, true, 3);
+
+        auto* label = new juce::Label();
+        label->setText(text, juce::dontSendNotification);
+        label->setFont(juce::Font(juce::FontOptions(10.0f)));
+        label->setColour(juce::Label::textColourId, SynthColors::danger());
+        zoneContainer_.addAndMakeVisible(label);
+        label->setBounds(4, y, zoneContainer_.getWidth() - 8, rowH);
+        y += rowH;
+    }
+}
+
+// ── Drag & Drop ──────────────────────────────────────────────────────────────
+
+bool SamplePanel::isInterestedInFileDrag(const juce::StringArray& files)
+{
+    for (const auto& f : files)
+    {
+        if (f.endsWithIgnoreCase(".wav") || f.endsWithIgnoreCase(".aiff")
+            || f.endsWithIgnoreCase(".flac") || f.endsWithIgnoreCase(".json"))
+            return true;
+    }
+    return false;
+}
+
+void SamplePanel::filesDropped(const juce::StringArray& files, int /*x*/, int /*y*/)
+{
+    if (files.isEmpty()) return;
+    loadFile(juce::File(files[0]));
+}
+
+void SamplePanel::loadFile(const juce::File& file)
+{
+    auto* engine = processor_.getSynth().getEngine();
+    if (!engine) return;
+
+    if (!engine->getSamplePlayer())
+    {
+        auto sp = std::make_unique<SamplePlayer>();
+        sp->prepare(engine->getSampleRate());
+        engine->setSamplePlayer(std::move(sp));
+    }
+
+    auto* player = engine->getSamplePlayer();
+    if (!player) return;
+
+    if (file.getFileExtension() == ".json")
+    {
+        player->clear();
+        if (player->loadMultiSample(file.getFullPathName().toStdString()))
+        {
+            sampleNameLabel_.setText(file.getFileNameWithoutExtension(), juce::dontSendNotification);
+            sampleNameLabel_.setColour(juce::Label::textColourId, SynthColors::text());
+            categoryLabel_.setText("Multi-sample", juce::dontSendNotification);
+        }
+        else
+        {
+            sampleNameLabel_.setText("Failed to load manifest", juce::dontSendNotification);
+            sampleNameLabel_.setColour(juce::Label::textColourId, SynthColors::danger());
+        }
+    }
+    else
+    {
+        player->clear();
+        if (player->loadSample(file.getFullPathName().toStdString(), 60, 0, 127))
+        {
+            sampleNameLabel_.setText(file.getFileNameWithoutExtension(), juce::dontSendNotification);
+            sampleNameLabel_.setColour(juce::Label::textColourId, SynthColors::text());
+            categoryLabel_.setText("Single sample (C3 root)", juce::dontSendNotification);
+        }
+        else
+        {
+            sampleNameLabel_.setText("Failed to load sample", juce::dontSendNotification);
+            sampleNameLabel_.setColour(juce::Label::textColourId, SynthColors::danger());
+        }
+    }
+
+    rebuildZoneList();
+}
+
+// ── Zone Editor (stub) ─────────────────────────────────────────────────────
+
+void SamplePanel::showZoneEditor()
+{
+    // TODO: Implement full zone editor overlay with key-range sliders,
+    // velocity layer assignment, round-robin setup, start offset, etc.
+    // For now, just refresh the zone list.
+    rebuildZoneList();
+}
+
+void SamplePanel::hideZoneEditor()
+{
+    zoneEditor_.reset();
+    rebuildZoneList();
 }
 
 // ── Performance Panel ───────────────────────────────────────────────────────

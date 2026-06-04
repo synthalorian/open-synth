@@ -53,6 +53,17 @@ struct SampleZone {
     // Index by static_cast<int>(VelocityLayer)
     std::array<std::shared_ptr<SampleStream>, static_cast<int>(VelocityLayer::Count)> streams;
     double sampleRate = 48000.0;
+
+    // Round-robin group and streams (up to 8 alternates)
+    int rrGroup = 0;
+    std::array<std::shared_ptr<SampleStream>, 8> rrStreams;
+
+    // Start offset (in samples) and randomization (0-1 fraction of total samples)
+    int startOffset = 0;
+    float startOffsetRandom = 0.0f;
+
+    // Release sample: triggered on note-off, plays once with no loop
+    bool isReleaseSample = false;
 };
 
 struct SampleVoice {
@@ -80,6 +91,13 @@ struct SampleVoice {
     // Per-voice anti-aliasing filter state (was static — thread unsafe)
     float aaStateL = 0.0f;
     float aaStateR = 0.0f;
+
+    // Voice age for oldest-first stealing
+    uint32_t voiceAge = 0;
+    uint32_t startFrame = 0;
+
+    // Round-robin stream index override (-1 = use zone default streams)
+    int rrStreamIndex = -1;
 
     void noteOn(int note, float vel, const SampleZone* z, double sr);
     void noteOff();
@@ -121,6 +139,7 @@ public:
     void prepare(double sampleRate);
 
     // Legacy per-sample process (inefficient, kept for compat)
+    [[deprecated("Use processBlock instead")]]
     void process(float& left, float& right, int numFrames);
 
     // Block-based process: render into a stereo buffer.
@@ -148,6 +167,12 @@ public:
     // Zone access for UI
     const std::vector<std::unique_ptr<SampleZone>>& getZones() const { return zones_; }
 
+    // Release zone access for UI
+    const std::vector<std::unique_ptr<SampleZone>>& getReleaseZones() const { return releaseZones_; }
+
+    // Add a release zone programmatically
+    bool addReleaseZone(const SampleZone& zone);
+
     // Velocity layer helper
     static VelocityLayer velocityToLayer(float velocity);
 
@@ -168,6 +193,7 @@ public:
 
 private:
     std::vector<std::unique_ptr<SampleZone>> zones_;
+    std::vector<std::unique_ptr<SampleZone>> releaseZones_;
     std::array<SampleVoice, MAX_VOICES> voices_;
     double sampleRate_ = 48000.0;
     float mixLevel_ = 0.0f;
@@ -184,7 +210,16 @@ private:
     std::vector<std::future<void>> preloadFutures_;
     mutable bool preloadComplete_ = true;
 
+    // Round-robin index and voice age counter
+    int rrIndex_ = 0;
+    uint32_t nextVoiceAge_ = 1;
+
+    // Scratch buffers for block-based processing (removes 512-frame stack limit)
+    std::vector<float> scratchL_;
+    std::vector<float> scratchR_;
+
     const SampleZone* findZone(int midiNote, float velocity) const;
+    const SampleZone* findReleaseZone(int midiNote) const;
     SampleVoice* findFreeVoice();
 };
 

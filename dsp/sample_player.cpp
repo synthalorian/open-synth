@@ -3,6 +3,7 @@
 #include <cmath>
 #include <cstring>
 #include <algorithm>
+#include <cstdlib>
 
 namespace opensynth {
 
@@ -12,7 +13,7 @@ void SampleVoice::noteOn(int note, float vel, const SampleZone* z, double sr) {
     zone = z;
     midiNote = note;
     velocity = vel;
-    position = 0.0;
+    position = static_cast<double>(z->startOffset);
     pitchRatio = std::pow(2.0, (note - z->rootNote) / 12.0) * (z->sampleRate / sr);
     active = true;
     envState = ATTACK;
@@ -41,6 +42,7 @@ void SampleVoice::reset() {
     loopStartPos = 0.0;
     aaStateL = 0.0f;
     aaStateR = 0.0f;
+    rrStreamIndex = -1;
 }
 
 // Inline linear interpolation read — no lambdas, minimal branching
@@ -91,14 +93,19 @@ float SampleVoice::process(double /*sampleRate*/) {
 
     if (!active) return 0.0f;
 
-    // Select velocity layer stream
+    // Select velocity layer stream (with round-robin override if set)
     VelocityLayer layer = SamplePlayer::velocityToLayer(velocity);
-    auto stream = zone->streams[static_cast<int>(layer)];
-    if (!stream) {
-        for (int i = 0; i < static_cast<int>(VelocityLayer::Count); ++i) {
-            if (zone->streams[i]) {
-                stream = zone->streams[i];
-                break;
+    std::shared_ptr<SampleStream> stream;
+    if (rrStreamIndex >= 0 && rrStreamIndex < static_cast<int>(zone->rrStreams.size()) && zone->rrStreams[rrStreamIndex]) {
+        stream = zone->rrStreams[rrStreamIndex];
+    } else {
+        stream = zone->streams[static_cast<int>(layer)];
+        if (!stream) {
+            for (int i = 0; i < static_cast<int>(VelocityLayer::Count); ++i) {
+                if (zone->streams[i]) {
+                    stream = zone->streams[i];
+                    break;
+                }
             }
         }
     }
@@ -108,7 +115,7 @@ float SampleVoice::process(double /*sampleRate*/) {
     if (numFrames == 0) return 0.0f;
 
     // Determine effective loop points: zone overrides stream metadata
-    bool loopEnabled = zone->loopEnabled;
+    bool loopEnabled = zone->loopEnabled && !zone->isReleaseSample;
     int loopStart = zone->loopStart;
     int loopEnd = zone->loopEnd;
     if (!loopEnabled && stream->hasLoopPoints()) {
@@ -183,14 +190,19 @@ float SampleVoice::process(double /*sampleRate*/) {
 int SampleVoice::processBlock(float* outL, float* outR, int numFrames, double /*sampleRate*/) {
     if (!active || !zone || envState == IDLE || numFrames <= 0) return 0;
 
-    // Select stream
+    // Select stream (with round-robin override if set)
     VelocityLayer layer = SamplePlayer::velocityToLayer(velocity);
-    auto stream = zone->streams[static_cast<int>(layer)];
-    if (!stream) {
-        for (int i = 0; i < static_cast<int>(VelocityLayer::Count); ++i) {
-            if (zone->streams[i]) {
-                stream = zone->streams[i];
-                break;
+    std::shared_ptr<SampleStream> stream;
+    if (rrStreamIndex >= 0 && rrStreamIndex < static_cast<int>(zone->rrStreams.size()) && zone->rrStreams[rrStreamIndex]) {
+        stream = zone->rrStreams[rrStreamIndex];
+    } else {
+        stream = zone->streams[static_cast<int>(layer)];
+        if (!stream) {
+            for (int i = 0; i < static_cast<int>(VelocityLayer::Count); ++i) {
+                if (zone->streams[i]) {
+                    stream = zone->streams[i];
+                    break;
+                }
             }
         }
     }
@@ -207,7 +219,7 @@ int SampleVoice::processBlock(float* outL, float* outR, int numFrames, double /*
         return 0;
     }
 
-    bool loopEnabled = zone->loopEnabled;
+    bool loopEnabled = zone->loopEnabled && !zone->isReleaseSample;
     int loopStart = zone->loopStart;
     int loopEnd = zone->loopEnd;
     if (!loopEnabled && stream->hasLoopPoints()) {
@@ -433,7 +445,40 @@ void SamplePlayer::noteOn(int midiNote, float velocity) {
     SampleVoice* voice = findFreeVoice();
     if (!voice) return;
 
+    // Apply start offset randomization
+    int startOffset = zone->startOffset;
+    if (zone->startOffsetRandom > 0.0f && zone->streams[0]) {
+        int64_t totalSamples = zone->streams[0]->getTotalSamples();
+        if (totalSamples > 0) {
+            int maxRandomOffset = static_cast<int>(zone->startOffsetRandom * static_cast<float>(totalSamples));
+            if (maxRandomOffset > 0) {
+                startOffset += static_cast<int>(static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX) * maxRandomOffset);
+            }
+        }
+    }
+
+    // Create a mutable copy of the zone for this voice with adjusted start offset
+    // We can't modify the const zone, so we apply offset directly to voice position
     voice->noteOn(midiNote, velocity, zone, sampleRate_);
+    voice->position = static_cast<double>(startOffset);
+    voice->voiceAge = nextVoiceAge_++;
+
+    // Handle round-robin: if rrStreams are present, cycle through them
+    if (zone->rrGroup > 0) {
+        int rrCount = 0;
+        for (const auto& s : zone->rrStreams) {
+            if (s) ++rrCount;
+        }
+        if (rrCount > 0) {
+            int idx = (rrIndex_++) % rrCount;
+            voice->rrStreamIndex = idx;
+        } else {
+            voice->rrStreamIndex = -1;
+        }
+    } else {
+        voice->rrStreamIndex = -1;
+    }
+
     voice->attackRate = 1.0f / (attackMs_ * 0.001f * static_cast<float>(sampleRate_));
     if (voice->attackRate > 1.0f) voice->attackRate = 1.0f;
     voice->decayRate = 1.0f / (decayMs_ * 0.001f * static_cast<float>(sampleRate_));
@@ -449,6 +494,23 @@ void SamplePlayer::noteOff(int midiNote) {
             voice.noteOff();
         }
     }
+
+    // Trigger release sample if one exists for this note
+    const SampleZone* relZone = findReleaseZone(midiNote);
+    if (relZone) {
+        SampleVoice* voice = findFreeVoice();
+        if (voice) {
+            voice->noteOn(midiNote, 0.7f, relZone, sampleRate_);
+            voice->voiceAge = nextVoiceAge_++;
+            voice->attackRate = 1.0f / (attackMs_ * 0.001f * static_cast<float>(sampleRate_));
+            if (voice->attackRate > 1.0f) voice->attackRate = 1.0f;
+            voice->decayRate = 1.0f / (decayMs_ * 0.001f * static_cast<float>(sampleRate_));
+            if (voice->decayRate > 0.1f) voice->decayRate = 0.1f;
+            voice->sustainLevel = sustainLevel_;
+            voice->releaseRate = 1.0f / (releaseMs_ * 0.001f * static_cast<float>(sampleRate_));
+            if (voice->releaseRate > 0.1f) voice->releaseRate = 0.1f;
+        }
+    }
 }
 
 void SamplePlayer::allNotesOff() {
@@ -459,6 +521,7 @@ void SamplePlayer::allNotesOff() {
 
 void SamplePlayer::prepare(double sampleRate) {
     sampleRate_ = sampleRate;
+    preloadAsync();
 }
 
 // Legacy per-sample process (inefficient, kept for compat)
@@ -482,24 +545,35 @@ void SamplePlayer::process(float& left, float& right, int numFrames) {
 void SamplePlayer::processBlock(float* outL, float* outR, int numFrames) {
     if (mixLevel_ <= 0.0f || zones_.empty() || numFrames <= 0) return;
 
-    // Temporary stereo buffers per voice on the stack (max 512 typical)
-    alignas(16) float voiceL[512];
-    alignas(16) float voiceR[512];
-
-    int frames = std::min(numFrames, 512);
+    // Ensure scratch buffers are large enough
+    if (static_cast<int>(scratchL_.size()) < numFrames) {
+        scratchL_.resize(numFrames);
+        scratchR_.resize(numFrames);
+    }
 
     for (auto& voice : voices_) {
         if (!voice.active) continue;
 
-        std::memset(voiceL, 0, frames * sizeof(float));
-        std::memset(voiceR, 0, frames * sizeof(float));
+        std::memset(scratchL_.data(), 0, numFrames * sizeof(float));
+        std::memset(scratchR_.data(), 0, numFrames * sizeof(float));
 
-        int written = voice.processBlock(voiceL, voiceR, frames, sampleRate_);
+        int written = voice.processBlock(scratchL_.data(), scratchR_.data(), numFrames, sampleRate_);
         if (written > 0) {
-            // SIMD-friendly accumulation loop
-            for (int i = 0; i < written; ++i) {
-                outL[i] += voiceL[i] * mixLevel_;
-                outR[i] += voiceR[i] * mixLevel_;
+            // Unrolled accumulation loop for better performance
+            int i = 0;
+            for (; i + 3 < written; i += 4) {
+                outL[i]     += scratchL_[i]     * mixLevel_;
+                outR[i]     += scratchR_[i]     * mixLevel_;
+                outL[i + 1] += scratchL_[i + 1] * mixLevel_;
+                outR[i + 1] += scratchR_[i + 1] * mixLevel_;
+                outL[i + 2] += scratchL_[i + 2] * mixLevel_;
+                outR[i + 2] += scratchR_[i + 2] * mixLevel_;
+                outL[i + 3] += scratchL_[i + 3] * mixLevel_;
+                outR[i + 3] += scratchR_[i + 3] * mixLevel_;
+            }
+            for (; i < written; ++i) {
+                outL[i] += scratchL_[i] * mixLevel_;
+                outR[i] += scratchR_[i] * mixLevel_;
             }
         }
     }
@@ -526,16 +600,39 @@ const SampleZone* SamplePlayer::findZone(int midiNote, float velocity) const {
     return nullptr;
 }
 
+const SampleZone* SamplePlayer::findReleaseZone(int midiNote) const {
+    for (const auto& zone : releaseZones_) {
+        if (midiNote >= zone->minNote && midiNote <= zone->maxNote) {
+            return zone.get();
+        }
+    }
+    return nullptr;
+}
+
+bool SamplePlayer::addReleaseZone(const SampleZone& zone) {
+    auto z = std::make_unique<SampleZone>(zone);
+    z->isReleaseSample = true;
+    z->loopEnabled = false;
+    releaseZones_.push_back(std::move(z));
+    return true;
+}
+
 SampleVoice* SamplePlayer::findFreeVoice() {
     for (auto& voice : voices_) {
         if (!voice.active) return &voice;
     }
-    // Steal oldest (first active)
+    // Steal oldest active voice (lowest voiceAge)
+    SampleVoice* oldest = nullptr;
     for (auto& voice : voices_) {
         if (voice.active) {
-            voice.reset();
-            return &voice;
+            if (!oldest || voice.voiceAge < oldest->voiceAge) {
+                oldest = &voice;
+            }
         }
+    }
+    if (oldest) {
+        oldest->reset();
+        return oldest;
     }
     return nullptr;
 }
@@ -547,17 +644,31 @@ void SamplePlayer::preloadAsync() {
     preloadFutures_.clear();
     preloadComplete_ = false;
 
-    for (const auto& zone : zones_) {
+    auto preloadZone = [this](const SampleZone* zone) {
         for (int i = 0; i < static_cast<int>(VelocityLayer::Count); ++i) {
             auto stream = zone->streams[i];
             if (!stream) continue;
-            // Launch a task that just touches the preload cache and prefetches
             preloadFutures_.push_back(std::async(std::launch::async, [stream]() {
                 if (stream->isOpen()) {
                     stream->prefetch(stream->getPreloadSamples());
                 }
             }));
         }
+        for (const auto& stream : zone->rrStreams) {
+            if (!stream) continue;
+            preloadFutures_.push_back(std::async(std::launch::async, [stream]() {
+                if (stream->isOpen()) {
+                    stream->prefetch(stream->getPreloadSamples());
+                }
+            }));
+        }
+    };
+
+    for (const auto& zone : zones_) {
+        preloadZone(zone.get());
+    }
+    for (const auto& zone : releaseZones_) {
+        preloadZone(zone.get());
     }
 }
 
@@ -587,7 +698,8 @@ SamplePlayer::AggregateMetrics SamplePlayer::getMetrics() const {
     AggregateMetrics agg;
     uint64_t hits = 0;
     uint64_t total = 0;
-    for (const auto& zone : zones_) {
+
+    auto accumulateZone = [&agg, &hits, &total](const SampleZone* zone) {
         for (int i = 0; i < static_cast<int>(VelocityLayer::Count); ++i) {
             auto stream = zone->streams[i];
             if (!stream) continue;
@@ -596,18 +708,43 @@ SamplePlayer::AggregateMetrics SamplePlayer::getMetrics() const {
             total += m.totalRequests.load();
             agg.underruns += m.underruns.load();
         }
+        for (const auto& stream : zone->rrStreams) {
+            if (!stream) continue;
+            const auto& m = stream->getMetrics();
+            hits += m.preloadHits.load() + m.ringHits.load();
+            total += m.totalRequests.load();
+            agg.underruns += m.underruns.load();
+        }
+    };
+
+    for (const auto& zone : zones_) {
+        accumulateZone(zone.get());
     }
+    for (const auto& zone : releaseZones_) {
+        accumulateZone(zone.get());
+    }
+
     agg.totalRequests = total;
     agg.cacheHitRate = (total > 0) ? static_cast<double>(hits) / static_cast<double>(total) : 0.0;
     return agg;
 }
 
 void SamplePlayer::resetMetrics() {
-    for (const auto& zone : zones_) {
+    auto resetZone = [](const SampleZone* zone) {
         for (int i = 0; i < static_cast<int>(VelocityLayer::Count); ++i) {
             auto stream = zone->streams[i];
             if (stream) stream->resetMetrics();
         }
+        for (const auto& stream : zone->rrStreams) {
+            if (stream) stream->resetMetrics();
+        }
+    };
+
+    for (const auto& zone : zones_) {
+        resetZone(zone.get());
+    }
+    for (const auto& zone : releaseZones_) {
+        resetZone(zone.get());
     }
 }
 
