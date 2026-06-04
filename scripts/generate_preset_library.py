@@ -279,6 +279,8 @@ VARIATIONS = [
     (" Hard", {"amp_attack": 1.0, "amp_release": 50.0, "brightness": 0.1}),
     (" Vintage", {"sampleMix": 0.1, "brightness": -0.1, "filter_cutoff": -2000.0}),
     (" Modern", {"sampleMix": 0.0, "brightness": 0.1, "filter_cutoff": 2000.0}),
+    (" Layered", {"brightness": 0.05, "filter_cutoff": 1000.0}),
+    (" Solo", {"amp_attack": 8.0, "amp_release": 150.0, "brightness": 0.15}),
 ]
 
 
@@ -408,18 +410,22 @@ for category, names in BASE_PRESETS.items():
         # Add base preset + variations for core categories
         if category in ('piano', 'organ', 'guitar', 'bass', 'strings', 'brass',
                         'woodwind', 'synth_lead', 'synth_pad', 'synth_bass',
-                        'synth_organ', 'synth_piano', 'cinematic', 'orchestral'):
+                        'synth_organ', 'synth_piano', 'cinematic', 'orchestral',
+                        'fx', 'sfx', 'drums', 'percussion', 'chromatic',
+                        'ethnic', 'world'):
             for suffix, overrides in VARIATIONS:
-                if suffix == "" or idx < 520:  # limit variations to keep under control
-                    PRESETS.append((idx, f"{name}{suffix}", category, overrides))
-                    idx += 1
+                PRESETS.append((idx, f"{name}{suffix}", category, overrides))
+                idx += 1
         else:
             PRESETS.append((idx, name, category, {}))
             idx += 1
 
-# Ensure we have at least 500
-while len(PRESETS) < 500:
-    base_idx = (len(PRESETS) % len(PRESETS)) if PRESETS else 0
+# Ensure we have exactly 1338 (Juno-Di target) — cap if over
+target_count = 1338
+if len(PRESETS) > target_count:
+    PRESETS = PRESETS[:target_count]
+while len(PRESETS) < target_count:
+    base_idx = len(PRESETS) % len(PRESETS) if PRESETS else 0
     if PRESETS:
         _, base_name, base_cat, _ = PRESETS[base_idx]
         PRESETS.append((idx, f"{base_name} Alt", base_cat, {}))

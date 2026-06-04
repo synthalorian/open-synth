@@ -274,6 +274,50 @@ void FxSlotPanel::populateFxTypes()
     typeSelector_.addItem("Amp Sim", 21);
     typeSelector_.addItem("Stereo Widener", 22);
     typeSelector_.addItem("Vocoder", 23);
+    // Phase 6: Juno-Di FX parity
+    typeSelector_.addItem("Distortion", 24);
+    typeSelector_.addItem("Overdrive", 25);
+    typeSelector_.addItem("Fuzz", 26);
+    typeSelector_.addItem("Tube Drive", 27);
+    typeSelector_.addItem("Resonant Filter", 28);
+    typeSelector_.addItem("Formant Filter", 29);
+    typeSelector_.addItem("Comb Filter", 30);
+    typeSelector_.addItem("Talk Box", 31);
+    typeSelector_.addItem("Vibrato", 32);
+    typeSelector_.addItem("Auto-Pan", 33);
+    typeSelector_.addItem("Uni-Vibe", 34);
+    typeSelector_.addItem("Chorus Ensemble", 35);
+    typeSelector_.addItem("Dimension D", 36);
+    typeSelector_.addItem("Reverse Delay", 37);
+    typeSelector_.addItem("Tape Delay", 38);
+    typeSelector_.addItem("Analog Delay", 39);
+    typeSelector_.addItem("Diffusion Delay", 40);
+    typeSelector_.addItem("Room Reverb", 41);
+    typeSelector_.addItem("Hall Reverb", 42);
+    typeSelector_.addItem("Plate Reverb", 43);
+    typeSelector_.addItem("Shimmer Reverb", 44);
+    typeSelector_.addItem("Non-Linear Reverb", 45);
+    typeSelector_.addItem("Harmonizer", 46);
+    typeSelector_.addItem("Octaver", 47);
+    typeSelector_.addItem("Detune", 48);
+    typeSelector_.addItem("Noise Gate", 49);
+    typeSelector_.addItem("De-Esser", 50);
+    typeSelector_.addItem("Transient Shaper", 51);
+    typeSelector_.addItem("Multiband Comp", 52);
+    typeSelector_.addItem("Lo-Fi", 53);
+    typeSelector_.addItem("Vinyl Sim", 54);
+    typeSelector_.addItem("Radio Sim", 55);
+    typeSelector_.addItem("Telephone Sim", 56);
+    typeSelector_.addItem("Cabinet Sim", 57);
+    typeSelector_.addItem("Graphic EQ", 58);
+    typeSelector_.addItem("Parametric EQ", 59);
+    typeSelector_.addItem("Wah-Wah", 60);
+    typeSelector_.addItem("Maximizer", 61);
+    typeSelector_.addItem("Exciter", 62);
+    typeSelector_.addItem("Stereo Imager", 63);
+    typeSelector_.addItem("Resonator", 64);
+    typeSelector_.addItem("Grain Delay", 65);
+    typeSelector_.addItem("Spectral Freeze", 66);
 }
 
 void FxSlotPanel::paint(juce::Graphics& g)
@@ -336,7 +380,12 @@ ArpPanel::ArpPanel(juce::AudioProcessorValueTreeState& apvts)
     enabledButton_.setColour(juce::ToggleButton::tickColourId, SynthColors::neonPurple());
     addAndMakeVisible(enabledButton_);
 
-    patternSelector_.addItemList({"Up", "Down", "Up/Down", "Random", "Chord"}, 1);
+    patternSelector_.addItemList({"Up", "Down", "Up/Down", "Random", "Chord",
+        "Down/Up", "Played Order", "Ping Pong", "Ping Pong Rev",
+        "2-Oct Up", "2-Oct Down", "2-Oct Up/Down",
+        "3-Oct Up", "3-Oct Down", "3-Oct Up/Down",
+        "Oct Jump Up", "Oct Jump Down",
+        "Fifth Up", "Fifth Down", "Fifth Up/Down"}, 1);
     addAndMakeVisible(patternSelector_);
 
     addAndMakeVisible(tempoKnob_);

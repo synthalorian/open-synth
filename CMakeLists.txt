@@ -112,6 +112,50 @@ set(DSP_SOURCES
     dsp/fx_amp_sim.cpp
     dsp/fx_stereo_widener.cpp
     dsp/fx_vocoder.cpp
+    # Phase 6: Juno-Di FX parity stubs
+    dsp/fx_distortion.cpp
+    dsp/fx_overdrive.cpp
+    dsp/fx_fuzz.cpp
+    dsp/fx_tube_drive.cpp
+    dsp/fx_resonant_filter.cpp
+    dsp/fx_formant_filter.cpp
+    dsp/fx_comb_filter.cpp
+    dsp/fx_talk_box.cpp
+    dsp/fx_vibrato.cpp
+    dsp/fx_auto_pan.cpp
+    dsp/fx_uni_vibe.cpp
+    dsp/fx_chorus_ensemble.cpp
+    dsp/fx_dimension_d.cpp
+    dsp/fx_reverse_delay.cpp
+    dsp/fx_tape_delay.cpp
+    dsp/fx_analog_delay.cpp
+    dsp/fx_diffusion_delay.cpp
+    dsp/fx_room_reverb.cpp
+    dsp/fx_hall_reverb.cpp
+    dsp/fx_plate_reverb.cpp
+    dsp/fx_shimmer_reverb.cpp
+    dsp/fx_non_linear_reverb.cpp
+    dsp/fx_harmonizer.cpp
+    dsp/fx_octaver.cpp
+    dsp/fx_detune.cpp
+    dsp/fx_noise_gate.cpp
+    dsp/fx_de_esser.cpp
+    dsp/fx_transient_shaper.cpp
+    dsp/fx_multiband_compressor.cpp
+    dsp/fx_lo_fi.cpp
+    dsp/fx_vinyl_simulator.cpp
+    dsp/fx_radio_simulator.cpp
+    dsp/fx_telephone_simulator.cpp
+    dsp/fx_cabinet_simulator.cpp
+    dsp/fx_graphic_eq.cpp
+    dsp/fx_parametric_eq.cpp
+    dsp/fx_wah_wah.cpp
+    dsp/fx_maximizer.cpp
+    dsp/fx_exciter.cpp
+    dsp/fx_stereo_imager.cpp
+    dsp/fx_resonator.cpp
+    dsp/fx_grain_delay.cpp
+    dsp/fx_spectral_freeze.cpp
 )
 
 target_sources(OpenSynth PRIVATE 

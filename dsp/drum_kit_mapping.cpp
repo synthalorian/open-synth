@@ -334,22 +334,190 @@ static const DrumSoundConfig sfxCfg[16] = {
     mkCfg(1.0f,  0.0f, 0.0f,  0.0f),
 };
 
-// ── All presets table ───────────────────────────────────────────────────────
-
-static const DrumSoundConfig* kitPresetTable[10] = {
-    stdCfg,      // 0: Standard
-    roomCfg,     // 1: Room
-    powerCfg,    // 2: Power
-    tr808Cfg,    // 3: TR-808
-    tr909Cfg,    // 4: TR-909
-    electronicCfg, // 5: Electronic
-    jazzCfg,     // 6: Jazz
-    brushCfg,    // 7: Brush
-    orchestraCfg, // 8: Orchestra
-    sfxCfg,      // 9: SFX
+// ── 10: Latin — congas and timbale-style tunings ─────────────────────────
+static const DrumSoundConfig latinCfg[16] = {
+    mkCfg(0.95f, 0.9f,  0.35f, 0.0f),
+    mkCfg(1.0f,  0.8f,  0.25f, 0.35f),
+    mkCfg(1.2f,  0.6f,  0.04f, 0.0f),
+    mkCfg(1.1f,  0.55f, 0.4f,  0.0f),
+    mkCfg(1.15f, 0.85f, 0.2f,  0.0f),
+    mkCfg(1.1f,  0.85f, 0.2f,  0.0f),
+    mkCfg(1.05f, 0.9f,  0.22f, 0.0f),
+    mkCfg(1.0f,  0.65f, 2.0f,  0.0f),
+    mkCfg(1.0f,  0.6f,  0.8f,  0.3f),
+    mkCfg(1.0f,  0.75f, 0.2f,  0.0f),
+    mkCfg(1.1f,  0.7f,  0.025f, 0.0f),
+    mkCfg(1.2f,  0.75f, 0.18f, 0.0f),
+    mkCfg(1.1f,  0.55f, 0.08f, 0.0f),
+    mkCfg(1.15f, 0.85f, 0.18f, 0.0f),
+    mkCfg(1.1f,  0.9f,  0.2f,  0.0f),
+    mkCfg(1.0f,  0.0f,  0.0f,  0.0f),
 };
 
-static const char* kitPresetNames[10] = {
+// ── 11: Metal — heavy, aggressive, long cymbals ──────────────────────────
+static const DrumSoundConfig metalCfg[16] = {
+    mkCfg(1.2f,  1.0f,  0.55f, 0.0f),
+    mkCfg(1.15f, 1.0f,  0.35f, 0.55f),
+    mkCfg(1.3f,  0.85f, 0.05f, 0.0f),
+    mkCfg(1.2f,  0.75f, 0.5f,  0.0f),
+    mkCfg(1.2f,  0.95f, 0.22f, 0.0f),
+    mkCfg(1.15f, 0.95f, 0.22f, 0.0f),
+    mkCfg(1.1f,  1.0f,  0.25f, 0.0f),
+    mkCfg(1.1f,  0.8f,  4.0f,  0.0f),
+    mkCfg(1.05f, 0.75f, 1.2f,  0.4f),
+    mkCfg(1.1f,  0.9f,  0.22f, 0.0f),
+    mkCfg(1.2f,  0.85f, 0.02f, 0.0f),
+    mkCfg(1.2f,  0.8f,  0.15f, 0.0f),
+    mkCfg(1.1f,  0.65f, 0.08f, 0.0f),
+    mkCfg(1.15f, 0.9f,  0.2f,  0.0f),
+    mkCfg(1.1f,  0.95f, 0.22f, 0.0f),
+    mkCfg(1.0f,  0.0f,  0.0f,  0.0f),
+};
+
+// ── 12: Vintage — lo-fi, noisy, short ────────────────────────────────────
+static const DrumSoundConfig vintageCfg[16] = {
+    mkCfg(0.85f, 0.9f,  0.4f,  0.0f),
+    mkCfg(0.95f, 0.75f, 0.18f, 0.25f),
+    mkCfg(1.1f,  0.55f, 0.035f, 0.0f),
+    mkCfg(1.0f,  0.5f,  0.35f, 0.0f),
+    mkCfg(1.05f, 0.75f, 0.18f, 0.0f),
+    mkCfg(1.0f,  0.75f, 0.18f, 0.0f),
+    mkCfg(0.95f, 0.8f,  0.2f,  0.0f),
+    mkCfg(0.9f,  0.5f,  2.5f,  0.0f),
+    mkCfg(0.95f, 0.45f, 0.8f,  0.2f),
+    mkCfg(1.0f,  0.65f, 0.2f,  0.0f),
+    mkCfg(1.1f,  0.6f,  0.02f, 0.0f),
+    mkCfg(1.0f,  0.55f, 0.14f, 0.0f),
+    mkCfg(1.0f,  0.35f, 0.07f, 0.0f),
+    mkCfg(1.05f, 0.7f,  0.18f, 0.0f),
+    mkCfg(1.0f,  0.75f, 0.2f,  0.0f),
+    mkCfg(1.0f,  0.0f,  0.0f,  0.0f),
+};
+
+// ── 13: Dance — tight, punchy, short ─────────────────────────────────────
+static const DrumSoundConfig danceCfg[16] = {
+    mkCfg(1.15f, 1.0f,  0.18f, 0.0f),
+    mkCfg(1.1f,  1.0f,  0.16f, 0.4f),
+    mkCfg(1.5f,  0.9f,  0.02f, 0.0f),
+    mkCfg(1.3f,  0.8f,  0.18f, 0.0f),
+    mkCfg(1.1f,  0.95f, 0.1f,  0.0f),
+    mkCfg(1.05f, 0.95f, 0.12f, 0.0f),
+    mkCfg(1.0f,  1.0f,  0.14f, 0.0f),
+    mkCfg(1.1f,  0.8f,  1.2f,  0.0f),
+    mkCfg(1.05f, 0.75f, 0.5f,  0.35f),
+    mkCfg(1.1f,  0.9f,  0.14f, 0.0f),
+    mkCfg(1.3f,  0.85f, 0.01f, 0.0f),
+    mkCfg(1.1f,  0.75f, 0.1f,  0.0f),
+    mkCfg(1.0f,  0.7f,  0.05f, 0.0f),
+    mkCfg(1.1f,  0.85f, 0.14f, 0.0f),
+    mkCfg(1.05f, 0.9f,  0.16f, 0.0f),
+    mkCfg(1.0f,  0.0f,  0.0f,  0.0f),
+};
+
+// ── 14: Acoustic — natural, open decays ──────────────────────────────────
+static const DrumSoundConfig acousticCfg[16] = {
+    mkCfg(1.0f,  1.0f, 0.5f,  0.0f),
+    mkCfg(1.0f,  0.9f, 0.3f,  0.4f),
+    mkCfg(1.0f,  0.75f, 0.06f, 0.0f),
+    mkCfg(1.0f,  0.7f,  0.55f, 0.0f),
+    mkCfg(1.0f,  0.9f,  0.3f,  0.0f),
+    mkCfg(1.0f,  0.9f,  0.3f,  0.0f),
+    mkCfg(1.0f,  0.95f, 0.32f, 0.0f),
+    mkCfg(1.0f,  0.75f, 3.5f,  0.0f),
+    mkCfg(1.0f,  0.7f,  1.2f,  0.35f),
+    mkCfg(1.0f,  0.85f, 0.28f, 0.0f),
+    mkCfg(1.0f,  0.75f, 0.04f, 0.0f),
+    mkCfg(1.0f,  0.75f, 0.25f, 0.0f),
+    mkCfg(1.0f,  0.5f,  0.12f, 0.0f),
+    mkCfg(1.0f,  0.85f, 0.28f, 0.0f),
+    mkCfg(1.0f,  0.9f,  0.3f,  0.0f),
+    mkCfg(1.0f,  0.0f,  0.0f,  0.0f),
+};
+
+// ── 15: Hip Hop — deep kick, crisp snare, tight hats ─────────────────────
+static const DrumSoundConfig hiphopCfg[16] = {
+    mkCfg(0.9f,  1.0f, 0.55f, 0.0f),
+    mkCfg(1.05f, 1.0f, 0.28f, 0.45f),
+    mkCfg(1.3f,  0.8f, 0.03f, 0.0f),
+    mkCfg(1.1f,  0.7f, 0.45f, 0.0f),
+    mkCfg(1.05f, 0.9f, 0.22f, 0.0f),
+    mkCfg(1.0f,  0.9f, 0.24f, 0.0f),
+    mkCfg(0.95f, 0.95f, 0.28f, 0.0f),
+    mkCfg(1.0f,  0.7f, 2.0f,  0.0f),
+    mkCfg(1.0f,  0.65f, 0.8f,  0.3f),
+    mkCfg(1.05f, 0.85f, 0.22f, 0.0f),
+    mkCfg(1.2f,  0.8f, 0.015f, 0.0f),
+    mkCfg(1.05f, 0.75f, 0.14f, 0.0f),
+    mkCfg(1.0f,  0.6f,  0.07f, 0.0f),
+    mkCfg(1.05f, 0.85f, 0.22f, 0.0f),
+    mkCfg(1.0f,  0.9f,  0.25f, 0.0f),
+    mkCfg(1.0f,  0.0f,  0.0f,  0.0f),
+};
+
+// ── 16: Percussion — focused on congas/shakers/cowbells ──────────────────
+static const DrumSoundConfig percussionCfg[16] = {
+    mkCfg(1.0f,  0.85f, 0.3f,  0.0f),
+    mkCfg(1.0f,  0.6f,  0.12f, 0.2f),
+    mkCfg(1.3f,  0.7f,  0.05f, 0.0f),
+    mkCfg(1.2f,  0.65f, 0.35f, 0.0f),
+    mkCfg(1.2f,  0.8f,  0.15f, 0.0f),
+    mkCfg(1.15f, 0.8f,  0.15f, 0.0f),
+    mkCfg(1.1f,  0.85f, 0.18f, 0.0f),
+    mkCfg(1.1f,  0.7f,  2.5f,  0.0f),
+    mkCfg(1.05f, 0.65f, 0.9f,  0.25f),
+    mkCfg(1.1f,  0.8f,  0.15f, 0.0f),
+    mkCfg(1.25f, 0.75f, 0.02f, 0.0f),
+    mkCfg(1.3f,  0.85f, 0.2f,  0.0f),
+    mkCfg(1.2f,  0.7f,  0.1f,  0.0f),
+    mkCfg(1.15f, 0.9f,  0.16f, 0.0f),
+    mkCfg(1.1f,  0.9f,  0.18f, 0.0f),
+    mkCfg(1.0f,  0.0f,  0.0f,  0.0f),
+};
+
+// ── 17: Cinematic — huge, dramatic, long tails ───────────────────────────
+static const DrumSoundConfig cinematicCfg[16] = {
+    mkCfg(1.0f,  1.0f,  0.75f, 0.0f),
+    mkCfg(1.0f,  0.95f, 0.45f, 0.5f),
+    mkCfg(1.0f,  0.7f,  0.1f,  0.0f),
+    mkCfg(1.0f,  0.65f, 0.7f,  0.0f),
+    mkCfg(1.0f,  0.9f,  0.4f,  0.0f),
+    mkCfg(1.0f,  0.9f,  0.4f,  0.0f),
+    mkCfg(1.0f,  0.95f, 0.42f, 0.0f),
+    mkCfg(1.0f,  0.8f,  5.0f,  0.0f),
+    mkCfg(1.0f,  0.75f, 1.8f,  0.45f),
+    mkCfg(1.0f,  0.85f, 0.35f, 0.0f),
+    mkCfg(1.0f,  0.7f,  0.05f, 0.0f),
+    mkCfg(1.0f,  0.75f, 0.3f,  0.0f),
+    mkCfg(1.0f,  0.45f, 0.18f, 0.0f),
+    mkCfg(1.0f,  0.9f,  0.35f, 0.0f),
+    mkCfg(1.0f,  0.95f, 0.4f,  0.0f),
+    mkCfg(1.0f,  0.0f,  0.0f,  0.0f),
+};
+
+// ── All presets table ───────────────────────────────────────────────────────
+
+static const DrumSoundConfig* kitPresetTable[18] = {
+    stdCfg,         // 0: Standard
+    roomCfg,        // 1: Room
+    powerCfg,       // 2: Power
+    tr808Cfg,       // 3: TR-808
+    tr909Cfg,       // 4: TR-909
+    electronicCfg,  // 5: Electronic
+    jazzCfg,        // 6: Jazz
+    brushCfg,       // 7: Brush
+    orchestraCfg,   // 8: Orchestra
+    sfxCfg,         // 9: SFX
+    latinCfg,       // 10: Latin
+    metalCfg,       // 11: Metal
+    vintageCfg,     // 12: Vintage
+    danceCfg,       // 13: Dance
+    acousticCfg,    // 14: Acoustic
+    hiphopCfg,      // 15: Hip Hop
+    percussionCfg,  // 16: Percussion
+    cinematicCfg,   // 17: Cinematic
+};
+
+static const char* kitPresetNames[18] = {
     "Standard",
     "Room",
     "Power",
@@ -360,6 +528,14 @@ static const char* kitPresetNames[10] = {
     "Brush",
     "Orchestra",
     "SFX",
+    "Latin",
+    "Metal",
+    "Vintage",
+    "Dance",
+    "Acoustic",
+    "Hip Hop",
+    "Percussion",
+    "Cinematic",
 };
 
 // ── Initialize kits in DrumKit ──────────────────────────────────────────────
@@ -371,8 +547,8 @@ namespace {
     // This avoids a circular dependency (drum_synth.cpp includes drum_kit_mapping.h).
 }
 
-void initDrumKitPresets(DrumKitPreset kits[10]) {
-    for (int k = 0; k < 10; ++k) {
+void initDrumKitPresets(DrumKitPreset kits[18]) {
+    for (int k = 0; k < 18; ++k) {
         kits[k].name = kitPresetNames[k];
         for (int i = 0; i < 16; ++i) {
             kits[k].sounds[i] = kitPresetTable[k][i];

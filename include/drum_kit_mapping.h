@@ -11,7 +11,7 @@ int gm2NoteToDrumType(int midiNote);
 /// Return a human-readable name for a drum type index.
 const char* drumTypeName(int type);
 
-/// Populate an array of 10 DrumKitPreset structs with factory presets.
+/// Populate an array of 18 DrumKitPreset structs with factory presets.
 /// Called from DrumKit constructor.
 void initDrumKitPresets(DrumKitPreset* kits);
 

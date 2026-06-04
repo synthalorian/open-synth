@@ -92,7 +92,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout OpenSynthProcessor::createPa
     // ── FX Slot 1 ────────────────────────────────────────────────────────────
     {
         auto fx1Group = std::make_unique<juce::AudioProcessorParameterGroup>("fx1", "FX 1", "|");
-        fx1Group->addChild(std::make_unique<juce::AudioParameterInt>("fx1Type", "Type", 0, 22, 0));
+        fx1Group->addChild(std::make_unique<juce::AudioParameterInt>("fx1Type", "Type", 0, 78, 0));
         fx1Group->addChild(std::make_unique<juce::AudioParameterBool>("fx1Enabled", "On", false));
         fx1Group->addChild(std::make_unique<juce::AudioParameterFloat>("fx1Param0", "P1", juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f), 0.5f));
         fx1Group->addChild(std::make_unique<juce::AudioParameterFloat>("fx1Param1", "P2", juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f), 0.5f));
@@ -104,7 +104,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout OpenSynthProcessor::createPa
     // ── FX Slot 2 ────────────────────────────────────────────────────────────
     {
         auto fx2Group = std::make_unique<juce::AudioProcessorParameterGroup>("fx2", "FX 2", "|");
-        fx2Group->addChild(std::make_unique<juce::AudioParameterInt>("fx2Type", "Type", 0, 22, 0));
+        fx2Group->addChild(std::make_unique<juce::AudioParameterInt>("fx2Type", "Type", 0, 78, 0));
         fx2Group->addChild(std::make_unique<juce::AudioParameterBool>("fx2Enabled", "On", false));
         fx2Group->addChild(std::make_unique<juce::AudioParameterFloat>("fx2Param0", "P1", juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f), 0.5f));
         fx2Group->addChild(std::make_unique<juce::AudioParameterFloat>("fx2Param1", "P2", juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f), 0.5f));
@@ -116,7 +116,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout OpenSynthProcessor::createPa
     // ── FX Slot 3 ────────────────────────────────────────────────────────────
     {
         auto fx3Group = std::make_unique<juce::AudioProcessorParameterGroup>("fx3", "FX 3", "|");
-        fx3Group->addChild(std::make_unique<juce::AudioParameterInt>("fx3Type", "Type", 0, 22, 0));
+        fx3Group->addChild(std::make_unique<juce::AudioParameterInt>("fx3Type", "Type", 0, 78, 0));
         fx3Group->addChild(std::make_unique<juce::AudioParameterBool>("fx3Enabled", "On", false));
         fx3Group->addChild(std::make_unique<juce::AudioParameterFloat>("fx3Param0", "P1", juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f), 0.5f));
         fx3Group->addChild(std::make_unique<juce::AudioParameterFloat>("fx3Param1", "P2", juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f), 0.5f));
@@ -129,7 +129,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout OpenSynthProcessor::createPa
     {
         auto arpGroup = std::make_unique<juce::AudioProcessorParameterGroup>("arp", "Arpeggiator", "|");
         arpGroup->addChild(std::make_unique<juce::AudioParameterBool>("arpEnabled", "On", false));
-        arpGroup->addChild(std::make_unique<juce::AudioParameterInt>("arpPattern", "Pattern", 0, 4, 0));
+        arpGroup->addChild(std::make_unique<juce::AudioParameterInt>("arpPattern", "Pattern", 0, 159, 0));
         arpGroup->addChild(std::make_unique<juce::AudioParameterFloat>("arpTempo", "Tempo", juce::NormalisableRange<float>(20.0f, 300.0f, 0.1f), 120.0f, "BPM"));
         arpGroup->addChild(std::make_unique<juce::AudioParameterFloat>("arpGate", "Gate", juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f), 0.5f));
         arpGroup->addChild(std::make_unique<juce::AudioParameterFloat>("arpSwing", "Swing", juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f), 0.0f));
