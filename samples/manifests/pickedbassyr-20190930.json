@@ -1,0 +1,109 @@
+{
+  "name": "PickedBassYR 20190930",
+  "zones": [
+    {
+      "minNote": 26,
+      "maxNote": 28,
+      "rootNote": 28,
+      "file": "samples/bass-electric-yr/samples/pick/E.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/bass-electric-yr/samples/pick/F.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/bass-electric-yr/samples/pick/F#.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/bass-electric-yr/samples/pick/G.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/bass-electric-yr/samples/pick/G#.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/bass-electric-yr/samples/pick/A.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/bass-electric-yr/samples/pick/A#.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/bass-electric-yr/samples/pick/B.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/bass-electric-yr/samples/pick/C.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/bass-electric-yr/samples/pick/C#.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/bass-electric-yr/samples/pick/D.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/bass-electric-yr/samples/pick/D#.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 40,
+      "maxNote": 46,
+      "rootNote": 40,
+      "file": "samples/bass-electric-yr/samples/pick/E2.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    }
+  ]
+}
