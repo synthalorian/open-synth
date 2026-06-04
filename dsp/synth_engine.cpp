@@ -15,6 +15,50 @@
 #include "fx_amp_sim.h"
 #include "fx_stereo_widener.h"
 #include "fx_vocoder.h"
+// Phase 6: Juno-Di FX parity stubs
+#include "fx_distortion.h"
+#include "fx_overdrive.h"
+#include "fx_fuzz.h"
+#include "fx_tube_drive.h"
+#include "fx_resonant_filter.h"
+#include "fx_formant_filter.h"
+#include "fx_comb_filter.h"
+#include "fx_talk_box.h"
+#include "fx_vibrato.h"
+#include "fx_auto_pan.h"
+#include "fx_uni_vibe.h"
+#include "fx_chorus_ensemble.h"
+#include "fx_dimension_d.h"
+#include "fx_reverse_delay.h"
+#include "fx_tape_delay.h"
+#include "fx_analog_delay.h"
+#include "fx_diffusion_delay.h"
+#include "fx_room_reverb.h"
+#include "fx_hall_reverb.h"
+#include "fx_plate_reverb.h"
+#include "fx_shimmer_reverb.h"
+#include "fx_non_linear_reverb.h"
+#include "fx_harmonizer.h"
+#include "fx_octaver.h"
+#include "fx_detune.h"
+#include "fx_noise_gate.h"
+#include "fx_de_esser.h"
+#include "fx_transient_shaper.h"
+#include "fx_multiband_compressor.h"
+#include "fx_lo_fi.h"
+#include "fx_vinyl_simulator.h"
+#include "fx_radio_simulator.h"
+#include "fx_telephone_simulator.h"
+#include "fx_cabinet_simulator.h"
+#include "fx_graphic_eq.h"
+#include "fx_parametric_eq.h"
+#include "fx_wah_wah.h"
+#include "fx_maximizer.h"
+#include "fx_exciter.h"
+#include "fx_stereo_imager.h"
+#include "fx_resonator.h"
+#include "fx_grain_delay.h"
+#include "fx_spectral_freeze.h"
 #include "sample_player.h"
 #include <cmath>
 #include <cstring>
@@ -875,6 +919,50 @@ FxProcessor* SynthEngine::createFxProcessor(int fxTypeId) {
     case 20: proc = new AmpSimulatorProcessor();  break; // Amp simulator
     case 21: proc = new StereoWidenerProcessor(); break; // Stereo widener
     case 22: proc = new VocoderProcessor();      break; // Vocoder
+    // Phase 6: Juno-Di FX parity — stubs (full DSP in Phase 6.5)
+    case 23: proc = new DistortionProcessor();    break;
+    case 24: proc = new OverdriveProcessor();     break;
+    case 25: proc = new FuzzProcessor();          break;
+    case 26: proc = new TubeDriveProcessor();     break;
+    case 27: proc = new ResonantFilterProcessor(); break;
+    case 28: proc = new FormantFilterProcessor(); break;
+    case 29: proc = new CombFilterProcessor();    break;
+    case 30: proc = new TalkBoxProcessor();       break;
+    case 31: proc = new VibratoProcessor();       break;
+    case 32: proc = new AutoPanProcessor();       break;
+    case 33: proc = new UniVibeProcessor();       break;
+    case 34: proc = new ChorusEnsembleProcessor(); break;
+    case 35: proc = new DimensionDProcessor();    break;
+    case 36: proc = new ReverseDelayProcessor();  break;
+    case 37: proc = new TapeDelayProcessor();     break;
+    case 38: proc = new AnalogDelayProcessor();   break;
+    case 39: proc = new DiffusionDelayProcessor(); break;
+    case 40: proc = new RoomReverbProcessor();    break;
+    case 41: proc = new HallReverbProcessor();    break;
+    case 42: proc = new PlateReverbProcessor();   break;
+    case 43: proc = new ShimmerReverbProcessor(); break;
+    case 44: proc = new NonLinearReverbProcessor(); break;
+    case 45: proc = new HarmonizerProcessor();    break;
+    case 46: proc = new OctaverProcessor();       break;
+    case 47: proc = new DetuneProcessor();        break;
+    case 48: proc = new NoiseGateProcessor();     break;
+    case 49: proc = new DeEsserProcessor();       break;
+    case 50: proc = new TransientShaperProcessor(); break;
+    case 51: proc = new MultibandCompressorProcessor(); break;
+    case 52: proc = new LoFiProcessor();          break;
+    case 53: proc = new VinylSimulatorProcessor(); break;
+    case 54: proc = new RadioSimulatorProcessor(); break;
+    case 55: proc = new TelephoneSimulatorProcessor(); break;
+    case 56: proc = new CabinetSimulatorProcessor(); break;
+    case 57: proc = new GraphicEQProcessor();     break;
+    case 58: proc = new ParametricEQProcessor();  break;
+    case 59: proc = new WahWahProcessor();        break;
+    case 60: proc = new MaximizerProcessor();     break;
+    case 61: proc = new ExciterProcessor();       break;
+    case 62: proc = new StereoImagerProcessor();  break;
+    case 63: proc = new ResonatorProcessor();     break;
+    case 64: proc = new GrainDelayProcessor();    break;
+    case 65: proc = new SpectralFreezeProcessor(); break;
     default: return nullptr;
     }
     // Forward the actual sample rate so processors can pre-compute

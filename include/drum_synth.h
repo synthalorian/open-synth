@@ -100,7 +100,7 @@ public:
     /// process() will MIX into them (not replace).
     void process(float* leftOut, float* rightOut, uint32_t numFrames);
 
-    /// Select a preset kit by index (0–9).
+    /// Select a preset kit by index (0–17).
     void setKitPreset(int index);
 
     /// Master drum level (0.0–1.0).
@@ -114,7 +114,7 @@ private:
     DrumVoice voices_[kMaxVoices];
     double sampleRate_;
     float masterLevel_ = 0.8f;
-    DrumKitPreset kits_[10];
+    DrumKitPreset kits_[18];
     int currentKit_ = 0;
 
     int findFreeVoice();

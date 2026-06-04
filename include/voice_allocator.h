@@ -15,7 +15,7 @@ enum class VoicePriorityMode : int {
 
 class VoiceAllocator {
 public:
-    static constexpr int MAX_VOICES = 64;
+    static constexpr int MAX_VOICES = 128;
 
     VoiceAllocator();
 
