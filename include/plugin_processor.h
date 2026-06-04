@@ -2,6 +2,7 @@
 #include <juce_audio_processors/juce_audio_processors.h>
 #include <juce_dsp/juce_dsp.h>
 #include "synth_engine_wrapper.h"
+#include "waveform_display.h"
 
 namespace opensynth {
 
@@ -50,6 +51,9 @@ public:
     // Inject MIDI from on-screen keyboard or other UI sources
     void injectMidiMessage(const juce::MidiMessage& msg);
 
+    // Waveform display — set by editor, read by processor (atomic-safe)
+    void setWaveformDisplay(WaveformDisplay* display) { waveformDisplay_ = display; }
+
     static juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
 
 private:
@@ -63,6 +67,9 @@ private:
     // Thread-safe MIDI queue for UI-to-processor communication
     juce::MidiBuffer uiMidiBuffer_;
     juce::CriticalSection midiLock_;
+
+    // Waveform scope (set by editor, lock-free read in processBlock)
+    WaveformDisplay* waveformDisplay_ = nullptr;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(OpenSynthProcessor)
 };

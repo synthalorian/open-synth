@@ -317,6 +317,14 @@ void OpenSynthProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::Mi
         juce::dsp::ProcessContextReplacing<float> context(block);
         outputLimiter_.process(context);
     }
+
+    // Push to waveform scope (lock-free, safe from audio thread)
+    if (waveformDisplay_ && totalNumOutputChannels >= 2)
+    {
+        auto* left  = buffer.getReadPointer(0);
+        auto* right = buffer.getReadPointer(1);
+        waveformDisplay_->pushSamples(left, right, buffer.getNumSamples());
+    }
 }
 
 void OpenSynthProcessor::handleMidiCC(int ccNumber, float value)

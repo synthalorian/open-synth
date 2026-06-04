@@ -1430,6 +1430,8 @@ OpenSynthEditor::OpenSynthEditor(OpenSynthProcessor& processor)
     addAndMakeVisible(phraseSamplerPanel_);
     addAndMakeVisible(performancePanel_);
     addAndMakeVisible(keyboard_);
+    addAndMakeVisible(waveformDisplay_);
+    processor.setWaveformDisplay(&waveformDisplay_);
 
     // Overlays (initially hidden)
     addChildComponent(presetBrowser_);
@@ -1858,12 +1860,14 @@ void OpenSynthEditor::resized()
 
     b.removeFromTop(gap);
 
-    // Bottom: Sample panel + Phrase sampler + Keyboard
+    // Bottom: Sample panel + Phrase sampler + Waveform + Keyboard
     int samplerHeight = juce::jmin(160, b.getHeight() / 3);
     auto samplerRow = b.removeFromTop(samplerHeight);
     samplePanel_.setBounds(samplerRow.removeFromLeft(juce::jmin(300, availWidth / 4)));
     samplerRow.removeFromLeft(gap);
     phraseSamplerPanel_.setBounds(samplerRow.removeFromLeft(juce::jmin(300, availWidth / 4)));
+    samplerRow.removeFromLeft(gap);
+    waveformDisplay_.setBounds(samplerRow.removeFromLeft(juce::jmin(200, availWidth / 6)));
     samplerRow.removeFromLeft(gap);
     keyboard_.setBounds(samplerRow);
 

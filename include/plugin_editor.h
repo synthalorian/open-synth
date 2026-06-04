@@ -3,6 +3,7 @@
 #include <juce_audio_processors/juce_audio_processors.h>
 #include <juce_audio_formats/juce_audio_formats.h>
 #include <juce_audio_devices/juce_audio_devices.h>
+#include "waveform_display.h"
 #include "plugin_processor.h"
 #include "preset_library.h"
 #include "preset_data.h"
@@ -557,6 +558,9 @@ private:
     SamplePanel samplePanel_;
     PerformancePanel performancePanel_;
     PianoKeyboard keyboard_;
+
+    // Waveform oscilloscope
+    WaveformDisplay waveformDisplay_;
 
     // Overlay components
     PresetBrowser presetBrowser_;
