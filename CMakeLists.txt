@@ -188,6 +188,45 @@ target_compile_definitions(OpenSynth PRIVATE
     JUCE_VST3_CAN_REPLACE_VST2=0
     JUCE_DISPLAY_SPLASH_SCREEN=0
     JUCE_USE_ANDROID_OBOE=1
+    JUCE_USE_FLAC=1
+)
+
+# ── Copy sample libraries to build output ────────────────────────────────────
+set(SAMPLE_DIRS
+    piano-upright-kw
+    piano-splendid-grand
+    drums-muldjordkit
+    bass-electric-yr
+    guitar-spanish-classical
+    drums-colombo-adk
+    guitar-electric-clean
+)
+
+foreach(dir ${SAMPLE_DIRS})
+    if(EXISTS "${CMAKE_SOURCE_DIR}/samples/${dir}")
+        add_custom_command(TARGET OpenSynth_Standalone POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_directory
+            "${CMAKE_SOURCE_DIR}/samples/${dir}"
+            "$<TARGET_FILE_DIR:OpenSynth_Standalone>/samples/${dir}"
+        )
+        add_custom_command(TARGET OpenSynth_VST3 POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_directory
+            "${CMAKE_SOURCE_DIR}/samples/${dir}"
+            "$<TARGET_FILE_DIR:OpenSynth_VST3>/samples/${dir}"
+        )
+    endif()
+endforeach()
+
+# Also copy manifests
+add_custom_command(TARGET OpenSynth_Standalone POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    "${CMAKE_SOURCE_DIR}/samples/manifests"
+    "$<TARGET_FILE_DIR:OpenSynth_Standalone>/samples/manifests"
+)
+add_custom_command(TARGET OpenSynth_VST3 POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    "${CMAKE_SOURCE_DIR}/samples/manifests"
+    "$<TARGET_FILE_DIR:OpenSynth_VST3>/samples/manifests"
 )
 
 # Linux specific

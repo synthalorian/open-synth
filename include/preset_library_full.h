@@ -29,7 +29,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0002", "Grand Piano Bright", "piano",
@@ -54,7 +55,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0003", "Grand Piano Dark", "piano",
@@ -79,7 +81,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0004", "Grand Piano Soft", "piano",
@@ -104,7 +107,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0005", "Grand Piano Hard", "piano",
@@ -129,7 +133,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0006", "Grand Piano Vintage", "piano",
@@ -154,7 +159,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0007", "Grand Piano Modern", "piano",
@@ -179,7 +185,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0008", "Grand Piano Layered", "piano",
@@ -204,7 +211,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0009", "Grand Piano Solo", "piano",
@@ -229,7 +237,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0010", "Bright Piano", "piano",
@@ -254,7 +263,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0011", "Bright Piano Bright", "piano",
@@ -279,7 +289,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0012", "Bright Piano Dark", "piano",
@@ -304,7 +315,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0013", "Bright Piano Soft", "piano",
@@ -329,7 +341,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0014", "Bright Piano Hard", "piano",
@@ -354,7 +367,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0015", "Bright Piano Vintage", "piano",
@@ -379,7 +393,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0016", "Bright Piano Modern", "piano",
@@ -404,7 +419,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0017", "Bright Piano Layered", "piano",
@@ -429,7 +445,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0018", "Bright Piano Solo", "piano",
@@ -454,7 +471,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0019", "Electric Grand", "piano",
@@ -479,7 +497,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0020", "Electric Grand Bright", "piano",
@@ -504,7 +523,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0021", "Electric Grand Dark", "piano",
@@ -529,7 +549,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0022", "Electric Grand Soft", "piano",
@@ -554,7 +575,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0023", "Electric Grand Hard", "piano",
@@ -579,7 +601,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0024", "Electric Grand Vintage", "piano",
@@ -604,7 +627,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0025", "Electric Grand Modern", "piano",
@@ -629,7 +653,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0026", "Electric Grand Layered", "piano",
@@ -654,7 +679,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0027", "Electric Grand Solo", "piano",
@@ -679,7 +705,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0028", "Honky Tonk", "piano",
@@ -704,7 +731,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0029", "Honky Tonk Bright", "piano",
@@ -729,7 +757,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0030", "Honky Tonk Dark", "piano",
@@ -754,7 +783,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0031", "Honky Tonk Soft", "piano",
@@ -779,7 +809,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0032", "Honky Tonk Hard", "piano",
@@ -804,7 +835,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0033", "Honky Tonk Vintage", "piano",
@@ -829,7 +861,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0034", "Honky Tonk Modern", "piano",
@@ -854,7 +887,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0035", "Honky Tonk Layered", "piano",
@@ -879,7 +913,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0036", "Honky Tonk Solo", "piano",
@@ -904,7 +939,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0037", "Electric Piano 1", "piano",
@@ -929,7 +965,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0038", "Electric Piano 1 Bright", "piano",
@@ -954,7 +991,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0039", "Electric Piano 1 Dark", "piano",
@@ -979,7 +1017,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0040", "Electric Piano 1 Soft", "piano",
@@ -1004,7 +1043,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0041", "Electric Piano 1 Hard", "piano",
@@ -1029,7 +1069,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0042", "Electric Piano 1 Vintage", "piano",
@@ -1054,7 +1095,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0043", "Electric Piano 1 Modern", "piano",
@@ -1079,7 +1121,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0044", "Electric Piano 1 Layered", "piano",
@@ -1104,7 +1147,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0045", "Electric Piano 1 Solo", "piano",
@@ -1129,7 +1173,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0046", "Electric Piano 2", "piano",
@@ -1154,7 +1199,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0047", "Electric Piano 2 Bright", "piano",
@@ -1179,7 +1225,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0048", "Electric Piano 2 Dark", "piano",
@@ -1204,7 +1251,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0049", "Electric Piano 2 Soft", "piano",
@@ -1229,7 +1277,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0050", "Electric Piano 2 Hard", "piano",
@@ -1254,7 +1303,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0051", "Electric Piano 2 Vintage", "piano",
@@ -1279,7 +1329,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0052", "Electric Piano 2 Modern", "piano",
@@ -1304,7 +1355,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0053", "Electric Piano 2 Layered", "piano",
@@ -1329,7 +1381,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0054", "Electric Piano 2 Solo", "piano",
@@ -1354,7 +1407,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0055", "Harpsichord", "piano",
@@ -1379,7 +1433,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0056", "Harpsichord Bright", "piano",
@@ -1404,7 +1459,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0057", "Harpsichord Dark", "piano",
@@ -1429,7 +1485,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0058", "Harpsichord Soft", "piano",
@@ -1454,7 +1511,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0059", "Harpsichord Hard", "piano",
@@ -1479,7 +1537,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0060", "Harpsichord Vintage", "piano",
@@ -1504,7 +1563,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0061", "Harpsichord Modern", "piano",
@@ -1529,7 +1589,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0062", "Harpsichord Layered", "piano",
@@ -1554,7 +1615,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0063", "Harpsichord Solo", "piano",
@@ -1579,7 +1641,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0064", "Clavinet", "piano",
@@ -1604,7 +1667,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0065", "Clavinet Bright", "piano",
@@ -1629,7 +1693,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0066", "Clavinet Dark", "piano",
@@ -1654,7 +1719,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0067", "Clavinet Soft", "piano",
@@ -1679,7 +1745,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0068", "Clavinet Hard", "piano",
@@ -1704,7 +1771,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0069", "Clavinet Vintage", "piano",
@@ -1729,7 +1797,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0070", "Clavinet Modern", "piano",
@@ -1754,7 +1823,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0071", "Clavinet Layered", "piano",
@@ -1779,7 +1849,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0072", "Clavinet Solo", "piano",
@@ -1804,7 +1875,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0073", "Celesta", "piano",
@@ -1829,7 +1901,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0074", "Celesta Bright", "piano",
@@ -1854,7 +1927,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0075", "Celesta Dark", "piano",
@@ -1879,7 +1953,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0076", "Celesta Soft", "piano",
@@ -1904,7 +1979,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0077", "Celesta Hard", "piano",
@@ -1929,7 +2005,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0078", "Celesta Vintage", "piano",
@@ -1954,7 +2031,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0079", "Celesta Modern", "piano",
@@ -1979,7 +2057,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0080", "Celesta Layered", "piano",
@@ -2004,7 +2083,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0081", "Celesta Solo", "piano",
@@ -2029,7 +2109,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0082", "Detuned EP 1", "piano",
@@ -2054,7 +2135,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0083", "Detuned EP 1 Bright", "piano",
@@ -2079,7 +2161,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0084", "Detuned EP 1 Dark", "piano",
@@ -2104,7 +2187,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0085", "Detuned EP 1 Soft", "piano",
@@ -2129,7 +2213,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0086", "Detuned EP 1 Hard", "piano",
@@ -2154,7 +2239,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0087", "Detuned EP 1 Vintage", "piano",
@@ -2179,7 +2265,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0088", "Detuned EP 1 Modern", "piano",
@@ -2204,7 +2291,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0089", "Detuned EP 1 Layered", "piano",
@@ -2229,7 +2317,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0090", "Detuned EP 1 Solo", "piano",
@@ -2254,7 +2343,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0091", "Detuned EP 2", "piano",
@@ -2279,7 +2369,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0092", "Detuned EP 2 Bright", "piano",
@@ -2304,7 +2395,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0093", "Detuned EP 2 Dark", "piano",
@@ -2329,7 +2421,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0094", "Detuned EP 2 Soft", "piano",
@@ -2354,7 +2447,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0095", "Detuned EP 2 Hard", "piano",
@@ -2379,7 +2473,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0096", "Detuned EP 2 Vintage", "piano",
@@ -2404,7 +2499,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0097", "Detuned EP 2 Modern", "piano",
@@ -2429,7 +2525,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0098", "Detuned EP 2 Layered", "piano",
@@ -2454,7 +2551,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0099", "Detuned EP 2 Solo", "piano",
@@ -2479,7 +2577,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0100", "Coupled Harpsichord", "piano",
@@ -2504,7 +2603,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0101", "Coupled Harpsichord Bright", "piano",
@@ -2529,7 +2629,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0102", "Coupled Harpsichord Dark", "piano",
@@ -2554,7 +2655,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0103", "Coupled Harpsichord Soft", "piano",
@@ -2579,7 +2681,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0104", "Coupled Harpsichord Hard", "piano",
@@ -2604,7 +2707,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0105", "Coupled Harpsichord Vintage", "piano",
@@ -2629,7 +2733,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0106", "Coupled Harpsichord Modern", "piano",
@@ -2654,7 +2759,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0107", "Coupled Harpsichord Layered", "piano",
@@ -2679,7 +2785,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0108", "Coupled Harpsichord Solo", "piano",
@@ -2704,7 +2811,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0109", "Legend EP 1", "piano",
@@ -2729,7 +2837,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0110", "Legend EP 1 Bright", "piano",
@@ -2754,7 +2863,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0111", "Legend EP 1 Dark", "piano",
@@ -2779,7 +2889,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0112", "Legend EP 1 Soft", "piano",
@@ -2804,7 +2915,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0113", "Legend EP 1 Hard", "piano",
@@ -2829,7 +2941,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0114", "Legend EP 1 Vintage", "piano",
@@ -2854,7 +2967,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0115", "Legend EP 1 Modern", "piano",
@@ -2879,7 +2993,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0116", "Legend EP 1 Layered", "piano",
@@ -2904,7 +3019,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0117", "Legend EP 1 Solo", "piano",
@@ -2929,7 +3045,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0118", "Legend EP 2", "piano",
@@ -2954,7 +3071,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0119", "Legend EP 2 Bright", "piano",
@@ -2979,7 +3097,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0120", "Legend EP 2 Dark", "piano",
@@ -3004,7 +3123,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0121", "Legend EP 2 Soft", "piano",
@@ -3029,7 +3149,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0122", "Legend EP 2 Hard", "piano",
@@ -3054,7 +3175,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0123", "Legend EP 2 Vintage", "piano",
@@ -3079,7 +3201,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0124", "Legend EP 2 Modern", "piano",
@@ -3104,7 +3227,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0125", "Legend EP 2 Layered", "piano",
@@ -3129,7 +3253,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0126", "Legend EP 2 Solo", "piano",
@@ -3154,7 +3279,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0127", "Stage EP", "piano",
@@ -3179,7 +3305,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0128", "Stage EP Bright", "piano",
@@ -3204,7 +3331,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0129", "Stage EP Dark", "piano",
@@ -3229,7 +3357,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0130", "Stage EP Soft", "piano",
@@ -3254,7 +3383,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0131", "Stage EP Hard", "piano",
@@ -3279,7 +3409,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0132", "Stage EP Vintage", "piano",
@@ -3304,7 +3435,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0133", "Stage EP Modern", "piano",
@@ -3329,7 +3461,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0134", "Stage EP Layered", "piano",
@@ -3354,7 +3487,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0135", "Stage EP Solo", "piano",
@@ -3379,7 +3513,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0136", "Wurly", "piano",
@@ -3404,7 +3539,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0137", "Wurly Bright", "piano",
@@ -3429,7 +3565,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0138", "Wurly Dark", "piano",
@@ -3454,7 +3591,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0139", "Wurly Soft", "piano",
@@ -3479,7 +3617,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0140", "Wurly Hard", "piano",
@@ -3504,7 +3643,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0141", "Wurly Vintage", "piano",
@@ -3529,7 +3669,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0142", "Wurly Modern", "piano",
@@ -3554,7 +3695,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0143", "Wurly Layered", "piano",
@@ -3579,7 +3721,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0144", "Wurly Solo", "piano",
@@ -3604,7 +3747,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0145", "FM Piano", "piano",
@@ -3629,7 +3773,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0146", "FM Piano Bright", "piano",
@@ -3654,7 +3799,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0147", "FM Piano Dark", "piano",
@@ -3679,7 +3825,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0148", "FM Piano Soft", "piano",
@@ -3704,7 +3851,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0149", "FM Piano Hard", "piano",
@@ -3729,7 +3877,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0150", "FM Piano Vintage", "piano",
@@ -3754,7 +3903,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0151", "FM Piano Modern", "piano",
@@ -3779,7 +3929,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0152", "FM Piano Layered", "piano",
@@ -3804,7 +3955,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0153", "FM Piano Solo", "piano",
@@ -3829,7 +3981,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0154", "Dulcimer", "piano",
@@ -3854,7 +4007,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0155", "Dulcimer Bright", "piano",
@@ -3879,7 +4033,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0156", "Dulcimer Dark", "piano",
@@ -3904,7 +4059,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0157", "Dulcimer Soft", "piano",
@@ -3929,7 +4085,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0158", "Dulcimer Hard", "piano",
@@ -3954,7 +4111,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0159", "Dulcimer Vintage", "piano",
@@ -3979,7 +4137,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0160", "Dulcimer Modern", "piano",
@@ -4004,7 +4163,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0161", "Dulcimer Layered", "piano",
@@ -4029,7 +4189,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0162", "Dulcimer Solo", "piano",
@@ -4054,7 +4215,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0163", "Hammered Dulcimer", "piano",
@@ -4079,7 +4241,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0164", "Hammered Dulcimer Bright", "piano",
@@ -4104,7 +4267,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0165", "Hammered Dulcimer Dark", "piano",
@@ -4129,7 +4293,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0166", "Hammered Dulcimer Soft", "piano",
@@ -4154,7 +4319,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0167", "Hammered Dulcimer Hard", "piano",
@@ -4179,7 +4345,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0168", "Hammered Dulcimer Vintage", "piano",
@@ -4204,7 +4371,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0169", "Hammered Dulcimer Modern", "piano",
@@ -4229,7 +4397,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0170", "Hammered Dulcimer Layered", "piano",
@@ -4254,7 +4423,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0171", "Hammered Dulcimer Solo", "piano",
@@ -4279,7 +4449,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0172", "Music Box", "piano",
@@ -4304,7 +4475,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0173", "Music Box Bright", "piano",
@@ -4329,7 +4501,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0174", "Music Box Dark", "piano",
@@ -4354,7 +4527,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0175", "Music Box Soft", "piano",
@@ -4379,7 +4553,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0176", "Music Box Hard", "piano",
@@ -4404,7 +4579,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0177", "Music Box Vintage", "piano",
@@ -4429,7 +4605,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0178", "Music Box Modern", "piano",
@@ -4454,7 +4631,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0179", "Music Box Layered", "piano",
@@ -4479,7 +4657,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0180", "Music Box Solo", "piano",
@@ -4504,7 +4683,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         1, 0.30, 0.20, 0.30, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "splendid-grand-piano"
     },
     {
         "juno-0181", "Drawbar Organ", "organ",
@@ -4529,7 +4709,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0182", "Drawbar Organ Bright", "organ",
@@ -4554,7 +4735,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0183", "Drawbar Organ Dark", "organ",
@@ -4579,7 +4761,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.05,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0184", "Drawbar Organ Soft", "organ",
@@ -4604,7 +4787,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0185", "Drawbar Organ Hard", "organ",
@@ -4629,7 +4813,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0186", "Drawbar Organ Vintage", "organ",
@@ -4654,7 +4839,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0187", "Drawbar Organ Modern", "organ",
@@ -4679,7 +4865,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0188", "Drawbar Organ Layered", "organ",
@@ -4704,7 +4891,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0189", "Drawbar Organ Solo", "organ",
@@ -4729,7 +4917,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0190", "Percussive Organ", "organ",
@@ -4754,7 +4943,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0191", "Percussive Organ Bright", "organ",
@@ -4779,7 +4969,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0192", "Percussive Organ Dark", "organ",
@@ -4804,7 +4995,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.05,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0193", "Percussive Organ Soft", "organ",
@@ -4829,7 +5021,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0194", "Percussive Organ Hard", "organ",
@@ -4854,7 +5047,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0195", "Percussive Organ Vintage", "organ",
@@ -4879,7 +5073,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0196", "Percussive Organ Modern", "organ",
@@ -4904,7 +5099,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0197", "Percussive Organ Layered", "organ",
@@ -4929,7 +5125,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0198", "Percussive Organ Solo", "organ",
@@ -4954,7 +5151,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0199", "Rock Organ", "organ",
@@ -4979,7 +5177,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0200", "Rock Organ Bright", "organ",
@@ -5004,7 +5203,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0201", "Rock Organ Dark", "organ",
@@ -5029,7 +5229,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.05,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0202", "Rock Organ Soft", "organ",
@@ -5054,7 +5255,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0203", "Rock Organ Hard", "organ",
@@ -5079,7 +5281,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0204", "Rock Organ Vintage", "organ",
@@ -5104,7 +5307,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0205", "Rock Organ Modern", "organ",
@@ -5129,7 +5333,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0206", "Rock Organ Layered", "organ",
@@ -5154,7 +5359,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0207", "Rock Organ Solo", "organ",
@@ -5179,7 +5385,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0208", "Church Organ", "organ",
@@ -5204,7 +5411,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0209", "Church Organ Bright", "organ",
@@ -5229,7 +5437,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0210", "Church Organ Dark", "organ",
@@ -5254,7 +5463,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.05,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0211", "Church Organ Soft", "organ",
@@ -5279,7 +5489,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0212", "Church Organ Hard", "organ",
@@ -5304,7 +5515,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0213", "Church Organ Vintage", "organ",
@@ -5329,7 +5541,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0214", "Church Organ Modern", "organ",
@@ -5354,7 +5567,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0215", "Church Organ Layered", "organ",
@@ -5379,7 +5593,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0216", "Church Organ Solo", "organ",
@@ -5404,7 +5619,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0217", "Reed Organ", "organ",
@@ -5429,7 +5645,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0218", "Reed Organ Bright", "organ",
@@ -5454,7 +5671,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0219", "Reed Organ Dark", "organ",
@@ -5479,7 +5697,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.05,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0220", "Reed Organ Soft", "organ",
@@ -5504,7 +5723,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0221", "Reed Organ Hard", "organ",
@@ -5529,7 +5749,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0222", "Reed Organ Vintage", "organ",
@@ -5554,7 +5775,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0223", "Reed Organ Modern", "organ",
@@ -5579,7 +5801,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0224", "Reed Organ Layered", "organ",
@@ -5604,7 +5827,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0225", "Reed Organ Solo", "organ",
@@ -5629,7 +5853,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0226", "Accordion", "organ",
@@ -5654,7 +5879,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0227", "Accordion Bright", "organ",
@@ -5679,7 +5905,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0228", "Accordion Dark", "organ",
@@ -5704,7 +5931,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.05,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0229", "Accordion Soft", "organ",
@@ -5729,7 +5957,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0230", "Accordion Hard", "organ",
@@ -5754,7 +5983,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0231", "Accordion Vintage", "organ",
@@ -5779,7 +6009,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0232", "Accordion Modern", "organ",
@@ -5804,7 +6035,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0233", "Accordion Layered", "organ",
@@ -5829,7 +6061,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0234", "Accordion Solo", "organ",
@@ -5854,7 +6087,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0235", "Harmonica", "organ",
@@ -5879,7 +6113,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0236", "Harmonica Bright", "organ",
@@ -5904,7 +6139,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0237", "Harmonica Dark", "organ",
@@ -5929,7 +6165,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.05,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0238", "Harmonica Soft", "organ",
@@ -5954,7 +6191,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0239", "Harmonica Hard", "organ",
@@ -5979,7 +6217,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0240", "Harmonica Vintage", "organ",
@@ -6004,7 +6243,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0241", "Harmonica Modern", "organ",
@@ -6029,7 +6269,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0242", "Harmonica Layered", "organ",
@@ -6054,7 +6295,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0243", "Harmonica Solo", "organ",
@@ -6079,7 +6321,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0244", "Bandoneon", "organ",
@@ -6104,7 +6347,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0245", "Bandoneon Bright", "organ",
@@ -6129,7 +6373,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0246", "Bandoneon Dark", "organ",
@@ -6154,7 +6399,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.05,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0247", "Bandoneon Soft", "organ",
@@ -6179,7 +6425,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0248", "Bandoneon Hard", "organ",
@@ -6204,7 +6451,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0249", "Bandoneon Vintage", "organ",
@@ -6229,7 +6477,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0250", "Bandoneon Modern", "organ",
@@ -6254,7 +6503,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0251", "Bandoneon Layered", "organ",
@@ -6279,7 +6529,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0252", "Bandoneon Solo", "organ",
@@ -6304,7 +6555,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0253", "Church Organ 2", "organ",
@@ -6329,7 +6581,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0254", "Church Organ 2 Bright", "organ",
@@ -6354,7 +6607,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0255", "Church Organ 2 Dark", "organ",
@@ -6379,7 +6633,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.05,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0256", "Church Organ 2 Soft", "organ",
@@ -6404,7 +6659,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0257", "Church Organ 2 Hard", "organ",
@@ -6429,7 +6685,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0258", "Church Organ 2 Vintage", "organ",
@@ -6454,7 +6711,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0259", "Church Organ 2 Modern", "organ",
@@ -6479,7 +6737,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0260", "Church Organ 2 Layered", "organ",
@@ -6504,7 +6763,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0261", "Church Organ 2 Solo", "organ",
@@ -6529,7 +6789,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0262", "Detuned Organ 1", "organ",
@@ -6554,7 +6815,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0263", "Detuned Organ 1 Bright", "organ",
@@ -6579,7 +6841,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0264", "Detuned Organ 1 Dark", "organ",
@@ -6604,7 +6867,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.05,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0265", "Detuned Organ 1 Soft", "organ",
@@ -6629,7 +6893,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0266", "Detuned Organ 1 Hard", "organ",
@@ -6654,7 +6919,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0267", "Detuned Organ 1 Vintage", "organ",
@@ -6679,7 +6945,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0268", "Detuned Organ 1 Modern", "organ",
@@ -6704,7 +6971,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0269", "Detuned Organ 1 Layered", "organ",
@@ -6729,7 +6997,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0270", "Detuned Organ 1 Solo", "organ",
@@ -6754,7 +7023,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0271", "Detuned Organ 2", "organ",
@@ -6779,7 +7049,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0272", "Detuned Organ 2 Bright", "organ",
@@ -6804,7 +7075,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0273", "Detuned Organ 2 Dark", "organ",
@@ -6829,7 +7101,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.05,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0274", "Detuned Organ 2 Soft", "organ",
@@ -6854,7 +7127,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0275", "Detuned Organ 2 Hard", "organ",
@@ -6879,7 +7153,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0276", "Detuned Organ 2 Vintage", "organ",
@@ -6904,7 +7179,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0277", "Detuned Organ 2 Modern", "organ",
@@ -6929,7 +7205,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0278", "Detuned Organ 2 Layered", "organ",
@@ -6954,7 +7231,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0279", "Detuned Organ 2 Solo", "organ",
@@ -6979,7 +7257,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0280", "Italian Accordion", "organ",
@@ -7004,7 +7283,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0281", "Italian Accordion Bright", "organ",
@@ -7029,7 +7309,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0282", "Italian Accordion Dark", "organ",
@@ -7054,7 +7335,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.05,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0283", "Italian Accordion Soft", "organ",
@@ -7079,7 +7361,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0284", "Italian Accordion Hard", "organ",
@@ -7104,7 +7387,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0285", "Italian Accordion Vintage", "organ",
@@ -7129,7 +7413,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0286", "Italian Accordion Modern", "organ",
@@ -7154,7 +7439,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0287", "Italian Accordion Layered", "organ",
@@ -7179,7 +7465,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0288", "Italian Accordion Solo", "organ",
@@ -7204,7 +7491,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0289", "Tango Accordion", "organ",
@@ -7229,7 +7517,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0290", "Tango Accordion Bright", "organ",
@@ -7254,7 +7543,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0291", "Tango Accordion Dark", "organ",
@@ -7279,7 +7569,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.05,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0292", "Tango Accordion Soft", "organ",
@@ -7304,7 +7595,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0293", "Tango Accordion Hard", "organ",
@@ -7329,7 +7621,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0294", "Tango Accordion Vintage", "organ",
@@ -7354,7 +7647,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0295", "Tango Accordion Modern", "organ",
@@ -7379,7 +7673,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0296", "Tango Accordion Layered", "organ",
@@ -7404,7 +7699,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0297", "Tango Accordion Solo", "organ",
@@ -7429,7 +7725,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0298", "Jazz Organ", "organ",
@@ -7454,7 +7751,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0299", "Jazz Organ Bright", "organ",
@@ -7479,7 +7777,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0300", "Jazz Organ Dark", "organ",
@@ -7504,7 +7803,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.05,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0301", "Jazz Organ Soft", "organ",
@@ -7529,7 +7829,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0302", "Jazz Organ Hard", "organ",
@@ -7554,7 +7855,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0303", "Jazz Organ Vintage", "organ",
@@ -7579,7 +7881,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0304", "Jazz Organ Modern", "organ",
@@ -7604,7 +7907,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0305", "Jazz Organ Layered", "organ",
@@ -7629,7 +7933,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0306", "Jazz Organ Solo", "organ",
@@ -7654,7 +7959,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0307", "Theater Organ", "organ",
@@ -7679,7 +7985,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0308", "Theater Organ Bright", "organ",
@@ -7704,7 +8011,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0309", "Theater Organ Dark", "organ",
@@ -7729,7 +8037,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.05,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0310", "Theater Organ Soft", "organ",
@@ -7754,7 +8063,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0311", "Theater Organ Hard", "organ",
@@ -7779,7 +8089,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0312", "Theater Organ Vintage", "organ",
@@ -7804,7 +8115,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0313", "Theater Organ Modern", "organ",
@@ -7829,7 +8141,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0314", "Theater Organ Layered", "organ",
@@ -7854,7 +8167,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0315", "Theater Organ Solo", "organ",
@@ -7879,7 +8193,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         4, 0.40, 0.30, 0.00, 2, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0316", "Nylon String Guitar", "guitar",
@@ -7904,7 +8219,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0317", "Nylon String Guitar Bright", "guitar",
@@ -7929,7 +8245,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0318", "Nylon String Guitar Dark", "guitar",
@@ -7954,7 +8271,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.15,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0319", "Nylon String Guitar Soft", "guitar",
@@ -7979,7 +8297,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0320", "Nylon String Guitar Hard", "guitar",
@@ -8004,7 +8323,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0321", "Nylon String Guitar Vintage", "guitar",
@@ -8029,7 +8349,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0322", "Nylon String Guitar Modern", "guitar",
@@ -8054,7 +8375,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0323", "Nylon String Guitar Layered", "guitar",
@@ -8079,7 +8401,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0324", "Nylon String Guitar Solo", "guitar",
@@ -8104,7 +8427,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0325", "Steel String Guitar", "guitar",
@@ -8129,7 +8453,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0326", "Steel String Guitar Bright", "guitar",
@@ -8154,7 +8479,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0327", "Steel String Guitar Dark", "guitar",
@@ -8179,7 +8505,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.15,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0328", "Steel String Guitar Soft", "guitar",
@@ -8204,7 +8531,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0329", "Steel String Guitar Hard", "guitar",
@@ -8229,7 +8557,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0330", "Steel String Guitar Vintage", "guitar",
@@ -8254,7 +8583,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0331", "Steel String Guitar Modern", "guitar",
@@ -8279,7 +8609,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0332", "Steel String Guitar Layered", "guitar",
@@ -8304,7 +8635,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0333", "Steel String Guitar Solo", "guitar",
@@ -8329,7 +8661,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0334", "Jazz Guitar", "guitar",
@@ -8354,7 +8687,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0335", "Jazz Guitar Bright", "guitar",
@@ -8379,7 +8713,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0336", "Jazz Guitar Dark", "guitar",
@@ -8404,7 +8739,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.15,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0337", "Jazz Guitar Soft", "guitar",
@@ -8429,7 +8765,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0338", "Jazz Guitar Hard", "guitar",
@@ -8454,7 +8791,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0339", "Jazz Guitar Vintage", "guitar",
@@ -8479,7 +8817,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0340", "Jazz Guitar Modern", "guitar",
@@ -8504,7 +8843,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0341", "Jazz Guitar Layered", "guitar",
@@ -8529,7 +8869,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0342", "Jazz Guitar Solo", "guitar",
@@ -8554,7 +8895,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0343", "Clean Guitar", "guitar",
@@ -8579,7 +8921,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0344", "Clean Guitar Bright", "guitar",
@@ -8604,7 +8947,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0345", "Clean Guitar Dark", "guitar",
@@ -8629,7 +8973,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.15,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0346", "Clean Guitar Soft", "guitar",
@@ -8654,7 +8999,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0347", "Clean Guitar Hard", "guitar",
@@ -8679,7 +9025,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0348", "Clean Guitar Vintage", "guitar",
@@ -8704,7 +9051,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0349", "Clean Guitar Modern", "guitar",
@@ -8729,7 +9077,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0350", "Clean Guitar Layered", "guitar",
@@ -8754,7 +9103,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0351", "Clean Guitar Solo", "guitar",
@@ -8779,7 +9129,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0352", "Palm Muted Guitar", "guitar",
@@ -8804,7 +9155,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0353", "Palm Muted Guitar Bright", "guitar",
@@ -8829,7 +9181,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0354", "Palm Muted Guitar Dark", "guitar",
@@ -8854,7 +9207,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.15,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0355", "Palm Muted Guitar Soft", "guitar",
@@ -8879,7 +9233,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0356", "Palm Muted Guitar Hard", "guitar",
@@ -8904,7 +9259,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0357", "Palm Muted Guitar Vintage", "guitar",
@@ -8929,7 +9285,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0358", "Palm Muted Guitar Modern", "guitar",
@@ -8954,7 +9311,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0359", "Palm Muted Guitar Layered", "guitar",
@@ -8979,7 +9337,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0360", "Palm Muted Guitar Solo", "guitar",
@@ -9004,7 +9363,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0361", "Overdrive Guitar", "guitar",
@@ -9029,7 +9389,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0362", "Overdrive Guitar Bright", "guitar",
@@ -9054,7 +9415,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0363", "Overdrive Guitar Dark", "guitar",
@@ -9079,7 +9441,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.15,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0364", "Overdrive Guitar Soft", "guitar",
@@ -9104,7 +9467,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0365", "Overdrive Guitar Hard", "guitar",
@@ -9129,7 +9493,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0366", "Overdrive Guitar Vintage", "guitar",
@@ -9154,7 +9519,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0367", "Overdrive Guitar Modern", "guitar",
@@ -9179,7 +9545,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0368", "Overdrive Guitar Layered", "guitar",
@@ -9204,7 +9571,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0369", "Overdrive Guitar Solo", "guitar",
@@ -9229,7 +9597,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0370", "Distortion Guitar", "guitar",
@@ -9254,7 +9623,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0371", "Distortion Guitar Bright", "guitar",
@@ -9279,7 +9649,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0372", "Distortion Guitar Dark", "guitar",
@@ -9304,7 +9675,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.15,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0373", "Distortion Guitar Soft", "guitar",
@@ -9329,7 +9701,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0374", "Distortion Guitar Hard", "guitar",
@@ -9354,7 +9727,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0375", "Distortion Guitar Vintage", "guitar",
@@ -9379,7 +9753,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0376", "Distortion Guitar Modern", "guitar",
@@ -9404,7 +9779,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0377", "Distortion Guitar Layered", "guitar",
@@ -9429,7 +9805,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0378", "Distortion Guitar Solo", "guitar",
@@ -9454,7 +9831,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0379", "Guitar Harmonics", "guitar",
@@ -9479,7 +9857,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0380", "Guitar Harmonics Bright", "guitar",
@@ -9504,7 +9883,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0381", "Guitar Harmonics Dark", "guitar",
@@ -9529,7 +9909,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.15,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0382", "Guitar Harmonics Soft", "guitar",
@@ -9554,7 +9935,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0383", "Guitar Harmonics Hard", "guitar",
@@ -9579,7 +9961,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0384", "Guitar Harmonics Vintage", "guitar",
@@ -9604,7 +9987,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0385", "Guitar Harmonics Modern", "guitar",
@@ -9629,7 +10013,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0386", "Guitar Harmonics Layered", "guitar",
@@ -9654,7 +10039,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0387", "Guitar Harmonics Solo", "guitar",
@@ -9679,7 +10065,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0388", "12 String Guitar", "guitar",
@@ -9704,7 +10091,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0389", "12 String Guitar Bright", "guitar",
@@ -9729,7 +10117,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0390", "12 String Guitar Dark", "guitar",
@@ -9754,7 +10143,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.15,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0391", "12 String Guitar Soft", "guitar",
@@ -9779,7 +10169,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0392", "12 String Guitar Hard", "guitar",
@@ -9804,7 +10195,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0393", "12 String Guitar Vintage", "guitar",
@@ -9829,7 +10221,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0394", "12 String Guitar Modern", "guitar",
@@ -9854,7 +10247,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0395", "12 String Guitar Layered", "guitar",
@@ -9879,7 +10273,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0396", "12 String Guitar Solo", "guitar",
@@ -9904,7 +10299,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0397", "Hawaiian Guitar", "guitar",
@@ -9929,7 +10325,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0398", "Hawaiian Guitar Bright", "guitar",
@@ -9954,7 +10351,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0399", "Hawaiian Guitar Dark", "guitar",
@@ -9979,7 +10377,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.15,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0400", "Hawaiian Guitar Soft", "guitar",
@@ -10004,7 +10403,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0401", "Hawaiian Guitar Hard", "guitar",
@@ -10029,7 +10429,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0402", "Hawaiian Guitar Vintage", "guitar",
@@ -10054,7 +10455,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0403", "Hawaiian Guitar Modern", "guitar",
@@ -10079,7 +10481,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0404", "Hawaiian Guitar Layered", "guitar",
@@ -10104,7 +10507,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0405", "Hawaiian Guitar Solo", "guitar",
@@ -10129,7 +10533,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0406", "Ukulele", "guitar",
@@ -10154,7 +10559,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0407", "Ukulele Bright", "guitar",
@@ -10179,7 +10585,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0408", "Ukulele Dark", "guitar",
@@ -10204,7 +10611,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.15,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0409", "Ukulele Soft", "guitar",
@@ -10229,7 +10637,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0410", "Ukulele Hard", "guitar",
@@ -10254,7 +10663,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0411", "Ukulele Vintage", "guitar",
@@ -10279,7 +10689,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0412", "Ukulele Modern", "guitar",
@@ -10304,7 +10715,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0413", "Ukulele Layered", "guitar",
@@ -10329,7 +10741,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0414", "Ukulele Solo", "guitar",
@@ -10354,7 +10767,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0415", "Mandolin", "guitar",
@@ -10379,7 +10793,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0416", "Mandolin Bright", "guitar",
@@ -10404,7 +10819,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0417", "Mandolin Dark", "guitar",
@@ -10429,7 +10845,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.15,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0418", "Mandolin Soft", "guitar",
@@ -10454,7 +10871,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0419", "Mandolin Hard", "guitar",
@@ -10479,7 +10897,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0420", "Mandolin Vintage", "guitar",
@@ -10504,7 +10923,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0421", "Mandolin Modern", "guitar",
@@ -10529,7 +10949,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0422", "Mandolin Layered", "guitar",
@@ -10554,7 +10975,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0423", "Mandolin Solo", "guitar",
@@ -10579,7 +11001,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0424", "Feedback Guitar", "guitar",
@@ -10604,7 +11027,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0425", "Feedback Guitar Bright", "guitar",
@@ -10629,7 +11053,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0426", "Feedback Guitar Dark", "guitar",
@@ -10654,7 +11079,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.15,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0427", "Feedback Guitar Soft", "guitar",
@@ -10679,7 +11105,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0428", "Feedback Guitar Hard", "guitar",
@@ -10704,7 +11131,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0429", "Feedback Guitar Vintage", "guitar",
@@ -10729,7 +11157,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0430", "Feedback Guitar Modern", "guitar",
@@ -10754,7 +11183,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0431", "Feedback Guitar Layered", "guitar",
@@ -10779,7 +11209,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0432", "Feedback Guitar Solo", "guitar",
@@ -10804,7 +11235,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0433", "Guitar Feedback", "guitar",
@@ -10829,7 +11261,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0434", "Guitar Feedback Bright", "guitar",
@@ -10854,7 +11287,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0435", "Guitar Feedback Dark", "guitar",
@@ -10879,7 +11313,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.15,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0436", "Guitar Feedback Soft", "guitar",
@@ -10904,7 +11339,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0437", "Guitar Feedback Hard", "guitar",
@@ -10929,7 +11365,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0438", "Guitar Feedback Vintage", "guitar",
@@ -10954,7 +11391,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0439", "Guitar Feedback Modern", "guitar",
@@ -10979,7 +11417,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0440", "Guitar Feedback Layered", "guitar",
@@ -11004,7 +11443,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0441", "Guitar Feedback Solo", "guitar",
@@ -11029,7 +11469,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0442", "Funk Guitar", "guitar",
@@ -11054,7 +11495,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0443", "Funk Guitar Bright", "guitar",
@@ -11079,7 +11521,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0444", "Funk Guitar Dark", "guitar",
@@ -11104,7 +11547,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.15,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0445", "Funk Guitar Soft", "guitar",
@@ -11129,7 +11573,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0446", "Funk Guitar Hard", "guitar",
@@ -11154,7 +11599,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0447", "Funk Guitar Vintage", "guitar",
@@ -11179,7 +11625,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0448", "Funk Guitar Modern", "guitar",
@@ -11204,7 +11651,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0449", "Funk Guitar Layered", "guitar",
@@ -11229,7 +11677,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0450", "Funk Guitar Solo", "guitar",
@@ -11254,7 +11703,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0451", "Chorus Guitar", "guitar",
@@ -11279,7 +11729,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0452", "Chorus Guitar Bright", "guitar",
@@ -11304,7 +11755,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0453", "Chorus Guitar Dark", "guitar",
@@ -11329,7 +11781,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.15,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0454", "Chorus Guitar Soft", "guitar",
@@ -11354,7 +11807,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0455", "Chorus Guitar Hard", "guitar",
@@ -11379,7 +11833,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0456", "Chorus Guitar Vintage", "guitar",
@@ -11404,7 +11859,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0457", "Chorus Guitar Modern", "guitar",
@@ -11429,7 +11885,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0458", "Chorus Guitar Layered", "guitar",
@@ -11454,7 +11911,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0459", "Chorus Guitar Solo", "guitar",
@@ -11479,7 +11937,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0460", "Acoustic Bass Guitar", "guitar",
@@ -11504,7 +11963,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0461", "Acoustic Bass Guitar Bright", "guitar",
@@ -11529,7 +11989,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0462", "Acoustic Bass Guitar Dark", "guitar",
@@ -11554,7 +12015,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.15,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0463", "Acoustic Bass Guitar Soft", "guitar",
@@ -11579,7 +12041,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0464", "Acoustic Bass Guitar Hard", "guitar",
@@ -11604,7 +12067,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0465", "Acoustic Bass Guitar Vintage", "guitar",
@@ -11629,7 +12093,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0466", "Acoustic Bass Guitar Modern", "guitar",
@@ -11654,7 +12119,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0467", "Acoustic Bass Guitar Layered", "guitar",
@@ -11679,7 +12145,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0468", "Acoustic Bass Guitar Solo", "guitar",
@@ -11704,7 +12171,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         2, 0.35, 0.15, 0.25, 3, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "spanishclassicalguitar-20190618"
     },
     {
         "juno-0469", "Acoustic Bass", "bass",
@@ -11729,7 +12197,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0470", "Acoustic Bass Bright", "bass",
@@ -11754,7 +12223,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0471", "Acoustic Bass Dark", "bass",
@@ -11779,7 +12249,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.05,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0472", "Acoustic Bass Soft", "bass",
@@ -11804,7 +12275,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0473", "Acoustic Bass Hard", "bass",
@@ -11829,7 +12301,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0474", "Acoustic Bass Vintage", "bass",
@@ -11854,7 +12327,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0475", "Acoustic Bass Modern", "bass",
@@ -11879,7 +12353,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0476", "Acoustic Bass Layered", "bass",
@@ -11904,7 +12379,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0477", "Acoustic Bass Solo", "bass",
@@ -11929,7 +12405,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0478", "Fingered Bass", "bass",
@@ -11954,7 +12431,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0479", "Fingered Bass Bright", "bass",
@@ -11979,7 +12457,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0480", "Fingered Bass Dark", "bass",
@@ -12004,7 +12483,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.05,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0481", "Fingered Bass Soft", "bass",
@@ -12029,7 +12509,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0482", "Fingered Bass Hard", "bass",
@@ -12054,7 +12535,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0483", "Fingered Bass Vintage", "bass",
@@ -12079,7 +12561,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0484", "Fingered Bass Modern", "bass",
@@ -12104,7 +12587,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0485", "Fingered Bass Layered", "bass",
@@ -12129,7 +12613,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0486", "Fingered Bass Solo", "bass",
@@ -12154,7 +12639,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0487", "Picked Bass", "bass",
@@ -12179,7 +12665,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0488", "Picked Bass Bright", "bass",
@@ -12204,7 +12691,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0489", "Picked Bass Dark", "bass",
@@ -12229,7 +12717,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.05,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0490", "Picked Bass Soft", "bass",
@@ -12254,7 +12743,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0491", "Picked Bass Hard", "bass",
@@ -12279,7 +12769,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0492", "Picked Bass Vintage", "bass",
@@ -12304,7 +12795,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0493", "Picked Bass Modern", "bass",
@@ -12329,7 +12821,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0494", "Picked Bass Layered", "bass",
@@ -12354,7 +12847,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0495", "Picked Bass Solo", "bass",
@@ -12379,7 +12873,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0496", "Fretless Bass", "bass",
@@ -12404,7 +12899,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0497", "Fretless Bass Bright", "bass",
@@ -12429,7 +12925,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0498", "Fretless Bass Dark", "bass",
@@ -12454,7 +12951,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.05,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0499", "Fretless Bass Soft", "bass",
@@ -12479,7 +12977,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0500", "Fretless Bass Hard", "bass",
@@ -12504,7 +13003,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0501", "Fretless Bass Vintage", "bass",
@@ -12529,7 +13029,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0502", "Fretless Bass Modern", "bass",
@@ -12554,7 +13055,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0503", "Fretless Bass Layered", "bass",
@@ -12579,7 +13081,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0504", "Fretless Bass Solo", "bass",
@@ -12604,7 +13107,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0505", "Slap Bass 1", "bass",
@@ -12629,7 +13133,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0506", "Slap Bass 1 Bright", "bass",
@@ -12654,7 +13159,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0507", "Slap Bass 1 Dark", "bass",
@@ -12679,7 +13185,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.05,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0508", "Slap Bass 1 Soft", "bass",
@@ -12704,7 +13211,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0509", "Slap Bass 1 Hard", "bass",
@@ -12729,7 +13237,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0510", "Slap Bass 1 Vintage", "bass",
@@ -12754,7 +13263,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0511", "Slap Bass 1 Modern", "bass",
@@ -12779,7 +13289,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0512", "Slap Bass 1 Layered", "bass",
@@ -12804,7 +13315,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0513", "Slap Bass 1 Solo", "bass",
@@ -12829,7 +13341,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0514", "Slap Bass 2", "bass",
@@ -12854,7 +13367,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0515", "Slap Bass 2 Bright", "bass",
@@ -12879,7 +13393,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0516", "Slap Bass 2 Dark", "bass",
@@ -12904,7 +13419,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.05,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0517", "Slap Bass 2 Soft", "bass",
@@ -12929,7 +13445,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0518", "Slap Bass 2 Hard", "bass",
@@ -12954,7 +13471,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0519", "Slap Bass 2 Vintage", "bass",
@@ -12979,7 +13497,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0520", "Slap Bass 2 Modern", "bass",
@@ -13004,7 +13523,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0521", "Slap Bass 2 Layered", "bass",
@@ -13029,7 +13549,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0522", "Slap Bass 2 Solo", "bass",
@@ -13054,7 +13575,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0523", "Pop Bass", "bass",
@@ -13079,7 +13601,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0524", "Pop Bass Bright", "bass",
@@ -13104,7 +13627,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0525", "Pop Bass Dark", "bass",
@@ -13129,7 +13653,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.05,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0526", "Pop Bass Soft", "bass",
@@ -13154,7 +13679,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0527", "Pop Bass Hard", "bass",
@@ -13179,7 +13705,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0528", "Pop Bass Vintage", "bass",
@@ -13204,7 +13731,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0529", "Pop Bass Modern", "bass",
@@ -13229,7 +13757,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0530", "Pop Bass Layered", "bass",
@@ -13254,7 +13783,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0531", "Pop Bass Solo", "bass",
@@ -13279,7 +13809,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0532", "Synth Bass 1", "bass",
@@ -13304,7 +13835,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0533", "Synth Bass 1 Bright", "bass",
@@ -13329,7 +13861,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0534", "Synth Bass 1 Dark", "bass",
@@ -13354,7 +13887,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.05,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0535", "Synth Bass 1 Soft", "bass",
@@ -13379,7 +13913,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0536", "Synth Bass 1 Hard", "bass",
@@ -13404,7 +13939,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0537", "Synth Bass 1 Vintage", "bass",
@@ -13429,7 +13965,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0538", "Synth Bass 1 Modern", "bass",
@@ -13454,7 +13991,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0539", "Synth Bass 1 Layered", "bass",
@@ -13479,7 +14017,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0540", "Synth Bass 1 Solo", "bass",
@@ -13504,7 +14043,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0541", "Synth Bass 2", "bass",
@@ -13529,7 +14069,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0542", "Synth Bass 2 Bright", "bass",
@@ -13554,7 +14095,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0543", "Synth Bass 2 Dark", "bass",
@@ -13579,7 +14121,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.05,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0544", "Synth Bass 2 Soft", "bass",
@@ -13604,7 +14147,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0545", "Synth Bass 2 Hard", "bass",
@@ -13629,7 +14173,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0546", "Synth Bass 2 Vintage", "bass",
@@ -13654,7 +14199,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0547", "Synth Bass 2 Modern", "bass",
@@ -13679,7 +14225,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0548", "Synth Bass 2 Layered", "bass",
@@ -13704,7 +14251,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0549", "Synth Bass 2 Solo", "bass",
@@ -13729,7 +14277,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0550", "Synth Bass 3", "bass",
@@ -13754,7 +14303,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0551", "Synth Bass 3 Bright", "bass",
@@ -13779,7 +14329,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0552", "Synth Bass 3 Dark", "bass",
@@ -13804,7 +14355,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.05,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0553", "Synth Bass 3 Soft", "bass",
@@ -13829,7 +14381,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0554", "Synth Bass 3 Hard", "bass",
@@ -13854,7 +14407,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0555", "Synth Bass 3 Vintage", "bass",
@@ -13879,7 +14433,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0556", "Synth Bass 3 Modern", "bass",
@@ -13904,7 +14459,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0557", "Synth Bass 3 Layered", "bass",
@@ -13929,7 +14485,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0558", "Synth Bass 3 Solo", "bass",
@@ -13954,7 +14511,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0559", "Synth Bass 4", "bass",
@@ -13979,7 +14537,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0560", "Synth Bass 4 Bright", "bass",
@@ -14004,7 +14563,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0561", "Synth Bass 4 Dark", "bass",
@@ -14029,7 +14589,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.05,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0562", "Synth Bass 4 Soft", "bass",
@@ -14054,7 +14615,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0563", "Synth Bass 4 Hard", "bass",
@@ -14079,7 +14641,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0564", "Synth Bass 4 Vintage", "bass",
@@ -14104,7 +14667,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0565", "Synth Bass 4 Modern", "bass",
@@ -14129,7 +14693,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.50,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0566", "Synth Bass 4 Layered", "bass",
@@ -14154,7 +14719,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0567", "Synth Bass 4 Solo", "bass",
@@ -14179,7 +14745,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0568", "Synth Bass 5", "bass",
@@ -14204,7 +14771,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0569", "Synth Bass 5 Bright", "bass",
@@ -14229,7 +14797,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0570", "Synth Bass 5 Dark", "bass",
@@ -14254,7 +14823,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.05,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0571", "Synth Bass 5 Soft", "bass",
@@ -14279,7 +14849,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0572", "Synth Bass 5 Hard", "bass",
@@ -14304,7 +14875,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0573", "Synth Bass 5 Vintage", "bass",
@@ -14329,7 +14901,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0574", "Synth Bass 5 Modern", "bass",
@@ -14354,7 +14927,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0575", "Synth Bass 5 Layered", "bass",
@@ -14379,7 +14953,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0576", "Synth Bass 5 Solo", "bass",
@@ -14404,7 +14979,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0577", "Resonant Bass", "bass",
@@ -14429,7 +15005,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0578", "Resonant Bass Bright", "bass",
@@ -14454,7 +15031,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0579", "Resonant Bass Dark", "bass",
@@ -14479,7 +15057,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.05,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0580", "Resonant Bass Soft", "bass",
@@ -14504,7 +15083,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0581", "Resonant Bass Hard", "bass",
@@ -14529,7 +15109,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0582", "Resonant Bass Vintage", "bass",
@@ -14554,7 +15135,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0583", "Resonant Bass Modern", "bass",
@@ -14579,7 +15161,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0584", "Resonant Bass Layered", "bass",
@@ -14604,7 +15187,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0585", "Resonant Bass Solo", "bass",
@@ -14629,7 +15213,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0586", "Upright Bass", "bass",
@@ -14654,7 +15239,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0587", "Upright Bass Bright", "bass",
@@ -14679,7 +15265,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0588", "Upright Bass Dark", "bass",
@@ -14704,7 +15291,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.05,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0589", "Upright Bass Soft", "bass",
@@ -14729,7 +15317,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0590", "Upright Bass Hard", "bass",
@@ -14754,7 +15343,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0591", "Upright Bass Vintage", "bass",
@@ -14779,7 +15369,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0592", "Upright Bass Modern", "bass",
@@ -14804,7 +15395,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0593", "Upright Bass Layered", "bass",
@@ -14829,7 +15421,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0594", "Upright Bass Solo", "bass",
@@ -14854,7 +15447,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0595", "Electric Bass", "bass",
@@ -14879,7 +15473,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0596", "Electric Bass Bright", "bass",
@@ -14904,7 +15499,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0597", "Electric Bass Dark", "bass",
@@ -14929,7 +15525,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.05,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0598", "Electric Bass Soft", "bass",
@@ -14954,7 +15551,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0599", "Electric Bass Hard", "bass",
@@ -14979,7 +15577,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0600", "Electric Bass Vintage", "bass",
@@ -15004,7 +15603,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0601", "Electric Bass Modern", "bass",
@@ -15029,7 +15629,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0602", "Electric Bass Layered", "bass",
@@ -15054,7 +15655,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0603", "Electric Bass Solo", "bass",
@@ -15079,7 +15681,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0604", "Muted Bass", "bass",
@@ -15104,7 +15707,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0605", "Muted Bass Bright", "bass",
@@ -15129,7 +15733,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0606", "Muted Bass Dark", "bass",
@@ -15154,7 +15759,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.05,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0607", "Muted Bass Soft", "bass",
@@ -15179,7 +15785,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0608", "Muted Bass Hard", "bass",
@@ -15204,7 +15811,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0609", "Muted Bass Vintage", "bass",
@@ -15229,7 +15837,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0610", "Muted Bass Modern", "bass",
@@ -15254,7 +15863,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0611", "Muted Bass Layered", "bass",
@@ -15279,7 +15889,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0612", "Muted Bass Solo", "bass",
@@ -15304,7 +15915,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         true,
         5, 0.30, 0.10, 0.00, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        "fingerbassyr-20190930"
     },
     {
         "juno-0613", "Violin", "strings",
@@ -15329,7 +15941,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0614", "Violin Bright", "strings",
@@ -15354,7 +15967,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0615", "Violin Dark", "strings",
@@ -15379,7 +15993,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.15,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0616", "Violin Soft", "strings",
@@ -15404,7 +16019,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0617", "Violin Hard", "strings",
@@ -15429,7 +16045,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0618", "Violin Vintage", "strings",
@@ -15454,7 +16071,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.80,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0619", "Violin Modern", "strings",
@@ -15479,7 +16097,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0620", "Violin Layered", "strings",
@@ -15504,7 +16123,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0621", "Violin Solo", "strings",
@@ -15529,7 +16149,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0622", "Viola", "strings",
@@ -15554,7 +16175,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0623", "Viola Bright", "strings",
@@ -15579,7 +16201,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0624", "Viola Dark", "strings",
@@ -15604,7 +16227,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.15,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0625", "Viola Soft", "strings",
@@ -15629,7 +16253,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0626", "Viola Hard", "strings",
@@ -15654,7 +16279,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0627", "Viola Vintage", "strings",
@@ -15679,7 +16305,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.80,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0628", "Viola Modern", "strings",
@@ -15704,7 +16331,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0629", "Viola Layered", "strings",
@@ -15729,7 +16357,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0630", "Viola Solo", "strings",
@@ -15754,7 +16383,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0631", "Cello", "strings",
@@ -15779,7 +16409,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0632", "Cello Bright", "strings",
@@ -15804,7 +16435,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0633", "Cello Dark", "strings",
@@ -15829,7 +16461,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.15,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0634", "Cello Soft", "strings",
@@ -15854,7 +16487,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0635", "Cello Hard", "strings",
@@ -15879,7 +16513,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0636", "Cello Vintage", "strings",
@@ -15904,7 +16539,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.80,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0637", "Cello Modern", "strings",
@@ -15929,7 +16565,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0638", "Cello Layered", "strings",
@@ -15954,7 +16591,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0639", "Cello Solo", "strings",
@@ -15979,7 +16617,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0640", "Contrabass", "strings",
@@ -16004,7 +16643,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0641", "Contrabass Bright", "strings",
@@ -16029,7 +16669,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0642", "Contrabass Dark", "strings",
@@ -16054,7 +16695,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.15,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0643", "Contrabass Soft", "strings",
@@ -16079,7 +16721,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0644", "Contrabass Hard", "strings",
@@ -16104,7 +16747,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0645", "Contrabass Vintage", "strings",
@@ -16129,7 +16773,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0646", "Contrabass Modern", "strings",
@@ -16154,7 +16799,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0647", "Contrabass Layered", "strings",
@@ -16179,7 +16825,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0648", "Contrabass Solo", "strings",
@@ -16204,7 +16851,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0649", "Tremolo Strings", "strings",
@@ -16229,7 +16877,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0650", "Tremolo Strings Bright", "strings",
@@ -16254,7 +16903,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0651", "Tremolo Strings Dark", "strings",
@@ -16279,7 +16929,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.15,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0652", "Tremolo Strings Soft", "strings",
@@ -16304,7 +16955,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0653", "Tremolo Strings Hard", "strings",
@@ -16329,7 +16981,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0654", "Tremolo Strings Vintage", "strings",
@@ -16354,7 +17007,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0655", "Tremolo Strings Modern", "strings",
@@ -16379,7 +17033,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0656", "Tremolo Strings Layered", "strings",
@@ -16404,7 +17059,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0657", "Tremolo Strings Solo", "strings",
@@ -16429,7 +17085,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0658", "Pizzicato Strings", "strings",
@@ -16454,7 +17111,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0659", "Pizzicato Strings Bright", "strings",
@@ -16479,7 +17137,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0660", "Pizzicato Strings Dark", "strings",
@@ -16504,7 +17163,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.15,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0661", "Pizzicato Strings Soft", "strings",
@@ -16529,7 +17189,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0662", "Pizzicato Strings Hard", "strings",
@@ -16554,7 +17215,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0663", "Pizzicato Strings Vintage", "strings",
@@ -16579,7 +17241,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0664", "Pizzicato Strings Modern", "strings",
@@ -16604,7 +17267,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0665", "Pizzicato Strings Layered", "strings",
@@ -16629,7 +17293,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0666", "Pizzicato Strings Solo", "strings",
@@ -16654,7 +17319,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0667", "Harp", "strings",
@@ -16679,7 +17345,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0668", "Harp Bright", "strings",
@@ -16704,7 +17371,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0669", "Harp Dark", "strings",
@@ -16729,7 +17397,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.15,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0670", "Harp Soft", "strings",
@@ -16754,7 +17423,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0671", "Harp Hard", "strings",
@@ -16779,7 +17449,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0672", "Harp Vintage", "strings",
@@ -16804,7 +17475,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0673", "Harp Modern", "strings",
@@ -16829,7 +17501,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0674", "Harp Layered", "strings",
@@ -16854,7 +17527,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0675", "Harp Solo", "strings",
@@ -16879,7 +17553,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0676", "Orchestral Strings", "strings",
@@ -16904,7 +17579,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0677", "Orchestral Strings Bright", "strings",
@@ -16929,7 +17605,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0678", "Orchestral Strings Dark", "strings",
@@ -16954,7 +17631,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.15,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0679", "Orchestral Strings Soft", "strings",
@@ -16979,7 +17657,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0680", "Orchestral Strings Hard", "strings",
@@ -17004,7 +17683,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0681", "Orchestral Strings Vintage", "strings",
@@ -17029,7 +17709,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0682", "Orchestral Strings Modern", "strings",
@@ -17054,7 +17735,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0683", "Orchestral Strings Layered", "strings",
@@ -17079,7 +17761,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0684", "Orchestral Strings Solo", "strings",
@@ -17104,7 +17787,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0685", "Slow Strings", "strings",
@@ -17129,7 +17813,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0686", "Slow Strings Bright", "strings",
@@ -17154,7 +17839,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0687", "Slow Strings Dark", "strings",
@@ -17179,7 +17865,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.15,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0688", "Slow Strings Soft", "strings",
@@ -17204,7 +17891,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0689", "Slow Strings Hard", "strings",
@@ -17229,7 +17917,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0690", "Slow Strings Vintage", "strings",
@@ -17254,7 +17943,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.80,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0691", "Slow Strings Modern", "strings",
@@ -17279,7 +17969,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0692", "Slow Strings Layered", "strings",
@@ -17304,7 +17995,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0693", "Slow Strings Solo", "strings",
@@ -17329,7 +18021,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0694", "Slow Violin", "strings",
@@ -17354,7 +18047,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0695", "Slow Violin Bright", "strings",
@@ -17379,7 +18073,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0696", "Slow Violin Dark", "strings",
@@ -17404,7 +18099,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.15,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0697", "Slow Violin Soft", "strings",
@@ -17429,7 +18125,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0698", "Slow Violin Hard", "strings",
@@ -17454,7 +18151,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0699", "Slow Violin Vintage", "strings",
@@ -17479,7 +18177,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.80,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0700", "Slow Violin Modern", "strings",
@@ -17504,7 +18203,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0701", "Slow Violin Layered", "strings",
@@ -17529,7 +18229,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0702", "Slow Violin Solo", "strings",
@@ -17554,7 +18255,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0703", "Orchestral Pad", "strings",
@@ -17579,7 +18281,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0704", "Orchestral Pad Bright", "strings",
@@ -17604,7 +18307,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0705", "Orchestral Pad Dark", "strings",
@@ -17629,7 +18333,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.15,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0706", "Orchestral Pad Soft", "strings",
@@ -17654,7 +18359,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0707", "Orchestral Pad Hard", "strings",
@@ -17679,7 +18385,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0708", "Orchestral Pad Vintage", "strings",
@@ -17704,7 +18411,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.80,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0709", "Orchestral Pad Modern", "strings",
@@ -17729,7 +18437,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0710", "Orchestral Pad Layered", "strings",
@@ -17754,7 +18463,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0711", "Orchestral Pad Solo", "strings",
@@ -17779,7 +18489,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0712", "Synth Strings 1", "strings",
@@ -17804,7 +18515,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0713", "Synth Strings 1 Bright", "strings",
@@ -17829,7 +18541,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0714", "Synth Strings 1 Dark", "strings",
@@ -17854,7 +18567,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.15,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0715", "Synth Strings 1 Soft", "strings",
@@ -17879,7 +18593,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0716", "Synth Strings 1 Hard", "strings",
@@ -17904,7 +18619,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0717", "Synth Strings 1 Vintage", "strings",
@@ -17929,7 +18645,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0718", "Synth Strings 1 Modern", "strings",
@@ -17954,7 +18671,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0719", "Synth Strings 1 Layered", "strings",
@@ -17979,7 +18697,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0720", "Synth Strings 1 Solo", "strings",
@@ -18004,7 +18723,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0721", "Synth Strings 2", "strings",
@@ -18029,7 +18749,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0722", "Synth Strings 2 Bright", "strings",
@@ -18054,7 +18775,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0723", "Synth Strings 2 Dark", "strings",
@@ -18079,7 +18801,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.15,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0724", "Synth Strings 2 Soft", "strings",
@@ -18104,7 +18827,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0725", "Synth Strings 2 Hard", "strings",
@@ -18129,7 +18853,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0726", "Synth Strings 2 Vintage", "strings",
@@ -18154,7 +18879,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0727", "Synth Strings 2 Modern", "strings",
@@ -18179,7 +18905,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0728", "Synth Strings 2 Layered", "strings",
@@ -18204,7 +18931,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0729", "Synth Strings 2 Solo", "strings",
@@ -18229,7 +18957,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0730", "Synth Strings 3", "strings",
@@ -18254,7 +18983,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0731", "Synth Strings 3 Bright", "strings",
@@ -18279,7 +19009,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0732", "Synth Strings 3 Dark", "strings",
@@ -18304,7 +19035,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.15,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0733", "Synth Strings 3 Soft", "strings",
@@ -18329,7 +19061,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0734", "Synth Strings 3 Hard", "strings",
@@ -18354,7 +19087,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0735", "Synth Strings 3 Vintage", "strings",
@@ -18379,7 +19113,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.80,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0736", "Synth Strings 3 Modern", "strings",
@@ -18404,7 +19139,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0737", "Synth Strings 3 Layered", "strings",
@@ -18429,7 +19165,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0738", "Synth Strings 3 Solo", "strings",
@@ -18454,7 +19191,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0739", "Choir Aahs", "strings",
@@ -18479,7 +19217,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0740", "Choir Aahs Bright", "strings",
@@ -18504,7 +19243,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0741", "Choir Aahs Dark", "strings",
@@ -18529,7 +19269,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.15,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0742", "Choir Aahs Soft", "strings",
@@ -18554,7 +19295,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0743", "Choir Aahs Hard", "strings",
@@ -18579,7 +19321,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0744", "Choir Aahs Vintage", "strings",
@@ -18604,7 +19347,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0745", "Choir Aahs Modern", "strings",
@@ -18629,7 +19373,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0746", "Choir Aahs Layered", "strings",
@@ -18654,7 +19399,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0747", "Choir Aahs Solo", "strings",
@@ -18679,7 +19425,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0748", "Choir Oohs", "strings",
@@ -18704,7 +19451,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0749", "Choir Oohs Bright", "strings",
@@ -18729,7 +19477,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0750", "Choir Oohs Dark", "strings",
@@ -18754,7 +19503,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.15,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0751", "Choir Oohs Soft", "strings",
@@ -18779,7 +19529,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0752", "Choir Oohs Hard", "strings",
@@ -18804,7 +19555,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0753", "Choir Oohs Vintage", "strings",
@@ -18829,7 +19581,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0754", "Choir Oohs Modern", "strings",
@@ -18854,7 +19607,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0755", "Choir Oohs Layered", "strings",
@@ -18879,7 +19633,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0756", "Choir Oohs Solo", "strings",
@@ -18904,7 +19659,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0757", "Synth Voice", "strings",
@@ -18929,7 +19685,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0758", "Synth Voice Bright", "strings",
@@ -18954,7 +19711,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0759", "Synth Voice Dark", "strings",
@@ -18979,7 +19737,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.15,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0760", "Synth Voice Soft", "strings",
@@ -19004,7 +19763,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0761", "Synth Voice Hard", "strings",
@@ -19029,7 +19789,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0762", "Synth Voice Vintage", "strings",
@@ -19054,7 +19815,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0763", "Synth Voice Modern", "strings",
@@ -19079,7 +19841,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0764", "Synth Voice Layered", "strings",
@@ -19104,7 +19867,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0765", "Synth Voice Solo", "strings",
@@ -19129,7 +19893,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0766", "Orchestra Hit", "strings",
@@ -19154,7 +19919,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0767", "Orchestra Hit Bright", "strings",
@@ -19179,7 +19945,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0768", "Orchestra Hit Dark", "strings",
@@ -19204,7 +19971,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.15,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0769", "Orchestra Hit Soft", "strings",
@@ -19229,7 +19997,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0770", "Orchestra Hit Hard", "strings",
@@ -19254,7 +20023,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0771", "Orchestra Hit Vintage", "strings",
@@ -19279,7 +20049,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0772", "Orchestra Hit Modern", "strings",
@@ -19304,7 +20075,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0773", "Orchestra Hit Layered", "strings",
@@ -19329,7 +20101,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0774", "Orchestra Hit Solo", "strings",
@@ -19354,7 +20127,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0775", "String Ensemble", "strings",
@@ -19379,7 +20153,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0776", "String Ensemble Bright", "strings",
@@ -19404,7 +20179,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0777", "String Ensemble Dark", "strings",
@@ -19429,7 +20205,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.15,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0778", "String Ensemble Soft", "strings",
@@ -19454,7 +20231,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0779", "String Ensemble Hard", "strings",
@@ -19479,7 +20257,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0780", "String Ensemble Vintage", "strings",
@@ -19504,7 +20283,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0781", "String Ensemble Modern", "strings",
@@ -19529,7 +20309,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0782", "String Ensemble Layered", "strings",
@@ -19554,7 +20335,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0783", "String Ensemble Solo", "strings",
@@ -19579,7 +20361,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0784", "Legato Strings", "strings",
@@ -19604,7 +20387,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0785", "Legato Strings Bright", "strings",
@@ -19629,7 +20413,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0786", "Legato Strings Dark", "strings",
@@ -19654,7 +20439,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.15,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0787", "Legato Strings Soft", "strings",
@@ -19679,7 +20465,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0788", "Legato Strings Hard", "strings",
@@ -19704,7 +20491,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0789", "Legato Strings Vintage", "strings",
@@ -19729,7 +20517,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0790", "Legato Strings Modern", "strings",
@@ -19754,7 +20543,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0791", "Legato Strings Layered", "strings",
@@ -19779,7 +20569,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0792", "Legato Strings Solo", "strings",
@@ -19804,7 +20595,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         3, 0.40, 0.00, 0.40, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0793", "Trumpet", "brass",
@@ -19829,7 +20621,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0794", "Trumpet Bright", "brass",
@@ -19854,7 +20647,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.70,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0795", "Trumpet Dark", "brass",
@@ -19879,7 +20673,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0796", "Trumpet Soft", "brass",
@@ -19904,7 +20699,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0797", "Trumpet Hard", "brass",
@@ -19929,7 +20725,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0798", "Trumpet Vintage", "brass",
@@ -19954,7 +20751,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0799", "Trumpet Modern", "brass",
@@ -19979,7 +20777,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0800", "Trumpet Layered", "brass",
@@ -20004,7 +20803,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0801", "Trumpet Solo", "brass",
@@ -20029,7 +20829,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.65,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0802", "Trombone", "brass",
@@ -20054,7 +20855,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0803", "Trombone Bright", "brass",
@@ -20079,7 +20881,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.70,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0804", "Trombone Dark", "brass",
@@ -20104,7 +20907,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0805", "Trombone Soft", "brass",
@@ -20129,7 +20933,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0806", "Trombone Hard", "brass",
@@ -20154,7 +20959,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0807", "Trombone Vintage", "brass",
@@ -20179,7 +20985,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0808", "Trombone Modern", "brass",
@@ -20204,7 +21011,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0809", "Trombone Layered", "brass",
@@ -20229,7 +21037,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0810", "Trombone Solo", "brass",
@@ -20254,7 +21063,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.65,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0811", "Tuba", "brass",
@@ -20279,7 +21089,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0812", "Tuba Bright", "brass",
@@ -20304,7 +21115,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.70,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0813", "Tuba Dark", "brass",
@@ -20329,7 +21141,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0814", "Tuba Soft", "brass",
@@ -20354,7 +21167,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0815", "Tuba Hard", "brass",
@@ -20379,7 +21193,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0816", "Tuba Vintage", "brass",
@@ -20404,7 +21219,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0817", "Tuba Modern", "brass",
@@ -20429,7 +21245,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0818", "Tuba Layered", "brass",
@@ -20454,7 +21271,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0819", "Tuba Solo", "brass",
@@ -20479,7 +21297,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.65,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0820", "Muted Trumpet", "brass",
@@ -20504,7 +21323,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0821", "Muted Trumpet Bright", "brass",
@@ -20529,7 +21349,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.70,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0822", "Muted Trumpet Dark", "brass",
@@ -20554,7 +21375,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0823", "Muted Trumpet Soft", "brass",
@@ -20579,7 +21401,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0824", "Muted Trumpet Hard", "brass",
@@ -20604,7 +21427,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0825", "Muted Trumpet Vintage", "brass",
@@ -20629,7 +21453,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0826", "Muted Trumpet Modern", "brass",
@@ -20654,7 +21479,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0827", "Muted Trumpet Layered", "brass",
@@ -20679,7 +21505,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0828", "Muted Trumpet Solo", "brass",
@@ -20704,7 +21531,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.65,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0829", "French Horn", "brass",
@@ -20729,7 +21557,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0830", "French Horn Bright", "brass",
@@ -20754,7 +21583,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.70,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0831", "French Horn Dark", "brass",
@@ -20779,7 +21609,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0832", "French Horn Soft", "brass",
@@ -20804,7 +21635,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0833", "French Horn Hard", "brass",
@@ -20829,7 +21661,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0834", "French Horn Vintage", "brass",
@@ -20854,7 +21687,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0835", "French Horn Modern", "brass",
@@ -20879,7 +21713,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0836", "French Horn Layered", "brass",
@@ -20904,7 +21739,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0837", "French Horn Solo", "brass",
@@ -20929,7 +21765,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.65,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0838", "Brass Section", "brass",
@@ -20954,7 +21791,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0839", "Brass Section Bright", "brass",
@@ -20979,7 +21817,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.70,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0840", "Brass Section Dark", "brass",
@@ -21004,7 +21843,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0841", "Brass Section Soft", "brass",
@@ -21029,7 +21869,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0842", "Brass Section Hard", "brass",
@@ -21054,7 +21895,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0843", "Brass Section Vintage", "brass",
@@ -21079,7 +21921,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0844", "Brass Section Modern", "brass",
@@ -21104,7 +21947,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0845", "Brass Section Layered", "brass",
@@ -21129,7 +21973,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0846", "Brass Section Solo", "brass",
@@ -21154,7 +21999,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.65,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0847", "Synth Brass 1", "brass",
@@ -21179,7 +22025,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0848", "Synth Brass 1 Bright", "brass",
@@ -21204,7 +22051,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.70,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0849", "Synth Brass 1 Dark", "brass",
@@ -21229,7 +22077,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0850", "Synth Brass 1 Soft", "brass",
@@ -21254,7 +22103,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0851", "Synth Brass 1 Hard", "brass",
@@ -21279,7 +22129,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0852", "Synth Brass 1 Vintage", "brass",
@@ -21304,7 +22155,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0853", "Synth Brass 1 Modern", "brass",
@@ -21329,7 +22181,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0854", "Synth Brass 1 Layered", "brass",
@@ -21354,7 +22207,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0855", "Synth Brass 1 Solo", "brass",
@@ -21379,7 +22233,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.65,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0856", "Synth Brass 2", "brass",
@@ -21404,7 +22259,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0857", "Synth Brass 2 Bright", "brass",
@@ -21429,7 +22285,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.70,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0858", "Synth Brass 2 Dark", "brass",
@@ -21454,7 +22311,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0859", "Synth Brass 2 Soft", "brass",
@@ -21479,7 +22337,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0860", "Synth Brass 2 Hard", "brass",
@@ -21504,7 +22363,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0861", "Synth Brass 2 Vintage", "brass",
@@ -21529,7 +22389,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0862", "Synth Brass 2 Modern", "brass",
@@ -21554,7 +22415,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0863", "Synth Brass 2 Layered", "brass",
@@ -21579,7 +22441,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0864", "Synth Brass 2 Solo", "brass",
@@ -21604,7 +22467,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.65,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0865", "Synth Brass 3", "brass",
@@ -21629,7 +22493,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0866", "Synth Brass 3 Bright", "brass",
@@ -21654,7 +22519,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.70,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0867", "Synth Brass 3 Dark", "brass",
@@ -21679,7 +22545,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0868", "Synth Brass 3 Soft", "brass",
@@ -21704,7 +22571,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0869", "Synth Brass 3 Hard", "brass",
@@ -21729,7 +22597,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0870", "Synth Brass 3 Vintage", "brass",
@@ -21754,7 +22623,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0871", "Synth Brass 3 Modern", "brass",
@@ -21779,7 +22649,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0872", "Synth Brass 3 Layered", "brass",
@@ -21804,7 +22675,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0873", "Synth Brass 3 Solo", "brass",
@@ -21829,7 +22701,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.65,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0874", "Synth Brass 4", "brass",
@@ -21854,7 +22727,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0875", "Synth Brass 4 Bright", "brass",
@@ -21879,7 +22753,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.70,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0876", "Synth Brass 4 Dark", "brass",
@@ -21904,7 +22779,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0877", "Synth Brass 4 Soft", "brass",
@@ -21929,7 +22805,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0878", "Synth Brass 4 Hard", "brass",
@@ -21954,7 +22831,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0879", "Synth Brass 4 Vintage", "brass",
@@ -21979,7 +22857,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0880", "Synth Brass 4 Modern", "brass",
@@ -22004,7 +22883,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0881", "Synth Brass 4 Layered", "brass",
@@ -22029,7 +22909,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0882", "Synth Brass 4 Solo", "brass",
@@ -22054,7 +22935,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.65,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0883", "Soprano Sax", "brass",
@@ -22079,7 +22961,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0884", "Soprano Sax Bright", "brass",
@@ -22104,7 +22987,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.70,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0885", "Soprano Sax Dark", "brass",
@@ -22129,7 +23013,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0886", "Soprano Sax Soft", "brass",
@@ -22154,7 +23039,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0887", "Soprano Sax Hard", "brass",
@@ -22179,7 +23065,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0888", "Soprano Sax Vintage", "brass",
@@ -22204,7 +23091,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0889", "Soprano Sax Modern", "brass",
@@ -22229,7 +23117,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0890", "Soprano Sax Layered", "brass",
@@ -22254,7 +23143,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0891", "Soprano Sax Solo", "brass",
@@ -22279,7 +23169,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.65,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0892", "Alto Sax", "brass",
@@ -22304,7 +23195,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0893", "Alto Sax Bright", "brass",
@@ -22329,7 +23221,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.70,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0894", "Alto Sax Dark", "brass",
@@ -22354,7 +23247,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0895", "Alto Sax Soft", "brass",
@@ -22379,7 +23273,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0896", "Alto Sax Hard", "brass",
@@ -22404,7 +23299,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0897", "Alto Sax Vintage", "brass",
@@ -22429,7 +23325,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0898", "Alto Sax Modern", "brass",
@@ -22454,7 +23351,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0899", "Alto Sax Layered", "brass",
@@ -22479,7 +23377,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0900", "Alto Sax Solo", "brass",
@@ -22504,7 +23403,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.65,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0901", "Tenor Sax", "brass",
@@ -22529,7 +23429,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0902", "Tenor Sax Bright", "brass",
@@ -22554,7 +23455,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.70,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0903", "Tenor Sax Dark", "brass",
@@ -22579,7 +23481,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0904", "Tenor Sax Soft", "brass",
@@ -22604,7 +23507,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0905", "Tenor Sax Hard", "brass",
@@ -22629,7 +23533,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0906", "Tenor Sax Vintage", "brass",
@@ -22654,7 +23559,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0907", "Tenor Sax Modern", "brass",
@@ -22679,7 +23585,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0908", "Tenor Sax Layered", "brass",
@@ -22704,7 +23611,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0909", "Tenor Sax Solo", "brass",
@@ -22729,7 +23637,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.65,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0910", "Baritone Sax", "brass",
@@ -22754,7 +23663,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0911", "Baritone Sax Bright", "brass",
@@ -22779,7 +23689,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.70,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0912", "Baritone Sax Dark", "brass",
@@ -22804,7 +23715,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0913", "Baritone Sax Soft", "brass",
@@ -22829,7 +23741,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0914", "Baritone Sax Hard", "brass",
@@ -22854,7 +23767,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0915", "Baritone Sax Vintage", "brass",
@@ -22879,7 +23793,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0916", "Baritone Sax Modern", "brass",
@@ -22904,7 +23819,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0917", "Baritone Sax Layered", "brass",
@@ -22929,7 +23845,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0918", "Baritone Sax Solo", "brass",
@@ -22954,7 +23871,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.65,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0919", "Oboe", "brass",
@@ -22979,7 +23897,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0920", "Oboe Bright", "brass",
@@ -23004,7 +23923,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.70,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0921", "Oboe Dark", "brass",
@@ -23029,7 +23949,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0922", "Oboe Soft", "brass",
@@ -23054,7 +23975,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0923", "Oboe Hard", "brass",
@@ -23079,7 +24001,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0924", "Oboe Vintage", "brass",
@@ -23104,7 +24027,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0925", "Oboe Modern", "brass",
@@ -23129,7 +24053,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0926", "Oboe Layered", "brass",
@@ -23154,7 +24079,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0927", "Oboe Solo", "brass",
@@ -23179,7 +24105,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.65,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0928", "English Horn", "brass",
@@ -23204,7 +24131,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0929", "English Horn Bright", "brass",
@@ -23229,7 +24157,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.70,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0930", "English Horn Dark", "brass",
@@ -23254,7 +24183,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0931", "English Horn Soft", "brass",
@@ -23279,7 +24209,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0932", "English Horn Hard", "brass",
@@ -23304,7 +24235,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0933", "English Horn Vintage", "brass",
@@ -23329,7 +24261,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0934", "English Horn Modern", "brass",
@@ -23354,7 +24287,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0935", "English Horn Layered", "brass",
@@ -23379,7 +24313,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0936", "English Horn Solo", "brass",
@@ -23404,7 +24339,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.65,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0937", "Bassoon", "brass",
@@ -23429,7 +24365,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0938", "Bassoon Bright", "brass",
@@ -23454,7 +24391,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.70,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0939", "Bassoon Dark", "brass",
@@ -23479,7 +24417,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0940", "Bassoon Soft", "brass",
@@ -23504,7 +24443,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0941", "Bassoon Hard", "brass",
@@ -23529,7 +24469,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0942", "Bassoon Vintage", "brass",
@@ -23554,7 +24495,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0943", "Bassoon Modern", "brass",
@@ -23579,7 +24521,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0944", "Bassoon Layered", "brass",
@@ -23604,7 +24547,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0945", "Bassoon Solo", "brass",
@@ -23629,7 +24573,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.65,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0946", "Clarinet", "brass",
@@ -23654,7 +24599,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0947", "Clarinet Bright", "brass",
@@ -23679,7 +24625,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.70,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0948", "Clarinet Dark", "brass",
@@ -23704,7 +24651,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0949", "Clarinet Soft", "brass",
@@ -23729,7 +24677,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0950", "Clarinet Hard", "brass",
@@ -23754,7 +24703,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0951", "Clarinet Vintage", "brass",
@@ -23779,7 +24729,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0952", "Clarinet Modern", "brass",
@@ -23804,7 +24755,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0953", "Clarinet Layered", "brass",
@@ -23829,7 +24781,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0954", "Clarinet Solo", "brass",
@@ -23854,7 +24807,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.65,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0955", "Piccolo", "brass",
@@ -23879,7 +24833,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0956", "Piccolo Bright", "brass",
@@ -23904,7 +24859,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.70,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0957", "Piccolo Dark", "brass",
@@ -23929,7 +24885,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0958", "Piccolo Soft", "brass",
@@ -23954,7 +24911,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0959", "Piccolo Hard", "brass",
@@ -23979,7 +24937,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0960", "Piccolo Vintage", "brass",
@@ -24004,7 +24963,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0961", "Piccolo Modern", "brass",
@@ -24029,7 +24989,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0962", "Piccolo Layered", "brass",
@@ -24054,7 +25015,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0963", "Piccolo Solo", "brass",
@@ -24079,7 +25041,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.65,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0964", "Flute", "brass",
@@ -24104,7 +25067,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0965", "Flute Bright", "brass",
@@ -24129,7 +25093,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.70,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0966", "Flute Dark", "brass",
@@ -24154,7 +25119,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0967", "Flute Soft", "brass",
@@ -24179,7 +25145,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0968", "Flute Hard", "brass",
@@ -24204,7 +25171,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0969", "Flute Vintage", "brass",
@@ -24229,7 +25197,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0970", "Flute Modern", "brass",
@@ -24254,7 +25223,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0971", "Flute Layered", "brass",
@@ -24279,7 +25249,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0972", "Flute Solo", "brass",
@@ -24304,7 +25275,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.65,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0973", "Recorder", "brass",
@@ -24329,7 +25301,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0974", "Recorder Bright", "brass",
@@ -24354,7 +25327,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.70,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0975", "Recorder Dark", "brass",
@@ -24379,7 +25353,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0976", "Recorder Soft", "brass",
@@ -24404,7 +25379,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0977", "Recorder Hard", "brass",
@@ -24429,7 +25405,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0978", "Recorder Vintage", "brass",
@@ -24454,7 +25431,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0979", "Recorder Modern", "brass",
@@ -24479,7 +25457,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0980", "Recorder Layered", "brass",
@@ -24504,7 +25483,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0981", "Recorder Solo", "brass",
@@ -24529,7 +25509,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.65,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0982", "Pan Flute", "brass",
@@ -24554,7 +25535,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0983", "Pan Flute Bright", "brass",
@@ -24579,7 +25561,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.70,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0984", "Pan Flute Dark", "brass",
@@ -24604,7 +25587,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0985", "Pan Flute Soft", "brass",
@@ -24629,7 +25613,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0986", "Pan Flute Hard", "brass",
@@ -24654,7 +25639,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0987", "Pan Flute Vintage", "brass",
@@ -24679,7 +25665,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0988", "Pan Flute Modern", "brass",
@@ -24704,7 +25691,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0989", "Pan Flute Layered", "brass",
@@ -24729,7 +25717,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0990", "Pan Flute Solo", "brass",
@@ -24754,7 +25743,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.65,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0991", "Shakuhachi", "brass",
@@ -24779,7 +25769,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0992", "Shakuhachi Bright", "brass",
@@ -24804,7 +25795,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.70,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0993", "Shakuhachi Dark", "brass",
@@ -24829,7 +25821,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0994", "Shakuhachi Soft", "brass",
@@ -24854,7 +25847,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0995", "Shakuhachi Hard", "brass",
@@ -24879,7 +25873,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0996", "Shakuhachi Vintage", "brass",
@@ -24904,7 +25899,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0997", "Shakuhachi Modern", "brass",
@@ -24929,7 +25925,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0998", "Shakuhachi Layered", "brass",
@@ -24954,7 +25951,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-0999", "Shakuhachi Solo", "brass",
@@ -24979,7 +25977,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.65,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1000", "Whistle", "brass",
@@ -25004,7 +26003,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1001", "Whistle Bright", "brass",
@@ -25029,7 +26029,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.70,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1002", "Whistle Dark", "brass",
@@ -25054,7 +26055,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1003", "Whistle Soft", "brass",
@@ -25079,7 +26081,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1004", "Whistle Hard", "brass",
@@ -25104,7 +26107,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1005", "Whistle Vintage", "brass",
@@ -25129,7 +26133,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1006", "Whistle Modern", "brass",
@@ -25154,7 +26159,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1007", "Whistle Layered", "brass",
@@ -25179,7 +26185,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1008", "Whistle Solo", "brass",
@@ -25204,7 +26211,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.65,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1009", "Ocarina", "brass",
@@ -25229,7 +26237,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1010", "Ocarina Bright", "brass",
@@ -25254,7 +26263,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.70,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1011", "Ocarina Dark", "brass",
@@ -25279,7 +26289,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1012", "Ocarina Soft", "brass",
@@ -25304,7 +26315,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1013", "Ocarina Hard", "brass",
@@ -25329,7 +26341,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1014", "Ocarina Vintage", "brass",
@@ -25354,7 +26367,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1015", "Ocarina Modern", "brass",
@@ -25379,7 +26393,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1016", "Ocarina Layered", "brass",
@@ -25404,7 +26419,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1017", "Ocarina Solo", "brass",
@@ -25429,7 +26445,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.65,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1018", "Bottle Blow", "brass",
@@ -25454,7 +26471,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1019", "Bottle Blow Bright", "brass",
@@ -25479,7 +26497,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.70,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1020", "Bottle Blow Dark", "brass",
@@ -25504,7 +26523,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1021", "Bottle Blow Soft", "brass",
@@ -25529,7 +26549,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1022", "Bottle Blow Hard", "brass",
@@ -25554,7 +26575,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1023", "Bottle Blow Vintage", "brass",
@@ -25579,7 +26601,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1024", "Bottle Blow Modern", "brass",
@@ -25604,7 +26627,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1025", "Bottle Blow Layered", "brass",
@@ -25629,7 +26653,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1026", "Bottle Blow Solo", "brass",
@@ -25654,7 +26679,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         6, 0.35, 0.10, 0.00, 1, 0.65,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1027", "Oboe", "woodwind",
@@ -25679,7 +26705,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1028", "Oboe Bright", "woodwind",
@@ -25704,7 +26731,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1029", "Oboe Dark", "woodwind",
@@ -25729,7 +26757,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1030", "Oboe Soft", "woodwind",
@@ -25754,7 +26783,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1031", "Oboe Hard", "woodwind",
@@ -25779,7 +26809,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1032", "Oboe Vintage", "woodwind",
@@ -25804,7 +26835,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1033", "Oboe Modern", "woodwind",
@@ -25829,7 +26861,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1034", "Oboe Layered", "woodwind",
@@ -25854,7 +26887,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1035", "Oboe Solo", "woodwind",
@@ -25879,7 +26913,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1036", "English Horn", "woodwind",
@@ -25904,7 +26939,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1037", "English Horn Bright", "woodwind",
@@ -25929,7 +26965,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1038", "English Horn Dark", "woodwind",
@@ -25954,7 +26991,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1039", "English Horn Soft", "woodwind",
@@ -25979,7 +27017,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1040", "English Horn Hard", "woodwind",
@@ -26004,7 +27043,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1041", "English Horn Vintage", "woodwind",
@@ -26029,7 +27069,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1042", "English Horn Modern", "woodwind",
@@ -26054,7 +27095,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1043", "English Horn Layered", "woodwind",
@@ -26079,7 +27121,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1044", "English Horn Solo", "woodwind",
@@ -26104,7 +27147,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1045", "Bassoon", "woodwind",
@@ -26129,7 +27173,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1046", "Bassoon Bright", "woodwind",
@@ -26154,7 +27199,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1047", "Bassoon Dark", "woodwind",
@@ -26179,7 +27225,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1048", "Bassoon Soft", "woodwind",
@@ -26204,7 +27251,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1049", "Bassoon Hard", "woodwind",
@@ -26229,7 +27277,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1050", "Bassoon Vintage", "woodwind",
@@ -26254,7 +27303,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.80,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1051", "Bassoon Modern", "woodwind",
@@ -26279,7 +27329,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1052", "Bassoon Layered", "woodwind",
@@ -26304,7 +27355,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1053", "Bassoon Solo", "woodwind",
@@ -26329,7 +27381,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1054", "Clarinet", "woodwind",
@@ -26354,7 +27407,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1055", "Clarinet Bright", "woodwind",
@@ -26379,7 +27433,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1056", "Clarinet Dark", "woodwind",
@@ -26404,7 +27459,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1057", "Clarinet Soft", "woodwind",
@@ -26429,7 +27485,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1058", "Clarinet Hard", "woodwind",
@@ -26454,7 +27511,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1059", "Clarinet Vintage", "woodwind",
@@ -26479,7 +27537,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1060", "Clarinet Modern", "woodwind",
@@ -26504,7 +27563,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1061", "Clarinet Layered", "woodwind",
@@ -26529,7 +27589,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1062", "Clarinet Solo", "woodwind",
@@ -26554,7 +27615,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1063", "Piccolo", "woodwind",
@@ -26579,7 +27641,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1064", "Piccolo Bright", "woodwind",
@@ -26604,7 +27667,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1065", "Piccolo Dark", "woodwind",
@@ -26629,7 +27693,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1066", "Piccolo Soft", "woodwind",
@@ -26654,7 +27719,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1067", "Piccolo Hard", "woodwind",
@@ -26679,7 +27745,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1068", "Piccolo Vintage", "woodwind",
@@ -26704,7 +27771,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.80,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1069", "Piccolo Modern", "woodwind",
@@ -26729,7 +27797,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1070", "Piccolo Layered", "woodwind",
@@ -26754,7 +27823,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1071", "Piccolo Solo", "woodwind",
@@ -26779,7 +27849,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1072", "Flute", "woodwind",
@@ -26804,7 +27875,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1073", "Flute Bright", "woodwind",
@@ -26829,7 +27901,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1074", "Flute Dark", "woodwind",
@@ -26854,7 +27927,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1075", "Flute Soft", "woodwind",
@@ -26879,7 +27953,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1076", "Flute Hard", "woodwind",
@@ -26904,7 +27979,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1077", "Flute Vintage", "woodwind",
@@ -26929,7 +28005,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.80,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1078", "Flute Modern", "woodwind",
@@ -26954,7 +28031,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1079", "Flute Layered", "woodwind",
@@ -26979,7 +28057,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1080", "Flute Solo", "woodwind",
@@ -27004,7 +28083,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1081", "Recorder", "woodwind",
@@ -27029,7 +28109,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1082", "Recorder Bright", "woodwind",
@@ -27054,7 +28135,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1083", "Recorder Dark", "woodwind",
@@ -27079,7 +28161,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1084", "Recorder Soft", "woodwind",
@@ -27104,7 +28187,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1085", "Recorder Hard", "woodwind",
@@ -27129,7 +28213,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1086", "Recorder Vintage", "woodwind",
@@ -27154,7 +28239,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1087", "Recorder Modern", "woodwind",
@@ -27179,7 +28265,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1088", "Recorder Layered", "woodwind",
@@ -27204,7 +28291,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1089", "Recorder Solo", "woodwind",
@@ -27229,7 +28317,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1090", "Pan Flute", "woodwind",
@@ -27254,7 +28343,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1091", "Pan Flute Bright", "woodwind",
@@ -27279,7 +28369,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1092", "Pan Flute Dark", "woodwind",
@@ -27304,7 +28395,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1093", "Pan Flute Soft", "woodwind",
@@ -27329,7 +28421,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1094", "Pan Flute Hard", "woodwind",
@@ -27354,7 +28447,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1095", "Pan Flute Vintage", "woodwind",
@@ -27379,7 +28473,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.80,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1096", "Pan Flute Modern", "woodwind",
@@ -27404,7 +28499,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1097", "Pan Flute Layered", "woodwind",
@@ -27429,7 +28525,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1098", "Pan Flute Solo", "woodwind",
@@ -27454,7 +28551,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1099", "Bottle Chiff", "woodwind",
@@ -27479,7 +28577,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1100", "Bottle Chiff Bright", "woodwind",
@@ -27504,7 +28603,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1101", "Bottle Chiff Dark", "woodwind",
@@ -27529,7 +28629,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1102", "Bottle Chiff Soft", "woodwind",
@@ -27554,7 +28655,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1103", "Bottle Chiff Hard", "woodwind",
@@ -27579,7 +28681,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1104", "Bottle Chiff Vintage", "woodwind",
@@ -27604,7 +28707,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1105", "Bottle Chiff Modern", "woodwind",
@@ -27629,7 +28733,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1106", "Bottle Chiff Layered", "woodwind",
@@ -27654,7 +28759,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1107", "Bottle Chiff Solo", "woodwind",
@@ -27679,7 +28785,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1108", "Shakuhachi", "woodwind",
@@ -27704,7 +28811,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1109", "Shakuhachi Bright", "woodwind",
@@ -27729,7 +28837,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1110", "Shakuhachi Dark", "woodwind",
@@ -27754,7 +28863,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1111", "Shakuhachi Soft", "woodwind",
@@ -27779,7 +28889,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1112", "Shakuhachi Hard", "woodwind",
@@ -27804,7 +28915,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1113", "Shakuhachi Vintage", "woodwind",
@@ -27829,7 +28941,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.80,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1114", "Shakuhachi Modern", "woodwind",
@@ -27854,7 +28967,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1115", "Shakuhachi Layered", "woodwind",
@@ -27879,7 +28993,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1116", "Shakuhachi Solo", "woodwind",
@@ -27904,7 +29019,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1117", "Whistle", "woodwind",
@@ -27929,7 +29045,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1118", "Whistle Bright", "woodwind",
@@ -27954,7 +29071,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1119", "Whistle Dark", "woodwind",
@@ -27979,7 +29097,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1120", "Whistle Soft", "woodwind",
@@ -28004,7 +29123,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1121", "Whistle Hard", "woodwind",
@@ -28029,7 +29149,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1122", "Whistle Vintage", "woodwind",
@@ -28054,7 +29175,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1123", "Whistle Modern", "woodwind",
@@ -28079,7 +29201,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1124", "Whistle Layered", "woodwind",
@@ -28104,7 +29227,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1125", "Whistle Solo", "woodwind",
@@ -28129,7 +29253,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1126", "Ocarina", "woodwind",
@@ -28154,7 +29279,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1127", "Ocarina Bright", "woodwind",
@@ -28179,7 +29305,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1128", "Ocarina Dark", "woodwind",
@@ -28204,7 +29331,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1129", "Ocarina Soft", "woodwind",
@@ -28229,7 +29357,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1130", "Ocarina Hard", "woodwind",
@@ -28254,7 +29383,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1131", "Ocarina Vintage", "woodwind",
@@ -28279,7 +29409,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1132", "Ocarina Modern", "woodwind",
@@ -28304,7 +29435,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1133", "Ocarina Layered", "woodwind",
@@ -28329,7 +29461,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1134", "Ocarina Solo", "woodwind",
@@ -28354,7 +29487,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1135", "Irish Flute", "woodwind",
@@ -28379,7 +29513,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1136", "Irish Flute Bright", "woodwind",
@@ -28404,7 +29539,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1137", "Irish Flute Dark", "woodwind",
@@ -28429,7 +29565,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1138", "Irish Flute Soft", "woodwind",
@@ -28454,7 +29591,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1139", "Irish Flute Hard", "woodwind",
@@ -28479,7 +29617,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1140", "Irish Flute Vintage", "woodwind",
@@ -28504,7 +29643,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1141", "Irish Flute Modern", "woodwind",
@@ -28529,7 +29669,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1142", "Irish Flute Layered", "woodwind",
@@ -28554,7 +29695,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1143", "Irish Flute Solo", "woodwind",
@@ -28579,7 +29721,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1144", "Native American Flute", "woodwind",
@@ -28604,7 +29747,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1145", "Native American Flute Bright", "woodwind",
@@ -28629,7 +29773,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1146", "Native American Flute Dark", "woodwind",
@@ -28654,7 +29799,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1147", "Native American Flute Soft", "woodwind",
@@ -28679,7 +29825,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1148", "Native American Flute Hard", "woodwind",
@@ -28704,7 +29851,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1149", "Native American Flute Vintage", "woodwind",
@@ -28729,7 +29877,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1150", "Native American Flute Modern", "woodwind",
@@ -28754,7 +29903,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1151", "Native American Flute Layered", "woodwind",
@@ -28779,7 +29929,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1152", "Native American Flute Solo", "woodwind",
@@ -28804,7 +29955,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1153", "Bass Clarinet", "woodwind",
@@ -28829,7 +29981,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1154", "Bass Clarinet Bright", "woodwind",
@@ -28854,7 +30007,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1155", "Bass Clarinet Dark", "woodwind",
@@ -28879,7 +30033,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1156", "Bass Clarinet Soft", "woodwind",
@@ -28904,7 +30059,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1157", "Bass Clarinet Hard", "woodwind",
@@ -28929,7 +30085,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1158", "Bass Clarinet Vintage", "woodwind",
@@ -28954,7 +30111,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1159", "Bass Clarinet Modern", "woodwind",
@@ -28979,7 +30137,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1160", "Bass Clarinet Layered", "woodwind",
@@ -29004,7 +30163,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1161", "Bass Clarinet Solo", "woodwind",
@@ -29029,7 +30189,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1162", "Contra Bassoon", "woodwind",
@@ -29054,7 +30215,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1163", "Contra Bassoon Bright", "woodwind",
@@ -29079,7 +30241,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1164", "Contra Bassoon Dark", "woodwind",
@@ -29104,7 +30267,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1165", "Contra Bassoon Soft", "woodwind",
@@ -29129,7 +30293,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1166", "Contra Bassoon Hard", "woodwind",
@@ -29154,7 +30319,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1167", "Contra Bassoon Vintage", "woodwind",
@@ -29179,7 +30345,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1168", "Contra Bassoon Modern", "woodwind",
@@ -29204,7 +30371,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1169", "Contra Bassoon Layered", "woodwind",
@@ -29229,7 +30397,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1170", "Contra Bassoon Solo", "woodwind",
@@ -29254,7 +30423,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1171", "Alto Flute", "woodwind",
@@ -29279,7 +30449,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1172", "Alto Flute Bright", "woodwind",
@@ -29304,7 +30475,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1173", "Alto Flute Dark", "woodwind",
@@ -29329,7 +30501,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1174", "Alto Flute Soft", "woodwind",
@@ -29354,7 +30527,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1175", "Alto Flute Hard", "woodwind",
@@ -29379,7 +30553,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1176", "Alto Flute Vintage", "woodwind",
@@ -29404,7 +30579,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1177", "Alto Flute Modern", "woodwind",
@@ -29429,7 +30605,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1178", "Alto Flute Layered", "woodwind",
@@ -29454,7 +30631,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1179", "Alto Flute Solo", "woodwind",
@@ -29479,7 +30657,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1180", " penny Whistle", "woodwind",
@@ -29504,7 +30683,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1181", " penny Whistle Bright", "woodwind",
@@ -29529,7 +30709,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1182", " penny Whistle Dark", "woodwind",
@@ -29554,7 +30735,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1183", " penny Whistle Soft", "woodwind",
@@ -29579,7 +30761,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1184", " penny Whistle Hard", "woodwind",
@@ -29604,7 +30787,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1185", " penny Whistle Vintage", "woodwind",
@@ -29629,7 +30813,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1186", " penny Whistle Modern", "woodwind",
@@ -29654,7 +30839,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1187", " penny Whistle Layered", "woodwind",
@@ -29679,7 +30865,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1188", " penny Whistle Solo", "woodwind",
@@ -29704,7 +30891,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1189", "Fife", "woodwind",
@@ -29729,7 +30917,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1190", "Fife Bright", "woodwind",
@@ -29754,7 +30943,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1191", "Fife Dark", "woodwind",
@@ -29779,7 +30969,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1192", "Fife Soft", "woodwind",
@@ -29804,7 +30995,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1193", "Fife Hard", "woodwind",
@@ -29829,7 +31021,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1194", "Fife Vintage", "woodwind",
@@ -29854,7 +31047,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1195", "Fife Modern", "woodwind",
@@ -29879,7 +31073,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1196", "Fife Layered", "woodwind",
@@ -29904,7 +31099,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1197", "Fife Solo", "woodwind",
@@ -29929,7 +31125,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1198", "Dizi", "woodwind",
@@ -29954,7 +31151,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1199", "Dizi Bright", "woodwind",
@@ -29979,7 +31177,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.60,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1200", "Dizi Dark", "woodwind",
@@ -30004,7 +31203,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1201", "Dizi Soft", "woodwind",
@@ -30029,7 +31229,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1202", "Dizi Hard", "woodwind",
@@ -30054,7 +31255,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1203", "Dizi Vintage", "woodwind",
@@ -30079,7 +31281,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1204", "Dizi Modern", "woodwind",
@@ -30104,7 +31307,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.50,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1205", "Dizi Layered", "woodwind",
@@ -30129,7 +31333,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.45,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1206", "Dizi Solo", "woodwind",
@@ -30154,7 +31359,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         7, 0.30, 0.15, 0.00, 1, 0.55,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1207", "Sitar", "ethnic",
@@ -30179,7 +31385,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1208", "Sitar Bright", "ethnic",
@@ -30204,7 +31411,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1209", "Sitar Dark", "ethnic",
@@ -30229,7 +31437,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.05,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1210", "Sitar Soft", "ethnic",
@@ -30254,7 +31463,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1211", "Sitar Hard", "ethnic",
@@ -30279,7 +31489,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1212", "Sitar Vintage", "ethnic",
@@ -30304,7 +31515,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1213", "Sitar Modern", "ethnic",
@@ -30329,7 +31541,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1214", "Sitar Layered", "ethnic",
@@ -30354,7 +31567,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1215", "Sitar Solo", "ethnic",
@@ -30379,7 +31593,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1216", "Banjo", "ethnic",
@@ -30404,7 +31619,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1217", "Banjo Bright", "ethnic",
@@ -30429,7 +31645,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1218", "Banjo Dark", "ethnic",
@@ -30454,7 +31671,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.05,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1219", "Banjo Soft", "ethnic",
@@ -30479,7 +31697,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1220", "Banjo Hard", "ethnic",
@@ -30504,7 +31723,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1221", "Banjo Vintage", "ethnic",
@@ -30529,7 +31749,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1222", "Banjo Modern", "ethnic",
@@ -30554,7 +31775,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1223", "Banjo Layered", "ethnic",
@@ -30579,7 +31801,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1224", "Banjo Solo", "ethnic",
@@ -30604,7 +31827,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1225", "Shamisen", "ethnic",
@@ -30629,7 +31853,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1226", "Shamisen Bright", "ethnic",
@@ -30654,7 +31879,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1227", "Shamisen Dark", "ethnic",
@@ -30679,7 +31905,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.05,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1228", "Shamisen Soft", "ethnic",
@@ -30704,7 +31931,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1229", "Shamisen Hard", "ethnic",
@@ -30729,7 +31957,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1230", "Shamisen Vintage", "ethnic",
@@ -30754,7 +31983,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1231", "Shamisen Modern", "ethnic",
@@ -30779,7 +32009,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1232", "Shamisen Layered", "ethnic",
@@ -30804,7 +32035,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1233", "Shamisen Solo", "ethnic",
@@ -30829,7 +32061,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1234", "Koto", "ethnic",
@@ -30854,7 +32087,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1235", "Koto Bright", "ethnic",
@@ -30879,7 +32113,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1236", "Koto Dark", "ethnic",
@@ -30904,7 +32139,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.05,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1237", "Koto Soft", "ethnic",
@@ -30929,7 +32165,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1238", "Koto Hard", "ethnic",
@@ -30954,7 +32191,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1239", "Koto Vintage", "ethnic",
@@ -30979,7 +32217,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1240", "Koto Modern", "ethnic",
@@ -31004,7 +32243,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1241", "Koto Layered", "ethnic",
@@ -31029,7 +32269,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1242", "Koto Solo", "ethnic",
@@ -31054,7 +32295,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1243", "Kalimba", "ethnic",
@@ -31079,7 +32321,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1244", "Kalimba Bright", "ethnic",
@@ -31104,7 +32347,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1245", "Kalimba Dark", "ethnic",
@@ -31129,7 +32373,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.05,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1246", "Kalimba Soft", "ethnic",
@@ -31154,7 +32399,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1247", "Kalimba Hard", "ethnic",
@@ -31179,7 +32425,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1248", "Kalimba Vintage", "ethnic",
@@ -31204,7 +32451,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1249", "Kalimba Modern", "ethnic",
@@ -31229,7 +32477,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1250", "Kalimba Layered", "ethnic",
@@ -31254,7 +32503,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1251", "Kalimba Solo", "ethnic",
@@ -31279,7 +32529,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1252", "Bagpipe", "ethnic",
@@ -31304,7 +32555,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1253", "Bagpipe Bright", "ethnic",
@@ -31329,7 +32581,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1254", "Bagpipe Dark", "ethnic",
@@ -31354,7 +32607,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.05,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1255", "Bagpipe Soft", "ethnic",
@@ -31379,7 +32633,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1256", "Bagpipe Hard", "ethnic",
@@ -31404,7 +32659,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1257", "Bagpipe Vintage", "ethnic",
@@ -31429,7 +32685,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1258", "Bagpipe Modern", "ethnic",
@@ -31454,7 +32711,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1259", "Bagpipe Layered", "ethnic",
@@ -31479,7 +32737,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1260", "Bagpipe Solo", "ethnic",
@@ -31504,7 +32763,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1261", "Fiddle", "ethnic",
@@ -31529,7 +32789,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1262", "Fiddle Bright", "ethnic",
@@ -31554,7 +32815,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1263", "Fiddle Dark", "ethnic",
@@ -31579,7 +32841,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.05,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1264", "Fiddle Soft", "ethnic",
@@ -31604,7 +32867,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1265", "Fiddle Hard", "ethnic",
@@ -31629,7 +32893,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1266", "Fiddle Vintage", "ethnic",
@@ -31654,7 +32919,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1267", "Fiddle Modern", "ethnic",
@@ -31679,7 +32945,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1268", "Fiddle Layered", "ethnic",
@@ -31704,7 +32971,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1269", "Fiddle Solo", "ethnic",
@@ -31729,7 +32997,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1270", "Shenai", "ethnic",
@@ -31754,7 +33023,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1271", "Shenai Bright", "ethnic",
@@ -31779,7 +33049,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1272", "Shenai Dark", "ethnic",
@@ -31804,7 +33075,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.05,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1273", "Shenai Soft", "ethnic",
@@ -31829,7 +33101,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1274", "Shenai Hard", "ethnic",
@@ -31854,7 +33127,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1275", "Shenai Vintage", "ethnic",
@@ -31879,7 +33153,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1276", "Shenai Modern", "ethnic",
@@ -31904,7 +33179,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1277", "Shenai Layered", "ethnic",
@@ -31929,7 +33205,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1278", "Shenai Solo", "ethnic",
@@ -31954,7 +33231,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1279", "Taisho Koto", "ethnic",
@@ -31979,7 +33257,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1280", "Taisho Koto Bright", "ethnic",
@@ -32004,7 +33283,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1281", "Taisho Koto Dark", "ethnic",
@@ -32029,7 +33309,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.05,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1282", "Taisho Koto Soft", "ethnic",
@@ -32054,7 +33335,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1283", "Taisho Koto Hard", "ethnic",
@@ -32079,7 +33361,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1284", "Taisho Koto Vintage", "ethnic",
@@ -32104,7 +33387,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1285", "Taisho Koto Modern", "ethnic",
@@ -32129,7 +33413,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1286", "Taisho Koto Layered", "ethnic",
@@ -32154,7 +33439,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1287", "Taisho Koto Solo", "ethnic",
@@ -32179,7 +33465,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1288", "Tinker Bell", "ethnic",
@@ -32204,7 +33491,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1289", "Tinker Bell Bright", "ethnic",
@@ -32229,7 +33517,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1290", "Tinker Bell Dark", "ethnic",
@@ -32254,7 +33543,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.05,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1291", "Tinker Bell Soft", "ethnic",
@@ -32279,7 +33569,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1292", "Tinker Bell Hard", "ethnic",
@@ -32304,7 +33595,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1293", "Tinker Bell Vintage", "ethnic",
@@ -32329,7 +33621,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.70,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1294", "Tinker Bell Modern", "ethnic",
@@ -32354,7 +33647,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.60,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1295", "Tinker Bell Layered", "ethnic",
@@ -32379,7 +33673,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1296", "Tinker Bell Solo", "ethnic",
@@ -32404,7 +33699,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1297", "Dulcimer", "ethnic",
@@ -32429,7 +33725,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1298", "Dulcimer Bright", "ethnic",
@@ -32454,7 +33751,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1299", "Dulcimer Dark", "ethnic",
@@ -32479,7 +33777,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.05,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1300", "Dulcimer Soft", "ethnic",
@@ -32504,7 +33803,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1301", "Dulcimer Hard", "ethnic",
@@ -32529,7 +33829,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1302", "Dulcimer Vintage", "ethnic",
@@ -32554,7 +33855,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1303", "Dulcimer Modern", "ethnic",
@@ -32579,7 +33881,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1304", "Dulcimer Layered", "ethnic",
@@ -32604,7 +33907,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1305", "Dulcimer Solo", "ethnic",
@@ -32629,7 +33933,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1306", "Steel Drums", "ethnic",
@@ -32654,7 +33959,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1307", "Steel Drums Bright", "ethnic",
@@ -32679,7 +33985,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1308", "Steel Drums Dark", "ethnic",
@@ -32704,7 +34011,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.05,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1309", "Steel Drums Soft", "ethnic",
@@ -32729,7 +34037,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1310", "Steel Drums Hard", "ethnic",
@@ -32754,7 +34063,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1311", "Steel Drums Vintage", "ethnic",
@@ -32779,7 +34089,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1312", "Steel Drums Modern", "ethnic",
@@ -32804,7 +34115,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1313", "Steel Drums Layered", "ethnic",
@@ -32829,7 +34141,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1314", "Steel Drums Solo", "ethnic",
@@ -32854,7 +34167,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1315", "Celtic Harp", "ethnic",
@@ -32879,7 +34193,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1316", "Celtic Harp Bright", "ethnic",
@@ -32904,7 +34219,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1317", "Celtic Harp Dark", "ethnic",
@@ -32929,7 +34245,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.05,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1318", "Celtic Harp Soft", "ethnic",
@@ -32954,7 +34271,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1319", "Celtic Harp Hard", "ethnic",
@@ -32979,7 +34297,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1320", "Celtic Harp Vintage", "ethnic",
@@ -33004,7 +34323,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1321", "Celtic Harp Modern", "ethnic",
@@ -33029,7 +34349,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1322", "Celtic Harp Layered", "ethnic",
@@ -33054,7 +34375,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1323", "Celtic Harp Solo", "ethnic",
@@ -33079,7 +34401,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1324", "Santoor", "ethnic",
@@ -33104,7 +34427,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1325", "Santoor Bright", "ethnic",
@@ -33129,7 +34453,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1326", "Santoor Dark", "ethnic",
@@ -33154,7 +34479,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.05,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1327", "Santoor Soft", "ethnic",
@@ -33179,7 +34505,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1328", "Santoor Hard", "ethnic",
@@ -33204,7 +34531,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1329", "Santoor Vintage", "ethnic",
@@ -33229,7 +34557,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1330", "Santoor Modern", "ethnic",
@@ -33254,7 +34583,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1331", "Santoor Layered", "ethnic",
@@ -33279,7 +34609,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.25,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1332", "Santoor Solo", "ethnic",
@@ -33304,7 +34635,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.35,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1333", "Oud", "ethnic",
@@ -33329,7 +34661,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.20,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1334", "Oud Bright", "ethnic",
@@ -33354,7 +34687,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.40,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1335", "Oud Dark", "ethnic",
@@ -33379,7 +34713,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.05,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1336", "Oud Soft", "ethnic",
@@ -33404,7 +34739,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1337", "Oud Hard", "ethnic",
@@ -33429,7 +34765,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.30,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     },
     {
         "juno-1338", "Oud Vintage", "ethnic",
@@ -33454,7 +34791,8 @@ inline constexpr PresetData kFullPresets[] = {
         0.00,
         false,
         0, 0.20, 0.10, 0.15, 3, 0.10,
-        false, 0, 120.0, 0.50, 0.00, 1
+        false, 0, 120.0, 0.50, 0.00, 1,
+        ""
     }
 };
 
