@@ -205,6 +205,8 @@ public:
         // wheelValue is 0..16383, center = 8192
         float normalized = (wheelValue - 8192) / 8192.0f;
         parts_[0].pitchBend = normalized;
+        if (samplePlayer_)
+            samplePlayer_->setPitchBend(normalized * 2.0f); // +/- 2 semitones
     }
     void setModWheel(float value) {
         parts_[0].modWheel = value;

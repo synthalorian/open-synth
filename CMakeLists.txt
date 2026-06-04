@@ -227,3 +227,20 @@ target_compile_definitions(sample_load_test PRIVATE
     JUCE_WEB_BROWSER=0
     JUCE_USE_CURL=0
 )
+
+# ── Sample Player Block Test ─────────────────────────────────────────────────
+add_executable(sample_player_block_test
+    tests/sample_player_block_test.cpp
+    dsp/sample_player.cpp
+    dsp/sample_stream.cpp
+)
+target_include_directories(sample_player_block_test PRIVATE src dsp include)
+target_link_libraries(sample_player_block_test PRIVATE
+    juce::juce_audio_basics
+    juce::juce_audio_formats
+    juce::juce_core
+)
+target_compile_definitions(sample_player_block_test PRIVATE
+    JUCE_WEB_BROWSER=0
+    JUCE_USE_CURL=0
+)

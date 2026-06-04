@@ -86,6 +86,10 @@ juce::AudioProcessorValueTreeState::ParameterLayout OpenSynthProcessor::createPa
     {
         auto sampleGroup = std::make_unique<juce::AudioProcessorParameterGroup>("sample", "Sample Player", "|");
         sampleGroup->addChild(std::make_unique<juce::AudioParameterFloat>("sampleMix", "Sample Mix", juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f), 0.0f));
+        sampleGroup->addChild(std::make_unique<juce::AudioParameterFloat>("sampleAttack", "Sample Attack", juce::NormalisableRange<float>(0.1f, 5000.0f, 0.1f, 0.3f), 10.0f));
+        sampleGroup->addChild(std::make_unique<juce::AudioParameterFloat>("sampleDecay", "Sample Decay", juce::NormalisableRange<float>(1.0f, 5000.0f, 0.1f, 0.3f), 100.0f));
+        sampleGroup->addChild(std::make_unique<juce::AudioParameterFloat>("sampleSustain", "Sample Sustain", juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f), 1.0f));
+        sampleGroup->addChild(std::make_unique<juce::AudioParameterFloat>("sampleRelease", "Sample Release", juce::NormalisableRange<float>(1.0f, 10000.0f, 0.1f, 0.3f), 200.0f));
         layout.add(std::move(sampleGroup));
     }
 
@@ -248,11 +252,16 @@ void OpenSynthProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::Mi
 
     synth_.setMasterVolume(*apvts_.getRawParameterValue("masterVolume"));
 
-    // Sample player mix
+    // Sample player mix + envelope
     if (auto* engine = synth_.getEngine())
     {
-        if (auto* sp = engine->getSamplePlayer())
+        if (auto* sp = engine->getSamplePlayer()) {
             sp->setMixLevel(*apvts_.getRawParameterValue("sampleMix"));
+            sp->setAttack(*apvts_.getRawParameterValue("sampleAttack"));
+            sp->setDecay(*apvts_.getRawParameterValue("sampleDecay"));
+            sp->setSustain(*apvts_.getRawParameterValue("sampleSustain"));
+            sp->setRelease(*apvts_.getRawParameterValue("sampleRelease"));
+        }
     }
 
     // FX slots
