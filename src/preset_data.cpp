@@ -49,6 +49,7 @@ void applyPresetToEngine(const PresetData& p, SynthEngineWrapper& e)
     // FX slots
     for (int slot = 0; slot < 3; ++slot)
     {
+        e.setFxType(slot + 1, p.fxSlotType[slot]);
         e.setFxEnabled(slot + 1, p.fxSlotEnabled[slot]);
         for (int param = 0; param < 4; ++param)
             e.setFxParam(slot + 1, param, clamp(p.fxSlotParam[slot][param], 0.0f, 1.0f));
