@@ -63,6 +63,25 @@ void SynthKnob::paint(juce::Graphics& g)
     g.setColour(SynthColors::textDim());
     g.setFont(juce::Font(juce::FontOptions(10.0f)));
     g.drawText(name_, cx - radius, cy + radius + 4, size, 14, juce::Justification::centred);
+
+    // Value display centered inside the knob
+    float val = static_cast<float>(getValue());
+    float range = static_cast<float>(getMaximum() - getMinimum());
+    juce::String valText;
+    if (range <= 0.0f)
+        valText = "";
+    else if (getInterval() >= 1.0f)
+        valText = juce::String(static_cast<int>(std::round(val)));
+    else if (range > 100.0f)
+        valText = juce::String(val, 0);
+    else if (range > 10.0f)
+        valText = juce::String(val, 1);
+    else
+        valText = juce::String(val, 2);
+
+    g.setColour(SynthColors::text().withAlpha(0.85f));
+    g.setFont(juce::Font(juce::FontOptions(9.0f)));
+    g.drawText(valText, cx - radius, cy - 4, size, 10, juce::Justification::centred);
 }
 
 void SynthKnob::resized() {}
@@ -247,76 +266,98 @@ FxSlotPanel::FxSlotPanel(juce::AudioProcessorValueTreeState& apvts, int slotInde
     typeSelector_.onChange = [this]() {
         updateParamLabels(typeSelector_.getSelectedItemIndex());
     };
+
+    // Initialize knob labels from current type
+    updateParamLabels(typeSelector_.getSelectedItemIndex());
 }
 
 void FxSlotPanel::populateFxTypes()
 {
     typeSelector_.addItem("None", 1);
+
+    typeSelector_.addSectionHeading("── Modulation ──");
     typeSelector_.addItem("Chorus", 2);
-    typeSelector_.addItem("Delay", 3);
-    typeSelector_.addItem("Reverb", 4);
-    typeSelector_.addItem("Phaser", 5);
+    typeSelector_.addItem("Chorus Ensemble", 35);
+    typeSelector_.addItem("Dimension D", 36);
     typeSelector_.addItem("Flanger", 6);
-    typeSelector_.addItem("Compressor", 7);
-    typeSelector_.addItem("Drive", 8);
-    typeSelector_.addItem("EQ", 9);
-    typeSelector_.addItem("Limiter", 10);
-    typeSelector_.addItem("Rotary", 11);
+    typeSelector_.addItem("Phaser", 5);
+    typeSelector_.addItem("Uni-Vibe", 34);
     typeSelector_.addItem("Tremolo", 12);
-    typeSelector_.addItem("Auto-Wah", 13);
-    typeSelector_.addItem("Bitcrusher", 14);
-    typeSelector_.addItem("Ring Mod", 15);
-    typeSelector_.addItem("Pitch Shift", 16);
+    typeSelector_.addItem("Vibrato", 32);
+    typeSelector_.addItem("Auto-Pan", 33);
+    typeSelector_.addItem("Rotary", 11);
+
+    typeSelector_.addSectionHeading("── Delay ──");
+    typeSelector_.addItem("Delay", 3);
     typeSelector_.addItem("Multi-tap Delay", 17);
     typeSelector_.addItem("Ping-Pong Delay", 18);
+    typeSelector_.addItem("Tape Delay", 38);
+    typeSelector_.addItem("Analog Delay", 39);
+    typeSelector_.addItem("Diffusion Delay", 40);
+    typeSelector_.addItem("Reverse Delay", 37);
+    typeSelector_.addItem("Grain Delay", 65);
+
+    typeSelector_.addSectionHeading("── Reverb ──");
+    typeSelector_.addItem("Reverb", 4);
+    typeSelector_.addItem("Room Reverb", 41);
+    typeSelector_.addItem("Hall Reverb", 42);
+    typeSelector_.addItem("Plate Reverb", 43);
     typeSelector_.addItem("Spring Reverb", 19);
+    typeSelector_.addItem("Shimmer Reverb", 44);
     typeSelector_.addItem("Gated Reverb", 20);
-    typeSelector_.addItem("Amp Sim", 21);
-    typeSelector_.addItem("Stereo Widener", 22);
-    typeSelector_.addItem("Vocoder", 23);
-    // Phase 6: Juno-Di FX parity
+    typeSelector_.addItem("Non-Linear Reverb", 45);
+
+    typeSelector_.addSectionHeading("── Distortion ──");
+    typeSelector_.addItem("Drive", 8);
     typeSelector_.addItem("Distortion", 24);
     typeSelector_.addItem("Overdrive", 25);
     typeSelector_.addItem("Fuzz", 26);
     typeSelector_.addItem("Tube Drive", 27);
+
+    typeSelector_.addSectionHeading("── Filter ──");
+    typeSelector_.addItem("EQ", 9);
+    typeSelector_.addItem("Graphic EQ", 58);
+    typeSelector_.addItem("Parametric EQ", 59);
     typeSelector_.addItem("Resonant Filter", 28);
     typeSelector_.addItem("Formant Filter", 29);
     typeSelector_.addItem("Comb Filter", 30);
-    typeSelector_.addItem("Talk Box", 31);
-    typeSelector_.addItem("Vibrato", 32);
-    typeSelector_.addItem("Auto-Pan", 33);
-    typeSelector_.addItem("Uni-Vibe", 34);
-    typeSelector_.addItem("Chorus Ensemble", 35);
-    typeSelector_.addItem("Dimension D", 36);
-    typeSelector_.addItem("Reverse Delay", 37);
-    typeSelector_.addItem("Tape Delay", 38);
-    typeSelector_.addItem("Analog Delay", 39);
-    typeSelector_.addItem("Diffusion Delay", 40);
-    typeSelector_.addItem("Room Reverb", 41);
-    typeSelector_.addItem("Hall Reverb", 42);
-    typeSelector_.addItem("Plate Reverb", 43);
-    typeSelector_.addItem("Shimmer Reverb", 44);
-    typeSelector_.addItem("Non-Linear Reverb", 45);
-    typeSelector_.addItem("Harmonizer", 46);
-    typeSelector_.addItem("Octaver", 47);
-    typeSelector_.addItem("Detune", 48);
+    typeSelector_.addItem("Wah-Wah", 60);
+    typeSelector_.addItem("Auto-Wah", 13);
+
+    typeSelector_.addSectionHeading("── Dynamics ──");
+    typeSelector_.addItem("Compressor", 7);
+    typeSelector_.addItem("Multiband Comp", 52);
+    typeSelector_.addItem("Limiter", 10);
+    typeSelector_.addItem("Maximizer", 61);
     typeSelector_.addItem("Noise Gate", 49);
     typeSelector_.addItem("De-Esser", 50);
     typeSelector_.addItem("Transient Shaper", 51);
-    typeSelector_.addItem("Multiband Comp", 52);
+
+    typeSelector_.addSectionHeading("── Pitch ──");
+    typeSelector_.addItem("Pitch Shift", 16);
+    typeSelector_.addItem("Harmonizer", 46);
+    typeSelector_.addItem("Octaver", 47);
+    typeSelector_.addItem("Detune", 48);
+    typeSelector_.addItem("Ring Mod", 15);
+    typeSelector_.addItem("Talk Box", 31);
+    typeSelector_.addItem("Vocoder", 23);
+
+    typeSelector_.addSectionHeading("── Amp & Cabinet ──");
+    typeSelector_.addItem("Amp Sim", 21);
+    typeSelector_.addItem("Cabinet Sim", 57);
+
+    typeSelector_.addSectionHeading("── Lo-Fi & Simulation ──");
+    typeSelector_.addItem("Bitcrusher", 14);
     typeSelector_.addItem("Lo-Fi", 53);
     typeSelector_.addItem("Vinyl Sim", 54);
     typeSelector_.addItem("Radio Sim", 55);
     typeSelector_.addItem("Telephone Sim", 56);
-    typeSelector_.addItem("Cabinet Sim", 57);
-    typeSelector_.addItem("Graphic EQ", 58);
-    typeSelector_.addItem("Parametric EQ", 59);
-    typeSelector_.addItem("Wah-Wah", 60);
-    typeSelector_.addItem("Maximizer", 61);
-    typeSelector_.addItem("Exciter", 62);
+
+    typeSelector_.addSectionHeading("── Spatial ──");
+    typeSelector_.addItem("Stereo Widener", 22);
     typeSelector_.addItem("Stereo Imager", 63);
+    typeSelector_.addItem("Exciter", 62);
     typeSelector_.addItem("Resonator", 64);
-    typeSelector_.addItem("Grain Delay", 65);
     typeSelector_.addItem("Spectral Freeze", 66);
 }
 
@@ -516,7 +557,7 @@ void MpePanel::paint(juce::Graphics& g)
     g.fillRoundedRectangle(b, 6.0f);
 
     g.setColour(juce::Colours::cyan);
-    g.setFont(juce::Font(14.0f, juce::Font::bold));
+    g.setFont(juce::Font(juce::FontOptions(14.0f, juce::Font::bold)));
     g.drawText("MPE", b.removeFromTop(28).reduced(8, 0), juce::Justification::centredLeft);
 }
 
