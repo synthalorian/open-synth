@@ -108,7 +108,7 @@ struct SampleVoice {
 
     // Process a block of samples into stereo output buffers.
     // 'numFrames' <= 512 typical. Returns number of frames written.
-    int processBlock(float* outL, float* outR, int numFrames, double sampleRate);
+    int processBlock(float* outL, float* outR, int numFrames, double sampleRate, float pitchBendSemitones = 0.0f);
 };
 
 class SamplePlayer {
@@ -149,6 +149,10 @@ public:
     // Mix level (0-1) into the synth output
     void setMixLevel(float level) { mixLevel_ = level; }
     float getMixLevel() const { return mixLevel_; }
+
+    // Global pitch bend in semitones (+/- range typical)
+    void setPitchBend(float semitones) { pitchBend_ = semitones; }
+    float getPitchBend() const { return pitchBend_; }
 
     // Global ADSR
     void setAttack(float ms);
@@ -204,6 +208,9 @@ private:
     float decayMs_ = 100.0f;
     float sustainLevel_ = 1.0f;
     float releaseMs_ = 200.0f;
+
+    // Global pitch bend (semitones)
+    float pitchBend_ = 0.0f;
 
     // Async preload state
     mutable std::mutex preloadMutex_;

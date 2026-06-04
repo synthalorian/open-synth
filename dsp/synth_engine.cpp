@@ -390,14 +390,6 @@ void SynthEngine::process(AudioBuffer& output) {
         leftOut *= masterVolume_;
         rightOut *= masterVolume_;
 
-        // Sample player mix-in
-        if (samplePlayer_ && samplePlayer_->getMixLevel() > 0.0f) {
-            float sampleLeft = 0.0f, sampleRight = 0.0f;
-            samplePlayer_->process(sampleLeft, sampleRight, 1);
-            leftOut += sampleLeft;
-            rightOut += sampleRight;
-        }
-
         // NaN/inf guard — if anything went sideways, zero it out
         if (!std::isfinite(leftOut)) leftOut = 0.0f;
         if (!std::isfinite(rightOut)) rightOut = 0.0f;
@@ -412,6 +404,27 @@ void SynthEngine::process(AudioBuffer& output) {
             output.data[frame * 2 + 1] = rightOut;
         } else {
             output.data[frame] = (leftOut + rightOut) * 0.5f;
+        }
+    }
+
+    // ── Sample player mix-in (block-based, after synth voice loop) ────────────
+    if (samplePlayer_ && samplePlayer_->getMixLevel() > 0.0f && numFrames > 0) {
+        static constexpr uint32_t kSampleBufMax = 2048;
+        float sampleLeft[kSampleBufMax] = {};
+        float sampleRight[kSampleBufMax] = {};
+        uint32_t sf = numFrames < kSampleBufMax ? numFrames : kSampleBufMax;
+        samplePlayer_->processBlock(sampleLeft, sampleRight, static_cast<int>(sf));
+        for (uint32_t frame = 0; frame < sf; ++frame) {
+            float sl = sampleLeft[frame];
+            float sr = sampleRight[frame];
+            if (!std::isfinite(sl)) sl = 0.0f;
+            if (!std::isfinite(sr)) sr = 0.0f;
+            if (stereo) {
+                output.data[frame * 2]     = std::tanh(output.data[frame * 2]     + sl);
+                output.data[frame * 2 + 1] = std::tanh(output.data[frame * 2 + 1] + sr);
+            } else {
+                output.data[frame] = std::tanh(output.data[frame] + (sl + sr) * 0.5f);
+            }
         }
     }
 

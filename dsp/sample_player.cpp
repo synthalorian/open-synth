@@ -60,6 +60,41 @@ static inline float readChannelLinear(const SampleStream* stream, double pos, in
     return s0[ch] + frac * (s1[ch] - s0[ch]);
 }
 
+// 4-point cubic Lagrange interpolation for higher-quality pitch shifting.
+// Uses linear fallback near buffer edges.
+static inline float readChannelCubic(const SampleStream* stream, double pos, int ch, int64_t numFrames) {
+    if (numFrames <= 1) return 0.0f;
+
+    int64_t i = static_cast<int64_t>(pos);
+    float frac = static_cast<float>(pos - static_cast<double>(i));
+
+    if (i < 1 || i >= numFrames - 2) {
+        // Edge fallback to linear
+        if (i < 0) i = 0;
+        if (i >= numFrames - 1) i = numFrames - 2;
+        float s0[2] = {0.0f, 0.0f};
+        float s1[2] = {0.0f, 0.0f};
+        stream->readSample(i, s0);
+        stream->readSample(i + 1, s1);
+        return s0[ch] + frac * (s1[ch] - s0[ch]);
+    }
+
+    float ym1[2] = {0.0f, 0.0f};
+    float y0[2]  = {0.0f, 0.0f};
+    float y1[2]  = {0.0f, 0.0f};
+    float y2[2]  = {0.0f, 0.0f};
+    stream->readSample(i - 1, ym1);
+    stream->readSample(i,     y0);
+    stream->readSample(i + 1, y1);
+    stream->readSample(i + 2, y2);
+
+    float a = (3.0f * y0[ch] - 3.0f * y1[ch] + y2[ch] - ym1[ch]) * 0.5f;
+    float b = (2.0f * ym1[ch] - 5.0f * y0[ch] + 4.0f * y1[ch] - y2[ch]) * 0.5f;
+    float c = (y1[ch] - ym1[ch]) * 0.5f;
+    float d = y0[ch];
+    return ((a * frac + b) * frac + c) * frac + d;
+}
+
 // Inline anti-aliasing 1-pole LP (per-channel state passed by reference)
 static inline float applyAA(float in, float coeff, float& state) {
     if (coeff >= 1.0f) return in;
@@ -187,7 +222,7 @@ float SampleVoice::process(double /*sampleRate*/) {
 
 // ── Block-based voice process ────────────────────────────────────────────────
 // Processes up to 'numFrames' samples into outL/outR. Returns frames written.
-int SampleVoice::processBlock(float* outL, float* outR, int numFrames, double /*sampleRate*/) {
+int SampleVoice::processBlock(float* outL, float* outR, int numFrames, double /*sampleRate*/, float pitchBendSemitones) {
     if (!active || !zone || envState == IDLE || numFrames <= 0) return 0;
 
     // Select stream (with round-robin override if set)
@@ -229,6 +264,11 @@ int SampleVoice::processBlock(float* outL, float* outR, int numFrames, double /*
     }
 
     float aaCoeff = (pitchRatio >= 1.0f) ? 1.0f : static_cast<float>(pitchRatio);
+    // Apply global pitch bend to the per-voice pitch ratio
+    double pitchBendRatio = std::pow(2.0, pitchBendSemitones / 12.0);
+    double effectivePitchRatio = pitchRatio * pitchBendRatio;
+    if (effectivePitchRatio > 0.0 && effectivePitchRatio < 1.0)
+        aaCoeff = static_cast<float>(effectivePitchRatio);
     int framesWritten = 0;
 
     for (int n = 0; n < numFrames; ++n) {
@@ -278,17 +318,17 @@ int SampleVoice::processBlock(float* outL, float* outR, int numFrames, double /*
             doCrossfade = true;
         }
 
-        // Linear interpolation read
-        float sampleL = readChannelLinear(stream.get(), effectivePos, 0, totalFrames);
-        float sampleR = readChannelLinear(stream.get(), effectivePos, 1, totalFrames);
+        // Cubic interpolation read (block path — higher quality pitch shifting)
+        float sampleL = readChannelCubic(stream.get(), effectivePos, 0, totalFrames);
+        float sampleR = readChannelCubic(stream.get(), effectivePos, 1, totalFrames);
 
         if (doCrossfade) {
-            float altL = readChannelLinear(stream.get(), altPos, 0, totalFrames);
-            float altR = readChannelLinear(stream.get(), altPos, 1, totalFrames);
+            float altL = readChannelCubic(stream.get(), altPos, 0, totalFrames);
+            float altR = readChannelCubic(stream.get(), altPos, 1, totalFrames);
             float invGain = 1.0f - crossfadeGain;
             sampleL = sampleL * invGain + altL * crossfadeGain;
             sampleR = sampleR * invGain + altR * crossfadeGain;
-            crossfadePos += pitchRatio;
+            crossfadePos += effectivePitchRatio;
             if (crossfadePos >= static_cast<double>(zone->crossfadeSamples)) {
                 position = loopStartPos + (crossfadePos - static_cast<double>(zone->crossfadeSamples));
                 inCrossfade = false;
@@ -300,7 +340,7 @@ int SampleVoice::processBlock(float* outL, float* outR, int numFrames, double /*
         sampleL = applyAA(sampleL, aaCoeff, aaStateL);
         sampleR = applyAA(sampleR, aaCoeff, aaStateR);
 
-        position += pitchRatio;
+        position += effectivePitchRatio;
 
         if (loopEnabled && position >= static_cast<double>(loopEnd)) {
             position = static_cast<double>(loopStart) + (position - static_cast<double>(loopEnd));
@@ -557,7 +597,7 @@ void SamplePlayer::processBlock(float* outL, float* outR, int numFrames) {
         std::memset(scratchL_.data(), 0, numFrames * sizeof(float));
         std::memset(scratchR_.data(), 0, numFrames * sizeof(float));
 
-        int written = voice.processBlock(scratchL_.data(), scratchR_.data(), numFrames, sampleRate_);
+        int written = voice.processBlock(scratchL_.data(), scratchR_.data(), numFrames, sampleRate_, pitchBend_);
         if (written > 0) {
             // Unrolled accumulation loop for better performance
             int i = 0;

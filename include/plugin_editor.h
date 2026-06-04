@@ -239,11 +239,13 @@ private:
     juce::Label categoryLabel_;
     juce::Label zoneCountLabel_;
     SynthKnob mixKnob_;
+    SynthKnob attackKnob_, decayKnob_, sustainKnob_, releaseKnob_;
     juce::TextButton browseButton_;
     juce::TextButton clearButton_;
     juce::TextButton editZonesButton_;
 
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mixAttach_;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> attackAttach_, decayAttach_, sustainAttach_, releaseAttach_;
     std::unique_ptr<juce::FileChooser> fileChooser_;
 
     juce::Viewport zoneViewport_;
