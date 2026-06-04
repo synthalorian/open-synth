@@ -1,0 +1,645 @@
+{
+  "name": "ColomboADK FreePats 20200530",
+  "zones": [
+    {
+      "file": "samples/drums-colombo-adk/samples/BassDrum-LV1.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/BassDrum-LV2.flac",
+      "minVelocity": 0.4409448818897638,
+      "maxVelocity": 0.7007874015748031,
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/BassDrum-MV1.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/BassDrum-MV2.flac",
+      "minVelocity": 0.7086614173228346,
+      "maxVelocity": 1.0,
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/BassDrum-HV1.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/BassDrum-HV2.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/BassDrum-HV3.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/BassDrum-HV4.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 0.5433070866141733,
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/SideStick-1.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/SideStick-2.flac",
+      "minVelocity": 0.5511811023622047,
+      "maxVelocity": 1.0,
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/SideStick-3.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/SideStick-4.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/SideStick-5.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/SideStick-6.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/SideStick-7.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 0.5354330708661418,
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/SnareDrum1-LV1.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/SnareDrum1-LV2.flac",
+      "minVelocity": 0.5433070866141733,
+      "maxVelocity": 1.0,
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/SnareDrum1-HV1.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/SnareDrum1-HV2.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/SnareDrum1-HV3.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/SnareDrum1-HV4.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/SnareDrum1-HV5.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/SnareDrum1-HV6.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/SnareDrum1-HV7.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/SnareDrum2-1.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/SnareDrum2-2.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/SnareDrum2-3.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/SnareDrum2-4.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/SnareDrumDry.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/LowTom-1.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/LowTom-2.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/MidTom-1.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/MidTom-2.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/MidTom-3.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/HiTom-1.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/HiTom-2.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/HiTom-3.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/ClosedHiHat-1.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/ClosedHiHat-2.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/ClosedHiHat-3.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/ClosedHiHat-4.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/ClosedHiHat-5.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/ClosedHiHat-6.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/ClosedHiHat-7.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/OpenHiHat-1.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/OpenHiHat-2.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/OpenHiHat-3.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/OpenHiHat-4.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/SemiOpenHiHat-1.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/SemiOpenHiHat-2.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/SemiOpenHiHat-3.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/LongOpenHiHat-1.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/LongOpenHiHat-2.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/Cymbal16iCrash-1.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/Cymbal16iCrash-2.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 0.8582677165354331,
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/Cymbal16iRide-MV1.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/Cymbal16iRide-MV1.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/Cymbal16iRide-MV1.flac",
+      "minVelocity": 0.8661417322834646,
+      "maxVelocity": 1.0,
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/Cymbal16iRide-HV1.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/Cymbal16iRide-HV2.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/Cymbal16iCup-1.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/Cymbal16iCup-2.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/Cymbal16iCup-3.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/Cymbal16iCup-4.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/Cymbal20iCrash.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 0.905511811023622,
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/Cymbal20iRide-MV1.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/Cymbal20iRide-MV2.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/Cymbal20iRide-MV3.flac",
+      "minVelocity": 0.9133858267716536,
+      "maxVelocity": 1.0,
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/Cymbal20iRide-HV1.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/Cymbal20iRide-HV2.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/Cymbal20iCup-1.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/Cymbal20iCup-2.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/Cymbal20iCup-3.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/Cymbal20iCup-4.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/DoubleLowTom-1.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/DoubleLowTom-2.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/DoubleMidTom-1.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/DoubleMidTom-2.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/DoubleHiTom-1.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/drums-colombo-adk/samples/DoubleHiTom-2.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    }
+  ]
+}

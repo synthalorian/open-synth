@@ -1,0 +1,389 @@
+{
+  "name": "SpanishClassicalGuitar-20190618",
+  "zones": [
+    {
+      "minNote": 29,
+      "maxNote": 31,
+      "rootNote": 31,
+      "file": "samples/guitar-spanish-classical/samples/G1.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/guitar-spanish-classical/samples/G#1.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/guitar-spanish-classical/samples/A1.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/guitar-spanish-classical/samples/A#1.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/guitar-spanish-classical/samples/B1.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/guitar-spanish-classical/samples/C2.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/guitar-spanish-classical/samples/C#2.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/guitar-spanish-classical/samples/D2.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/guitar-spanish-classical/samples/D#2.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/guitar-spanish-classical/samples/E2.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/guitar-spanish-classical/samples/F2.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 42,
+      "maxNote": 43,
+      "rootNote": 43,
+      "file": "samples/guitar-spanish-classical/samples/G2.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 44,
+      "maxNote": 45,
+      "rootNote": 45,
+      "file": "samples/guitar-spanish-classical/samples/A2.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 46,
+      "maxNote": 47,
+      "rootNote": 47,
+      "file": "samples/guitar-spanish-classical/samples/B2.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/guitar-spanish-classical/samples/C3.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 49,
+      "maxNote": 50,
+      "rootNote": 50,
+      "file": "samples/guitar-spanish-classical/samples/D3.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 51,
+      "maxNote": 52,
+      "rootNote": 52,
+      "file": "samples/guitar-spanish-classical/samples/E3.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/guitar-spanish-classical/samples/F3.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/guitar-spanish-classical/samples/F#3.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/guitar-spanish-classical/samples/G3.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/guitar-spanish-classical/samples/G#3.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/guitar-spanish-classical/samples/A3.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/guitar-spanish-classical/samples/A#3.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/guitar-spanish-classical/samples/B3.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/guitar-spanish-classical/samples/C4.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/guitar-spanish-classical/samples/C#4.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/guitar-spanish-classical/samples/D4.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/guitar-spanish-classical/samples/D#4.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/guitar-spanish-classical/samples/E4.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/guitar-spanish-classical/samples/F4.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/guitar-spanish-classical/samples/F#4.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/guitar-spanish-classical/samples/G4.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 68,
+      "maxNote": 69,
+      "rootNote": 69,
+      "file": "samples/guitar-spanish-classical/samples/A4.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/guitar-spanish-classical/samples/A#4.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/guitar-spanish-classical/samples/B4.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/guitar-spanish-classical/samples/C5.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/guitar-spanish-classical/samples/C#5.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/guitar-spanish-classical/samples/D5.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/guitar-spanish-classical/samples/D#5.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/guitar-spanish-classical/samples/E5.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/guitar-spanish-classical/samples/F5.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/guitar-spanish-classical/samples/F#5.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/guitar-spanish-classical/samples/G5.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/guitar-spanish-classical/samples/G#5.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/guitar-spanish-classical/samples/A5.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/guitar-spanish-classical/samples/A#5.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "file": "samples/guitar-spanish-classical/samples/B5.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
+      "minNote": 84,
+      "maxNote": 88,
+      "rootNote": 84,
+      "file": "samples/guitar-spanish-classical/samples/C6.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    }
+  ]
+}
