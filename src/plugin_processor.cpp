@@ -325,6 +325,60 @@ void OpenSynthProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::Mi
         auto* right = buffer.getReadPointer(1);
         waveformDisplay_->pushSamples(left, right, buffer.getNumSamples());
     }
+
+    // Phrase sampler mix-in
+    if (phraseSample.playing.load(std::memory_order_acquire))
+    {
+        int pos = phraseSample.playPosition.load(std::memory_order_relaxed);
+        int numBufSamples = phraseSample.getNumSamples();
+        int numFrames = buffer.getNumSamples();
+        float vol = phraseSample.volume;
+
+        if (numBufSamples > 0 && pos < numBufSamples)
+        {
+            int samplesToPlay = std::min(numFrames, numBufSamples - pos);
+            auto* outL = buffer.getWritePointer(0);
+            auto* outR = totalNumOutputChannels >= 2 ? buffer.getWritePointer(1) : outL;
+
+            if (phraseSample.buffer.getNumChannels() >= 2)
+            {
+                const float* srcL = phraseSample.buffer.getReadPointer(0);
+                const float* srcR = phraseSample.buffer.getReadPointer(1);
+                for (int i = 0; i < samplesToPlay; ++i)
+                {
+                    outL[i] += srcL[pos + i] * vol;
+                    outR[i] += srcR[pos + i] * vol;
+                }
+            }
+            else
+            {
+                const float* src = phraseSample.buffer.getReadPointer(0);
+                for (int i = 0; i < samplesToPlay; ++i)
+                {
+                    outL[i] += src[pos + i] * vol;
+                    outR[i] += src[pos + i] * vol;
+                }
+            }
+
+            pos += samplesToPlay;
+            if (pos >= numBufSamples)
+            {
+                if (phraseSample.looping.load(std::memory_order_relaxed))
+                {
+                    pos = 0;
+                }
+                else
+                {
+                    phraseSample.playing.store(false, std::memory_order_release);
+                }
+            }
+            phraseSample.playPosition.store(pos, std::memory_order_release);
+        }
+        else
+        {
+            phraseSample.playing.store(false, std::memory_order_release);
+        }
+    }
 }
 
 void OpenSynthProcessor::handleMidiCC(int ccNumber, float value)

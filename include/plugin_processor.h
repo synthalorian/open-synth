@@ -54,6 +54,22 @@ public:
     // Waveform display — set by editor, read by processor (atomic-safe)
     void setWaveformDisplay(WaveformDisplay* display) { waveformDisplay_ = display; }
 
+    // Phrase sampler — load a stereo buffer for one-shot playback
+    struct PhraseSample {
+        juce::AudioBuffer<float> buffer;
+        std::atomic<int> playPosition{0};
+        std::atomic<bool> playing{false};
+        std::atomic<bool> looping{false};
+        float volume = 0.8f;
+        double sampleRate = 48000.0;
+
+        void stop() { playing.store(false, std::memory_order_release); playPosition.store(0, std::memory_order_release); }
+        void start() { playPosition.store(0, std::memory_order_release); playing.store(true, std::memory_order_release); }
+        int getNumSamples() const { return buffer.getNumSamples(); }
+    };
+
+    PhraseSample phraseSample;
+
     static juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
 
 private:
