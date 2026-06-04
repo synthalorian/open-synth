@@ -2,770 +2,770 @@
   "name": "EGuitarFSBS-bridge-clean-20220911",
   "zones": [
     {
+      "minNote": 35,
+      "maxNote": 38,
+      "maxVelocity": 0.7244094488188977,
+      "rootNote": 36,
       "file": "samples/guitar-electric-clean/samples/C2_s1_soft_01.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
-      "maxVelocity": 1.0
+      "minVelocity": 0.0
     },
     {
+      "minNote": 35,
+      "maxNote": 38,
+      "maxVelocity": 0.7244094488188977,
+      "rootNote": 36,
       "file": "samples/guitar-electric-clean/samples/C2_s1_soft_02.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
-      "maxVelocity": 1.0
+      "minVelocity": 0.0
     },
     {
+      "minNote": 35,
+      "maxNote": 38,
+      "maxVelocity": 0.7244094488188977,
+      "rootNote": 36,
       "file": "samples/guitar-electric-clean/samples/C2_s1_soft_03.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
-      "maxVelocity": 1.0
+      "minVelocity": 0.0
     },
     {
+      "minNote": 35,
+      "maxNote": 38,
+      "maxVelocity": 0.7244094488188977,
+      "rootNote": 36,
       "file": "samples/guitar-electric-clean/samples/C2_s1_soft_04.flac",
+      "minVelocity": 0.0
+    },
+    {
       "minNote": 35,
       "maxNote": 38,
       "minVelocity": 0.7322834645669292,
       "rootNote": 36,
-      "maxVelocity": 1.0
-    },
-    {
       "file": "samples/guitar-electric-clean/samples/C2_s1_01.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 35,
+      "maxNote": 38,
+      "minVelocity": 0.7322834645669292,
+      "rootNote": 36,
       "file": "samples/guitar-electric-clean/samples/C2_s1_02.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 35,
+      "maxNote": 38,
+      "minVelocity": 0.7322834645669292,
+      "rootNote": 36,
       "file": "samples/guitar-electric-clean/samples/C2_s1_03.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 35,
+      "maxNote": 38,
+      "minVelocity": 0.7322834645669292,
+      "rootNote": 36,
       "file": "samples/guitar-electric-clean/samples/C2_s1_04.flac",
+      "maxVelocity": 1.0
+    },
+    {
       "minNote": 39,
       "maxNote": 40,
       "maxVelocity": 0.7244094488188977,
       "rootNote": 40,
-      "minVelocity": 0.0
-    },
-    {
       "file": "samples/guitar-electric-clean/samples/E2_s1_soft_01.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
-      "maxVelocity": 1.0
+      "minVelocity": 0.0
     },
     {
+      "minNote": 39,
+      "maxNote": 40,
+      "maxVelocity": 0.7244094488188977,
+      "rootNote": 40,
       "file": "samples/guitar-electric-clean/samples/E2_s1_soft_02.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
-      "maxVelocity": 1.0
+      "minVelocity": 0.0
     },
     {
+      "minNote": 39,
+      "maxNote": 40,
+      "maxVelocity": 0.7244094488188977,
+      "rootNote": 40,
       "file": "samples/guitar-electric-clean/samples/E2_s1_soft_03.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
-      "maxVelocity": 1.0
+      "minVelocity": 0.0
     },
     {
+      "minNote": 39,
+      "maxNote": 40,
+      "maxVelocity": 0.7244094488188977,
+      "rootNote": 40,
       "file": "samples/guitar-electric-clean/samples/E2_s1_soft_04.flac",
+      "minVelocity": 0.0
+    },
+    {
       "minNote": 39,
       "maxNote": 40,
       "minVelocity": 0.7322834645669292,
       "rootNote": 40,
-      "maxVelocity": 1.0
-    },
-    {
       "file": "samples/guitar-electric-clean/samples/E2_s1_01.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 39,
+      "maxNote": 40,
+      "minVelocity": 0.7322834645669292,
+      "rootNote": 40,
       "file": "samples/guitar-electric-clean/samples/E2_s1_02.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 39,
+      "maxNote": 40,
+      "minVelocity": 0.7322834645669292,
+      "rootNote": 40,
       "file": "samples/guitar-electric-clean/samples/E2_s1_03.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 39,
+      "maxNote": 40,
+      "minVelocity": 0.7322834645669292,
+      "rootNote": 40,
       "file": "samples/guitar-electric-clean/samples/E2_s1_04.flac",
+      "maxVelocity": 1.0
+    },
+    {
       "minNote": 41,
       "maxNote": 42,
       "maxVelocity": 0.7244094488188977,
       "rootNote": 41,
-      "minVelocity": 0.0
-    },
-    {
       "file": "samples/guitar-electric-clean/samples/F2_s1_soft_01.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
-      "maxVelocity": 1.0
+      "minVelocity": 0.0
     },
     {
+      "minNote": 41,
+      "maxNote": 42,
+      "maxVelocity": 0.7244094488188977,
+      "rootNote": 41,
       "file": "samples/guitar-electric-clean/samples/F2_s1_soft_02.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
-      "maxVelocity": 1.0
+      "minVelocity": 0.0
     },
     {
+      "minNote": 41,
+      "maxNote": 42,
+      "maxVelocity": 0.7244094488188977,
+      "rootNote": 41,
       "file": "samples/guitar-electric-clean/samples/F2_s1_soft_03.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
-      "maxVelocity": 1.0
+      "minVelocity": 0.0
     },
     {
+      "minNote": 41,
+      "maxNote": 42,
+      "maxVelocity": 0.7244094488188977,
+      "rootNote": 41,
       "file": "samples/guitar-electric-clean/samples/F2_s1_soft_04.flac",
+      "minVelocity": 0.0
+    },
+    {
       "minNote": 41,
       "maxNote": 42,
       "minVelocity": 0.7322834645669292,
       "rootNote": 41,
-      "maxVelocity": 1.0
-    },
-    {
       "file": "samples/guitar-electric-clean/samples/F2_s1_01.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 41,
+      "maxNote": 42,
+      "minVelocity": 0.7322834645669292,
+      "rootNote": 41,
       "file": "samples/guitar-electric-clean/samples/F2_s1_02.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 41,
+      "maxNote": 42,
+      "minVelocity": 0.7322834645669292,
+      "rootNote": 41,
       "file": "samples/guitar-electric-clean/samples/F2_s1_03.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 41,
+      "maxNote": 42,
+      "minVelocity": 0.7322834645669292,
+      "rootNote": 41,
       "file": "samples/guitar-electric-clean/samples/F2_s1_04.flac",
+      "maxVelocity": 1.0
+    },
+    {
       "minNote": 43,
       "maxNote": 46,
       "maxVelocity": 0.7244094488188977,
       "rootNote": 45,
-      "minVelocity": 0.0
-    },
-    {
       "file": "samples/guitar-electric-clean/samples/A2_s2_soft_01.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
-      "maxVelocity": 1.0
+      "minVelocity": 0.0
     },
     {
+      "minNote": 43,
+      "maxNote": 46,
+      "maxVelocity": 0.7244094488188977,
+      "rootNote": 45,
       "file": "samples/guitar-electric-clean/samples/A2_s2_soft_02.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
-      "maxVelocity": 1.0
+      "minVelocity": 0.0
     },
     {
+      "minNote": 43,
+      "maxNote": 46,
+      "maxVelocity": 0.7244094488188977,
+      "rootNote": 45,
       "file": "samples/guitar-electric-clean/samples/A2_s2_soft_03.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
-      "maxVelocity": 1.0
+      "minVelocity": 0.0
     },
     {
+      "minNote": 43,
+      "maxNote": 46,
+      "maxVelocity": 0.7244094488188977,
+      "rootNote": 45,
       "file": "samples/guitar-electric-clean/samples/A2_s2_soft_04.flac",
+      "minVelocity": 0.0
+    },
+    {
       "minNote": 43,
       "maxNote": 46,
       "minVelocity": 0.7322834645669292,
       "rootNote": 45,
-      "maxVelocity": 1.0
-    },
-    {
       "file": "samples/guitar-electric-clean/samples/A2_s2_01.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 43,
+      "maxNote": 46,
+      "minVelocity": 0.7322834645669292,
+      "rootNote": 45,
       "file": "samples/guitar-electric-clean/samples/A2_s2_02.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 43,
+      "maxNote": 46,
+      "minVelocity": 0.7322834645669292,
+      "rootNote": 45,
       "file": "samples/guitar-electric-clean/samples/A2_s2_03.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 43,
+      "maxNote": 46,
+      "minVelocity": 0.7322834645669292,
+      "rootNote": 45,
       "file": "samples/guitar-electric-clean/samples/A2_s2_04.flac",
+      "maxVelocity": 1.0
+    },
+    {
       "minNote": 47,
       "maxNote": 49,
       "maxVelocity": 0.7244094488188977,
       "rootNote": 48,
-      "minVelocity": 0.0
-    },
-    {
       "file": "samples/guitar-electric-clean/samples/C3_s2_soft_01.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
-      "maxVelocity": 1.0
+      "minVelocity": 0.0
     },
     {
+      "minNote": 47,
+      "maxNote": 49,
+      "maxVelocity": 0.7244094488188977,
+      "rootNote": 48,
       "file": "samples/guitar-electric-clean/samples/C3_s2_soft_02.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
-      "maxVelocity": 1.0
+      "minVelocity": 0.0
     },
     {
+      "minNote": 47,
+      "maxNote": 49,
+      "maxVelocity": 0.7244094488188977,
+      "rootNote": 48,
       "file": "samples/guitar-electric-clean/samples/C3_s2_soft_03.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
-      "maxVelocity": 1.0
+      "minVelocity": 0.0
     },
     {
+      "minNote": 47,
+      "maxNote": 49,
+      "maxVelocity": 0.7244094488188977,
+      "rootNote": 48,
       "file": "samples/guitar-electric-clean/samples/C3_s2_soft_04.flac",
+      "minVelocity": 0.0
+    },
+    {
       "minNote": 47,
       "maxNote": 49,
       "minVelocity": 0.7322834645669292,
       "rootNote": 48,
-      "maxVelocity": 1.0
-    },
-    {
       "file": "samples/guitar-electric-clean/samples/C3_s2_01.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 47,
+      "maxNote": 49,
+      "minVelocity": 0.7322834645669292,
+      "rootNote": 48,
       "file": "samples/guitar-electric-clean/samples/C3_s2_02.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 47,
+      "maxNote": 49,
+      "minVelocity": 0.7322834645669292,
+      "rootNote": 48,
       "file": "samples/guitar-electric-clean/samples/C3_s2_03.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 47,
+      "maxNote": 49,
+      "minVelocity": 0.7322834645669292,
+      "rootNote": 48,
       "file": "samples/guitar-electric-clean/samples/C3_s2_04.flac",
+      "maxVelocity": 1.0
+    },
+    {
       "minNote": 50,
       "maxNote": 51,
       "maxVelocity": 0.7244094488188977,
       "rootNote": 50,
-      "minVelocity": 0.0
-    },
-    {
       "file": "samples/guitar-electric-clean/samples/D3_s3_soft_01.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
-      "maxVelocity": 1.0
+      "minVelocity": 0.0
     },
     {
+      "minNote": 50,
+      "maxNote": 51,
+      "maxVelocity": 0.7244094488188977,
+      "rootNote": 50,
       "file": "samples/guitar-electric-clean/samples/D3_s3_soft_02.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
-      "maxVelocity": 1.0
+      "minVelocity": 0.0
     },
     {
+      "minNote": 50,
+      "maxNote": 51,
+      "maxVelocity": 0.7244094488188977,
+      "rootNote": 50,
       "file": "samples/guitar-electric-clean/samples/D3_s3_soft_03.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
-      "maxVelocity": 1.0
+      "minVelocity": 0.0
     },
     {
+      "minNote": 50,
+      "maxNote": 51,
+      "maxVelocity": 0.7244094488188977,
+      "rootNote": 50,
       "file": "samples/guitar-electric-clean/samples/D3_s3_soft_04.flac",
+      "minVelocity": 0.0
+    },
+    {
       "minNote": 50,
       "maxNote": 51,
       "minVelocity": 0.7322834645669292,
       "rootNote": 50,
-      "maxVelocity": 1.0
-    },
-    {
       "file": "samples/guitar-electric-clean/samples/D3_s3_01.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 50,
+      "maxNote": 51,
+      "minVelocity": 0.7322834645669292,
+      "rootNote": 50,
       "file": "samples/guitar-electric-clean/samples/D3_s3_02.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 50,
+      "maxNote": 51,
+      "minVelocity": 0.7322834645669292,
+      "rootNote": 50,
       "file": "samples/guitar-electric-clean/samples/D3_s3_03.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 50,
+      "maxNote": 51,
+      "minVelocity": 0.7322834645669292,
+      "rootNote": 50,
       "file": "samples/guitar-electric-clean/samples/D3_s3_04.flac",
+      "maxVelocity": 1.0
+    },
+    {
       "minNote": 52,
       "maxNote": 53,
       "maxVelocity": 0.7244094488188977,
       "rootNote": 52,
-      "minVelocity": 0.0
-    },
-    {
       "file": "samples/guitar-electric-clean/samples/E3_s3_soft_01.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
-      "maxVelocity": 1.0
+      "minVelocity": 0.0
     },
     {
+      "minNote": 52,
+      "maxNote": 53,
+      "maxVelocity": 0.7244094488188977,
+      "rootNote": 52,
       "file": "samples/guitar-electric-clean/samples/E3_s3_soft_02.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
-      "maxVelocity": 1.0
+      "minVelocity": 0.0
     },
     {
+      "minNote": 52,
+      "maxNote": 53,
+      "maxVelocity": 0.7244094488188977,
+      "rootNote": 52,
       "file": "samples/guitar-electric-clean/samples/E3_s3_soft_03.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
-      "maxVelocity": 1.0
+      "minVelocity": 0.0
     },
     {
+      "minNote": 52,
+      "maxNote": 53,
+      "maxVelocity": 0.7244094488188977,
+      "rootNote": 52,
       "file": "samples/guitar-electric-clean/samples/E3_s3_soft_04.flac",
+      "minVelocity": 0.0
+    },
+    {
       "minNote": 52,
       "maxNote": 53,
       "minVelocity": 0.7322834645669292,
       "rootNote": 52,
-      "maxVelocity": 1.0
-    },
-    {
       "file": "samples/guitar-electric-clean/samples/E3_s3_01.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 52,
+      "maxNote": 53,
+      "minVelocity": 0.7322834645669292,
+      "rootNote": 52,
       "file": "samples/guitar-electric-clean/samples/E3_s3_02.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 52,
+      "maxNote": 53,
+      "minVelocity": 0.7322834645669292,
+      "rootNote": 52,
       "file": "samples/guitar-electric-clean/samples/E3_s3_03.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 52,
+      "maxNote": 53,
+      "minVelocity": 0.7322834645669292,
+      "rootNote": 52,
       "file": "samples/guitar-electric-clean/samples/E3_s3_04.flac",
+      "maxVelocity": 1.0
+    },
+    {
       "minNote": 54,
       "maxNote": 56,
       "maxVelocity": 0.7244094488188977,
       "rootNote": 55,
-      "minVelocity": 0.0
-    },
-    {
       "file": "samples/guitar-electric-clean/samples/G3_s4_soft_01.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
-      "maxVelocity": 1.0
+      "minVelocity": 0.0
     },
     {
+      "minNote": 54,
+      "maxNote": 56,
+      "maxVelocity": 0.7244094488188977,
+      "rootNote": 55,
       "file": "samples/guitar-electric-clean/samples/G3_s4_soft_02.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
-      "maxVelocity": 1.0
+      "minVelocity": 0.0
     },
     {
+      "minNote": 54,
+      "maxNote": 56,
+      "maxVelocity": 0.7244094488188977,
+      "rootNote": 55,
       "file": "samples/guitar-electric-clean/samples/G3_s4_soft_03.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
-      "maxVelocity": 1.0
+      "minVelocity": 0.0
     },
     {
+      "minNote": 54,
+      "maxNote": 56,
+      "maxVelocity": 0.7244094488188977,
+      "rootNote": 55,
       "file": "samples/guitar-electric-clean/samples/G3_s4_soft_04.flac",
+      "minVelocity": 0.0
+    },
+    {
       "minNote": 54,
       "maxNote": 56,
       "minVelocity": 0.7322834645669292,
       "rootNote": 55,
-      "maxVelocity": 1.0
-    },
-    {
       "file": "samples/guitar-electric-clean/samples/G3_s4_01.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 54,
+      "maxNote": 56,
+      "minVelocity": 0.7322834645669292,
+      "rootNote": 55,
       "file": "samples/guitar-electric-clean/samples/G3_s4_02.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 54,
+      "maxNote": 56,
+      "minVelocity": 0.7322834645669292,
+      "rootNote": 55,
       "file": "samples/guitar-electric-clean/samples/G3_s4_03.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 54,
+      "maxNote": 56,
+      "minVelocity": 0.7322834645669292,
+      "rootNote": 55,
       "file": "samples/guitar-electric-clean/samples/G3_s4_04.flac",
+      "maxVelocity": 1.0
+    },
+    {
       "minNote": 57,
       "maxNote": 59,
       "maxVelocity": 0.7244094488188977,
       "rootNote": 59,
-      "minVelocity": 0.0
-    },
-    {
       "file": "samples/guitar-electric-clean/samples/B3_s5_soft_01.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
-      "maxVelocity": 1.0
+      "minVelocity": 0.0
     },
     {
+      "minNote": 57,
+      "maxNote": 59,
+      "maxVelocity": 0.7244094488188977,
+      "rootNote": 59,
       "file": "samples/guitar-electric-clean/samples/B3_s5_soft_02.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
-      "maxVelocity": 1.0
+      "minVelocity": 0.0
     },
     {
+      "minNote": 57,
+      "maxNote": 59,
+      "maxVelocity": 0.7244094488188977,
+      "rootNote": 59,
       "file": "samples/guitar-electric-clean/samples/B3_s5_soft_03.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
-      "maxVelocity": 1.0
+      "minVelocity": 0.0
     },
     {
+      "minNote": 57,
+      "maxNote": 59,
+      "maxVelocity": 0.7244094488188977,
+      "rootNote": 59,
       "file": "samples/guitar-electric-clean/samples/B3_s5_soft_04.flac",
+      "minVelocity": 0.0
+    },
+    {
       "minNote": 57,
       "maxNote": 59,
       "minVelocity": 0.7322834645669292,
       "rootNote": 59,
-      "maxVelocity": 1.0
-    },
-    {
       "file": "samples/guitar-electric-clean/samples/B3_s5_01.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 57,
+      "maxNote": 59,
+      "minVelocity": 0.7322834645669292,
+      "rootNote": 59,
       "file": "samples/guitar-electric-clean/samples/B3_s5_02.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 57,
+      "maxNote": 59,
+      "minVelocity": 0.7322834645669292,
+      "rootNote": 59,
       "file": "samples/guitar-electric-clean/samples/B3_s5_03.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 57,
+      "maxNote": 59,
+      "minVelocity": 0.7322834645669292,
+      "rootNote": 59,
       "file": "samples/guitar-electric-clean/samples/B3_s5_04.flac",
+      "maxVelocity": 1.0
+    },
+    {
       "minNote": 60,
       "maxNote": 62,
       "maxVelocity": 0.7244094488188977,
       "rootNote": 61,
-      "minVelocity": 0.0
-    },
-    {
       "file": "samples/guitar-electric-clean/samples/C#4_s5_soft_01.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
-      "maxVelocity": 1.0
+      "minVelocity": 0.0
     },
     {
+      "minNote": 60,
+      "maxNote": 62,
+      "maxVelocity": 0.7244094488188977,
+      "rootNote": 61,
       "file": "samples/guitar-electric-clean/samples/C#4_s5_soft_02.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
-      "maxVelocity": 1.0
+      "minVelocity": 0.0
     },
     {
+      "minNote": 60,
+      "maxNote": 62,
+      "maxVelocity": 0.7244094488188977,
+      "rootNote": 61,
       "file": "samples/guitar-electric-clean/samples/C#4_s5_soft_03.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
-      "maxVelocity": 1.0
+      "minVelocity": 0.0
     },
     {
+      "minNote": 60,
+      "maxNote": 62,
+      "maxVelocity": 0.7244094488188977,
+      "rootNote": 61,
       "file": "samples/guitar-electric-clean/samples/C#4_s5_soft_04.flac",
+      "minVelocity": 0.0
+    },
+    {
       "minNote": 60,
       "maxNote": 62,
       "minVelocity": 0.7322834645669292,
       "rootNote": 61,
-      "maxVelocity": 1.0
-    },
-    {
       "file": "samples/guitar-electric-clean/samples/C#4_s5_01.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 60,
+      "maxNote": 62,
+      "minVelocity": 0.7322834645669292,
+      "rootNote": 61,
       "file": "samples/guitar-electric-clean/samples/C#4_s5_02.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 60,
+      "maxNote": 62,
+      "minVelocity": 0.7322834645669292,
+      "rootNote": 61,
       "file": "samples/guitar-electric-clean/samples/C#4_s5_03.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 60,
+      "maxNote": 62,
+      "minVelocity": 0.7322834645669292,
+      "rootNote": 61,
       "file": "samples/guitar-electric-clean/samples/C#4_s5_04.flac",
+      "maxVelocity": 1.0
+    },
+    {
       "minNote": 63,
       "maxNote": 65,
       "maxVelocity": 0.7244094488188977,
       "rootNote": 64,
+      "file": "samples/guitar-electric-clean/samples/E4_s6_soft_01.flac",
       "minVelocity": 0.0
     },
     {
-      "file": "samples/guitar-electric-clean/samples/E4_s6_soft_01.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
-      "maxVelocity": 1.0
-    },
-    {
+      "minNote": 63,
+      "maxNote": 65,
+      "maxVelocity": 0.7244094488188977,
+      "rootNote": 64,
       "file": "samples/guitar-electric-clean/samples/E4_s6_soft_02.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
-      "maxVelocity": 1.0
+      "minVelocity": 0.0
     },
     {
+      "minNote": 63,
+      "maxNote": 65,
+      "maxVelocity": 0.7244094488188977,
+      "rootNote": 64,
       "file": "samples/guitar-electric-clean/samples/E4_s6_soft_03.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
-      "maxVelocity": 1.0
+      "minVelocity": 0.0
     },
     {
+      "minNote": 63,
+      "maxNote": 65,
+      "maxVelocity": 0.7244094488188977,
+      "rootNote": 64,
       "file": "samples/guitar-electric-clean/samples/E4_s6_soft_04.flac",
+      "minVelocity": 0.0
+    },
+    {
       "minNote": 63,
       "maxNote": 65,
       "minVelocity": 0.7322834645669292,
       "rootNote": 64,
-      "maxVelocity": 1.0
-    },
-    {
       "file": "samples/guitar-electric-clean/samples/E4_s6_01.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 63,
+      "maxNote": 65,
+      "minVelocity": 0.7322834645669292,
+      "rootNote": 64,
       "file": "samples/guitar-electric-clean/samples/E4_s6_02.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 63,
+      "maxNote": 65,
+      "minVelocity": 0.7322834645669292,
+      "rootNote": 64,
       "file": "samples/guitar-electric-clean/samples/E4_s6_03.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
-      "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 63,
+      "maxNote": 65,
+      "minVelocity": 0.7322834645669292,
+      "rootNote": 64,
       "file": "samples/guitar-electric-clean/samples/E4_s6_04.flac",
+      "maxVelocity": 1.0
+    },
+    {
       "minNote": 66,
       "maxNote": 69,
       "rootNote": 67,
-      "minVelocity": 0.0,
-      "maxVelocity": 1.0
-    },
-    {
       "file": "samples/guitar-electric-clean/samples/G4_s6_01.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
       "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 66,
+      "maxNote": 69,
+      "rootNote": 67,
       "file": "samples/guitar-electric-clean/samples/G4_s6_02.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
       "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 66,
+      "maxNote": 69,
+      "rootNote": 67,
       "file": "samples/guitar-electric-clean/samples/G4_s6_03.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
       "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 66,
+      "maxNote": 69,
+      "rootNote": 67,
       "file": "samples/guitar-electric-clean/samples/G4_s6_04.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
       "minNote": 70,
       "maxNote": 71,
       "rootNote": 71,
-      "minVelocity": 0.0,
-      "maxVelocity": 1.0
-    },
-    {
       "file": "samples/guitar-electric-clean/samples/B4_s6_01.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
       "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 70,
+      "maxNote": 71,
+      "rootNote": 71,
       "file": "samples/guitar-electric-clean/samples/B4_s6_02.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
       "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 70,
+      "maxNote": 71,
+      "rootNote": 71,
       "file": "samples/guitar-electric-clean/samples/B4_s6_03.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
       "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 70,
+      "maxNote": 71,
+      "rootNote": 71,
       "file": "samples/guitar-electric-clean/samples/B4_s6_04.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
       "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
@@ -795,169 +795,169 @@
     },
     {
       "file": "samples/guitar-electric-clean/samples/C5_s6_04.flac",
+      "rootNote": 60,
+      "minNote": 0,
+      "maxNote": 127,
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
       "minNote": 73,
       "maxNote": 75,
       "rootNote": 74,
-      "minVelocity": 0.0,
-      "maxVelocity": 1.0
-    },
-    {
       "file": "samples/guitar-electric-clean/samples/D5_s6_01.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
       "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 73,
+      "maxNote": 75,
+      "rootNote": 74,
       "file": "samples/guitar-electric-clean/samples/D5_s6_02.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
       "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 73,
+      "maxNote": 75,
+      "rootNote": 74,
       "file": "samples/guitar-electric-clean/samples/D5_s6_03.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
       "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 73,
+      "maxNote": 75,
+      "rootNote": 74,
       "file": "samples/guitar-electric-clean/samples/D5_s6_soft_01.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
       "minNote": 76,
       "maxNote": 78,
       "rootNote": 77,
-      "minVelocity": 0.0,
-      "maxVelocity": 1.0
-    },
-    {
       "file": "samples/guitar-electric-clean/samples/F5_s6_01.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
       "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 76,
+      "maxNote": 78,
+      "rootNote": 77,
       "file": "samples/guitar-electric-clean/samples/F5_s6_02.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
       "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 76,
+      "maxNote": 78,
+      "rootNote": 77,
       "file": "samples/guitar-electric-clean/samples/F5_s6_03.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
       "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 76,
+      "maxNote": 78,
+      "rootNote": 77,
       "file": "samples/guitar-electric-clean/samples/F5_s6_04.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
       "minNote": 79,
       "maxNote": 81,
       "rootNote": 80,
-      "minVelocity": 0.0,
-      "maxVelocity": 1.0
-    },
-    {
       "file": "samples/guitar-electric-clean/samples/G#5_s6_01.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
       "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 79,
+      "maxNote": 81,
+      "rootNote": 80,
       "file": "samples/guitar-electric-clean/samples/G#5_s6_02.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
       "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 79,
+      "maxNote": 81,
+      "rootNote": 80,
       "file": "samples/guitar-electric-clean/samples/G#5_s6_03.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
       "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 79,
+      "maxNote": 81,
+      "rootNote": 80,
       "file": "samples/guitar-electric-clean/samples/G#5_s6_04.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
       "minNote": 82,
       "maxNote": 83,
       "rootNote": 82,
-      "minVelocity": 0.0,
-      "maxVelocity": 1.0
-    },
-    {
       "file": "samples/guitar-electric-clean/samples/A#5_s6_01.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
       "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 82,
+      "maxNote": 83,
+      "rootNote": 82,
       "file": "samples/guitar-electric-clean/samples/A#5_s6_02.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
       "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 82,
+      "maxNote": 83,
+      "rootNote": 82,
       "file": "samples/guitar-electric-clean/samples/A#5_s6_03.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
       "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 82,
+      "maxNote": 83,
+      "rootNote": 82,
       "file": "samples/guitar-electric-clean/samples/A#5_s6_04.flac",
+      "minVelocity": 0.0,
+      "maxVelocity": 1.0
+    },
+    {
       "minNote": 84,
       "maxNote": 86,
       "rootNote": 85,
-      "minVelocity": 0.0,
-      "maxVelocity": 1.0
-    },
-    {
       "file": "samples/guitar-electric-clean/samples/C#6_s6_01.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
       "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 84,
+      "maxNote": 86,
+      "rootNote": 85,
       "file": "samples/guitar-electric-clean/samples/C#6_s6_02.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
       "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 84,
+      "maxNote": 86,
+      "rootNote": 85,
       "file": "samples/guitar-electric-clean/samples/C#6_s6_03.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
       "minVelocity": 0.0,
       "maxVelocity": 1.0
     },
     {
+      "minNote": 84,
+      "maxNote": 86,
+      "rootNote": 85,
       "file": "samples/guitar-electric-clean/samples/C#6_s6_04.flac",
-      "rootNote": 60,
-      "minNote": 0,
-      "maxNote": 127,
       "minVelocity": 0.0,
       "maxVelocity": 1.0
     }

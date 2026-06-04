@@ -1,5 +1,12 @@
 #!/usr/bin/env python3
-"""Convert SFZ files to OpenSynth JSON manifests."""
+"""Convert SFZ files to OpenSynth JSON manifests.
+
+Handles:
+- Global and per-group macro expansion (#define $VAR value)
+- Multi-line <group> headers with #define after the <group> line
+- #include resolution with current group macro scope
+- default_path, note name to MIDI conversion, velocity layers, loop points
+"""
 import sys, re, json, os
 from pathlib import Path
 
@@ -15,7 +22,7 @@ def note_name_to_midi(name):
         return 60
 
 def expand_macros(text, macros):
-    for key, val in macros.items():
+    for key, val in sorted(macros.items(), key=lambda x: -len(x[0])):
         text = text.replace(f'${key}', val)
     return text
 
@@ -28,9 +35,40 @@ def read_include(path, base_dir, macros):
         return expand_macros(f.read(), macros)
 
 def parse_opcodes(line, zone):
-    """Parse opcodes from a line into a zone dict."""
-    for match in re.finditer(r'(\w+)=([^\s]+)', line):
-        key, val = match.group(1), match.group(2)
+    """Parse opcodes from a line into a zone dict.
+    
+    Handles quoted values and unquoted values that may contain spaces
+    (e.g., sample=PP B-1.flac).
+    """
+    # Pattern: key=quoted_value or key=unquoted_value (stops at next opcode or end)
+    # Use a lookahead to find the next key= pattern
+    i = 0
+    while i < len(line):
+        m = re.match(r'(\w+)=', line[i:])
+        if not m:
+            i += 1
+            continue
+        key = m.group(1)
+        i += m.end()
+        
+        # Check for quoted value
+        if i < len(line) and line[i] == '"':
+            end = line.find('"', i + 1)
+            if end == -1:
+                end = len(line)
+            val = line[i+1:end]
+            i = end + 1
+        else:
+            # Unquoted — find next opcode or end of line
+            # Look for next space followed by word=
+            next_m = re.search(r'\s+(\w+)=', line[i:])
+            if next_m:
+                val = line[i:i + next_m.start()].strip()
+                i += next_m.start()
+            else:
+                val = line[i:].strip()
+                i = len(line)
+        
         if key == 'sample':
             zone['file'] = val
         elif key == 'lokey':
@@ -50,53 +88,55 @@ def parse_opcodes(line, zone):
         elif key == 'loop_mode':
             zone['loopEnabled'] = (val == 'loop_continuous')
 
-def parse_sfz(path):
-    with open(path) as f:
-        raw = f.read()
-    
-    base_dir = os.path.dirname(path)
-    
-    # Extract global macros
+def parse_define(line, macros):
+    """Parse #define statements. Returns True if a define was found."""
+    m = re.search(r'#define\s+\\?\$(\w+)\s+(\S+)', line)
+    if m:
+        macros[m.group(1)] = m.group(2)
+        return True
+    return False
+
+def preprocess_sfz(raw, base_dir):
+    """Preprocess SFZ: expand all #include recursively, preserving group context.
+
+    Returns a list of (line_text, group_defaults, group_macros) tuples.
+    """
     global_macros = {}
-    for m in re.finditer(r'#define\s+\\\$(\w+)\s+(\S+)', raw):
+    for m in re.finditer(r'#define\s+\\?\$(\w+)\s+(\S+)', raw):
         global_macros[m.group(1)] = m.group(2)
-    
-    # Extract default_path
+
     default_path = ''
     m = re.search(r'default_path=([^\s]+)', raw)
     if m:
         default_path = m.group(1)
-    
-    zones = []
-    current_zone = {}
+
+    output = []
     group_defaults = {}
     group_macros = dict(global_macros)
     in_group_header = False
-    
+
     lines = raw.split('\n')
     i = 0
     while i < len(lines):
         line = lines[i].strip()
         i += 1
-        
+
         if not line or line.startswith('//'):
             continue
-        
+
         if line.startswith('<group>'):
             group_defaults = {}
             group_macros = dict(global_macros)
             in_group_header = True
-            # Parse opcodes on the <group> line itself
             parse_opcodes(line, group_defaults)
-        
-        elif line.startswith('<region>'):
+            continue
+
+        if line.startswith('<region>'):
             in_group_header = False
-            if current_zone and 'file' in current_zone:
-                zones.append(current_zone)
-            current_zone = dict(group_defaults)
-            parse_opcodes(line, current_zone)
-        
-        elif line.startswith('#include'):
+            output.append((line, dict(group_defaults), dict(group_macros)))
+            continue
+
+        if line.startswith('#include'):
             in_group_header = False
             m_inc = re.match(r'#include\s+"([^"]+)"', line)
             if m_inc:
@@ -104,25 +144,49 @@ def parse_sfz(path):
                 inc_content = read_include(inc_path, base_dir, group_macros)
                 for rline in inc_content.split('\n'):
                     rline = rline.strip()
+                    if not rline or rline.startswith('//'):
+                        continue
                     if rline.startswith('<region>'):
-                        if current_zone and 'file' in current_zone:
-                            zones.append(current_zone)
-                        current_zone = dict(group_defaults)
-                    parse_opcodes(rline, current_zone)
-        
-        elif in_group_header:
-            # Still in group header — parse opcodes and macros
+                        output.append((rline, dict(group_defaults), dict(group_macros)))
+                    else:
+                        output.append((rline, dict(group_defaults), dict(group_macros)))
+            continue
+
+        if in_group_header:
+            if parse_define(line, group_macros):
+                continue
             parse_opcodes(line, group_defaults)
-            for match in re.finditer(r'#define\s+\\\$(\w+)\s+(\S+)', line):
-                group_macros[match.group(1)] = match.group(2)
-        
-        else:
-            # Regular line (could be opcodes after <region>)
+            continue
+
+        # Regular line — opcodes that extend current region
+        output.append((line, dict(group_defaults), dict(group_macros)))
+
+    return output, default_path
+
+def parse_sfz(path):
+    with open(path) as f:
+        raw = f.read()
+
+    base_dir = os.path.dirname(path)
+    lines_with_context, default_path = preprocess_sfz(raw, base_dir)
+
+    zones = []
+    current_zone = None
+
+    for line, group_defaults, group_macros in lines_with_context:
+        if line.startswith('<region>'):
+            if current_zone and 'file' in current_zone:
+                zones.append(current_zone)
+            current_zone = dict(group_defaults)
             parse_opcodes(line, current_zone)
-    
+        else:
+            if current_zone is None:
+                current_zone = dict(group_defaults)
+            parse_opcodes(line, current_zone)
+
     if current_zone and 'file' in current_zone:
         zones.append(current_zone)
-    
+
     # Resolve paths
     for z in zones:
         if 'file' in z:
@@ -142,23 +206,23 @@ def parse_sfz(path):
             z['minVelocity'] = 0.0
         if 'maxVelocity' not in z:
             z['maxVelocity'] = 1.0
-    
+
     return zones
 
 def main():
     sfz_path = sys.argv[1]
     out_path = sys.argv[2] if len(sys.argv) > 2 else sfz_path.replace('.sfz', '.json')
-    
+
     zones = parse_sfz(sfz_path)
-    
+
     manifest = {
         'name': Path(sfz_path).stem,
         'zones': zones
     }
-    
+
     with open(out_path, 'w') as f:
         json.dump(manifest, f, indent=2)
-    
+
     print(f"Wrote {len(zones)} zones to {out_path}")
 
 if __name__ == '__main__':
