@@ -71,6 +71,17 @@ CATEGORY_PROFILES = {
         'sampleMix': 0.55, 'manifest': 'spanishclassicalguitar-20190618',
         'bodyType': 2, 'bodyMix': 0.35, 'clickMix': 0.15, 'sympathetic': 0.25, 'attackCurve': 3, 'brightness': 0.3,
     },
+    'electric_guitar': {
+        'osc1Wave': SAW, 'osc1Vol': 0.78, 'osc1Uni': 2, 'osc1Det': 6.0, 'osc1Stereo': 0.3, 'osc1Mix': 0.2,
+        'osc2Wave': SQUARE, 'osc2Vol': 0.4, 'osc2Uni': 1, 'osc2Det': 0.0, 'osc2Stereo': 0.0, 'osc2Mix': 0.0,
+        'oscMix': 0.4,
+        'filterType': 0, 'filterCutoff': 5500.0, 'filterRes': 0.3, 'filterEnv': 0.45, 'filterKeyTrack': 0.2, 'filterDrive': 0.08,
+        'ampAttack': 2.5, 'ampDecay': 190.0, 'ampSustain': 0.62, 'ampRelease': 240.0,
+        'filterAttack': 3.5, 'filterDecay': 130.0, 'filterSustain': 0.38, 'filterRelease': 190.0,
+        'reverb': True, 'delay': True, 'chorus': False,
+        'sampleMix': 0.6, 'manifest': 'eguitarfsbs-bridge-clean-20220911',
+        'bodyType': 2, 'bodyMix': 0.3, 'clickMix': 0.1, 'sympathetic': 0.2, 'attackCurve': 3, 'brightness': 0.35,
+    },
     'bass': {
         'osc1Wave': SAW, 'osc1Vol': 0.85, 'osc1Uni': 2, 'osc1Det': 8.0, 'osc1Stereo': 0.2, 'osc1Mix': 0.25,
         'osc2Wave': SQUARE, 'osc2Vol': 0.4, 'osc2Uni': 1, 'osc2Det': 0.0, 'osc2Stereo': 0.0, 'osc2Mix': 0.0,
@@ -81,6 +92,39 @@ CATEGORY_PROFILES = {
         'reverb': False, 'delay': False, 'chorus': False,
         'sampleMix': 0.5, 'manifest': 'fingerbassyr-20190930',
         'bodyType': 5, 'bodyMix': 0.3, 'clickMix': 0.1, 'sympathetic': 0.0, 'attackCurve': 3, 'brightness': 0.2,
+    },
+    'picked_bass': {
+        'osc1Wave': SAW, 'osc1Vol': 0.82, 'osc1Uni': 2, 'osc1Det': 7.0, 'osc1Stereo': 0.25, 'osc1Mix': 0.2,
+        'osc2Wave': SQUARE, 'osc2Vol': 0.38, 'osc2Uni': 1, 'osc2Det': 0.0, 'osc2Stereo': 0.0, 'osc2Mix': 0.0,
+        'oscMix': 0.35,
+        'filterType': 0, 'filterCutoff': 2800.0, 'filterRes': 0.32, 'filterEnv': 0.55, 'filterKeyTrack': 0.25, 'filterDrive': 0.08,
+        'ampAttack': 1.5, 'ampDecay': 140.0, 'ampSustain': 0.68, 'ampRelease': 170.0,
+        'filterAttack': 1.5, 'filterDecay': 90.0, 'filterSustain': 0.48, 'filterRelease': 140.0,
+        'reverb': False, 'delay': False, 'chorus': False,
+        'sampleMix': 0.55, 'manifest': 'pickedbassyr-20190930',
+        'bodyType': 5, 'bodyMix': 0.28, 'clickMix': 0.08, 'sympathetic': 0.0, 'attackCurve': 3, 'brightness': 0.22,
+    },
+    'upright_piano': {
+        'osc1Wave': WAVETABLE, 'osc1Vol': 0.72, 'osc1Uni': 1, 'osc1Det': 0.0, 'osc1Stereo': 0.0, 'osc1Mix': 0.0,
+        'osc2Wave': SINE, 'osc2Vol': 0.0, 'osc2Uni': 1, 'osc2Det': 0.0, 'osc2Stereo': 0.0, 'osc2Mix': 0.0,
+        'oscMix': 0.5,
+        'filterType': 0, 'filterCutoff': 10000.0, 'filterRes': 0.18, 'filterEnv': 0.25, 'filterKeyTrack': 0.18, 'filterDrive': 0.0,
+        'ampAttack': 4.0, 'ampDecay': 220.0, 'ampSustain': 0.62, 'ampRelease': 300.0,
+        'filterAttack': 6.0, 'filterDecay': 170.0, 'filterSustain': 0.35, 'filterRelease': 220.0,
+        'reverb': True, 'delay': False, 'chorus': False,
+        'sampleMix': 0.6, 'manifest': 'uprightpianokw-20220221',
+        'bodyType': 1, 'bodyMix': 0.32, 'clickMix': 0.18, 'sympathetic': 0.25, 'attackCurve': 1, 'brightness': 0.35,
+    },
+    'colombo_drums': {
+        'osc1Wave': NOISE, 'osc1Vol': 0.88, 'osc1Uni': 1, 'osc1Det': 0.0, 'osc1Stereo': 0.0, 'osc1Mix': 0.0,
+        'osc2Wave': SINE, 'osc2Vol': 0.35, 'osc2Uni': 1, 'osc2Det': 0.0, 'osc2Stereo': 0.0, 'osc2Mix': 0.0,
+        'oscMix': 0.25,
+        'filterType': 0, 'filterCutoff': 11000.0, 'filterRes': 0.12, 'filterEnv': 0.35, 'filterKeyTrack': 0.0, 'filterDrive': 0.0,
+        'ampAttack': 1.0, 'ampDecay': 90.0, 'ampSustain': 0.04, 'ampRelease': 110.0,
+        'filterAttack': 1.5, 'filterDecay': 50.0, 'filterSustain': 0.08, 'filterRelease': 70.0,
+        'reverb': False, 'delay': False, 'chorus': False,
+        'sampleMix': 0.8, 'manifest': 'colomboadk-freepats-20200530',
+        'bodyType': 0, 'bodyMix': 0.0, 'clickMix': 0.0, 'sympathetic': 0.0, 'attackCurve': 0, 'brightness': 0.0,
     },
     'strings': {
         'osc1Wave': SAW, 'osc1Vol': 0.7, 'osc1Uni': 5, 'osc1Det': 16.0, 'osc1Stereo': 0.8, 'osc1Mix': 0.6,
@@ -318,11 +362,37 @@ BASE_PRESETS = {
         "Hawaiian Guitar", "Ukulele", "Mandolin", "Feedback Guitar",
         "Guitar Feedback", "Funk Guitar", "Chorus Guitar", "Acoustic Bass Guitar"
     ],
+    'electric_guitar': [
+        "Bridge Clean", "Neck Clean", "Bridge Crunch", "Neck Crunch",
+        "Bridge Drive", "Neck Drive", "Lead Tone", "Rhythm Tone",
+        "Jazz Box", "Telecaster", "Strat Clean", "Strat Drive",
+        "Humbucker Clean", "Humbucker Drive", "Single Coil", "Power Chord"
+    ],
     'bass': [
         "Acoustic Bass", "Fingered Bass", "Picked Bass", "Fretless Bass",
         "Slap Bass 1", "Slap Bass 2", "Pop Bass", "Synth Bass 1",
         "Synth Bass 2", "Synth Bass 3", "Synth Bass 4", "Synth Bass 5",
         "Resonant Bass", "Upright Bass", "Electric Bass", "Muted Bass"
+    ],
+    'picked_bass': [
+        "Picked Bass Clean", "Picked Bass Drive", "Picked Bass Mute",
+        "Picked Bass Slap", "Picked Bass Pop", "Picked Bass Funk",
+        "Picked Bass Rock", "Picked Bass Jazz", "Picked Bass Metal",
+        "Picked Bass Soft", "Picked Bass Hard", "Picked Bass Bright",
+        "Picked Bass Dark", "Picked Bass Vintage", "Picked Bass Modern", "Picked Bass Solo"
+    ],
+    'upright_piano': [
+        "Upright Piano", "Upright Bright", "Upright Soft", "Upright Mellow",
+        "Upright Honky", "Upright Tack", "Upright Saloon", "Upright Parlour",
+        "Upright Studio", "Upright Home", "Upright School", "Upright Bar",
+        "Upright Ragtime", "Upright Blues", "Upright Jazz", "Upright Folk",
+        "Upright Vintage", "Upright Warm", "Upright Crisp", "Upright Dark"
+    ],
+    'colombo_drums': [
+        "Colombo Standard", "Colombo Room", "Colombo Power", "Colombo Electronic",
+        "Colombo Jazz", "Colombo Latin", "Colombo Dance", "Colombo Hip Hop",
+        "Colombo Rock", "Colombo Metal", "Colombo Funk", "Colombo Soul",
+        "Colombo Vintage", "Colombo Modern", "Colombo Minimal", "Colombo Percussion"
     ],
     'strings': [
         "Violin", "Viola", "Cello", "Contrabass", "Tremolo Strings",
