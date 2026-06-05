@@ -8,6 +8,9 @@
 
 namespace opensynth {
 
+// Forward declaration — defined in preset_data.cpp
+juce::File getSampleManifestPath(const char* id);
+
 // ── SynthKnob ───────────────────────────────────────────────────────────────
 
 SynthKnob::SynthKnob(const juce::String& name, juce::Colour accent)
@@ -760,22 +763,22 @@ void PresetBrowser::rebuildFilter()
     }
     else
     {
-        filteredFactoryPresets_.clear();
-        for (int i = 0; i < kNumPresets; ++i) {
-            const auto& preset = kPresets[i];
+        filteredFactoryPresetIndices_.clear();
+        for (int i = 0; i < kNumFullPresets; ++i) {
+            const auto& preset = kFullPresets[i];
             bool matchesSearch = currentSearch_.isEmpty() ||
-                                 preset.name.toLowerCase().contains(currentSearch_) ||
-                                 preset.id.toLowerCase().contains(currentSearch_);
+                                 juce::String(preset.name).toLowerCase().contains(currentSearch_) ||
+                                 juce::String(preset.id).toLowerCase().contains(currentSearch_);
             bool matchesCategory = currentCategory_.isEmpty() ||
-                                   preset.category.equalsIgnoreCase(currentCategory_);
+                                   juce::String(preset.category).equalsIgnoreCase(currentCategory_);
             if (matchesSearch && matchesCategory)
             {
-                filteredFactoryPresets_.push_back(&preset);
+                filteredFactoryPresetIndices_.push_back(i);
                 juce::DynamicObject::Ptr obj = new juce::DynamicObject();
                 obj->setProperty("isUser", false);
-                obj->setProperty("name", preset.name);
-                obj->setProperty("category", preset.category);
-                obj->setProperty("index", (int)(filteredFactoryPresets_.size() - 1));
+                obj->setProperty("name", juce::String(preset.name));
+                obj->setProperty("category", juce::String(preset.category));
+                obj->setProperty("index", (int)(filteredFactoryPresetIndices_.size() - 1));
                 displayList_.emplace_back(obj);
             }
         }
@@ -850,9 +853,9 @@ void PresetBrowser::selectedRowsChanged(int lastRowSelected)
         else
         {
             int factoryIndex = (int)obj->getProperty("index");
-            if (factoryIndex >= 0 && factoryIndex < (int)filteredFactoryPresets_.size()) {
+            if (factoryIndex >= 0 && factoryIndex < (int)filteredFactoryPresetIndices_.size()) {
                 if (onPresetSelected)
-                    onPresetSelected(filteredFactoryPresets_[factoryIndex]);
+                    onPresetSelected(filteredFactoryPresetIndices_[factoryIndex]);
             }
         }
     }
@@ -1448,9 +1451,9 @@ OpenSynthEditor::OpenSynthEditor(OpenSynthProcessor& processor)
     addAndMakeVisible(favorites_);
 
     // Preset browser callback
-    presetBrowser_.onPresetSelected = [this](const PresetInfo* preset) {
-        if (preset != nullptr) {
-            loadPresetByID(preset->id);
+    presetBrowser_.onPresetSelected = [this](int presetIndex) {
+        if (presetIndex >= 0 && presetIndex < kNumFullPresets) {
+            loadPresetByIndex(presetIndex);
             presetBrowser_.setVisible(false);
         }
     };
@@ -1772,7 +1775,18 @@ void OpenSynthEditor::configureSamplePlayerForPreset(const PresetData& p)
 
 void OpenSynthEditor::loadSampleForPreset(const PresetData& p, SamplePlayer& player)
 {
-    // Build sample path: samples/<category>/<name>.wav
+    // Use the preset's sampleManifestId if available
+    if (p.sampleManifestId[0] != '\0') {
+        juce::File manifestFile = getSampleManifestPath(p.sampleManifestId);
+        if (manifestFile.existsAsFile()) {
+            player.clear();
+            if (player.loadMultiSample(manifestFile.getFullPathName().toStdString())) {
+                return;
+            }
+        }
+    }
+
+    // Fallback: try legacy path samples/<category>/<name>.wav
     juce::File sampleDir = juce::File::getSpecialLocation(juce::File::currentExecutableFile)
                                .getParentDirectory()
                                .getChildFile("samples")
@@ -1780,20 +1794,9 @@ void OpenSynthEditor::loadSampleForPreset(const PresetData& p, SamplePlayer& pla
     juce::String safeName = juce::String(p.name).replaceCharacter(' ', '_');
     juce::File sampleFile = sampleDir.getChildFile(safeName + ".wav");
 
-    // First try multi-sample manifest
-    juce::File manifestFile = sampleDir.getChildFile(safeName + ".json");
-    if (manifestFile.existsAsFile()) {
-        player.clear();
-        if (player.loadMultiSample(manifestFile.getFullPathName().toStdString())) {
-            return;
-        }
-    }
-
     if (sampleFile.existsAsFile()) {
         player.clear();
-        if (player.loadSample(sampleFile.getFullPathName().toStdString(), 60, 0, 127)) {
-            // Sample loaded successfully
-        }
+        player.loadSample(sampleFile.getFullPathName().toStdString(), 60, 0, 127);
     }
 }
 

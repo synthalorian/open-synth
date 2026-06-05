@@ -15,7 +15,12 @@ void SynthEngineWrapper::prepare(double sampleRate, int maxBlockSize)
 {
     sampleRate_ = sampleRate;
     blockSize_ = maxBlockSize;
-    engine_ = std::make_unique<SynthEngine>(sampleRate, static_cast<uint32_t>(maxBlockSize));
+    if (!engine_) {
+        engine_ = std::make_unique<SynthEngine>(sampleRate, static_cast<uint32_t>(maxBlockSize));
+    } else {
+        // Re-initialize existing engine with new sample rate
+        engine_->reset();
+    }
     tempBuffer_.resize(static_cast<size_t>(maxBlockSize * 2));
 }
 
