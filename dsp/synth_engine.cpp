@@ -298,7 +298,7 @@ void SynthEngine::process(AudioBuffer& output) {
                     if (isPm1 && uv == 0) {
                         sample += voice->physicalModel.process() * part.osc1.volume();
                     } else if (!isPm1) {
-                        float inc = part.osc1.phaseIncrement(modFreq, uv);
+                        float inc = part.osc1.phaseIncrement(modFreq, uv, sampleRate_);
                         voice->osc1Phase[uv] += inc;
                         if (voice->osc1Phase[uv] >= 1.0f) voice->osc1Phase[uv] -= 1.0f;
                         sample += part.osc1.process(voice->osc1Phase[uv], uv, modFreq, sampleRate_);
@@ -310,7 +310,7 @@ void SynthEngine::process(AudioBuffer& output) {
                     if (isPm2 && uv == 0) {
                         sample += voice->physicalModel.process() * part.osc2.volume();
                     } else if (!isPm2) {
-                        float inc = part.osc2.phaseIncrement(modFreq, uv);
+                        float inc = part.osc2.phaseIncrement(modFreq, uv, sampleRate_);
                         voice->osc2Phase[uv] += inc;
                         if (voice->osc2Phase[uv] >= 1.0f) voice->osc2Phase[uv] -= 1.0f;
                         sample += part.osc2.process(voice->osc2Phase[uv], uv, modFreq, sampleRate_);

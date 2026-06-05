@@ -375,7 +375,7 @@ public:
 
     void setVisible(bool shouldBeVisible) override;
 
-    std::function<void(const PresetInfo*)> onPresetSelected;
+    std::function<void(int)> onPresetSelected;  // arg = index into kFullPresets, -1 = none
     std::function<void()> onSavePresetRequested;
     std::function<void(const UserPreset&)> onUserPresetSelected;
 
@@ -390,7 +390,7 @@ private:
     juce::ComboBox categoryFilter_;
     juce::ToggleButton showUserPresetsButton_;
 
-    std::vector<const PresetInfo*> filteredFactoryPresets_;
+    std::vector<int> filteredFactoryPresetIndices_;  // indices into kFullPresets
     std::vector<UserPreset> userPresets_;
     std::vector<juce::var> displayList_;
     bool showingUserPresets_ = false;

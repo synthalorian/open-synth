@@ -109,7 +109,7 @@ float Oscillator::voicePan(int voiceIndex) const {
     return std::clamp(pan, -1.0f, 1.0f);
 }
 
-float Oscillator::phaseIncrement(float midiNoteFreq, int voiceIndex) const {
+float Oscillator::phaseIncrement(float midiNoteFreq, int voiceIndex, double sampleRate) const {
     float detuneCents = detune_;
     if (voiceIndex > 0) {
         detuneCents += voiceDetuneCents(voiceIndex);
@@ -117,7 +117,7 @@ float Oscillator::phaseIncrement(float midiNoteFreq, int voiceIndex) const {
     // Convert cents to frequency ratio: 2^(cents/1200)
     float ratio = std::pow(2.0f, detuneCents / 1200.0f);
     float octaveMult = std::pow(2.0f, (float)octave_);
-    return (midiNoteFreq * octaveMult * ratio) / 48000.0f; // normalized frequency
+    return (midiNoteFreq * octaveMult * ratio) / static_cast<float>(sampleRate);
 }
 
 float Oscillator::generateWaveform(float phase) const {

@@ -92,7 +92,7 @@ public:
     // freq = base frequency of the note this oscillator belongs to
     float process(float phase, int voiceIndex, float freq, double sampleRate) const;
 
-    float phaseIncrement(float midiNoteFreq, int voiceIndex) const;
+    float phaseIncrement(float midiNoteFreq, int voiceIndex, double sampleRate) const;
     float voiceDetuneCents(int voiceIndex) const;
     float voicePan(int voiceIndex) const;
 
