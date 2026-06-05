@@ -324,6 +324,17 @@ CATEGORY_PROFILES = {
         'sampleMix': 0.0, 'manifest': '',
         'bodyType': 0, 'bodyMix': 0.0, 'clickMix': 0.0, 'sympathetic': 0.0, 'attackCurve': 0, 'brightness': 0.0,
     },
+    'synthwave': {
+        'osc1Wave': SAW, 'osc1Vol': 0.82, 'osc1Uni': 5, 'osc1Det': 18.0, 'osc1Stereo': 0.8, 'osc1Mix': 0.65,
+        'osc2Wave': SQUARE, 'osc2Vol': 0.45, 'osc2Uni': 3, 'osc2Det': 12.0, 'osc2Stereo': 0.5, 'osc2Mix': 0.3,
+        'oscMix': 0.5,
+        'filterType': 0, 'filterCutoff': 8500.0, 'filterRes': 0.4, 'filterEnv': 0.55, 'filterKeyTrack': 0.2, 'filterDrive': 0.05,
+        'ampAttack': 3.0, 'ampDecay': 180.0, 'ampSustain': 0.7, 'ampRelease': 280.0,
+        'filterAttack': 3.0, 'filterDecay': 140.0, 'filterSustain': 0.5, 'filterRelease': 220.0,
+        'reverb': True, 'delay': True, 'chorus': True,
+        'sampleMix': 0.0, 'manifest': '',
+        'bodyType': 0, 'bodyMix': 0.0, 'clickMix': 0.0, 'sympathetic': 0.0, 'attackCurve': 0, 'brightness': 0.0,
+    },
 }
 
 # ── Variation modifiers ──────────────────────────────────────────────────────
@@ -514,6 +525,33 @@ BASE_PRESETS = {
         "Adventure", "Fantasy", "Sci-Fi Cinematic", "War", "Peace",
         "Triumph", "Loss", "Discovery", "Mystery", "Romance",
         "Chase", "Battle", "Victory", "Defeat", "Rebirth"
+    ],
+    'synthwave': [
+        # Leads
+        "Neon Supersaw", "Sunset Lead", "Cyber Lead", "Laser Lead",
+        "Analog Hero", "Solo Lead", "Bright Lead", "Warm Lead",
+        "VHS Lead", "Neon Stab", "Midnight Lead", "Shimmer Lead",
+        "Cutting Lead", "Power Lead", "Glass Lead", "Chrome Lead",
+        # Basses
+        "Detuned Bass", "Pulse Bass", "Sub Octave Bass", "Reso Bass",
+        "Cyberpunk Bass", "Growl Bass", "Reese Bass", "Wobble Bass",
+        "FM Bass", "Acid Bass", "Outrun Bass", "Dark Bass",
+        # Pads
+        "Dream Pad", "Analog Pad", "Sunset Pad", "Retro Pad",
+        "Space Pad", "Nostalgia Pad", "Ether Pad", "Ghost Pad",
+        "Vapor Pad", "Aurora Pad", "Cosmic Pad", "Neon Pad",
+        # Plucks / Keys
+        "Arp Pluck", "Crystal Pluck", "Staccato Stab", "Digital Keys",
+        "Retro Keys", "Tommy Pluck", "Chime Bell", "FM Bell",
+        "Digital Bell", "Harpsichord Pluck", "Marimba Pluck", "Pluck Lead",
+        # Brass / Strings
+        "Synth Brass", "Analog Brass", "Power Brass", "Synth Strings",
+        # FX / Drums
+        "Riser FX", "Downlifter", "Sweep FX", "Impact",
+        "Laser Shot", "808 Kick", "Snare Hit", "Hi-Hat",
+        "Clap", "Cymbal", "Toms", "Percussion",
+        # Vocoder / Texture
+        "Vocoder", "Talk Box", "Glitch", "Drone", "Texture"
     ],
 }
 
@@ -800,6 +838,94 @@ PRESET_OVERRIDES = {
     ('sfx', 'Beam'): {'osc1Wave': SAW, 'ampAttack': 2.0, 'ampDecay': 200.0, 'ampSustain': 0.0, 'ampRelease': 300.0, 'filterCutoff': 10000.0, 'filterRes': 0.4},
     ('sfx', 'Alarm'): {'osc1Wave': SQUARE, 'ampAttack': 5.0, 'ampDecay': 100.0, 'ampSustain': 0.8, 'ampRelease': 100.0, 'filterCutoff': 5000.0, 'filterRes': 0.3, 'lfo1Target': 1, 'lfo1Depth': 0.3, 'lfo1Rate': 5.0},
     ('sfx', 'Siren'): {'osc1Wave': SAW, 'ampAttack': 10.0, 'ampDecay': 200.0, 'ampSustain': 0.7, 'ampRelease': 200.0, 'filterCutoff': 6000.0, 'filterRes': 0.3, 'lfo1Target': 1, 'lfo1Depth': 0.5, 'lfo1Rate': 3.0},
+
+    # Synthwave — genre-specific archetypes
+    # Leads
+    ('synthwave', 'Neon Supersaw'): {'osc1Wave': SAW, 'osc1Uni': 7, 'osc1Det': 22.0, 'osc1Stereo': 0.9, 'osc1Mix': 0.75, 'filterCutoff': 12000.0, 'filterRes': 0.35, 'ampAttack': 2.0, 'ampRelease': 250.0, 'reverb': True, 'delay': True, 'chorus': True},
+    ('synthwave', 'Sunset Lead'): {'osc1Wave': SAW, 'osc1Uni': 5, 'osc1Det': 18.0, 'osc1Stereo': 0.8, 'filterCutoff': 9000.0, 'filterRes': 0.3, 'ampAttack': 8.0, 'ampRelease': 350.0, 'reverb': True, 'delay': True},
+    ('synthwave', 'Cyber Lead'): {'osc1Wave': SQUARE, 'osc1Uni': 3, 'osc1Det': 12.0, 'filterCutoff': 10000.0, 'filterRes': 0.4, 'ampAttack': 1.5, 'ampRelease': 200.0, 'lfo1Target': 2, 'lfo1Depth': 0.4, 'lfo1Rate': 0.25},
+    ('synthwave', 'Laser Lead'): {'osc1Wave': SAW, 'osc1Uni': 1, 'filterCutoff': 14000.0, 'filterRes': 0.5, 'ampAttack': 1.0, 'ampDecay': 120.0, 'ampSustain': 0.0, 'ampRelease': 150.0},
+    ('synthwave', 'Analog Hero'): {'osc1Wave': SAW, 'osc1Uni': 4, 'osc1Det': 16.0, 'osc2Wave': SQUARE, 'osc2Vol': 0.35, 'osc2Uni': 2, 'osc2Det': 8.0, 'filterCutoff': 8500.0, 'ampAttack': 4.0, 'ampRelease': 300.0},
+    ('synthwave', 'Solo Lead'): {'osc1Wave': SAW, 'osc1Uni': 2, 'osc1Det': 6.0, 'osc1Stereo': 0.3, 'filterCutoff': 9500.0, 'filterRes': 0.25, 'ampAttack': 5.0, 'ampRelease': 280.0},
+    ('synthwave', 'Bright Lead'): {'osc1Wave': SAW, 'osc1Uni': 5, 'osc1Det': 14.0, 'filterCutoff': 13000.0, 'filterRes': 0.3, 'ampAttack': 2.0, 'ampRelease': 220.0},
+    ('synthwave', 'Warm Lead'): {'osc1Wave': SAW, 'osc1Uni': 4, 'osc1Det': 10.0, 'filterCutoff': 6500.0, 'filterRes': 0.2, 'ampAttack': 6.0, 'ampRelease': 400.0},
+    ('synthwave', 'VHS Lead'): {'osc1Wave': SAW, 'osc1Uni': 3, 'osc1Det': 20.0, 'filterCutoff': 7000.0, 'filterRes': 0.15, 'sampleMix': 0.15, 'ampAttack': 10.0, 'ampRelease': 450.0},
+    ('synthwave', 'Neon Stab'): {'osc1Wave': SAW, 'osc1Uni': 4, 'osc1Det': 14.0, 'filterCutoff': 11000.0, 'ampAttack': 1.0, 'ampDecay': 180.0, 'ampSustain': 0.0, 'ampRelease': 200.0},
+    ('synthwave', 'Midnight Lead'): {'osc1Wave': SAW, 'osc1Uni': 5, 'osc1Det': 16.0, 'filterCutoff': 6000.0, 'filterRes': 0.35, 'ampAttack': 12.0, 'ampRelease': 500.0, 'reverb': True, 'delay': True},
+    ('synthwave', 'Shimmer Lead'): {'osc1Wave': SAW, 'osc1Uni': 6, 'osc1Det': 24.0, 'osc1Stereo': 0.95, 'filterCutoff': 10000.0, 'ampAttack': 8.0, 'ampRelease': 350.0, 'reverb': True, 'chorus': True},
+    ('synthwave', 'Cutting Lead'): {'osc1Wave': SAW, 'osc1Uni': 3, 'osc1Det': 8.0, 'filterCutoff': 14000.0, 'filterRes': 0.45, 'ampAttack': 1.0, 'ampRelease': 180.0},
+    ('synthwave', 'Power Lead'): {'osc1Wave': SAW, 'osc1Uni': 5, 'osc1Det': 20.0, 'filterCutoff': 10500.0, 'filterRes': 0.4, 'ampAttack': 3.0, 'ampRelease': 300.0},
+    ('synthwave', 'Glass Lead'): {'osc1Wave': FM, 'osc1Uni': 2, 'osc1Det': 4.0, 'filterCutoff': 12000.0, 'ampAttack': 4.0, 'ampRelease': 280.0},
+    ('synthwave', 'Chrome Lead'): {'osc1Wave': SAW, 'osc1Uni': 4, 'osc1Det': 12.0, 'filterCutoff': 11500.0, 'filterRes': 0.3, 'ampAttack': 2.5, 'ampRelease': 240.0},
+
+    # Basses
+    ('synthwave', 'Detuned Bass'): {'osc1Wave': SAW, 'osc1Uni': 3, 'osc1Det': 28.0, 'filterCutoff': 4500.0, 'filterRes': 0.3, 'ampAttack': 2.0, 'ampRelease': 180.0},
+    ('synthwave', 'Pulse Bass'): {'osc1Wave': PULSE, 'osc1Uni': 2, 'osc1Det': 6.0, 'filterCutoff': 6000.0, 'filterRes': 0.25, 'ampAttack': 1.5, 'ampRelease': 160.0},
+    ('synthwave', 'Sub Octave Bass'): {'osc1Wave': SINE, 'osc1Uni': 1, 'osc2Wave': SQUARE, 'osc2Vol': 0.25, 'osc2Uni': 1, 'filterCutoff': 3500.0, 'ampAttack': 2.0, 'ampRelease': 200.0},
+    ('synthwave', 'Reso Bass'): {'osc1Wave': SAW, 'osc1Uni': 2, 'osc1Det': 10.0, 'filterCutoff': 5500.0, 'filterRes': 0.55, 'ampAttack': 1.0, 'ampRelease': 150.0},
+    ('synthwave', 'Cyberpunk Bass'): {'osc1Wave': SAW, 'osc1Uni': 3, 'osc1Det': 18.0, 'filterCutoff': 5000.0, 'filterRes': 0.45, 'filterDrive': 0.15, 'ampAttack': 2.0, 'ampRelease': 200.0},
+    ('synthwave', 'Growl Bass'): {'osc1Wave': SAW, 'osc1Uni': 2, 'osc1Det': 22.0, 'filterCutoff': 4000.0, 'filterRes': 0.5, 'filterDrive': 0.2, 'ampAttack': 3.0, 'ampRelease': 220.0},
+    ('synthwave', 'Reese Bass'): {'osc1Wave': SAW, 'osc1Uni': 4, 'osc1Det': 35.0, 'filterCutoff': 3800.0, 'filterRes': 0.4, 'ampAttack': 8.0, 'ampRelease': 250.0},
+    ('synthwave', 'Wobble Bass'): {'osc1Wave': SAW, 'osc1Uni': 3, 'osc1Det': 16.0, 'filterCutoff': 5000.0, 'filterRes': 0.45, 'lfo1Target': 2, 'lfo1Depth': 0.7, 'lfo1Rate': 2.5},
+    ('synthwave', 'FM Bass'): {'osc1Wave': FM, 'osc1Uni': 1, 'filterCutoff': 7000.0, 'ampAttack': 1.0, 'ampRelease': 140.0},
+    ('synthwave', 'Acid Bass'): {'osc1Wave': SAW, 'osc1Uni': 1, 'filterCutoff': 600.0, 'filterRes': 0.7, 'filterEnv': 0.85, 'ampAttack': 2.0, 'ampDecay': 120.0, 'ampSustain': 0.0, 'ampRelease': 180.0, 'filterAttack': 3.0, 'filterDecay': 80.0, 'filterSustain': 0.0},
+    ('synthwave', 'Outrun Bass'): {'osc1Wave': SAW, 'osc1Uni': 3, 'osc1Det': 20.0, 'filterCutoff': 7500.0, 'filterRes': 0.3, 'ampAttack': 4.0, 'ampRelease': 240.0},
+    ('synthwave', 'Dark Bass'): {'osc1Wave': SAW, 'osc1Uni': 2, 'osc1Det': 14.0, 'filterCutoff': 3200.0, 'filterRes': 0.35, 'ampAttack': 6.0, 'ampRelease': 300.0},
+
+    # Pads
+    ('synthwave', 'Dream Pad'): {'osc1Wave': SAW, 'osc1Uni': 6, 'osc1Det': 20.0, 'osc1Stereo': 0.9, 'filterCutoff': 5500.0, 'ampAttack': 40.0, 'ampRelease': 700.0, 'reverb': True, 'delay': True},
+    ('synthwave', 'Analog Pad'): {'osc1Wave': SAW, 'osc1Uni': 4, 'osc1Det': 14.0, 'filterCutoff': 6000.0, 'ampAttack': 25.0, 'ampRelease': 600.0, 'reverb': True},
+    ('synthwave', 'Sunset Pad'): {'osc1Wave': SAW, 'osc1Uni': 5, 'osc1Det': 18.0, 'osc1Stereo': 0.85, 'filterCutoff': 7000.0, 'ampAttack': 30.0, 'ampRelease': 800.0, 'reverb': True, 'delay': True},
+    ('synthwave', 'Retro Pad'): {'osc1Wave': SQUARE, 'osc1Uni': 3, 'osc1Det': 8.0, 'filterCutoff': 5000.0, 'sampleMix': 0.1, 'ampAttack': 20.0, 'ampRelease': 500.0},
+    ('synthwave', 'Space Pad'): {'osc1Wave': SAW, 'osc1Uni': 6, 'osc1Det': 24.0, 'osc1Stereo': 1.0, 'filterCutoff': 8000.0, 'ampAttack': 50.0, 'ampRelease': 900.0, 'reverb': True, 'delay': True, 'chorus': True},
+    ('synthwave', 'Nostalgia Pad'): {'osc1Wave': SAW, 'osc1Uni': 4, 'osc1Det': 16.0, 'filterCutoff': 6500.0, 'sampleMix': 0.15, 'ampAttack': 35.0, 'ampRelease': 750.0, 'reverb': True},
+    ('synthwave', 'Ether Pad'): {'osc1Wave': SINE, 'osc1Uni': 2, 'osc1Det': 6.0, 'osc2Wave': SAW, 'osc2Vol': 0.3, 'osc2Uni': 3, 'osc2Det': 12.0, 'filterCutoff': 7500.0, 'ampAttack': 45.0, 'ampRelease': 850.0, 'reverb': True, 'chorus': True},
+    ('synthwave', 'Ghost Pad'): {'osc1Wave': SAW, 'osc1Uni': 5, 'osc1Det': 22.0, 'filterCutoff': 4500.0, 'ampAttack': 60.0, 'ampRelease': 950.0, 'reverb': True},
+    ('synthwave', 'Vapor Pad'): {'osc1Wave': SAW, 'osc1Uni': 5, 'osc1Det': 20.0, 'osc1Stereo': 0.9, 'filterCutoff': 6000.0, 'ampAttack': 35.0, 'ampRelease': 800.0, 'reverb': True, 'delay': True},
+    ('synthwave', 'Aurora Pad'): {'osc1Wave': SAW, 'osc1Uni': 6, 'osc1Det': 26.0, 'osc1Stereo': 0.95, 'filterCutoff': 9000.0, 'ampAttack': 40.0, 'ampRelease': 850.0, 'reverb': True, 'chorus': True},
+    ('synthwave', 'Cosmic Pad'): {'osc1Wave': FM, 'osc1Uni': 3, 'osc1Det': 8.0, 'filterCutoff': 10000.0, 'ampAttack': 55.0, 'ampRelease': 900.0, 'reverb': True, 'delay': True},
+    ('synthwave', 'Neon Pad'): {'osc1Wave': SAW, 'osc1Uni': 5, 'osc1Det': 18.0, 'filterCutoff': 7500.0, 'ampAttack': 25.0, 'ampRelease': 650.0, 'reverb': True, 'chorus': True},
+
+    # Plucks / Keys
+    ('synthwave', 'Arp Pluck'): {'osc1Wave': SAW, 'osc1Uni': 2, 'osc1Det': 8.0, 'filterCutoff': 11000.0, 'ampAttack': 1.0, 'ampDecay': 140.0, 'ampSustain': 0.0, 'ampRelease': 180.0},
+    ('synthwave', 'Crystal Pluck'): {'osc1Wave': FM, 'osc1Uni': 1, 'filterCutoff': 12000.0, 'ampAttack': 1.0, 'ampDecay': 120.0, 'ampSustain': 0.0, 'ampRelease': 160.0},
+    ('synthwave', 'Staccato Stab'): {'osc1Wave': SAW, 'osc1Uni': 3, 'osc1Det': 10.0, 'filterCutoff': 10000.0, 'ampAttack': 1.0, 'ampDecay': 100.0, 'ampSustain': 0.0, 'ampRelease': 120.0},
+    ('synthwave', 'Digital Keys'): {'osc1Wave': FM, 'osc1Uni': 2, 'osc1Det': 4.0, 'filterCutoff': 11000.0, 'ampAttack': 2.0, 'ampRelease': 200.0},
+    ('synthwave', 'Retro Keys'): {'osc1Wave': SQUARE, 'osc1Uni': 2, 'osc1Det': 6.0, 'filterCutoff': 8000.0, 'sampleMix': 0.1, 'ampAttack': 3.0, 'ampRelease': 220.0},
+    ('synthwave', 'Tommy Pluck'): {'osc1Wave': SAW, 'osc1Uni': 2, 'osc1Det': 12.0, 'filterCutoff': 9500.0, 'ampAttack': 1.5, 'ampDecay': 160.0, 'ampSustain': 0.0, 'ampRelease': 200.0},
+    ('synthwave', 'Chime Bell'): {'osc1Wave': FM, 'osc1Uni': 1, 'filterCutoff': 13000.0, 'ampAttack': 2.0, 'ampDecay': 250.0, 'ampSustain': 0.15, 'ampRelease': 350.0},
+    ('synthwave', 'FM Bell'): {'osc1Wave': FM, 'osc1Uni': 1, 'filterCutoff': 12000.0, 'ampAttack': 1.5, 'ampDecay': 200.0, 'ampSustain': 0.1, 'ampRelease': 280.0},
+    ('synthwave', 'Digital Bell'): {'osc1Wave': FM, 'osc1Uni': 2, 'osc1Det': 2.0, 'filterCutoff': 14000.0, 'ampAttack': 1.0, 'ampDecay': 180.0, 'ampSustain': 0.05, 'ampRelease': 240.0},
+    ('synthwave', 'Harpsichord Pluck'): {'osc1Wave': SAW, 'osc1Uni': 1, 'filterCutoff': 10000.0, 'ampAttack': 1.0, 'ampDecay': 80.0, 'ampSustain': 0.0, 'ampRelease': 100.0},
+    ('synthwave', 'Marimba Pluck'): {'osc1Wave': PM_MODAL_MALLET, 'osc1Uni': 1, 'filterCutoff': 9000.0, 'ampAttack': 1.0, 'ampDecay': 120.0, 'ampSustain': 0.0, 'ampRelease': 160.0},
+    ('synthwave', 'Pluck Lead'): {'osc1Wave': SAW, 'osc1Uni': 2, 'osc1Det': 8.0, 'filterCutoff': 10500.0, 'ampAttack': 1.0, 'ampDecay': 130.0, 'ampSustain': 0.0, 'ampRelease': 170.0},
+
+    # Brass / Strings
+    ('synthwave', 'Synth Brass'): {'osc1Wave': SAW, 'osc1Uni': 4, 'osc1Det': 12.0, 'filterCutoff': 6500.0, 'ampAttack': 15.0, 'ampRelease': 350.0},
+    ('synthwave', 'Analog Brass'): {'osc1Wave': SAW, 'osc1Uni': 3, 'osc1Det': 10.0, 'filterCutoff': 7000.0, 'ampAttack': 12.0, 'ampRelease': 320.0},
+    ('synthwave', 'Power Brass'): {'osc1Wave': SAW, 'osc1Uni': 5, 'osc1Det': 16.0, 'filterCutoff': 8000.0, 'ampAttack': 10.0, 'ampRelease': 400.0},
+    ('synthwave', 'Synth Strings'): {'osc1Wave': SAW, 'osc1Uni': 5, 'osc1Det': 18.0, 'osc1Stereo': 0.8, 'filterCutoff': 6000.0, 'ampAttack': 30.0, 'ampRelease': 550.0},
+
+    # FX / Drums
+    ('synthwave', 'Riser FX'): {'osc1Wave': SAW, 'ampAttack': 80.0, 'ampDecay': 600.0, 'ampSustain': 0.0, 'ampRelease': 700.0, 'filterCutoff': 800.0, 'filterRes': 0.4, 'lfo1Target': 2, 'lfo1Depth': 0.85, 'lfo1Rate': 0.15},
+    ('synthwave', 'Downlifter'): {'osc1Wave': SAW, 'ampAttack': 15.0, 'ampDecay': 500.0, 'ampSustain': 0.0, 'ampRelease': 600.0, 'filterCutoff': 12000.0, 'filterRes': 0.3, 'lfo1Target': 2, 'lfo1Depth': 0.75, 'lfo1Rate': 0.2},
+    ('synthwave', 'Sweep FX'): {'osc1Wave': SAW, 'ampAttack': 30.0, 'ampDecay': 450.0, 'ampSustain': 0.0, 'ampRelease': 550.0, 'filterCutoff': 1200.0, 'filterRes': 0.5, 'lfo1Target': 2, 'lfo1Depth': 0.9, 'lfo1Rate': 0.6},
+    ('synthwave', 'Impact'): {'osc1Wave': NOISE, 'osc2Wave': SAW, 'ampAttack': 2.0, 'ampDecay': 250.0, 'ampSustain': 0.0, 'ampRelease': 450.0, 'filterCutoff': 5000.0, 'filterRes': 0.25},
+    ('synthwave', 'Laser Shot'): {'osc1Wave': SAW, 'ampAttack': 1.0, 'ampDecay': 60.0, 'ampSustain': 0.0, 'ampRelease': 80.0, 'filterCutoff': 14000.0, 'filterRes': 0.5},
+    ('synthwave', '808 Kick'): {'osc1Wave': SINE, 'osc2Wave': SINE, 'osc2Vol': 0.0, 'filterCutoff': 3000.0, 'ampAttack': 1.0, 'ampDecay': 350.0, 'ampSustain': 0.0, 'ampRelease': 400.0},
+    ('synthwave', 'Snare Hit'): {'osc1Wave': NOISE, 'osc2Wave': SINE, 'filterCutoff': 9000.0, 'ampAttack': 1.0, 'ampDecay': 120.0, 'ampSustain': 0.0, 'ampRelease': 180.0},
+    ('synthwave', 'Hi-Hat'): {'osc1Wave': NOISE, 'filterCutoff': 14000.0, 'filterRes': 0.1, 'ampAttack': 1.0, 'ampDecay': 40.0, 'ampSustain': 0.0, 'ampRelease': 60.0},
+    ('synthwave', 'Clap'): {'osc1Wave': NOISE, 'filterCutoff': 10000.0, 'ampAttack': 1.0, 'ampDecay': 90.0, 'ampSustain': 0.0, 'ampRelease': 120.0},
+    ('synthwave', 'Cymbal'): {'osc1Wave': NOISE, 'filterCutoff': 12000.0, 'filterRes': 0.15, 'ampAttack': 5.0, 'ampDecay': 600.0, 'ampSustain': 0.0, 'ampRelease': 800.0},
+    ('synthwave', 'Toms'): {'osc1Wave': SINE, 'osc2Wave': NOISE, 'filterCutoff': 5000.0, 'ampAttack': 2.0, 'ampDecay': 200.0, 'ampSustain': 0.0, 'ampRelease': 250.0},
+    ('synthwave', 'Percussion'): {'osc1Wave': NOISE, 'osc2Wave': SINE, 'filterCutoff': 9500.0, 'ampAttack': 1.0, 'ampDecay': 100.0, 'ampSustain': 0.0, 'ampRelease': 150.0},
+
+    # Vocoder / Texture
+    ('synthwave', 'Vocoder'): {'osc1Wave': SAW, 'osc1Uni': 3, 'osc1Det': 10.0, 'filterCutoff': 7000.0, 'ampAttack': 8.0, 'ampRelease': 300.0, 'lfo1Target': 1, 'lfo1Depth': 0.3, 'lfo1Rate': 4.0},
+    ('synthwave', 'Talk Box'): {'osc1Wave': SAW, 'osc1Uni': 2, 'osc1Det': 8.0, 'filterCutoff': 6000.0, 'ampAttack': 10.0, 'ampRelease': 250.0, 'lfo1Target': 1, 'lfo1Depth': 0.5, 'lfo1Rate': 3.5},
+    ('synthwave', 'Glitch'): {'osc1Wave': NOISE, 'ampAttack': 1.0, 'ampDecay': 40.0, 'ampSustain': 0.0, 'ampRelease': 60.0, 'filterCutoff': 11000.0, 'filterRes': 0.35},
+    ('synthwave', 'Drone'): {'osc1Wave': SAW, 'osc1Uni': 4, 'osc1Det': 14.0, 'filterCutoff': 4000.0, 'ampAttack': 80.0, 'ampRelease': 1200.0, 'reverb': True, 'delay': True},
+    ('synthwave', 'Texture'): {'osc1Wave': SAW, 'osc1Uni': 5, 'osc1Det': 20.0, 'filterCutoff': 5500.0, 'ampAttack': 40.0, 'ampRelease': 900.0, 'reverb': True, 'chorus': True},
 }
 
 
@@ -907,8 +1033,9 @@ for category, names in BASE_PRESETS.items():
             PRESETS.append((idx, name, category, suffix, overrides))
             idx += 1
 
-# Target: 1338 presets (Juno-Di style)
-target_count = 1338
+# Target: enough presets for all categories + variations
+# With 26 categories × ~17 names × 9 variations = 5553 presets
+target_count = 5600
 if len(PRESETS) > target_count:
     PRESETS = PRESETS[:target_count]
 while len(PRESETS) < target_count:
