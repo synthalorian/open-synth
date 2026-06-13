@@ -191,6 +191,21 @@ target_compile_definitions(OpenSynth PRIVATE
     JUCE_USE_FLAC=1
 )
 
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    target_compile_options(OpenSynth PRIVATE
+        -Wall
+        -Wextra
+        -Wpedantic
+        -Wshadow
+        -Wconversion
+        -Wsign-conversion
+        -Wuninitialized
+        -Wunused-parameter
+        -Wmissing-field-initializers
+        -Wnon-virtual-dtor
+    )
+endif()
+
 # ── Copy sample libraries to build output ────────────────────────────────────
 set(SAMPLE_DIRS
     piano-upright-kw
