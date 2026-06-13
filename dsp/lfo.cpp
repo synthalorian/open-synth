@@ -73,7 +73,7 @@ float LFO::process() {
     float v = 0.0f;
     switch (waveform_) {
     case Waveform::SINE:
-        v = std::sin(2.0 * M_PI * phase_);
+        v = static_cast<float>(std::sin(2.0 * M_PI * phase_));
         break;
     case Waveform::TRIANGLE:
         v = 4.0f * std::abs(static_cast<float>(phase_) - 0.5f) - 1.0f;
@@ -111,7 +111,6 @@ float LFO::process() {
         // Random walk: drift randomly at audio rate with rate-controlled stepping
         // Use a step counter to slow down the random updates
         {
-            static int walkStepCounter = 0;
             static float walkTarget = 0.0f;
             // Update the walk target at multiples of the LFO rate
             if (phase_ < phaseIncrement_) {

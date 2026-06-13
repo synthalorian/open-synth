@@ -1,3 +1,16 @@
 build/
 *.o
 # samples/ — we now bundle CC0 sample libraries as submodules
+
+# AI session artifacts
+.sandbox-home/
+.claw/
+.omo/
+.clawd-todos.json
+
+# Build artifacts
+build/
+build-debug/
+*.so
+*.clap
+*.vst3

@@ -1,0 +1,56 @@
+[  1%] Built target juce_vst3_helper
+[  2%] Built target clap_juce_extensions
+[ 12%] Built target sample_load_test
+[ 13%] Built target sample_player_block_test
+[ 17%] Built target flac_test
+[ 19%] Building CXX object CMakeFiles/OpenSynth.dir/home/synth/projects/juce/modules/juce_gui_extra/juce_gui_extra.cpp.o
+[ 19%] Building CXX object CMakeFiles/OpenSynth.dir/home/synth/projects/juce/modules/juce_gui_basics/juce_gui_basics.cpp.o
+[ 20%] Building CXX object CMakeFiles/OpenSynth.dir/home/synth/projects/juce/modules/juce_graphics/juce_graphics.cpp.o
+[ 20%] Building CXX object CMakeFiles/OpenSynth.dir/home/synth/projects/juce/modules/juce_audio_processors/juce_audio_processors.cpp.o
+In file included from /home/synth/projects/juce/modules/juce_core/system/juce_StandardHeader.h:94,
+                 from /home/synth/projects/juce/modules/juce_core/juce_core.h:215,
+                 from /home/synth/projects/juce/modules/juce_graphics/juce_graphics.h:67,
+                 from /home/synth/projects/juce/modules/juce_gui_basics/juce_gui_basics.h:68,
+                 from /home/synth/projects/juce/modules/juce_gui_basics/juce_gui_basics.cpp:55:
+/home/synth/projects/juce/modules/juce_core/system/juce_PlatformDefs.h:286:38: note: ‘#pragma message: This version of JUCE does not use the splash screen, the flag JUCE_DISPLAY_SPLASH_SCREEN is ignored’
+  286 |  #define JUCE_COMPILER_WARNING(msg)  _Pragma (JUCE_STRINGIFY (message (msg)))
+      |                                      ^~~~~~~
+/home/synth/projects/juce/modules/juce_gui_basics/juce_gui_basics.cpp:61:2: note: in expansion of macro ‘JUCE_COMPILER_WARNING’
+   61 |  JUCE_COMPILER_WARNING ("This version of JUCE does not use the splash screen, the flag JUCE_DISPLAY_SPLASH_SCREEN is ignored")
+      |  ^~~~~~~~~~~~~~~~~~~~~
+[ 21%] Building CXX object CMakeFiles/OpenSynth.dir/home/synth/projects/juce/modules/juce_graphics/juce_graphics_Harfbuzz.cpp.o
+[ 22%] Building C object CMakeFiles/OpenSynth.dir/home/synth/projects/juce/modules/juce_graphics/juce_graphics_Sheenbidi.c.o
+[ 22%] Building CXX object CMakeFiles/OpenSynth.dir/home/synth/projects/juce/modules/juce_events/juce_events.cpp.o
+[ 24%] Building CXX object CMakeFiles/OpenSynth.dir/home/synth/projects/juce/modules/juce_core/juce_core.cpp.o
+[ 24%] Building CXX object CMakeFiles/OpenSynth.dir/home/synth/projects/juce/modules/juce_data_structures/juce_data_structures.cpp.o
+[ 25%] Building CXX object CMakeFiles/OpenSynth.dir/home/synth/projects/juce/modules/juce_audio_basics/juce_audio_basics.cpp.o
+[ 26%] Building CXX object CMakeFiles/OpenSynth.dir/home/synth/projects/juce/modules/juce_audio_utils/juce_audio_utils.cpp.o
+[ 26%] Building CXX object CMakeFiles/OpenSynth.dir/home/synth/projects/juce/modules/juce_audio_formats/juce_audio_formats.cpp.o
+[ 27%] Building CXX object CMakeFiles/OpenSynth.dir/home/synth/projects/juce/modules/juce_audio_devices/juce_audio_devices.cpp.o
+[ 28%] Building CXX object CMakeFiles/OpenSynth.dir/home/synth/projects/juce/modules/juce_dsp/juce_dsp.cpp.o
+[ 28%] Building CXX object CMakeFiles/OpenSynth.dir/home/synth/projects/juce/modules/juce_opengl/juce_opengl.cpp.o
+In file included from /home/synth/projects/juce/modules/juce_opengl/juce_opengl.cpp:256:
+/home/synth/projects/juce/modules/juce_opengl/opengl/juce_OpenGLGraphicsContext.cpp: In instantiation of ‘constexpr juce::OpenGLRendering::SavedBinding<Traits>::SavedBinding() [with Traits = juce::OpenGLRendering::TraitsVAO]’:
+/home/synth/projects/juce/modules/juce_opengl/opengl/juce_OpenGLGraphicsContext.cpp:1502:86:   required from here
+ 1502 |           previousFrameBufferTarget (OpenGLFrameBuffer::getCurrentFrameBufferTarget())
+      |                                                                                      ^
+/home/synth/projects/juce/modules/juce_opengl/opengl/juce_OpenGLGraphicsContext.cpp:925:32: warning: call to non-‘constexpr’ function ‘static bool juce::OpenGLRendering::TraitsVAO::shouldUseCustomVAO()’ [-Winvalid-constexpr]
+  925 |         if (! Traits::predicate())
+      |               ~~~~~~~~~~~~~~~~~^~
+/home/synth/projects/juce/modules/juce_opengl/opengl/juce_OpenGLGraphicsContext.cpp:859:17: note: ‘static bool juce::OpenGLRendering::TraitsVAO::shouldUseCustomVAO()’ declared here
+  859 |     static bool shouldUseCustomVAO()
+      |                 ^~~~~~~~~~~~~~~~~~
+[ 29%] Linking CXX static library "OpenSynth_artefacts/Debug/libOpen Synth_SharedCode.a"
+[ 97%] Built target OpenSynth
+[ 97%] Building CXX object CMakeFiles/OpenSynth_CLAP.dir/libs/clap-juce-extensions/src/wrapper/clap-juce-wrapper.cpp.o
+[ 97%] Building CXX object CMakeFiles/OpenSynth_Standalone.dir/home/synth/projects/juce/modules/juce_audio_plugin_client/juce_audio_plugin_client_Standalone.cpp.o
+[ 97%] Building CXX object CMakeFiles/OpenSynth_VST3.dir/home/synth/projects/juce/modules/juce_audio_plugin_client/juce_audio_plugin_client_VST3.cpp.o
+[ 98%] Linking CXX executable "OpenSynth_artefacts/Debug/Standalone/Open Synth"
+[ 99%] Linking CXX shared module "OpenSynth_artefacts/Debug/CLAP/Open Synth.clap"
+[ 99%] Built target OpenSynth_Standalone
+[ 99%] Built target OpenSynth_CLAP
+[100%] Linking CXX shared module "OpenSynth_artefacts/Debug/VST3/Open Synth.vst3/Contents/x86_64-linux/Open Synth.so"
+removing moduleinfo.json
+creating /home/synth/projects/05-active-dev/open-synth/build/OpenSynth_artefacts/Debug/VST3/Open Synth.vst3/Contents/Resources/moduleinfo.json
+JUCE v8.0.4
+Built target OpenSynth_VST3

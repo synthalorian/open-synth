@@ -198,8 +198,8 @@ public:
     /// Reset all slots.
     void reset();
 
-    FxSlot& slot(int index) { return slots_[index]; }
-    const FxSlot& slot(int index) const { return slots_[index]; }
+    FxSlot& slot(int index) { return slots_[static_cast<size_t>(index)]; }
+    const FxSlot& slot(int index) const { return slots_[static_cast<size_t>(index)]; }
 
     int slotCount() const { return MAX_FX_SLOTS; }
 
@@ -210,7 +210,7 @@ public:
     void setSlotParamNormalized(int slotIndex, int fxTypeId, int paramIdx, float normalized);
     void getSlotParams(int index, float* out, int maxCount) const;
 
-    FxType slotType(int index) const { return slots_[index].type(); }
+    FxType slotType(int index) const { return slots_[static_cast<size_t>(index)].type(); }
     int activeSlotCount() const;
 
     void setMasterEnabled(bool e) { masterEnabled_ = e; }

@@ -24,8 +24,8 @@ public:
     void allNotesOff(int partIndex = -1);
     void sustain(bool on);
     int activeVoiceCount() const;
-    Voice* voice(int index) { return &voices_[index]; }
-    const Voice* voice(int index) const { return &voices_[index]; }
+    Voice* voice(int index) { return &voices_[static_cast<size_t>(index)]; }
+    const Voice* voice(int index) const { return &voices_[static_cast<size_t>(index)]; }
 
     /// Set voice stealing priority mode.
     void setPriorityMode(VoicePriorityMode mode) { priorityMode_ = mode; }
