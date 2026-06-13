@@ -14,3 +14,13 @@ build-debug/
 *.so
 *.clap
 *.vst3
+
+# Flutter build artifacts
+.dart_tool/
+.flutter-plugins-dependencies
+.idea/
+android/
+ios/
+linux/
+macos/
+windows/
