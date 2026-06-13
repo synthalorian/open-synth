@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/synth/projects/open-synth/native/build_check/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

@@ -1,0 +1,7 @@
+/home/synth/projects/open-synth/native/build_check/CMakeFiles/openamp_dart_ffi.dir
+/home/synth/projects/open-synth/native/build_check/CMakeFiles/edit_cache.dir
+/home/synth/projects/open-synth/native/build_check/CMakeFiles/rebuild_cache.dir
+/home/synth/projects/open-synth/native/build_check/CMakeFiles/list_install_components.dir
+/home/synth/projects/open-synth/native/build_check/CMakeFiles/install.dir
+/home/synth/projects/open-synth/native/build_check/CMakeFiles/install/local.dir
+/home/synth/projects/open-synth/native/build_check/CMakeFiles/install/strip.dir
