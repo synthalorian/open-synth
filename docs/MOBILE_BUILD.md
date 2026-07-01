@@ -43,7 +43,7 @@ Or open `OpenSynth.xcodeproj` in Xcode and build the **OpenSynth_Standalone** sc
 
 | Option | Value | Purpose |
 |--------|-------|---------|
-| `BUNDLE_ID` | `com.synthshark.opensynth` | App Store / signing identifier |
+| `BUNDLE_ID` | `com.synthclaw.opensynth` | App Store / signing identifier |
 | `MICROPHONE_PERMISSION_ENABLED` | `TRUE` | Adds `NSMicrophoneUsageDescription` to `Info.plist` |
 | `BACKGROUND_AUDIO_ENABLED` | `TRUE` | Allows audio in background |
 | `STATUS_BAR_HIDDEN` | `TRUE` | Immersive full-screen UI |

@@ -137,4 +137,4 @@ Built by [synthalorian](https://github.com/synthalorian) with the JUCE framework
 
 ---
 
-*"This is the wave."* 🎹🦈
+*"This is the wave."* 🎹🦞
