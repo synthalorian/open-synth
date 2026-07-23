@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Add JUCE
-add_subdirectory(/home/synth/projects/juce JUCE_BUILD)
+add_subdirectory(/home/synth/.juce JUCE_BUILD)
 
 # Add CLAP JUCE extensions
 add_subdirectory(libs/clap-juce-extensions EXCLUDE_FROM_ALL)
