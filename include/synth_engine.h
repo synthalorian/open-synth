@@ -39,6 +39,21 @@ public:
     // MIDI (thread-safe via queue)
     void noteOn(int midiNote, float velocity, int channel = 0);
     void noteOff(int midiNote, int channel = 0);
+
+    // ── Performance mode: split / layer / transpose ──
+    // Split: notes below splitPoint (on the main channel's part) route to
+    //        part 1, which is auto-configured as a plucked Karplus bass.
+    // Layer: every note triggers both the channel's part AND part 1, which
+    //        mirrors part 0 with +/-8 cent detune (classic "Dual" thickness).
+    // Layer wins if both are enabled. Samples (ROMpler) fire on part 0 only.
+    void setSplitEnabled(bool e);
+    void setSplitPoint(int note) { perfSplitPoint_ = std::clamp(note, 21, 108); }
+    void setLayerEnabled(bool e);
+    void setTranspose(int semitones) { perfTranspose_ = std::clamp(semitones, -12, 12); }
+    bool splitEnabled() const { return perfSplitEnabled_; }
+    int splitPoint() const { return perfSplitPoint_; }
+    bool layerEnabled() const { return perfLayerEnabled_; }
+    int transpose() const { return perfTranspose_; }
     void allNotesOff(int channel = -1);
     // Instantly kills all voices (synth + sample) — MIDI CC 120 semantics.
     void allSoundOff(int channel = -1);
@@ -329,6 +344,20 @@ private:
 
     // MIDI channel -> part index lookup
     int channelToPart(int channel) const;
+
+    // Performance-mode internals
+    void doNoteOn(int midiNote, float velocity, int partIdx, int mpeChannel);
+    void doNoteOff(int midiNote, int partIdx, int mpeChannel);
+    void configureSplitPart(); // Karplus bass patch on part 1
+
+    bool perfSplitEnabled_ = false;
+    int perfSplitPoint_ = 60;   // C4 — first note of the upper zone
+    bool perfLayerEnabled_ = false;
+    int perfTranspose_ = 0;
+    // Routing record per original note so noteOff releases the exact
+    // transposed note/parts even if settings changed while held.
+    struct RoutedNote { int note = -1; uint32_t partMask = 0; };
+    RoutedNote routedNotes_[128];
 };
 
 } // namespace opensynth

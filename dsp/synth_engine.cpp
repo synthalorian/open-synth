@@ -124,34 +124,24 @@ void SynthEngine::noteOn(int midiNote, float velocity, int channel) {
     }
 
     arpeggiator_.noteOn(midiNote, velocity);
-    if (!arpeggiator_.enabled()) {
-        Voice* voice = allocator_.noteOn(midiNote, velocity, partIdx, mpeChannel);
-        if (voice) {
-            SynthPart& part = parts_[partIdx];
-            int wf1 = part.osc1.waveform();
-            if (wf1 >= 18 && wf1 <= 23) {
-                voice->physicalModel.setType(static_cast<PhysicalModelType>(wf1 - 17));
-                voice->physicalModel.noteOn(voice->baseFreq, voice->velocity);
-            }
-            int wf2 = part.osc2.waveform();
-            if (wf2 >= 18 && wf2 <= 23) {
-                voice->physicalModel.setType(static_cast<PhysicalModelType>(wf2 - 17));
-                voice->physicalModel.noteOn(voice->baseFreq, voice->velocity);
-            }
-            voice->realism.bodyType = part.realismBodyType;
-            voice->realism.bodyMix = part.realismBodyMix;
-            voice->realism.clickMix = part.realismClickMix;
-            voice->realism.sympatheticMix = part.realismSympatheticMix;
-            voice->realism.attackCurve = part.realismAttackCurve;
-            voice->realism.brightnessSens = part.realismBrightnessSens;
-            if (part.realismSympatheticMix > 0.0f) {
-                sympatheticResonator_.noteOn(voice->baseFreq, voice->velocity);
-            }
-        }
-        if (samplePlayer_ && samplePlayer_->getMixLevel() > 0.0f) {
-            samplePlayer_->noteOn(midiNote, velocity);
-        }
+    if (arpeggiator_.enabled()) return;
+
+    // Performance mode: transpose, then split/layer routing (layer wins)
+    const int note = std::clamp(midiNote + perfTranspose_, 0, 127);
+    uint32_t mask = 0;
+    if (perfLayerEnabled_) {
+        doNoteOn(note, velocity, partIdx, mpeChannel);
+        doNoteOn(note, velocity, 1, mpeChannel);
+        mask = (1u << partIdx) | (1u << 1);
+    } else if (perfSplitEnabled_ && note < perfSplitPoint_ && partIdx == 0) {
+        doNoteOn(note, velocity, 1, mpeChannel);
+        mask = (1u << 1);
+    } else {
+        doNoteOn(note, velocity, partIdx, mpeChannel);
+        mask = (1u << partIdx);
     }
+    routedNotes_[midiNote].note = note;
+    routedNotes_[midiNote].partMask = mask;
 }
 
 void SynthEngine::noteOff(int midiNote, int channel) {
@@ -165,19 +155,95 @@ void SynthEngine::noteOff(int midiNote, int channel) {
     }
 
     arpeggiator_.noteOff(midiNote);
-    if (!arpeggiator_.enabled()) {
-        allocator_.noteOff(midiNote, partIdx, mpeChannel);
-        for (int v = 0; v < VoiceAllocator::MAX_VOICES; ++v) {
-            Voice* voice = allocator_.voice(v);
-            if (voice->active && voice->midiNote == midiNote && voice->partIndex == partIdx) {
-                voice->physicalModel.noteOff();
-                sympatheticResonator_.noteOff(voice->baseFreq);
-            }
+    if (arpeggiator_.enabled()) return;
+
+    // Release exactly what noteOn routed (immune to mid-hold setting changes)
+    auto& rn = routedNotes_[midiNote];
+    int note = rn.note;
+    uint32_t mask = rn.partMask;
+    if (note < 0 || mask == 0) {
+        // No routing record (e.g. note started before this build's state) —
+        // fall back to current-mode routing.
+        note = std::clamp(midiNote + perfTranspose_, 0, 127);
+        if (perfLayerEnabled_) mask = (1u << partIdx) | (1u << 1);
+        else if (perfSplitEnabled_ && note < perfSplitPoint_ && partIdx == 0) mask = (1u << 1);
+        else mask = (1u << partIdx);
+    }
+    for (int p = 0; p < MAX_PARTS; ++p) {
+        if (mask & (1u << p)) doNoteOff(note, p, mpeChannel);
+    }
+    rn.note = -1;
+    rn.partMask = 0;
+}
+
+void SynthEngine::doNoteOn(int midiNote, float velocity, int partIdx, int mpeChannel) {
+    Voice* voice = allocator_.noteOn(midiNote, velocity, partIdx, mpeChannel);
+    if (voice) {
+        SynthPart& part = parts_[partIdx];
+        int wf1 = part.osc1.waveform();
+        if (wf1 >= 18 && wf1 <= 23) {
+            voice->physicalModel.setType(static_cast<PhysicalModelType>(wf1 - 17));
+            voice->physicalModel.noteOn(voice->baseFreq, voice->velocity);
         }
-        if (samplePlayer_) {
-            samplePlayer_->noteOff(midiNote);
+        int wf2 = part.osc2.waveform();
+        if (wf2 >= 18 && wf2 <= 23) {
+            voice->physicalModel.setType(static_cast<PhysicalModelType>(wf2 - 17));
+            voice->physicalModel.noteOn(voice->baseFreq, voice->velocity);
+        }
+        voice->realism.bodyType = part.realismBodyType;
+        voice->realism.bodyMix = part.realismBodyMix;
+        voice->realism.clickMix = part.realismClickMix;
+        voice->realism.sympatheticMix = part.realismSympatheticMix;
+        voice->realism.attackCurve = part.realismAttackCurve;
+        voice->realism.brightnessSens = part.realismBrightnessSens;
+        if (part.realismSympatheticMix > 0.0f) {
+            sympatheticResonator_.noteOn(voice->baseFreq, voice->velocity);
         }
     }
+    // ROMpler samples fire on the main part only — in split mode the lower
+    // zone is pure synth bass, not a second copy of the piano samples.
+    if (partIdx == 0 && samplePlayer_ && samplePlayer_->getMixLevel() > 0.0f) {
+        samplePlayer_->noteOn(midiNote, velocity);
+    }
+}
+
+void SynthEngine::doNoteOff(int midiNote, int partIdx, int mpeChannel) {
+    allocator_.noteOff(midiNote, partIdx, mpeChannel);
+    for (int v = 0; v < VoiceAllocator::MAX_VOICES; ++v) {
+        Voice* voice = allocator_.voice(v);
+        if (voice->active && voice->midiNote == midiNote && voice->partIndex == partIdx) {
+            voice->physicalModel.noteOff();
+            sympatheticResonator_.noteOff(voice->baseFreq);
+        }
+    }
+    if (partIdx == 0 && samplePlayer_) {
+        samplePlayer_->noteOff(midiNote);
+    }
+}
+
+void SynthEngine::setSplitEnabled(bool e) {
+    perfSplitEnabled_ = e;
+    if (e) configureSplitPart();
+}
+
+void SynthEngine::setLayerEnabled(bool e) {
+    perfLayerEnabled_ = e;
+}
+
+void SynthEngine::configureSplitPart() {
+    SynthPart& p = parts_[1];
+    p = SynthPart(); // reset to defaults first
+    // Plucked Karplus bass — the classic "split bass" companion
+    p.osc1.setWaveform(20); // PM_KARPLUS_BASS
+    p.osc1.setVolume(0.85f);
+    p.osc2.setVolume(0.0f);
+    p.filter.setCutoff(2500.0f);
+    p.filter.setResonance(0.2f);
+    p.ampAttack = 1.0f;
+    p.ampDecay = 900.0f;
+    p.ampSustain = 0.15f;
+    p.ampRelease = 180.0f;
+    p.volume = 0.9f;
 }
 
 void SynthEngine::allNotesOff(int channel) {
@@ -219,6 +285,15 @@ void SynthEngine::process(AudioBuffer& output) {
     // Voices are created by multiple paths (direct noteOn, arpeggiator,
     // param queue) and previously latched envelope defaults (sustain 0.8)
     // that ignored the preset — the "eternal drone" bug.
+    // Layer mode: part 1 mirrors part 0 with ±8 cent detune (Dual mode).
+    // Refreshed per block so it tracks live preset/param changes.
+    if (perfLayerEnabled_) {
+        const float d1 = parts_[0].osc1.detune();
+        const float d2 = parts_[0].osc2.detune();
+        parts_[1] = parts_[0];
+        parts_[1].osc1.setDetune(d1 + 8.0f);
+        parts_[1].osc2.setDetune(d2 - 8.0f);
+    }
     for (int v = 0; v < VoiceAllocator::MAX_VOICES; ++v) {
         Voice* voice = allocator_.voice(v);
         if (!voice->active) continue;

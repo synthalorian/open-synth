@@ -328,6 +328,9 @@ private:
     juce::ToggleButton layerButton_;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> layerAttach_;
 
+    juce::ToggleButton splitButton_;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> splitEnableAttach_;
+
     juce::Label transposeLabel_;
     juce::Slider transposeSlider_;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> transposeAttach_;

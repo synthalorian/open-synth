@@ -237,6 +237,11 @@ void SynthEngineWrapper::setArpGate(float g) { if (engine_) engine_->setArpGate(
 void SynthEngineWrapper::setArpSwing(float s) { if (engine_) engine_->setArpSwing(s); }
 void SynthEngineWrapper::setArpOctaveRange(int o) { if (engine_) engine_->setArpOctaveRange(o); }
 
+void SynthEngineWrapper::setSplitEnabled(bool e) { if (engine_) engine_->setSplitEnabled(e); }
+void SynthEngineWrapper::setSplitPoint(int note) { if (engine_) engine_->setSplitPoint(note); }
+void SynthEngineWrapper::setLayerEnabled(bool e) { if (engine_) engine_->setLayerEnabled(e); }
+void SynthEngineWrapper::setTranspose(int semitones) { if (engine_) engine_->setTranspose(semitones); }
+
 void SynthEngineWrapper::setRealismBodyType(int t) { if (engine_) engine_->part(0).realismBodyType = t; }
 void SynthEngineWrapper::setRealismBodyMix(float m) { if (engine_) engine_->part(0).realismBodyMix = m; }
 void SynthEngineWrapper::setRealismClickMix(float m) { if (engine_) engine_->part(0).realismClickMix = m; }
