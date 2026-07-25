@@ -215,8 +215,50 @@ void SynthEngine::process(AudioBuffer& output) {
     // Let the arpeggiator generate note events (if enabled).
     arpeggiator_.process(numFrames, sampleRate_, allocator_);
 
+    // Sync envelope parameters from each voice's part EVERY block.
+    // Voices are created by multiple paths (direct noteOn, arpeggiator,
+    // param queue) and previously latched envelope defaults (sustain 0.8)
+    // that ignored the preset — the "eternal drone" bug.
+    for (int v = 0; v < VoiceAllocator::MAX_VOICES; ++v) {
+        Voice* voice = allocator_.voice(v);
+        if (!voice->active) continue;
+        const SynthPart& vp = parts_[voice->partIndex];
+        voice->ampEnv.setDelay(vp.ampDelay);
+        voice->ampEnv.setHold(vp.ampHold);
+        voice->ampEnv.setAttack(vp.ampAttack);
+        voice->ampEnv.setDecay(vp.ampDecay);
+        voice->ampEnv.setSustain(vp.ampSustain);
+        voice->ampEnv.setRelease(vp.ampRelease);
+        voice->ampEnv.setAttackCurve(vp.ampAttackCurve);
+        voice->ampEnv.setDecayCurve(vp.ampDecayCurve);
+        voice->ampEnv.setReleaseCurve(vp.ampReleaseCurve);
+        voice->filterEnv.setDelay(vp.filterDelay);
+        voice->filterEnv.setHold(vp.filterHold);
+        voice->filterEnv.setAttack(vp.filterAttack);
+        voice->filterEnv.setDecay(vp.filterDecay);
+        voice->filterEnv.setSustain(vp.filterSustain);
+        voice->filterEnv.setRelease(vp.filterRelease);
+        voice->filterEnv.setAttackCurve(vp.filterAttackCurve);
+        voice->filterEnv.setDecayCurve(vp.filterDecayCurve);
+        voice->filterEnv.setReleaseCurve(vp.filterReleaseCurve);
+        voice->pitchEnv.setAttack(vp.pitchEnvAttack);
+        voice->pitchEnv.setDecay(vp.pitchEnvDecay);
+        voice->pitchEnv.setSustain(vp.pitchEnvSustain);
+        voice->pitchEnv.setRelease(vp.pitchEnvRelease);
+    }
+
     // Advance rhythm pattern player (triggers drum hits on step boundaries).
     rhythmPlayer_.process(drumKit_, numFrames, sampleRate_);
+
+    // Polyphonic headroom: voice-average by 1/sqrt(N). Single notes stay
+    // full-scale; chords get gentle attenuation instead of slamming the
+    // tanh limiter. (With the TPT filter fix, voice sums are sane — this is
+    // just insurance for full 8-voice polyphony + unison stacks.)
+    int activeVoiceCount = 0;
+    for (int v = 0; v < VoiceAllocator::MAX_VOICES; ++v) {
+        if (allocator_.voice(v)->active) ++activeVoiceCount;
+    }
+    const float voiceMixScale = 1.0f / std::sqrt(static_cast<float>(std::max(1, activeVoiceCount)));
 
     // Update per-block LFO (using part 0's LFOs for global modulation)
     float lfo1Val = parts_[0].lfo1.process();
@@ -361,8 +403,8 @@ void SynthEngine::process(AudioBuffer& output) {
             // Apply part volume/pan
             float partPanL = std::cos((part.pan + 1.0f) * M_PI / 4.0f);
             float partPanR = std::sin((part.pan + 1.0f) * M_PI / 4.0f);
-            voiceLeft = filtered * ampGain * partPanL * part.volume;
-            voiceRight = filtered * ampGain * partPanR * part.volume;
+            voiceLeft = filtered * ampGain * partPanL * part.volume * voiceMixScale;
+            voiceRight = filtered * ampGain * partPanR * part.volume * voiceMixScale;
 
             leftOut += voiceLeft;
             rightOut += voiceRight;
@@ -390,7 +432,6 @@ void SynthEngine::process(AudioBuffer& output) {
             // Apply FX engine (multi-FX slots processed in series)
         // Slot 0 is the LegacyFxProcessor, slots 1-3 are user-assignable types
         fxEngine_.process(leftOut, rightOut, sampleRate_);
-
         // Master volume
         leftOut *= masterVolume_;
         rightOut *= masterVolume_;
@@ -420,8 +461,9 @@ void SynthEngine::process(AudioBuffer& output) {
         uint32_t sf = numFrames < kSampleBufMax ? numFrames : kSampleBufMax;
         samplePlayer_->processBlock(sampleLeft, sampleRight, static_cast<int>(sf));
         for (uint32_t frame = 0; frame < sf; ++frame) {
-            float sl = sampleLeft[frame];
-            float sr = sampleRight[frame];
+            // 0.85 trim keeps sample+synth sums inside the tanh's linear region
+            float sl = sampleLeft[frame] * 0.85f;
+            float sr = sampleRight[frame] * 0.85f;
             if (!std::isfinite(sl)) sl = 0.0f;
             if (!std::isfinite(sr)) sr = 0.0f;
             if (stereo) {
