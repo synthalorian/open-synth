@@ -1,0 +1,108 @@
+name: Build
+
+on:
+  push:
+    branches: [master]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+# Cancel superseded runs on the same ref
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            name: linux-x86_64
+            artifact_glob: |
+              build/OpenSynth_artefacts/Release/Standalone/Open Synth
+              build/OpenSynth_artefacts/Release/VST3/Open Synth.vst3
+              build/OpenSynth_artefacts/Release/CLAP/Open Synth.clap
+          - os: windows-latest
+            name: windows-x86_64
+            artifact_glob: |
+              build/OpenSynth_artefacts/Release/Standalone/Open Synth.exe
+              build/OpenSynth_artefacts/Release/VST3/Open Synth.vst3
+              build/OpenSynth_artefacts/Release/CLAP/Open Synth.clap
+          - os: macos-latest
+            name: macos-universal
+            artifact_glob: |
+              build/OpenSynth_artefacts/Release/Standalone/Open Synth.app
+              build/OpenSynth_artefacts/Release/VST3/Open Synth.vst3
+              build/OpenSynth_artefacts/Release/CLAP/Open Synth.clap
+
+    steps:
+      - uses: actions/checkout@v4
+        # Only JUCE is needed to build. The sample-library submodules
+        # (~1.2GB) are fetched separately for tag builds below.
+        with:
+          submodules: false
+
+      - name: Init JUCE submodule
+        run: git submodule update --init libs/JUCE
+
+      - name: Init sample submodules (tag builds only)
+        if: startsWith(github.ref, 'refs/tags/')
+        run: git submodule update --init --recursive
+
+      - name: Install Linux dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            libasound2-dev libx11-dev libxext-dev libxinerama-dev \
+            libxrandr-dev libxcursor-dev libgl1-mesa-dev \
+            libfreetype6-dev libfontconfig1-dev
+
+      - name: Configure
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: cmake --build build --config Release -j 4
+
+      - name: Run FX test suite
+        run: ./build/fx_tests
+        shell: bash
+
+      - name: Package (Linux)
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          mkdir -p dist
+          tar -czf dist/open-synth-${{ matrix.name }}-standalone.tar.gz \
+            -C build/OpenSynth_artefacts/Release/Standalone .
+          tar -czf dist/open-synth-${{ matrix.name }}-vst3.tar.gz \
+            -C build/OpenSynth_artefacts/Release/VST3 "Open Synth.vst3"
+          tar -czf dist/open-synth-${{ matrix.name }}-clap.tar.gz \
+            -C build/OpenSynth_artefacts/Release/CLAP .
+
+      - name: Package (Windows / macOS)
+        if: runner.os != 'Linux'
+        shell: bash
+        run: |
+          mkdir -p dist
+          cd build/OpenSynth_artefacts/Release
+          zip -r "$GITHUB_WORKSPACE/dist/open-synth-${{ matrix.name }}-standalone.zip" Standalone/
+          zip -r "$GITHUB_WORKSPACE/dist/open-synth-${{ matrix.name }}-vst3.zip" "VST3/Open Synth.vst3"
+          zip -r "$GITHUB_WORKSPACE/dist/open-synth-${{ matrix.name }}-clap.zip" CLAP/
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: open-synth-${{ matrix.name }}
+          path: dist/
+          retention-days: 14
+
+      - name: Attach to release (tag builds)
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload "${GITHUB_REF_NAME}" dist/* --clobber
