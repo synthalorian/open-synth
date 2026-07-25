@@ -372,7 +372,27 @@ target_compile_definitions(fx_tests PRIVATE
     JUCE_USE_CURL=0
 )
 
-# ── Sample Static Regression Test ────────────────────────────────────────────
+# ── Engine Render Test (noise floor repro) ───────────────────────────────────
+add_executable(engine_render_test
+    tests/engine_render_test.cpp
+    ${DSP_SOURCES}
+    src/instrument_realism.cpp
+    src/preset_data.cpp
+    src/synth_engine_wrapper.cpp
+)
+target_include_directories(engine_render_test PRIVATE src dsp include)
+target_link_libraries(engine_render_test PRIVATE
+    juce::juce_audio_basics
+    juce::juce_audio_formats
+    juce::juce_audio_processors
+    juce::juce_core
+    juce::juce_dsp
+)
+target_compile_definitions(engine_render_test PRIVATE
+    JUCE_WEB_BROWSER=0
+    JUCE_USE_CURL=0
+    JUCE_USE_FLAC=1
+)
 add_executable(sample_static_test
     tests/sample_static_test.cpp
     dsp/sample_player.cpp

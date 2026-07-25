@@ -65,11 +65,14 @@ float StateVariableFilter::process(float input, float envMod, double sampleRate,
     // Pre-filter drive
     float sample = applyDrive(input, drive_);
 
-    // Compute f and clamp to stable region
-    float f = 2.0f * std::sin(M_PI * cutoff / (float)sampleRate);
-    // Clamp f to prevent instability near Nyquist (safety margin < 2.0)
-    f = std::min(f, 1.95f);
-    float q = 1.0f - std::clamp(resonance_, 0.0f, 0.99f);
+    // Compute g and clamp to stable region
+    // TPT (Zavalishin) SVF: stable for ANY cutoff up to Nyquist.
+    // The previous Chamberlin form (f = 2sin(πf/fs)) goes unstable above
+    // sr/6 (8kHz @ 48k) — any preset with cutoff > 8kHz exploded the filter
+    // state into railed square-wave noise (the "static" bug).
+    float g = std::tan(M_PI * cutoff / (float)sampleRate);
+    g = std::clamp(g, 0.0f, 10.0f); // tan() blows up at Nyquist; 10 is plenty
+    float k = 2.0f - 2.0f * std::clamp(resonance_, 0.0f, 0.99f); // k = 2 - 2R
 
     // NaN/inf guard — if state is corrupted, reset it before processing
     if (!std::isfinite(state.lp) || !std::isfinite(state.bp) || !std::isfinite(state.hp)) {
@@ -78,10 +81,16 @@ float StateVariableFilter::process(float input, float envMod, double sampleRate,
         state.hp = 0.0f;
     }
 
-    // State-variable filter
-    state.hp = sample - state.lp - q * state.bp;
-    state.bp = state.bp + f * state.hp;
-    state.lp = state.lp + f * state.bp;
+    // TPT state-variable filter (state.bp = ic1, state.lp = ic2)
+    const float a1 = 1.0f / (1.0f + g * (g + k));
+    const float a2 = g * a1;
+    const float a3 = g * a2;
+    const float v3 = sample - state.lp;
+    const float v1 = a1 * state.bp + a2 * v3;   // band-pass
+    const float v2 = state.lp + a2 * state.bp + a3 * v3; // low-pass
+    state.bp = 2.0f * v1 - state.bp;
+    state.lp = 2.0f * v2 - state.lp;
+    state.hp = sample - k * v1 - v2;            // high-pass
 
     // NaN/inf guard after update
     if (!std::isfinite(state.lp) || !std::isfinite(state.bp) || !std::isfinite(state.hp)) {
