@@ -2,6 +2,19 @@
 
 All notable changes to Open Synth are documented here.
 
+## [2.0.1] — 2026-07-25
+
+The "static" hotfix. Three compounding audio bugs that produced noise/drone under presets — most audibly a harsh static behind the Grand Piano.
+
+### Fixed
+- **Filter explosion (the static):** the Chamberlin SVF went unstable above sr/6 (8kHz @ 48kHz). Any preset with cutoff > 8kHz (piano @ 12kHz) drove the filter into runaway feedback, railing the mix into square-wave noise. Replaced with a TPT (Zavalishin) SVF — stable up to Nyquist.
+- **Voice envelopes ignored presets:** `noteOn` never copied the part's envelope into the voice, so every voice used default sustain 0.8 and droned under the decaying samples. Envelopes (amp/filter/pitch + curves) now sync from each voice's part every block — covers direct, arpeggiator, and queue-triggered notes, plus live parameter edits.
+- **Mix clipping:** raw voice accumulation (up to ±8 at full polyphony) slammed the tanh limiter. Added 1/√N polyphonic headroom scaling and a 0.85 sample-layer trim.
+- **Acoustic preset envelopes:** piano, upright, guitars, and basses had pad-style envelopes (sustain 0.6–0.7) that droned beneath the samples. Now sustain 0–0.15 with instrument-natural decays (piano 2400ms). All 5,600 presets regenerated.
+
+### Added
+- `engine_render_test`: headless full-engine render harness (layer isolation modes, RMS/peak profiling, WAV dump) — the tool that found all of the above.
+
 ## [2.0.0] — 2026-07-25
 
 **The C++ Rewrite.** The engine was rebuilt from the Flutter/Dart prototype (v1.1.0 and earlier) into a native JUCE 8 + C++20 application: sub-10ms latency, 16-part multitimbrality, full MFX chain, and a streaming sample ROMpler. Standalone + VST3 + CLAP.
