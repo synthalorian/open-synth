@@ -5,7 +5,7 @@ This document covers building Open Synth standalone apps for iOS and Android.
 ## Prerequisites
 
 - Same repo setup as desktop: `git clone --recurse-submodules`
-- JUCE submodule at `/home/synth/projects/juce` (or adjust `CMakeLists.txt`)
+- JUCE available via `-DJUCE_DIR=/path/to/JUCE`, the `JUCE_DIR` env var, or as a `libs/JUCE` submodule (see main README)
 
 ---
 
@@ -14,7 +14,7 @@ This document covers building Open Synth standalone apps for iOS and Android.
 ### 1. Generate Xcode project
 
 ```bash
-cd /home/synth/projects/open-synth
+cd ~/projects/open-synth
 mkdir build-ios && cd build-ios
 cmake .. -G Xcode \
   -DCMAKE_SYSTEM_NAME=iOS \
@@ -69,7 +69,7 @@ Ensure you have:
 JUCE ships with an Android exporter that generates a Gradle project. The simplest path is:
 
 ```bash
-cd /home/synth/projects/open-synth
+cd ~/projects/open-synth
 mkdir build-android && cd build-android
 
 # Configure for Android
@@ -128,5 +128,5 @@ The current desktop-oriented editor (`plugin_editor.cpp`) uses small rotary knob
 
 ## Related Files
 
-- `/home/synth/projects/open-synth/CMakeLists.txt` — main build configuration
-- `/home/synth/projects/open-synth/assets/icon.png` — source icon (resized to 512/1024 automatically)
+- `~/projects/open-synth/CMakeLists.txt` — main build configuration
+- `~/projects/open-synth/assets/icon.png` — source icon (resized to 512/1024 automatically)

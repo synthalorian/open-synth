@@ -250,7 +250,7 @@ void LegacyFxProcessor::processDelay(float& left, float& right, double /*sampleR
 
 // ── Reverb (Schroeder all-pass) ───────────────────────────────────────────────
 
-void LegacyFxProcessor::processReverb(float& left, float& right, double sampleRate) {
+void LegacyFxProcessor::processReverb(float& left, float& right, double /*sampleRate*/) {
     if (!reverbEnabled_ || reverbMix_ <= 0.0f) return;
 
     float wetL = 0.0f, wetR = 0.0f;

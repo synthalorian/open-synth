@@ -81,7 +81,7 @@ float GrainDelayProcessor::readDelay(const std::array<float, MAX_DELAY>& line, f
     return line[i1] * (1.0f - frac) + line[i2] * frac;
 }
 
-void GrainDelayProcessor::spawnGrain(float inL, float inR) {
+void GrainDelayProcessor::spawnGrain(float /*inL*/, float /*inR*/) {
     auto& g = grains_[nextGrain_];
     nextGrain_ = (nextGrain_ + 1) % MAX_GRAINS;
 

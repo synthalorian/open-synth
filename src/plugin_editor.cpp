@@ -1357,24 +1357,24 @@ void MidiLearnableKnob::paint(juce::Graphics& g)
 
 namespace opensynth {
 
-OpenSynthEditor::OpenSynthEditor(OpenSynthProcessor& processor)
-    : AudioProcessorEditor(&processor), processor_(processor),
-      osc1Panel_(processor.getParameters(), 1),
-      osc2Panel_(processor.getParameters(), 2),
-      filterPanel_(processor.getParameters()),
-      ampEnvPanel_(processor.getParameters(), "AMP"),
-      filterEnvPanel_(processor.getParameters(), "FILTER"),
-      fx1Panel_(processor.getParameters(), 1),
-      fx2Panel_(processor.getParameters(), 2),
-      fx3Panel_(processor.getParameters(), 3),
-      arpPanel_(processor.getParameters()),
-      realismPanel_(processor.getParameters()),
-      mpePanel_(processor.getParameters()),
-      dbeamPanel_(processor.getParameters()),
-      performancePanel_(processor.getParameters()),
-      samplePanel_(processor.getParameters(), processor),
-      phraseSamplerPanel_(processor),
-      keyboard_(processor)
+OpenSynthEditor::OpenSynthEditor(OpenSynthProcessor& proc)
+    : AudioProcessorEditor(&proc), processor_(proc),
+      osc1Panel_(proc.getParameters(), 1),
+      osc2Panel_(proc.getParameters(), 2),
+      filterPanel_(proc.getParameters()),
+      ampEnvPanel_(proc.getParameters(), "AMP"),
+      filterEnvPanel_(proc.getParameters(), "FILTER"),
+      fx1Panel_(proc.getParameters(), 1),
+      fx2Panel_(proc.getParameters(), 2),
+      fx3Panel_(proc.getParameters(), 3),
+      arpPanel_(proc.getParameters()),
+      realismPanel_(proc.getParameters()),
+      mpePanel_(proc.getParameters()),
+      dbeamPanel_(proc.getParameters()),
+      phraseSamplerPanel_(proc),
+      samplePanel_(proc.getParameters(), proc),
+      performancePanel_(proc.getParameters()),
+      keyboard_(proc)
 {
     setSize(1400, 900);
     setResizable(false, false);
@@ -1488,7 +1488,7 @@ OpenSynthEditor::OpenSynthEditor(OpenSynthProcessor& processor)
     addAndMakeVisible(performancePanel_);
     addAndMakeVisible(keyboard_);
     addAndMakeVisible(waveformDisplay_);
-    processor.setWaveformDisplay(&waveformDisplay_);
+    proc.setWaveformDisplay(&waveformDisplay_);
 
     // Overlays (initially hidden)
     addChildComponent(presetBrowser_);
@@ -1880,7 +1880,6 @@ void OpenSynthEditor::resized()
     int panelWidth = (availWidth - gap * 3) / 4;
     int topHeight = juce::jmin(220, availHeight / 3);
     int midHeight = juce::jmin(220, availHeight / 3);
-    int keyHeight = availHeight - topHeight - midHeight - gap * 2;
 
     // Top row: Oscillators + Filter + Arp
     auto topRow = b.removeFromTop(topHeight);
@@ -2084,7 +2083,6 @@ void PhraseSamplerPanel::paint(juce::Graphics& g)
 {
     auto b = getLocalBounds().toFloat();
     float w = b.getWidth();
-    float h = b.getHeight();
 
     g.setColour(SynthColors::card());
     g.fillRoundedRectangle(b, 8.0f);
@@ -2681,7 +2679,7 @@ ZoneEditor::ZoneEditor(OpenSynthProcessor& processor, std::function<void()> onCl
     addAndMakeVisible(selLabel_);
 
     // Note sliders
-    auto makeNoteSlider = [this](juce::Slider& s, const juce::String& name) {
+    auto makeNoteSlider = [this](juce::Slider& s, const juce::String& /*name*/) {
         s.setSliderStyle(juce::Slider::LinearHorizontal);
         s.setTextBoxStyle(juce::Slider::TextBoxRight, false, 42, 18);
         s.setRange(0.0, 127.0, 1.0);
@@ -2896,7 +2894,7 @@ void ZoneEditor::resized()
     y += 22;
 
     // Left column: note sliders
-    auto addSliderRow = [&](juce::Slider& s, int yy, const char* label) {
+    auto addSliderRow = [&](juce::Slider& s, int yy, const char* /*label*/) {
         // Label drawn in paint, slider occupies full row
         s.setBounds(56, yy, colW - 68, 22);
     };

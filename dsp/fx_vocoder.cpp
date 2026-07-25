@@ -107,7 +107,6 @@ void VocoderProcessor::process(float& left, float& right, double sampleRate) {
     float wetL = 0.0f;
     float wetR = 0.0f;
 
-    float attackCoeff = 0.0f;   // instant attack
     float releaseCoeff = 0.92f; // medium release
 
     for (int i = 0; i < bands_; ++i) {

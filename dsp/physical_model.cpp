@@ -216,7 +216,6 @@ void ModalVoice::noteOn(float freq, float velocity, int modePreset) {
     }
 
     numModes_ = nModes;
-    float invSr = 1.0f / static_cast<float>(sampleRate_);
 
     for (int i = 0; i < nModes; ++i) {
         modes_[i].freq = freq * ratios[i];

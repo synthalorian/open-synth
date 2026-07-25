@@ -399,16 +399,6 @@ static void generateVelocityLayers(int idx, const float* amplitudes, int numHarm
     generateAdditive(gWavetables[idx].hard->samples, kWavetableSize, hardAmps, numHarmonics);
 }
 
-static void generateInharmonicEntry(int idx, const float* freqs, const float* amps, int numPartials,
-                                    const char* baseName) {
-    char nameBuf[64];
-    snprintf(nameBuf, sizeof(nameBuf), "%s", baseName);
-    gWavetables[idx].soft = createWavetable(nameBuf);
-    gWavetables[idx].medium = gWavetables[idx].soft;
-    gWavetables[idx].hard = gWavetables[idx].soft;
-    generateInharmonic(gWavetables[idx].soft->samples, kWavetableSize, freqs, amps, numPartials);
-}
-
 static void ensureWavetablesInitialized() {
     if (gInitialized) return;
     

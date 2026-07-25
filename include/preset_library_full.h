@@ -1,6 +1,14 @@
 #pragma once
 #include "preset_data.h"
 
+// Generated file — double literals initialize float fields by design.
+#if defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wsign-conversion"
+#pragma GCC diagnostic ignored "-Wfloat-conversion"
+#endif
+
 namespace opensynth {
 
 inline constexpr int kNumFullPresets = 5600;
@@ -134409,3 +134417,7 @@ inline constexpr PresetData kFullPresets[] = {
 };
 
 } // namespace opensynth
+
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif

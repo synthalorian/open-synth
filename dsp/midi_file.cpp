@@ -121,7 +121,7 @@ bool MidiFileReader::parseTrack(const uint8_t* data, size_t size, size_t& pos, M
                 track.name = std::string((const char*)data + pos, metaLen);
             } else if (metaType == 0x51 && metaLen == 3) { // Tempo
                 uint32_t microsPerQuarter = (data[pos] << 16) | (data[pos + 1] << 8) | data[pos + 2];
-                // Store tempo in first track (we'll extract it later)
+                (void)microsPerQuarter; // parsed but tempo map not yet implemented
             }
             pos += metaLen;
             continue;
@@ -224,7 +224,7 @@ void MidiFileWriter::writeHeader(std::vector<uint8_t>& out, const MidiFile& midi
     writeU16(out, (uint16_t)midi.ticksPerQuarter);
 }
 
-void MidiFileWriter::writeTrack(std::vector<uint8_t>& out, const MidiTrack& track, int ticksPerQuarter) {
+void MidiFileWriter::writeTrack(std::vector<uint8_t>& out, const MidiTrack& track, int /*ticksPerQuarter*/) {
     std::vector<uint8_t> trackData;
 
     // Track name meta event

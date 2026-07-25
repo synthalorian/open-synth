@@ -61,7 +61,7 @@ void KeyClickGenerator::reset() {
     samplesRemaining = 0;
 }
 
-float KeyClickGenerator::process(double sampleRate) {
+float KeyClickGenerator::process(double /*sampleRate*/) {
     if (!active || samplesRemaining <= 0) {
         active = false;
         return 0.0f;

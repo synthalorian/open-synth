@@ -91,18 +91,29 @@ Originally prototyped in Flutter/Dart, the engine was rebuilt in native C++ for 
 ### Prerequisites
 - CMake 3.22+
 - C++20 compiler (GCC 12+, Clang 15+, MSVC 2022+)
-- [JUCE](https://github.com/juce-framework/JUCE) (cloned as sibling or set `JUCE_DIR`)
+- [JUCE](https://github.com/juce-framework/JUCE) — resolved in this order: `-DJUCE_DIR=/path/to/JUCE`, the `JUCE_DIR` environment variable, a `libs/JUCE` submodule, or `~/.juce`
 
 ### Linux
 ```bash
-git clone https://github.com/synthalorian/open-synth.git
+git clone --recurse-submodules https://github.com/synthalorian/open-synth.git
 cd open-synth
 mkdir build && cd build
-cmake .. -DCMAKE_BUILD_TYPE=Release
+cmake .. -DCMAKE_BUILD_TYPE=Release -DJUCE_DIR=/path/to/JUCE
 make -j$(nproc)
 ```
 
-The standalone binary and VST3 plugin will be in `build/OpenSynth_artefacts/`.
+**Important:** use `--recurse-submodules` (or `git submodule update --init` after cloning). The CC0 sample libraries (pianos, drums, bass, guitars) live in git submodules under `samples/` — without them, sample-based presets will be silent.
+
+The standalone binary, VST3, and CLAP plugins will be in `build/OpenSynth_artefacts/`.
+
+### Tests
+```bash
+cd build
+./sample_load_test ../samples          # all library WAVs decode (83/83)
+./sample_player_block_test ../samples  # block processing, pitch bend, ADSR
+./sample_static_test ../samples/manifests/splendid-grand-piano.json  # manifest load + clean audio
+./fx_tests                             # 1,021 FX engine unit tests
+```
 
 ### macOS / Windows
 ```bash
@@ -120,20 +131,22 @@ cmake --build . --config Release
 - [x] 16-part multitimbrality
 - [x] User presets + setlist mode
 - [x] App state persistence + MIDI input
-- [ ] **In Progress**: Preset library expansion (orchestral, EDM, retro)
+- [x] Preset library — 5,600 presets across 20+ categories
+- [x] Sample playback / ROMpler layer (CC0 library: pianos, drums, bass, guitars)
+- [x] CLAP plugin format
 - [ ] **In Progress**: Instrument realism system (per-category body models)
-- [ ] Sample playback / ROMpler layer
 - [ ] MPE (MIDI Polyphonic Expression) support
-- [ ] CLAP plugin format
 - [ ] iOS / Android standalone apps
 
 ## License
 
 MIT License — see [LICENSE](LICENSE).
 
+Bundled sample libraries are CC0 / public domain (see `samples/` submodule sources: freepats, sfzinstruments).
+
 ## Credits
 
-Built by [synthalorian](https://github.com/synthalorian) with the JUCE framework.
+Made by synth with synthclaw 🎹🦞 — built on the JUCE framework.
 
 ---
 

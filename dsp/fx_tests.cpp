@@ -356,7 +356,7 @@ static void test_fx_engine() {
 
     ASSERT_TRUE(engine.masterEnabled());
     ASSERT_NEAR(engine.masterMix(), 1.0f, 0.001f);
-    ASSERT_EQ(engine.slotCount(), 4);
+    ASSERT_EQ(engine.slotCount(), 5); // 3 MFX + Reverb + Chorus (Juno-Di parity)
     ASSERT_EQ(engine.activeSlotCount(), 0);
 
     // Set slot 1 to EQ

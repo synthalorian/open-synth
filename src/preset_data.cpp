@@ -90,20 +90,32 @@ void applyPresetToEngine(const PresetData& p, SynthEngineWrapper& e)
     }
 }
 
-// Helper to resolve manifest path relative to executable or dev tree
+// Helper to resolve manifest path relative to executable, user data dir, or dev tree
 juce::File getSampleManifestPath(const char* id)
 {
-    // Try plugin bundle directory first
+    const auto fileName = juce::String(id) + ".json";
+
+    // 1. Next to the executable (standalone bundles ship samples/ beside the binary)
     juce::File exeDir = juce::File::getSpecialLocation(juce::File::currentExecutableFile).getParentDirectory();
-    juce::File manifest = exeDir.getChildFile("samples/manifests").getChildFile(juce::String(id) + ".json");
+    juce::File manifest = exeDir.getChildFile("samples/manifests").getChildFile(fileName);
     if (manifest.existsAsFile()) return manifest;
 
-    // Try one level up (macOS .app bundle structure)
-    manifest = exeDir.getParentDirectory().getChildFile("samples/manifests").getChildFile(juce::String(id) + ".json");
+    // 2. One level up (macOS .app bundle structure)
+    manifest = exeDir.getParentDirectory().getChildFile("samples/manifests").getChildFile(fileName);
     if (manifest.existsAsFile()) return manifest;
 
-    // Development fallback
-    return juce::File("/home/synth/projects/open-synth/samples/manifests").getChildFile(juce::String(id) + ".json");
+    // 3. User data directory — the canonical install location for plugin
+    //    (VST3/CLAP) use, where the "executable" is the DAW, not Open Synth.
+    //    Linux: ~/.config/OpenSynth/samples
+    manifest = juce::File::getSpecialLocation(juce::File::userApplicationDataDirectory)
+                   .getChildFile("OpenSynth/samples/manifests").getChildFile(fileName);
+    if (manifest.existsAsFile()) return manifest;
+
+    // 4. Development tree fallback (running from a repo checkout)
+    manifest = juce::File::getCurrentWorkingDirectory().getChildFile("samples/manifests").getChildFile(fileName);
+    if (manifest.existsAsFile()) return manifest;
+
+    return exeDir.getChildFile("samples/manifests").getChildFile(fileName);
 }
 
 void applyPresetToAPVTS(const PresetData& p, juce::AudioProcessorValueTreeState& apvts)

@@ -15,8 +15,7 @@ void TransientShaperProcessor::reset() {
 float TransientShaperProcessor::processChannel(float sample, float& fastEnv, float& slowEnv) {
     float absSample = std::abs(sample);
 
-    // Fast envelope (captures transients)
-    float fastAttackCoeff = 0.0f;   // instant attack
+    // Fast envelope (captures transients) — instant attack
     float fastReleaseCoeff = 0.85f; // fast release
     if (absSample > fastEnv) {
         fastEnv = absSample; // instant attack

@@ -89,7 +89,6 @@ void ReverseDelayProcessor::process(float& left, float& right, double sampleRate
 
 float ReverseDelayProcessor::readDelay(const std::array<float, MAX_DELAY>& line, int pos) {
     int i1 = pos % MAX_DELAY;
-    int i2 = (i1 + 1) % MAX_DELAY;
     return line[i1]; // simple read (no interpolation needed for integer pos)
 }
 

@@ -134,6 +134,8 @@ public:
     void noteOn(int midiNote, float velocity);
     void noteOff(int midiNote);
     void allNotesOff();
+    // Instantly silences all voices — MIDI CC 120 "All Sound Off" semantics.
+    void allSoundOff();
 
     // Audio
     void prepare(double sampleRate);
