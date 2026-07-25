@@ -51,6 +51,9 @@ jobs:
         # pinned release tag instead and passes -DJUCE_DIR.
         run: git clone --depth 1 --branch 8.0.12 https://github.com/juce-framework/JUCE.git "$RUNNER_TEMP/JUCE"
 
+      - name: Init clap-juce-extensions submodule
+        run: git submodule update --init libs/clap-juce-extensions
+
       - name: Init sample submodules (tag builds only)
         if: startsWith(github.ref, 'refs/tags/')
         run: git submodule update --init --recursive
