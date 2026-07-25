@@ -46,8 +46,10 @@ jobs:
         with:
           submodules: false
 
-      - name: Init JUCE submodule
-        run: git submodule update --init libs/JUCE
+      - name: Fetch JUCE 8.0.12
+        # JUCE isn't a submodule — local dev uses ~/.juce. CI fetches the
+        # pinned release tag instead and passes -DJUCE_DIR.
+        run: git clone --depth 1 --branch 8.0.12 https://github.com/juce-framework/JUCE.git "$RUNNER_TEMP/JUCE"
 
       - name: Init sample submodules (tag builds only)
         if: startsWith(github.ref, 'refs/tags/')
@@ -63,7 +65,7 @@ jobs:
             libfreetype6-dev libfontconfig1-dev
 
       - name: Configure
-        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DJUCE_DIR="$RUNNER_TEMP/JUCE"
 
       - name: Build
         run: cmake --build build --config Release -j 4
