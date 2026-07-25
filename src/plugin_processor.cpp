@@ -153,6 +153,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout OpenSynthProcessor::createPa
     {
         auto perfGroup = std::make_unique<juce::AudioProcessorParameterGroup>("perf", "Performance", "|");
         perfGroup->addChild(std::make_unique<juce::AudioParameterInt>("perfSplitPoint", "Split Point", 21, 108, 60));
+        perfGroup->addChild(std::make_unique<juce::AudioParameterBool>("perfSplitEnabled", "Split On", false));
         perfGroup->addChild(std::make_unique<juce::AudioParameterBool>("perfLayerEnabled", "Layer On", false));
         perfGroup->addChild(std::make_unique<juce::AudioParameterInt>("perfTranspose", "Transpose", -12, 12, 0));
         layout.add(std::move(perfGroup));
@@ -251,6 +252,12 @@ void OpenSynthProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::Mi
     synth_.setLfo1Depth(*apvts_.getRawParameterValue("lfo1Depth"));
 
     synth_.setMasterVolume(*apvts_.getRawParameterValue("masterVolume"));
+
+    // Performance mode (split / layer / transpose)
+    synth_.setSplitEnabled(*apvts_.getRawParameterValue("perfSplitEnabled") > 0.5f);
+    synth_.setSplitPoint(static_cast<int>(*apvts_.getRawParameterValue("perfSplitPoint")));
+    synth_.setLayerEnabled(*apvts_.getRawParameterValue("perfLayerEnabled") > 0.5f);
+    synth_.setTranspose(static_cast<int>(*apvts_.getRawParameterValue("perfTranspose")));
 
     // Sample player mix + envelope
     if (auto* engine = synth_.getEngine())

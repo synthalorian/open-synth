@@ -2989,6 +2989,12 @@ PerformancePanel::PerformancePanel(juce::AudioProcessorValueTreeState& apvts)
     layerAttach_ = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(
         apvts_, "perfLayerEnabled", layerButton_);
 
+    splitButton_.setButtonText("Split");
+    splitButton_.setColour(juce::ToggleButton::tickColourId, SynthColors::hotPink());
+    addAndMakeVisible(splitButton_);
+    splitEnableAttach_ = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(
+        apvts_, "perfSplitEnabled", splitButton_);
+
     transposeLabel_.setText("Transpose", juce::dontSendNotification);
     transposeLabel_.setColour(juce::Label::textColourId, SynthColors::textDim());
     transposeLabel_.setFont(juce::Font(juce::FontOptions(11.0f)));
@@ -3039,6 +3045,7 @@ void PerformancePanel::resized()
     y += 28;
 
     layerButton_.setBounds(12, y, 80, 22);
+    splitButton_.setBounds(100, y, 80, 22);
     y += 30;
 
     transposeLabel_.setBounds(12, y, 60, 20);

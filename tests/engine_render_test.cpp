@@ -54,6 +54,15 @@ int main(int argc, char** argv) {
         w.setOsc1Volume(0.0f);
         w.setOsc2Volume(0.0f);
         fprintf(stderr, "mode=sample-only\n");
+    } else if (std::strcmp(mode, "split") == 0) {
+        engine->getSamplePlayer()->setMixLevel(0.0f);
+        w.setSplitEnabled(true);
+        w.setSplitPoint(60);
+        fprintf(stderr, "mode=split (low notes -> part 1 bass, high -> part 0)\n");
+    } else if (std::strcmp(mode, "layer") == 0) {
+        engine->getSamplePlayer()->setMixLevel(0.0f);
+        w.setLayerEnabled(true);
+        fprintf(stderr, "mode=layer (part 0 + detuned part 1)\n");
     }
     fprintf(stderr, "[4] wait preload\n"); fflush(stderr);
     engine->getSamplePlayer()->waitForPreload();
@@ -62,9 +71,16 @@ int main(int argc, char** argv) {
 
     juce::AudioBuffer<float> buf(2, block);
     juce::MidiBuffer midi;
-    midi.addEvent(juce::MidiMessage::noteOn(1, 60, (juce::uint8)100), 0);
-    midi.addEvent(juce::MidiMessage::noteOn(1, 64, (juce::uint8)100), 0);
-    midi.addEvent(juce::MidiMessage::noteOn(1, 67, (juce::uint8)100), 0);
+    const bool perfMode = std::strcmp(mode, "split") == 0 || std::strcmp(mode, "layer") == 0;
+    if (perfMode) {
+        // One note below the split point, one above
+        midi.addEvent(juce::MidiMessage::noteOn(1, 48, (juce::uint8)100), 0);  // C3 — lower zone
+        midi.addEvent(juce::MidiMessage::noteOn(1, 72, (juce::uint8)100), 0);  // C5 — upper zone
+    } else {
+        midi.addEvent(juce::MidiMessage::noteOn(1, 60, (juce::uint8)100), 0);
+        midi.addEvent(juce::MidiMessage::noteOn(1, 64, (juce::uint8)100), 0);
+        midi.addEvent(juce::MidiMessage::noteOn(1, 67, (juce::uint8)100), 0);
+    }
 
     std::vector<float> rendered;
     rendered.reserve(static_cast<size_t>(seconds * sr) * 2);
@@ -80,6 +96,14 @@ int main(int argc, char** argv) {
         // render() processes MIDI before draining queued preset params, so a
         // block-0 noteOn would latch the default envelope.
         w.render(buf, b == 10 ? midi : juce::MidiBuffer());
+        if (b == 11 && perfMode) {
+            auto& alloc = engine->allocator();
+            for (int v = 0; v < VoiceAllocator::MAX_VOICES; ++v) {
+                auto* voice = alloc.voice(v);
+                if (voice->active)
+                    printf("  routed: note=%d -> part %d\n", voice->midiNote, voice->partIndex);
+            }
+        }
         for (int f = 0; f < block; ++f) {
             float l = buf.getSample(0, f), r = buf.getSample(1, f);
             if (std::isnan(l) || std::isinf(l) || std::isnan(r) || std::isinf(r)) nanSeen = true;

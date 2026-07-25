@@ -63,6 +63,12 @@ public:
     void setArpPattern(int p);
     void setArpTempo(float bpm);
     void setArpGate(float g);
+
+    // Performance mode (split / layer / transpose)
+    void setSplitEnabled(bool e);
+    void setSplitPoint(int note);
+    void setLayerEnabled(bool e);
+    void setTranspose(int semitones);
     void setArpSwing(float s);
     void setArpOctaveRange(int o);
 
