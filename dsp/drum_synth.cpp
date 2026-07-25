@@ -53,18 +53,6 @@ static float pitchEnvelope(float phase, float startFreq, float endFreq, float sw
     return endFreq + (startFreq - endFreq) * curve;
 }
 
-// Multiple resonant mode oscillator (for drumheads and cymbals)
-static float multiModeOsc(float phase, float* modePhases, const float* modeFreqs, 
-                          const float* modeAmps, int numModes, float invSr) {
-    float out = 0.0f;
-    for (int i = 0; i < numModes; ++i) {
-        modePhases[i] += modeFreqs[i] * invSr;
-        if (modePhases[i] >= 1.0f) modePhases[i] -= std::floor(modePhases[i]);
-        out += std::sin(2.0f * 3.14159265f * modePhases[i]) * modeAmps[i];
-    }
-    return out;
-}
-
 // ── Construction ──────────────────────────────────────────────────────────────
 
 DrumKit::DrumKit(double sampleRate)
@@ -404,7 +392,6 @@ void DrumKit::process(float* leftOut, float* rightOut, uint32_t numFrames) {
                     float click = clickHpf * clickEnv * 0.5f;
                     
                     // Knock transient: very short low-mid thump
-                    float knockFreq = 80.0f;
                     float knockPhase = v.envelopePhase * 20.0f;  // very fast
                     float knock = std::sin(twoPi * knockPhase) * clickEnv * 0.3f;
                     

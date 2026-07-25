@@ -906,7 +906,7 @@ static void makeDnBFill(DrumPattern& p) {
 
 // ── Pattern Library ───────────────────────────────────────────────────────────
 
-static constexpr int kPatternCount = 27;
+static constexpr int kPatternCount = 29;
 
 static const DrumPattern* buildPatternLibrary() {
     static DrumPattern library[kPatternCount];
@@ -941,7 +941,9 @@ static const DrumPattern* buildPatternLibrary() {
     makeWaltz(library[24]);
     makeOutrun(library[25]);
     makeDarksynth(library[26]);
-    // Fills and more variations can be added as indices 27+
+    makeAfrobeat(library[27]);
+    makeReggae(library[28]);
+    // Fills and more variations can be added as indices 29+
 
     initialized = true;
     return library;

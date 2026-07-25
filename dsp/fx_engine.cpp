@@ -699,7 +699,7 @@ void FxEngine::setSlotParam(int index, int paramIdx, float value) {
     }
 }
 
-void FxEngine::setSlotParamNormalized(int slotIndex, int fxTypeId, int paramIdx, float normalized) {
+void FxEngine::setSlotParamNormalized(int slotIndex, int /*fxTypeId*/, int paramIdx, float normalized) {
     if (slotIndex >= 0 && slotIndex < MAX_FX_SLOTS && slots_[slotIndex].processor) {
         // Simple linear mapping for now — each param is 0-1 in the engine
         slots_[slotIndex].processor->setParam(paramIdx, normalized);

@@ -12,7 +12,8 @@ Architecture:
 import os
 import random
 
-OUTPUT = '/home/synth/projects/open-synth/include/preset_library_full.h'
+OUTPUT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                      'include', 'preset_library_full.h')
 
 random.seed(42)
 
@@ -1052,6 +1053,14 @@ parts = []
 parts.append('#pragma once')
 parts.append('#include "preset_data.h"')
 parts.append('')
+parts.append('// Generated file — double literals initialize float fields by design.')
+parts.append('#if defined(__GNUC__)')
+parts.append('#pragma GCC diagnostic push')
+parts.append('#pragma GCC diagnostic ignored "-Wconversion"')
+parts.append('#pragma GCC diagnostic ignored "-Wsign-conversion"')
+parts.append('#pragma GCC diagnostic ignored "-Wfloat-conversion"')
+parts.append('#endif')
+parts.append('')
 parts.append('namespace opensynth {')
 parts.append('')
 parts.append(f'inline constexpr int kNumFullPresets = {len(PRESETS)};')
@@ -1066,6 +1075,10 @@ for i, (preset_idx, name, cat, suffix, overrides) in enumerate(PRESETS):
 parts.append('};')
 parts.append('')
 parts.append('} // namespace opensynth')
+parts.append('')
+parts.append('#if defined(__GNUC__)')
+parts.append('#pragma GCC diagnostic pop')
+parts.append('#endif')
 
 with open(OUTPUT, 'w') as f:
     f.write('\n'.join(parts))

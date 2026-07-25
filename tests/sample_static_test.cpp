@@ -3,7 +3,7 @@
 #include "sample_stream.h"
 #include <juce_audio_basics/juce_audio_basics.h>
 #include <juce_audio_formats/juce_audio_formats.h>
-#include <math>
+#include <cmath>
 #include <iostream>
 
 using namespace opensynth;
@@ -36,7 +36,7 @@ int main(int argc, char** argv) {
     fmt.registerBasicFormats();
 
     SamplePlayer player;
-    player.setSampleRate(48000.0);
+    player.prepare(48000.0);
 
     std::string manifestPath = argv[1];
     std::cout << "Loading manifest: " << manifestPath << "\n";
@@ -46,14 +46,17 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    std::cout << "Zones loaded: " << player.getZoneCount() << "\n";
+    player.waitForPreload();
+    player.setMixLevel(1.0f);
+
+    std::cout << "Zones loaded: " << player.zoneCount() << "\n";
 
     // Render a middle C (note 60) at velocity 0.8
     juce::AudioBuffer<float> buffer(2, 48000); // 1 second
     buffer.clear();
 
     player.noteOn(60, 0.8f);
-    player.processBlock(buffer.getArrayOfWritePointers(), 2, 48000);
+    player.processBlock(buffer.getWritePointer(0), buffer.getWritePointer(1), 48000);
 
     float rmsL = computeRMS(buffer, 0);
     float rmsR = computeRMS(buffer, 1);

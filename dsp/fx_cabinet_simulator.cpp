@@ -82,13 +82,15 @@ float CabinetSimulatorProcessor::notchSVF(float input, float& z1, float& z2, flo
 }
 
 void CabinetSimulatorProcessor::getCabinetFreqs(float& lpFreq, float& hpFreq, float& notchFreq, float& notchQ) {
+    // Defaults = 1x12; guards against NaN/out-of-range type_ values.
+    lpFreq = 4500.0f;
+    hpFreq = 80.0f;
+    notchFreq = 2500.0f;
+    notchQ = 2.0f;
     int t = static_cast<int>(type_) % 4;
+    if (t < 0) t = 0;
     switch (t) {
     case 0: // 1x12
-        lpFreq = 4500.0f;
-        hpFreq = 80.0f;
-        notchFreq = 2500.0f;
-        notchQ = 2.0f;
         break;
     case 1: // 2x12
         lpFreq = 5000.0f;
@@ -112,11 +114,13 @@ void CabinetSimulatorProcessor::getCabinetFreqs(float& lpFreq, float& hpFreq, fl
 }
 
 void CabinetSimulatorProcessor::getMicEmphasis(float& midBoost, float& trebleBoost) {
+    // Defaults = dynamic mic; guards against NaN/out-of-range mic_ values.
+    midBoost = 0.3f;
+    trebleBoost = -0.2f;
     int m = static_cast<int>(mic_) % 3;
+    if (m < 0) m = 0;
     switch (m) {
     case 0: // dynamic
-        midBoost = 0.3f;
-        trebleBoost = -0.2f;
         break;
     case 1: // condenser
         midBoost = 0.1f;

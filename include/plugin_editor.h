@@ -564,7 +564,7 @@ class OpenSynthEditor : public juce::AudioProcessorEditor,
                          private juce::Timer,
                          private juce::MidiInputCallback {
 public:
-    explicit OpenSynthEditor(OpenSynthProcessor& processor);
+    explicit OpenSynthEditor(OpenSynthProcessor& proc);
     ~OpenSynthEditor() override
     {
         saveAppState();

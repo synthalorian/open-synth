@@ -11,7 +11,7 @@ import mido
 from mido import Message, MidiFile, MidiTrack
 
 sf2_path = sys.argv[1] if len(sys.argv) > 1 else '/tmp/sf2extract/usr/share/sounds/sf2/FluidR3_GM.sf2'
-output_base = sys.argv[2] if len(sys.argv) > 2 else '/home/synth/projects/open-synth/samples'
+output_base = sys.argv[2] if len(sys.argv) > 2 else os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'samples')
 
 
 def read_sf2(sf2_path):

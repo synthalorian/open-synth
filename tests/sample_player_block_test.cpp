@@ -96,8 +96,10 @@ int main(int argc, char* argv[]) {
 
     std::cout << "[PASS] Pitch bend produces different output (diff=" << diff << ")\n";
 
-    // Test ADSR: very short attack should reach higher peak faster
-    player.allNotesOff();
+    // Test ADSR: very short attack should reach higher peak faster.
+    // Use allSoundOff (instant kill) between scenarios so release tails from
+    // prior voices don't contaminate the measurement.
+    player.allSoundOff();
     player.setPitchBend(0.0f);
     player.setAttack(0.1f);
     float outL_fast[blockSize] = {};
@@ -111,7 +113,7 @@ int main(int argc, char* argv[]) {
     }
 
     // Reset to slow attack for comparison
-    player.allNotesOff();
+    player.allSoundOff();
     player.setAttack(1000.0f);
     float outL_slow[blockSize] = {};
     float outR_slow[blockSize] = {};

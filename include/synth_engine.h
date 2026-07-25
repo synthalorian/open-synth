@@ -40,6 +40,8 @@ public:
     void noteOn(int midiNote, float velocity, int channel = 0);
     void noteOff(int midiNote, int channel = 0);
     void allNotesOff(int channel = -1);
+    // Instantly kills all voices (synth + sample) — MIDI CC 120 semantics.
+    void allSoundOff(int channel = -1);
 
     // Arpeggiator (global, operates on current active part)
     Arpeggiator& arpeggiator() { return arpeggiator_; }

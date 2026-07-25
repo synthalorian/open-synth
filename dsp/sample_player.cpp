@@ -414,6 +414,29 @@ bool SamplePlayer::loadMultiSample(const std::string& manifestPath) {
 
     juce::File baseDir = manifestFile.getParentDirectory();
 
+    // Manifests store sample paths relative to the library root
+    // (e.g. "samples/piano-splendid-grand/Samples/x.flac"). Resolve by
+    // walking up from the manifest directory until the file exists.
+    auto resolveSamplePath = [&baseDir](const juce::String& fileName) -> juce::File {
+        if (juce::File::isAbsolutePath(fileName)) {
+            return juce::File(fileName);
+        }
+        juce::File dir = baseDir;
+        for (int up = 0; up < 4; ++up) {
+            juce::File candidate = dir.getChildFile(fileName);
+            if (candidate.existsAsFile()) {
+                return candidate;
+            }
+            dir = dir.getParentDirectory();
+        }
+        // Fallback: relative to current working directory, then manifest dir
+        juce::File cwd = juce::File::getCurrentWorkingDirectory().getChildFile(fileName);
+        if (cwd.existsAsFile()) {
+            return cwd;
+        }
+        return baseDir.getChildFile(fileName);
+    };
+
     for (const auto& zoneVal : *zonesArray) {
         auto* zoneObj = zoneVal.getDynamicObject();
         if (!zoneObj) continue;
@@ -430,31 +453,46 @@ bool SamplePlayer::loadMultiSample(const std::string& manifestPath) {
         zone.crossfadeSamples = static_cast<int>(zoneObj->getProperty("crossfadeSamples"));
         if (zone.crossfadeSamples <= 0) zone.crossfadeSamples = 256;
 
-        auto* layers = zoneObj->getProperty("layers").getArray();
-        if (!layers) continue;
-
         bool anyLoaded = false;
-        for (const auto& layerVal : *layers) {
-            auto* layerObj = layerVal.getDynamicObject();
-            if (!layerObj) continue;
 
-            juce::String layerName = layerObj->getProperty("layer").toString();
-            juce::String fileName = layerObj->getProperty("file").toString();
-            juce::File sampleFile = baseDir.getChildFile(fileName);
+        if (auto* layers = zoneObj->getProperty("layers").getArray()) {
+            // Multi-layer format: [{ "layer": "soft|medium|loud", "file": "..." }, ...]
+            for (const auto& layerVal : *layers) {
+                auto* layerObj = layerVal.getDynamicObject();
+                if (!layerObj) continue;
 
-            VelocityLayer layer = VelocityLayer::Soft;
-            if (layerName == "soft") layer = VelocityLayer::Soft;
-            else if (layerName == "medium") layer = VelocityLayer::Medium;
-            else if (layerName == "loud") layer = VelocityLayer::Loud;
-            else continue;
+                juce::String layerName = layerObj->getProperty("layer").toString();
+                juce::String fileName = layerObj->getProperty("file").toString();
+                juce::File sampleFile = resolveSamplePath(fileName);
 
-            auto stream = std::make_shared<SampleStream>();
-            if (stream->open(sampleFile.getFullPathName().toStdString(), streamBufferSize_)) {
-                zone.streams[static_cast<int>(layer)] = std::move(stream);
-                if (zone.sampleRate == 48000.0) {
-                    zone.sampleRate = zone.streams[static_cast<int>(layer)]->getSampleRate();
+                VelocityLayer layer = VelocityLayer::Soft;
+                if (layerName == "soft") layer = VelocityLayer::Soft;
+                else if (layerName == "medium") layer = VelocityLayer::Medium;
+                else if (layerName == "loud") layer = VelocityLayer::Loud;
+                else continue;
+
+                auto stream = std::make_shared<SampleStream>();
+                if (stream->open(sampleFile.getFullPathName().toStdString(), streamBufferSize_)) {
+                    zone.streams[static_cast<int>(layer)] = std::move(stream);
+                    if (zone.sampleRate == 48000.0) {
+                        zone.sampleRate = zone.streams[static_cast<int>(layer)]->getSampleRate();
+                    }
+                    anyLoaded = true;
                 }
-                anyLoaded = true;
+            }
+        } else {
+            // Flat format: single "file" per zone, shared across velocity layers
+            juce::String fileName = zoneObj->getProperty("file").toString();
+            if (fileName.isNotEmpty()) {
+                juce::File sampleFile = resolveSamplePath(fileName);
+                auto stream = std::make_shared<SampleStream>();
+                if (stream->open(sampleFile.getFullPathName().toStdString(), streamBufferSize_)) {
+                    zone.sampleRate = stream->getSampleRate();
+                    for (int i = 0; i < static_cast<int>(VelocityLayer::Count); ++i) {
+                        zone.streams[i] = stream;
+                    }
+                    anyLoaded = true;
+                }
             }
         }
 
@@ -556,6 +594,12 @@ void SamplePlayer::noteOff(int midiNote) {
 void SamplePlayer::allNotesOff() {
     for (auto& voice : voices_) {
         voice.noteOff();
+    }
+}
+
+void SamplePlayer::allSoundOff() {
+    for (auto& voice : voices_) {
+        voice.reset();
     }
 }
 

@@ -70,12 +70,6 @@
 
 namespace opensynth {
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
-
-static float midiNoteToFreq(int note) {
-    return 440.0f * std::pow(2.0f, (note - 69) / 12.0f);
-}
-
 // ── Construction / destruction ────────────────────────────────────────────────
 
 SynthEngine::SynthEngine(double sampleRate, uint32_t blockSize)
@@ -190,6 +184,20 @@ void SynthEngine::allNotesOff(int channel) {
     int partIdx = channelToPart(channel);
     arpeggiator_.allNotesOff();
     allocator_.allNotesOff(partIdx);
+    // Sample voices must also enter release — otherwise sample-based presets
+    // hang in sustain on MIDI CC 123.
+    if (samplePlayer_) {
+        samplePlayer_->allNotesOff();
+    }
+}
+
+void SynthEngine::allSoundOff(int channel) {
+    int partIdx = channelToPart(channel);
+    arpeggiator_.allNotesOff();
+    allocator_.allNotesOff(partIdx);
+    if (samplePlayer_) {
+        samplePlayer_->allSoundOff();
+    }
 }
 
 // ── Process ───────────────────────────────────────────────────────────────────
@@ -213,9 +221,6 @@ void SynthEngine::process(AudioBuffer& output) {
     // Update per-block LFO (using part 0's LFOs for global modulation)
     float lfo1Val = parts_[0].lfo1.process();
     float lfo2Val = parts_[0].lfo2.process();
-
-    // Pre-compute piano flag once per block for part 0 (legacy compat)
-    bool isPiano = (parts_[0].osc1.waveform() == 6) || (parts_[0].osc2.waveform() == 6);
 
     for (uint32_t frame = 0; frame < numFrames; frame++) {
         float leftOut = 0.0f;

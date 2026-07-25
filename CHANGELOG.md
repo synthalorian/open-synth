@@ -1,0 +1,58 @@
+# Changelog
+
+All notable changes to Open Synth are documented here.
+
+## [2.0.0] — 2026-07-25
+
+**The C++ Rewrite.** The engine was rebuilt from the Flutter/Dart prototype (v1.1.0 and earlier) into a native JUCE 8 + C++20 application: sub-10ms latency, 16-part multitimbrality, full MFX chain, and a streaming sample ROMpler. Standalone + VST3 + CLAP.
+
+### Sound Engine
+- Dual oscillators per part — sine, saw, square, triangle, pulse, noise, wavetable
+- Wavetable synthesis with 100+ built-in tables and morphing
+- Physical modeling mode (body resonance, key click, sympathetic strings)
+- Unison voices with detune and stereo spread; FM on both oscillators; sub-oscillator
+- Multi-mode filter (lowpass, highpass, bandpass, notch, comb)
+- 3 envelopes (amp with delay/hold, filter with key tracking, pitch) with per-stage curves
+- 2 LFOs per part — tempo-syncable, fade-in, routable to pitch/filter/amp/pan
+- Arpeggiator with 8 patterns, octave range, swing, gate, hold
+- 16-part multitimbrality with full MIDI channel separation
+- Drum kit with 8 preset kits and a rhythm pattern player (29 patterns across 9 categories, including Afrobeat and Reggae)
+
+### Sample Engine (ROMpler)
+- Streaming sample player with cubic interpolation, per-voice anti-aliasing, ADSR, pitch bend
+- Multi-zone multisample manifests with velocity layers, round-robin, release samples, loop crossfades
+- Supports both multi-layer and flat manifest formats with robust sample path resolution
+- 8 CC0 sample libraries wired in as git submodules (1,419 zones): 2 pianos, 2 drum kits, 2 basses, 2 guitars
+
+### Effects
+- 5-slot FX engine (3 MFX + Reverb + Chorus, Juno-Di parity) with 60+ processor types
+
+### Presets
+- 5,600 factory presets across 20+ categories (generated library with per-category synthesis profiles)
+- User preset manager with categories; setlist mode for live performance
+
+### App
+- Standalone, VST3, and CLAP builds (desktop); synthwave '84 UI
+- Real-time stereo oscilloscope, zone editor overlay, phrase sampler, audio recording
+- MIDI learn on all parameters, app state persistence, CPU load meter
+
+### Fixed for 1.0.0
+- **Sample manifests silently failed to load** — loader only understood the multi-layer format; all 8 shipped manifests use the flat format. The entire ROMpler layer is now functional and test-verified.
+- **MIDI CC 123 (All Notes Off) left sample voices hanging** — sample player now releases; added CC 120 (All Sound Off) instant kill wired through the engine and MIDI wrapper
+- ADSR attack test contaminated by prior voices' release tails — new `allSoundOff()` gives clean scenario isolation
+- `native/oboe` stale gitlink broke `git submodule update --init` (and fresh `--recurse-submodules` clones)
+- Cabinet simulator potential uninitialized values on out-of-range/NaN parameters
+- Member initialization order mismatch in the plugin editor (`-Wreorder`, UB-class)
+- Constructor parameter shadowing JUCE `AudioProcessorEditor::processor`
+- Afrobeat and Reggae rhythm patterns implemented but unreachable — now in the library
+
+### Build & Tooling
+- JUCE located via `-DJUCE_DIR`, `JUCE_DIR` env var, `libs/JUCE` submodule, or `~/.juce` — no more hardcoded absolute paths
+- Wired `fx_tests` (1,021 assertions) and `sample_static_test` into CMake; all test targets get FLAC support
+- Generated preset library header silences expected conversion warnings via diagnostic pragmas (122k → ~800 warnings)
+- Removed legacy Flutter/FFI-era dead code (`lib/`, `native/`, PortAudio/Oboe FFI sources)
+- Tests: 83/83 sample decode, block processing + ADSR + pitch bend, 8/8 manifest renders, 1,021 FX assertions
+
+---
+
+Made by synth with synthclaw 🎹🦞

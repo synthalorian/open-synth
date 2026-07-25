@@ -40,6 +40,10 @@ void SynthEngineWrapper::render(juce::AudioBuffer<float>& output, const juce::Mi
         {
             engine_->noteOff(midiMsg.getNoteNumber(), midiMsg.getChannel() - 1);
         }
+        else if (midiMsg.isAllSoundOff())
+        {
+            engine_->allSoundOff(midiMsg.getChannel() - 1);
+        }
         else if (midiMsg.isAllNotesOff() || midiMsg.isResetAllControllers())
         {
             engine_->allNotesOff();

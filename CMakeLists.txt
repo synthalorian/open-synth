@@ -1,11 +1,33 @@
 cmake_minimum_required(VERSION 3.22)
-project(OpenSynth VERSION 1.0.0)
+project(OpenSynth VERSION 2.0.0)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Add JUCE
-add_subdirectory(/home/synth/.juce JUCE_BUILD)
+# ── Locate JUCE ──────────────────────────────────────────────────────────────
+# Resolution order:
+#   1. -DJUCE_DIR=/path/to/JUCE (cache variable)
+#   2. JUCE_DIR environment variable
+#   3. libs/JUCE git submodule
+#   4. ~/.juce (convenience fallback for local dev)
+set(JUCE_DIR "" CACHE PATH "Path to the JUCE source tree")
+if(NOT JUCE_DIR)
+    if(DEFINED ENV{JUCE_DIR})
+        set(JUCE_DIR "$ENV{JUCE_DIR}")
+    elseif(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/libs/JUCE/CMakeLists.txt")
+        set(JUCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/JUCE")
+    elseif(EXISTS "$ENV{HOME}/.juce/CMakeLists.txt")
+        set(JUCE_DIR "$ENV{HOME}/.juce")
+    else()
+        message(FATAL_ERROR
+            "JUCE not found. Either:\n"
+            "  - pass -DJUCE_DIR=/path/to/JUCE\n"
+            "  - set the JUCE_DIR environment variable\n"
+            "  - clone JUCE into libs/JUCE (git submodule add https://github.com/juce-framework/JUCE libs/JUCE)")
+    endif()
+endif()
+message(STATUS "Using JUCE from: ${JUCE_DIR}")
+add_subdirectory(${JUCE_DIR} JUCE_BUILD)
 
 # Add CLAP JUCE extensions
 add_subdirectory(libs/clap-juce-extensions EXCLUDE_FROM_ALL)
@@ -91,6 +113,7 @@ set(DSP_SOURCES
     dsp/synth_preset.cpp
     dsp/synth_ffi.cpp
     dsp/synth_mixer.cpp
+    dsp/synth_part.cpp
     dsp/recorder.cpp
     dsp/midi_file.cpp
     dsp/sample_player.cpp
@@ -229,6 +252,13 @@ foreach(dir ${SAMPLE_DIRS})
             "${CMAKE_SOURCE_DIR}/samples/${dir}"
             "$<TARGET_FILE_DIR:OpenSynth_VST3>/samples/${dir}"
         )
+        if(NOT IS_IOS AND NOT IS_ANDROID)
+            add_custom_command(TARGET OpenSynth_CLAP POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy_directory
+                "${CMAKE_SOURCE_DIR}/samples/${dir}"
+                "$<TARGET_FILE_DIR:OpenSynth_CLAP>/samples/${dir}"
+            )
+        endif()
     endif()
 endforeach()
 
@@ -243,6 +273,13 @@ add_custom_command(TARGET OpenSynth_VST3 POST_BUILD
     "${CMAKE_SOURCE_DIR}/samples/manifests"
     "$<TARGET_FILE_DIR:OpenSynth_VST3>/samples/manifests"
 )
+if(NOT IS_IOS AND NOT IS_ANDROID)
+    add_custom_command(TARGET OpenSynth_CLAP POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${CMAKE_SOURCE_DIR}/samples/manifests"
+        "$<TARGET_FILE_DIR:OpenSynth_CLAP>/samples/manifests"
+    )
+endif()
 
 # Linux specific
 if(UNIX AND NOT APPLE AND NOT IS_ANDROID)
@@ -280,6 +317,7 @@ target_link_libraries(sample_load_test PRIVATE
 target_compile_definitions(sample_load_test PRIVATE
     JUCE_WEB_BROWSER=0
     JUCE_USE_CURL=0
+    JUCE_USE_FLAC=1
 )
 
 # ── Sample Player Block Test ─────────────────────────────────────────────────
@@ -297,6 +335,7 @@ target_link_libraries(sample_player_block_test PRIVATE
 target_compile_definitions(sample_player_block_test PRIVATE
     JUCE_WEB_BROWSER=0
     JUCE_USE_CURL=0
+    JUCE_USE_FLAC=1
 )
 
 # ── FLAC Decode Test ─────────────────────────────────────────────────────────
@@ -310,6 +349,42 @@ target_link_libraries(flac_test PRIVATE
     juce::juce_core
 )
 target_compile_definitions(flac_test PRIVATE
+    JUCE_WEB_BROWSER=0
+    JUCE_USE_CURL=0
+    JUCE_USE_FLAC=1
+)
+
+# ── FX Unit Tests ────────────────────────────────────────────────────────────
+add_executable(fx_tests
+    dsp/fx_tests.cpp
+    ${DSP_SOURCES}
+    src/instrument_realism.cpp
+)
+target_include_directories(fx_tests PRIVATE src dsp include)
+target_link_libraries(fx_tests PRIVATE
+    juce::juce_audio_basics
+    juce::juce_audio_formats
+    juce::juce_core
+    juce::juce_dsp
+)
+target_compile_definitions(fx_tests PRIVATE
+    JUCE_WEB_BROWSER=0
+    JUCE_USE_CURL=0
+)
+
+# ── Sample Static Regression Test ────────────────────────────────────────────
+add_executable(sample_static_test
+    tests/sample_static_test.cpp
+    dsp/sample_player.cpp
+    dsp/sample_stream.cpp
+)
+target_include_directories(sample_static_test PRIVATE src dsp include)
+target_link_libraries(sample_static_test PRIVATE
+    juce::juce_audio_basics
+    juce::juce_audio_formats
+    juce::juce_core
+)
+target_compile_definitions(sample_static_test PRIVATE
     JUCE_WEB_BROWSER=0
     JUCE_USE_CURL=0
     JUCE_USE_FLAC=1
