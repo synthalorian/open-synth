@@ -127,6 +127,7 @@ jobs:
 
       - name: Attach to release (tag builds)
         if: startsWith(github.ref, 'refs/tags/')
+        shell: bash  # pwsh would eat ${GITHUB_REF_NAME} on Windows runners
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
