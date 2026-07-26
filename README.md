@@ -1,5 +1,7 @@
 # Open Synth
 
+[![Build](https://github.com/synthalorian/open-synth/actions/workflows/build.yml/badge.svg)](https://github.com/synthalorian/open-synth/actions/workflows/build.yml)
+
 A free, open-source software synthesizer built with JUCE and C++20. Inspired by the Roland Juno-Di workflow — instant playability, rich sound, zero menu diving.
 
 ![Open Synth Icon](assets/icon.png)
