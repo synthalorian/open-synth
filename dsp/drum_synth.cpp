@@ -727,7 +727,7 @@ void DrumKit::process(float* leftOut, float* rightOut, uint32_t numFrames) {
             if (!std::isfinite(sample)) sample = 0.0f;
 
             // Soft clip
-            sample = std::tanhf(sample);
+            sample = std::tanh(sample);
 
             // Pan: slight stereo width for cymbals
             float pan = 0.0f;
