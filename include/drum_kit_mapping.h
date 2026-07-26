@@ -1,8 +1,8 @@
 #pragma once
 
-struct DrumKitPreset;  // forward declaration from drum_synth.h
-
 namespace opensynth {
+
+struct DrumKitPreset;  // forward declaration — real definition in drum_synth.h
 
 /// Map a GM2 percussion MIDI note to a DrumType index (0-15).
 /// Returns -1 if the note is not mapped to any drum type.
