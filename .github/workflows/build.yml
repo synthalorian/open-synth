@@ -95,8 +95,18 @@ jobs:
           tar -czf dist/open-synth-${{ matrix.name }}-clap.tar.gz \
             -C build/OpenSynth_artefacts/Release/CLAP .
 
-      - name: Package (Windows / macOS)
-        if: runner.os != 'Linux'
+      - name: Package (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path dist | Out-Null
+          $art = "build/OpenSynth_artefacts/Release"
+          Compress-Archive -Path "$art/Standalone/*" -DestinationPath "dist/open-synth-${{ matrix.name }}-standalone.zip"
+          Compress-Archive -Path "$art/VST3/Open Synth.vst3" -DestinationPath "dist/open-synth-${{ matrix.name }}-vst3.zip"
+          Compress-Archive -Path "$art/CLAP/*" -DestinationPath "dist/open-synth-${{ matrix.name }}-clap.zip"
+
+      - name: Package (macOS)
+        if: runner.os == 'macOS'
         shell: bash
         run: |
           mkdir -p dist
