@@ -2,6 +2,22 @@
 
 All notable changes to Open Synth are documented here.
 
+## [2.0.2] — 2026-07-25
+
+Split Personality — performance mode, new brand, and true cross-platform builds.
+
+### Added
+- **Split keyboard:** notes below the split point route to a dedicated part auto-configured as a plucked Karplus-Strong bass. Adjustable split point (slider + draggable overlay on the virtual keyboard). ROMpler samples stay on the upper zone.
+- **Layer (Dual):** every note doubles on a second part mirroring the current preset with ±8 cent detune — classic Juno Dual thickness. Tracks preset and panel changes live.
+- **Transpose:** ±12 semitones at the engine input.
+- Per-note routing records: flipping split/layer/transpose mid-chord never leaves stuck notes.
+- New brand identity: synthwave key art as the app icon on all platforms, README banner, and social preview.
+- `scripts/install_local.sh`: freedesktop install (binary + samples + icon + desktop entry).
+- GitHub Actions CI: Linux, Windows, and macOS builds + test suite on every push; tag builds bundle samples and attach artifacts to the release automatically.
+
+### Fixed
+- MSVC portability: `_USE_MATH_DEFINES` / `NOMINMAX`; `std::tanh` instead of non-standard `std::tanhf`; namespace forward-declaration bug that broke the Windows link.
+
 ## [2.0.1] — 2026-07-25
 
 The "static" hotfix. Three compounding audio bugs that produced noise/drone under presets — most audibly a harsh static behind the Grand Piano.
