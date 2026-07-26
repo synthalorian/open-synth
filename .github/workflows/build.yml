@@ -75,8 +75,13 @@ jobs:
         run: cmake --build build --config Release -j 4
 
       - name: Run FX test suite
-        run: ./build/fx_tests
         shell: bash
+        run: |
+          if [ -x ./build/fx_tests ]; then
+            ./build/fx_tests
+          else
+            ./build/Release/fx_tests.exe
+          fi
 
       - name: Package (Linux)
         if: runner.os == 'Linux'
