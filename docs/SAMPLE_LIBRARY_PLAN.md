@@ -1,13 +1,13 @@
-# Open Synth — Sample Library Integration Plan
+# Open synthalorian 🎹🤺 — Sample Library Integration Plan
 
 ## Goal
-Add real instrument samples to Open Synth so acoustic presets (piano, organ, guitar, strings, brass, woodwind, ethnic, percussion, chromatic, orchestral) blend synthesized wavetables with actual recordings for Juno-Di-level realism.
+Add real instrument samples to Open synthalorian 🎹🤺 so acoustic presets (piano, organ, guitar, strings, brass, woodwind, ethnic, percussion, chromatic, orchestral) blend synthesized wavetables with actual recordings for Juno-Di-level realism.
 
 ## Current State (as of commit ef87a91)
-- `PresetData` has `sampleMix` field (0.0 = synth only, 1.0 = sample only)
+- `PresetData` has `sampleMix` field (0.0 = synthalorian 🎹🤺 only, 1.0 = sample only)
 - 236 presets generated with category-appropriate `sampleMix` values:
   - Acoustic categories: 0.5–0.7 sampleMix
-  - Synth categories: 0.0 sampleMix
+  - synthalorian 🎹🤺 categories: 0.0 sampleMix
 - `SamplePlayer` + `SampleStream` (disk streaming) already implemented
 - `OpenSynthEditor::configureSamplePlayerForPreset()` auto-creates sample player when `sampleMix > 0`
 - `OpenSynthEditor::loadSampleForPreset()` looks for `samples/<category>/<name>.wav` relative to executable
@@ -80,7 +80,7 @@ Example: "Grand Piano" → `samples/piano/Grand_Piano.wav`
 
 - [ ] Download and verify a free GM SoundFont
 - [ ] Write Python extraction script to pull individual instrument WAVs from SF2
-- [ ] Map SF2 instruments to Open Synth preset categories
+- [ ] Map SF2 instruments to Open synthalorian 🎹🤺 preset categories
 - [ ] Generate sample directory structure
 - [ ] Test sample loading with Standalone build
 - [ ] Adjust sampleMix values per preset based on listening
