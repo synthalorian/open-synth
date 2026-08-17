@@ -8,8 +8,6 @@
 
 A free, open-source software synthesizer built with JUCE and C++20. Inspired by the Roland Juno-Di workflow — instant playability, rich sound, zero menu diving.
 
-![Open Synth Icon](assets/icon_512.png)
-
 ## What It Is
 
 Open Synth is a **standalone + VST3 synthesizer plugin** designed for musicians who want to plug in and play. It combines a modern C++ DSP engine with a clean JUCE-based UI, delivering everything from classic analog-style leads to evolving wavetable pads — without forcing you through nested menus.
