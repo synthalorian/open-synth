@@ -1,18 +1,18 @@
-# Open synth 🎹🤺
+# Open synthalorian 🎹🤺
 
-[![Build](https://github.com/synthalorian/open-synth 🎹🤺/actions/workflows/build.yml/badge.svg)](https://github.com/synthalorian/open-synth 🎹🤺/actions/workflows/build.yml)
+[![Build](https://github.com/synthalorian/open-synthalorian 🎹🤺/actions/workflows/build.yml/badge.svg)](https://github.com/synthalorian/open-synthalorian 🎹🤺/actions/workflows/build.yml)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![C++20](https://img.shields.io/badge/standard-C%2B%2B20-blue)](README.md)
 
-![Open synth 🎹🤺](assets/social_preview.png)
+![Open synthalorian 🎹🤺](assets/social_preview.png)
 
 A free, open-source software synthesizer built with JUCE and C++20. Inspired by the Roland Juno-Di workflow — instant playability, rich sound, zero menu diving.
 
-![Open synth 🎹🤺 Icon](assets/icon_512.png)
+![Open synthalorian 🎹🤺 Icon](assets/icon_512.png)
 
 ## What It Is
 
-Open synth 🎹🤺 is a **standalone + VST3 synthesizer plugin** designed for musicians who want to plug in and play. It combines a modern C++ DSP engine with a clean JUCE-based UI, delivering everything from classic analog-style leads to evolving wavetable pads — without forcing you through nested menus.
+Open synthalorian 🎹🤺 is a **standalone + VST3 synthesizer plugin** designed for musicians who want to plug in and play. It combines a modern C++ DSP engine with a clean JUCE-based UI, delivering everything from classic analog-style leads to evolving wavetable pads — without forcing you through nested menus.
 
 Originally prototyped in Flutter/Dart, the engine was rebuilt in native C++ for pro audio performance: sub-10ms latency, 16-part multitimbrality, and a full MFX (multi-effects) chain.
 
@@ -101,8 +101,8 @@ Originally prototyped in Flutter/Dart, the engine was rebuilt in native C++ for 
 
 ### Linux
 ```bash
-git clone --recurse-submodules https://github.com/synthalorian/open-synth 🎹🤺.git
-cd open-synth 🎹🤺
+git clone --recurse-submodules https://github.com/synthalorian/open-synthalorian 🎹🤺.git
+cd open-synthalorian 🎹🤺
 mkdir build && cd build
 cmake .. -DCMAKE_BUILD_TYPE=Release -DJUCE_DIR=/path/to/JUCE
 make -j$(nproc)
@@ -130,7 +130,7 @@ cmake --build . --config Release
 
 ## Roadmap
 
-- [x] Core synth 🎹🤺 engine (dual osc, filter, envelopes)
+- [x] Core synthalorian 🎹🤺 engine (dual osc, filter, envelopes)
 - [x] Wavetable + physical modeling
 - [x] Full MFX chain (22 FX types)
 - [x] Arpeggiator + drum kit + rhythm patterns
@@ -152,7 +152,7 @@ Bundled sample libraries are CC0 / public domain (see `samples/` submodule sourc
 
 ## Credits
 
-Made by synth 🎹🤺 with synthclaw 🎹🦞 — built on the JUCE framework.
+Made by synthalorian 🎹🤺 with synthclaw 🎹🦞 — built on the JUCE framework.
 
 ---
 
