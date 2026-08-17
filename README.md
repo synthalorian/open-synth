@@ -1,6 +1,8 @@
 # Open Synth
 
 [![Build](https://github.com/synthalorian/open-synth/actions/workflows/build.yml/badge.svg)](https://github.com/synthalorian/open-synth/actions/workflows/build.yml)
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![C++20](https://img.shields.io/badge/standard-C%2B%2B20-blue)](README.md)
 
 ![Open Synth](assets/social_preview.png)
 
@@ -155,3 +157,11 @@ Made by synth with synthclaw 🎹🦞 — built on the JUCE framework.
 ---
 
 *"This is the wave."* 🎹🦞
+
+---
+
+## ☕ Support the Developer
+
+If this project saved you time, solved a problem, or just made your day a little more neon, you can fuel the next one:
+
+[![Buy Me A Coffee](https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png)](https://buymeacoffee.com/synthalorian)
