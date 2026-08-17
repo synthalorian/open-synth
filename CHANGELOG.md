@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to Open synthalorian 🎹🤺 are documented here.
+All notable changes to Open Synth are documented here.
 
 ## [2.0.2] — 2026-07-25
 
@@ -84,4 +84,4 @@ The "static" hotfix. Three compounding audio bugs that produced noise/drone unde
 
 ---
 
-Made by synthalorian 🎹🤺 with synthclaw 🎹🦞
+Made by synth with synthclaw 🎹🦞

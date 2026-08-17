@@ -1,6 +1,6 @@
 # Mobile Build Instructions — iOS & Android
 
-This document covers building Open synthalorian 🎹🤺 standalone apps for iOS and Android.
+This document covers building Open Synth standalone apps for iOS and Android.
 
 ## Prerequisites
 
@@ -14,7 +14,7 @@ This document covers building Open synthalorian 🎹🤺 standalone apps for iOS
 ### 1. Generate Xcode project
 
 ```bash
-cd ~/projects/open-synthalorian 🎹🤺
+cd ~/projects/open-synth
 mkdir build-ios && cd build-ios
 cmake .. -G Xcode \
   -DCMAKE_SYSTEM_NAME=iOS \
@@ -69,7 +69,7 @@ Ensure you have:
 JUCE ships with an Android exporter that generates a Gradle project. The simplest path is:
 
 ```bash
-cd ~/projects/open-synthalorian 🎹🤺
+cd ~/projects/open-synth
 mkdir build-android && cd build-android
 
 # Configure for Android
@@ -128,5 +128,5 @@ The current desktop-oriented editor (`plugin_editor.cpp`) uses small rotary knob
 
 ## Related Files
 
-- `~/projects/open-synthalorian 🎹🤺/CMakeLists.txt` — main build configuration
-- `~/projects/open-synthalorian 🎹🤺/assets/icon.png` — source icon (resized to 512/1024 automatically)
+- `~/projects/open-synth/CMakeLists.txt` — main build configuration
+- `~/projects/open-synth/assets/icon.png` — source icon (resized to 512/1024 automatically)
