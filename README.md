@@ -119,6 +119,7 @@ cd build
 ./sample_player_block_test ../samples  # block processing, pitch bend, ADSR
 ./sample_static_test ../samples/manifests/splendid-grand-piano.json  # manifest load + clean audio
 ./fx_tests                             # 1,021 FX engine unit tests
+./preset_browser_test                  # instrument browser UI logic (headless)
 ```
 
 ### macOS / Windows

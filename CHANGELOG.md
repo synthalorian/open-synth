@@ -2,6 +2,19 @@
 
 All notable changes to Open Synth are documented here.
 
+## [Unreleased]
+
+### Added
+- **Instrument browser quick categories:** one-touch Juno-Di style buttons (All / Piano / Organ / Drums / Bass / Pads) above the preset list; the dropdown now lists the real library categories, derived from the 5,600-preset library instead of a stale hardcoded list.
+- **Keyboard navigation in the preset browser:** Up/Down auditions presets live, Enter loads and closes, Escape closes, Left/Right cycles categories when the list has focus.
+- **Now-playing state:** the browser header shows the currently loaded instrument, its row is highlighted in neon yellow with a ▶ marker, and opening the browser preselects and scrolls to it.
+- `preset_browser_test`: headless UI-logic tests covering category switching, keyboard navigation, and loaded-instrument state.
+
+### Fixed
+- Category filter matched almost nothing: the dropdown used title-case names ("Pads", "Keys") while the library uses snake_case ("synth_pad"). Filters now match whole words against normalized categories, so "Pad" covers `synth_pad`, "Piano" covers `upright_piano`/`synth_piano`, etc.
+- Filtered user-preset lists loaded the wrong preset — the selected display row was used as an index into the unfiltered user-preset array.
+- Category dropdown opened with nothing selected; it now defaults to "All Categories".
+
 ## [2.0.2] — 2026-07-25
 
 Split Personality — performance mode, new brand, and true cross-platform builds.

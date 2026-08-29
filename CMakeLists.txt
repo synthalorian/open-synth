@@ -415,3 +415,18 @@ target_compile_definitions(sample_static_test PRIVATE
     JUCE_USE_CURL=0
     JUCE_USE_FLAC=1
 )
+
+# ── Preset Browser UI Tests (headless) ───────────────────────────────────────
+add_executable(preset_browser_test
+    tests/preset_browser_test.cpp
+)
+target_include_directories(preset_browser_test PRIVATE src dsp include)
+target_link_libraries(preset_browser_test PRIVATE
+    OpenSynth
+    juce::juce_gui_basics
+    juce::juce_audio_processors
+)
+target_compile_definitions(preset_browser_test PRIVATE
+    JUCE_WEB_BROWSER=0
+    JUCE_USE_CURL=0
+)
