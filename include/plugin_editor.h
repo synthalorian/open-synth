@@ -370,7 +370,8 @@ private:
 // ── Preset Browser (popup overlay) ────────────────────────────────────────
 class PresetBrowser : public juce::Component,
                       private juce::ListBoxModel,
-                      private juce::TextEditor::Listener {
+                      private juce::TextEditor::Listener,
+                      private juce::KeyListener {
 public:
     PresetBrowser();
     void paint(juce::Graphics& g) override;
@@ -384,13 +385,26 @@ public:
 
     void refreshUserPresets();
 
+    // Currently loaded instrument shown in the browser (-1 = user preset / none)
+    void setCurrentPreset(int factoryIndex, const juce::String& name);
+
+    void setCategoryFilter(const juce::String& category);  // "" = all categories
+    bool handleKey(const juce::KeyPress& key);
+    int getNumDisplayedPresets() const { return (int)displayList_.size(); }
+    int getSelectedRow() const { return presetList_.getSelectedRow(); }
+
 private:
+    // Juno-Di style one-touch category buttons for fast switching
+    static constexpr int kNumQuickCategories = 6;
+
     juce::TextEditor searchBox_;
     juce::ListBox presetList_;
     juce::TextButton closeButton_;
     juce::TextButton savePresetButton_;
     juce::Label titleLabel_;
+    juce::Label nowPlayingLabel_;
     juce::ComboBox categoryFilter_;
+    juce::TextButton categoryButtons_[kNumQuickCategories];
     juce::ToggleButton showUserPresetsButton_;
 
     std::vector<int> filteredFactoryPresetIndices_;  // indices into kFullPresets
@@ -399,16 +413,27 @@ private:
     bool showingUserPresets_ = false;
     juce::String currentSearch_;
     juce::String currentCategory_;
+    int currentFactoryIndex_ = -1;
+    bool suppressSelectionCallback_ = false;
 
     void rebuildFilter();
+    void cycleCategory(int delta);
+    void updateCategoryButtonStates();
+    void moveSelection(int delta);
+    void loadRow(int row);
+    void closeBrowser();
 
     // ListBoxModel
     int getNumRows() override { return (int)displayList_.size(); }
     void paintListBoxItem(int rowNumber, juce::Graphics& g, int width, int height, bool rowIsSelected) override;
     void selectedRowsChanged(int lastRowSelected) override;
+    void listBoxItemClicked(int row, const juce::MouseEvent& e) override;
 
     // TextEditor::Listener
     void textEditorTextChanged(juce::TextEditor&) override { rebuildFilter(); }
+
+    // KeyListener (search box + preset list) — arrows audition, Enter loads, Esc closes
+    bool keyPressed(const juce::KeyPress& key, juce::Component* originatingComponent) override;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PresetBrowser)
 };

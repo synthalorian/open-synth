@@ -671,6 +671,25 @@ void ScopeComponent::resized() {}
 
 // ── PresetBrowser ───────────────────────────────────────────────────────────
 
+// Library categories are snake_case ("synth_pad"); filters match whole words
+// against the normalized form ("synth pad"), so "Pad" covers every pad variant.
+static bool categoryMatchesFilter(const juce::String& presetCategory, const juce::String& filter)
+{
+    if (filter.isEmpty()) return true;
+    juce::String cat = presetCategory.replaceCharacter('_', ' ').toLowerCase();
+    if (cat == filter.toLowerCase()) return true;
+    return (" " + cat + " ").contains(" " + filter.toLowerCase().trim() + " ");
+}
+
+static juce::String prettifyCategory(const juce::String& snakeCase)
+{
+    juce::StringArray words;
+    words.addTokens(snakeCase.replaceCharacter('_', ' '), " ", "");
+    for (auto& w : words)
+        w = w.substring(0, 1).toUpperCase() + w.substring(1);
+    return words.joinIntoString(" ");
+}
+
 PresetBrowser::PresetBrowser()
 {
     setOpaque(true);
@@ -680,10 +699,16 @@ PresetBrowser::PresetBrowser()
     titleLabel_.setColour(juce::Label::textColourId, SynthColors::neonPurple());
     addAndMakeVisible(titleLabel_);
 
+    nowPlayingLabel_.setFont(juce::Font(juce::FontOptions(13.0f, juce::Font::bold)));
+    nowPlayingLabel_.setColour(juce::Label::textColourId, SynthColors::neonYellow());
+    nowPlayingLabel_.setJustificationType(juce::Justification::centredRight);
+    addAndMakeVisible(nowPlayingLabel_);
+
     searchBox_.setTextToShowWhenEmpty("Search presets...", SynthColors::textDim());
     searchBox_.setColour(juce::TextEditor::backgroundColourId, SynthColors::surface());
     searchBox_.setColour(juce::TextEditor::textColourId, SynthColors::text());
     searchBox_.addListener(this);
+    searchBox_.addKeyListener(this);
     addAndMakeVisible(searchBox_);
 
     closeButton_.setButtonText("X");
@@ -709,22 +734,49 @@ PresetBrowser::PresetBrowser()
     };
     addAndMakeVisible(showUserPresetsButton_);
 
-    // Category filter
+    // Category filter — items derived from the actual preset library
     categoryFilter_.addItem("All Categories", 1);
-    categoryFilter_.addItemList({"Pads", "Leads", "Bass", "Keys", "Arps", "FX",
-        "Synthwave", "Organ", "Strings", "Brass", "Piano", "Guitar", "Choir",
-        "Percussion", "Electric Guitar", "Drums", "Ethnic", "Mallets",
-        "Electric Piano", "Acoustic Guitar", "Bass Guitar", "Woodwinds",
-        "Custom", "Clavinet", "Orchestral", "EDM", "Retro"}, 2);
+    {
+        juce::StringArray cats;
+        for (int i = 0; i < kNumFullPresets; ++i)
+            cats.addIfNotAlreadyThere(juce::String(kFullPresets[i].category));
+        cats.sort(true);
+        int id = 2;
+        for (const auto& c : cats)
+            categoryFilter_.addItem(prettifyCategory(c), id++);
+        categoryFilter_.addItem("Custom", id);
+    }
+    categoryFilter_.setSelectedItemIndex(0, juce::dontSendNotification);
     categoryFilter_.onChange = [this]() {
         int idx = categoryFilter_.getSelectedItemIndex();
         currentCategory_ = (idx <= 0) ? "" : categoryFilter_.getItemText(idx);
+        updateCategoryButtonStates();
         rebuildFilter();
     };
     addAndMakeVisible(categoryFilter_);
 
+    static const char* quickLabels[kNumQuickCategories] = {
+        "All", "Piano", "Organ", "Drums", "Bass", "Pads"
+    };
+    static const char* quickFilters[kNumQuickCategories] = {
+        "", "piano", "organ", "drums", "bass", "pad"
+    };
+    for (int i = 0; i < kNumQuickCategories; ++i)
+    {
+        categoryButtons_[i].setButtonText(quickLabels[i]);
+        categoryButtons_[i].getProperties().set("filter", quickFilters[i]);
+        categoryButtons_[i].setColour(juce::TextButton::textColourOffId, SynthColors::text());
+        categoryButtons_[i].onClick = [this, i]() {
+            setCategoryFilter(categoryButtons_[i].getProperties()["filter"].toString());
+        };
+        addAndMakeVisible(categoryButtons_[i]);
+    }
+    updateCategoryButtonStates();
+
     presetList_.setModel(this);
     presetList_.setColour(juce::ListBox::backgroundColourId, SynthColors::surface());
+    presetList_.setWantsKeyboardFocus(true);
+    presetList_.addKeyListener(this);
     addAndMakeVisible(presetList_);
 
     rebuildFilter();
@@ -744,19 +796,19 @@ void PresetBrowser::rebuildFilter()
 
     if (showingUserPresets_)
     {
-        for (const auto& preset : userPresets_)
+        for (int i = 0; i < (int)userPresets_.size(); ++i)
         {
+            const auto& preset = userPresets_[i];
             bool matchesSearch = currentSearch_.isEmpty() ||
                                  preset.name.toLowerCase().contains(currentSearch_);
-            bool matchesCategory = currentCategory_.isEmpty() ||
-                                   preset.category.equalsIgnoreCase(currentCategory_);
+            bool matchesCategory = categoryMatchesFilter(preset.category, currentCategory_);
             if (matchesSearch && matchesCategory)
             {
                 juce::DynamicObject::Ptr obj = new juce::DynamicObject();
                 obj->setProperty("isUser", true);
                 obj->setProperty("name", preset.name);
                 obj->setProperty("category", preset.category);
-                obj->setProperty("index", (int)(displayList_.size()));
+                obj->setProperty("index", i);
                 displayList_.emplace_back(obj);
             }
         }
@@ -769,8 +821,7 @@ void PresetBrowser::rebuildFilter()
             bool matchesSearch = currentSearch_.isEmpty() ||
                                  juce::String(preset.name).toLowerCase().contains(currentSearch_) ||
                                  juce::String(preset.id).toLowerCase().contains(currentSearch_);
-            bool matchesCategory = currentCategory_.isEmpty() ||
-                                   juce::String(preset.category).equalsIgnoreCase(currentCategory_);
+            bool matchesCategory = categoryMatchesFilter(juce::String(preset.category), currentCategory_);
             if (matchesSearch && matchesCategory)
             {
                 filteredFactoryPresetIndices_.push_back(i);
@@ -788,6 +839,83 @@ void PresetBrowser::rebuildFilter()
     presetList_.repaint();
 }
 
+void PresetBrowser::setCurrentPreset(int factoryIndex, const juce::String& name)
+{
+    currentFactoryIndex_ = factoryIndex;
+    nowPlayingLabel_.setText("NOW PLAYING: " + name, juce::dontSendNotification);
+    presetList_.repaint();
+}
+
+void PresetBrowser::setCategoryFilter(const juce::String& category)
+{
+    currentCategory_ = category;
+
+    int comboIndex = -1;
+    for (int i = 0; i < categoryFilter_.getNumItems(); ++i)
+    {
+        if (categoryFilter_.getItemText(i).equalsIgnoreCase(category))
+        {
+            comboIndex = i;
+            break;
+        }
+    }
+    // Group filters ("pad") have no single combo item — show the group name instead
+    categoryFilter_.setTextWhenNothingSelected(prettifyCategory(category));
+    categoryFilter_.setSelectedItemIndex(comboIndex, juce::dontSendNotification);
+    updateCategoryButtonStates();
+    rebuildFilter();
+}
+
+void PresetBrowser::cycleCategory(int delta)
+{
+    int idx = categoryFilter_.getSelectedItemIndex() + delta;
+    int count = categoryFilter_.getNumItems();
+    if (idx < 0) idx = count - 1;
+    if (idx >= count) idx = 0;
+    categoryFilter_.setSelectedItemIndex(idx, juce::sendNotificationSync);  // onChange updates filter + buttons
+}
+
+void PresetBrowser::updateCategoryButtonStates()
+{
+    for (int i = 0; i < kNumQuickCategories; ++i)
+    {
+        juce::String filter = categoryButtons_[i].getProperties()["filter"].toString();
+        bool active = filter.equalsIgnoreCase(currentCategory_);
+        categoryButtons_[i].setColour(juce::TextButton::buttonColourId,
+                                      active ? SynthColors::neonPurple() : SynthColors::card());
+        categoryButtons_[i].repaint();
+    }
+}
+
+void PresetBrowser::moveSelection(int delta)
+{
+    if (displayList_.empty()) return;
+
+    int row = presetList_.getSelectedRow() + delta;
+    int count = (int)displayList_.size();
+    if (row < 0) row = count - 1;
+    if (row >= count) row = 0;
+
+    presetList_.selectRow(row);  // selectedRowsChanged auditions the preset
+    presetList_.scrollToEnsureRowIsOnscreen(row);
+}
+
+void PresetBrowser::loadRow(int row)
+{
+    if (row < 0)
+        row = (displayList_.empty() ? -1 : 0);
+    if (row < 0 || row >= (int)displayList_.size()) return;
+
+    presetList_.selectRow(row);
+    if (row == presetList_.getSelectedRow())
+        selectedRowsChanged(row);  // re-selecting the same row still confirms the load
+}
+
+void PresetBrowser::closeBrowser()
+{
+    setVisible(false);
+}
+
 void PresetBrowser::paintListBoxItem(int rowNumber, juce::Graphics& g, int width, int height, bool rowIsSelected)
 {
     if (rowNumber < 0 || rowNumber >= (int)displayList_.size()) return;
@@ -798,6 +926,10 @@ void PresetBrowser::paintListBoxItem(int rowNumber, juce::Graphics& g, int width
     juce::String name = obj->getProperty("name");
     juce::String category = obj->getProperty("category");
     bool isUser = obj->getProperty("isUser");
+    int index = obj->getProperty("index");
+
+    bool isLoaded = !isUser && index >= 0 && index < (int)filteredFactoryPresetIndices_.size()
+                    && filteredFactoryPresetIndices_[index] == currentFactoryIndex_;
 
     auto b = juce::Rectangle<int>(0, 0, width, height);
 
@@ -809,6 +941,14 @@ void PresetBrowser::paintListBoxItem(int rowNumber, juce::Graphics& g, int width
         g.fillRect(b);
     }
 
+    if (isLoaded)
+    {
+        g.setColour(SynthColors::neonYellow().withAlpha(0.15f));
+        g.fillRect(b);
+        g.setColour(SynthColors::neonYellow());
+        g.drawRect(b.reduced(1), 1);
+    }
+
     if (isUser)
     {
         g.setColour(SynthColors::neonYellow());
@@ -816,9 +956,17 @@ void PresetBrowser::paintListBoxItem(int rowNumber, juce::Graphics& g, int width
         g.drawText("[USER]", b.reduced(8, 2).removeFromLeft(50), juce::Justification::centredLeft, true);
     }
 
-    g.setColour(SynthColors::text());
+    if (isLoaded)
+    {
+        g.setColour(SynthColors::neonYellow());
+        g.setFont(juce::Font(juce::FontOptions(11.0f, juce::Font::bold)));
+        g.drawText(juce::String::fromUTF8("\xe2\x96\xb6"), b.reduced(4, 2).removeFromLeft(16),
+                   juce::Justification::centred, true);
+    }
+
+    g.setColour(isLoaded ? SynthColors::neonYellow() : SynthColors::text());
     g.setFont(juce::Font(juce::FontOptions(13.0f)));
-    g.drawText(name, b.reduced(isUser ? 60 : 8, 2), juce::Justification::centredLeft, true);
+    g.drawText(name, b.reduced(isUser ? 60 : (isLoaded ? 22 : 8), 2), juce::Justification::centredLeft, true);
 
     g.setColour(SynthColors::textDim());
     g.setFont(juce::Font(juce::FontOptions(10.0f)));
@@ -827,6 +975,8 @@ void PresetBrowser::paintListBoxItem(int rowNumber, juce::Graphics& g, int width
 
 void PresetBrowser::selectedRowsChanged(int lastRowSelected)
 {
+    if (suppressSelectionCallback_) return;
+
     if (lastRowSelected >= 0 && lastRowSelected < (int)displayList_.size()) {
         auto* obj = displayList_[lastRowSelected].getDynamicObject();
         if (obj == nullptr) return;
@@ -834,21 +984,9 @@ void PresetBrowser::selectedRowsChanged(int lastRowSelected)
         bool isUser = obj->getProperty("isUser");
         if (isUser)
         {
-            int userIndex = lastRowSelected;
-            int count = 0;
-            for (int i = 0; i < (int)displayList_.size(); ++i)
-            {
-                auto* o = displayList_[i].getDynamicObject();
-                if (o && o->getProperty("isUser"))
-                {
-                    if (count == userIndex && onUserPresetSelected)
-                    {
-                        onUserPresetSelected(userPresets_[count]);
-                        return;
-                    }
-                    count++;
-                }
-            }
+            int userIndex = obj->getProperty("index");
+            if (userIndex >= 0 && userIndex < (int)userPresets_.size() && onUserPresetSelected)
+                onUserPresetSelected(userPresets_[userIndex]);
         }
         else
         {
@@ -859,6 +997,60 @@ void PresetBrowser::selectedRowsChanged(int lastRowSelected)
             }
         }
     }
+}
+
+void PresetBrowser::listBoxItemClicked(int row, const juce::MouseEvent& e)
+{
+    juce::ignoreUnused(e);
+    if (row >= 0)
+        closeBrowser();
+}
+
+bool PresetBrowser::handleKey(const juce::KeyPress& key)
+{
+    if (key == juce::KeyPress::downKey)
+    {
+        moveSelection(1);
+        return true;
+    }
+    if (key == juce::KeyPress::upKey)
+    {
+        moveSelection(-1);
+        return true;
+    }
+    if (key == juce::KeyPress::returnKey)
+    {
+        loadRow(presetList_.getSelectedRow());
+        closeBrowser();
+        return true;
+    }
+    if (key == juce::KeyPress::escapeKey)
+    {
+        closeBrowser();
+        return true;
+    }
+    if (key == juce::KeyPress::leftKey)
+    {
+        cycleCategory(-1);
+        return true;
+    }
+    if (key == juce::KeyPress::rightKey)
+    {
+        cycleCategory(1);
+        return true;
+    }
+
+    return false;
+}
+
+bool PresetBrowser::keyPressed(const juce::KeyPress& key, juce::Component* originatingComponent)
+{
+    // Keep caret movement when typing in the search field
+    if (originatingComponent == &searchBox_ &&
+        (key == juce::KeyPress::leftKey || key == juce::KeyPress::rightKey))
+        return false;
+
+    return handleKey(key);
 }
 
 void PresetBrowser::paint(juce::Graphics& g)
@@ -875,7 +1067,9 @@ void PresetBrowser::paint(juce::Graphics& g)
 void PresetBrowser::resized()
 {
     auto b = getLocalBounds().reduced(20);
-    titleLabel_.setBounds(b.removeFromTop(30));
+    auto titleRow = b.removeFromTop(30);
+    titleLabel_.setBounds(titleRow.removeFromLeft(300));
+    nowPlayingLabel_.setBounds(titleRow);
     closeButton_.setBounds(getWidth() - 50, 20, 30, 30);
 
     auto filterRow = b.removeFromTop(30);
@@ -886,6 +1080,14 @@ void PresetBrowser::resized()
     categoryFilter_.setBounds(filterRow.removeFromLeft(180));
     filterRow.removeFromLeft(8);
     searchBox_.setBounds(filterRow);
+
+    b.removeFromTop(6);
+    auto categoryRow = b.removeFromTop(28);
+    for (int i = 0; i < kNumQuickCategories; ++i)
+    {
+        if (i > 0) categoryRow.removeFromLeft(6);
+        categoryButtons_[i].setBounds(categoryRow.removeFromLeft(84));
+    }
 
     b.removeFromTop(8);
     presetList_.setBounds(b);
@@ -898,6 +1100,21 @@ void PresetBrowser::setVisible(bool shouldBeVisible)
         searchBox_.grabKeyboardFocus();
         refreshUserPresets();
         rebuildFilter();
+
+        if (currentFactoryIndex_ >= 0)
+        {
+            for (int row = 0; row < (int)filteredFactoryPresetIndices_.size(); ++row)
+            {
+                if (filteredFactoryPresetIndices_[row] == currentFactoryIndex_)
+                {
+                    suppressSelectionCallback_ = true;
+                    presetList_.selectRow(row);
+                    suppressSelectionCallback_ = false;
+                    presetList_.scrollToEnsureRowIsOnscreen(row);
+                    break;
+                }
+            }
+        }
     }
 }
 
@@ -1463,6 +1680,7 @@ OpenSynthEditor::OpenSynthEditor(OpenSynthProcessor& proc)
     presetBrowser_.onUserPresetSelected = [this](const UserPreset& preset) {
         userPresetManager_.loadPreset(preset, processor_.getParameters());
         titleLabel_.setText(preset.name, juce::dontSendNotification);
+        presetBrowser_.setCurrentPreset(-1, preset.name);
         presetBrowser_.setVisible(false);
     };
 
@@ -1737,6 +1955,7 @@ void OpenSynthEditor::loadPresetByID(const juce::String& id)
             currentPresetIndex_ = i;
             // Update title
             titleLabel_.setText(p.name, juce::dontSendNotification);
+            presetBrowser_.setCurrentPreset(i, juce::String(p.name));
             // Push to APVTS (UI updates automatically via attachments)
             applyPresetToAPVTS(p, processor_.getParameters());
             // Push to engine (immediate audio update)
