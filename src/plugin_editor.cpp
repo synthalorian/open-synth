@@ -535,11 +535,11 @@ void RealismPanel::resized()
 
 MpePanel::MpePanel(juce::AudioProcessorValueTreeState& apvts)
     : apvts_(apvts)
-    , bendRangeKnob_("Bend", juce::Colours::cyan)
+    , bendRangeKnob_("Bend", SynthColors::cyan())
 {
     enableButton_.setButtonText("MPE");
-    enableButton_.setColour(juce::TextButton::buttonOnColourId, juce::Colours::cyan);
-    enableButton_.setColour(juce::TextButton::textColourOnId, juce::Colours::black);
+    enableButton_.setColour(juce::TextButton::buttonOnColourId, SynthColors::cyan());
+    enableButton_.setColour(juce::TextButton::textColourOnId, SynthColors::text());
     addAndMakeVisible(enableButton_);
 
     zoneSelector_.addItem("Lower (Ch 1)", 1);
@@ -559,7 +559,7 @@ void MpePanel::paint(juce::Graphics& g)
     g.setColour(SynthColors::card());
     g.fillRoundedRectangle(b, 6.0f);
 
-    g.setColour(juce::Colours::cyan);
+    g.setColour(SynthColors::cyan());
     g.setFont(juce::Font(juce::FontOptions(14.0f, juce::Font::bold)));
     g.drawText("MPE", b.removeFromTop(28).reduced(8, 0), juce::Justification::centredLeft);
 }
@@ -1595,6 +1595,36 @@ OpenSynthEditor::OpenSynthEditor(OpenSynthProcessor& proc)
 {
     setSize(1400, 900);
     setResizable(false, false);
+
+    // ── Blackshield default LookAndFeel colour scheme ─────────────────
+    auto& laf = getLookAndFeel();
+    laf.setColour(juce::ResizableWindow::backgroundColourId, BlackshieldColours::iron());
+    laf.setColour(juce::Label::textColourId, BlackshieldColours::bone());
+    laf.setColour(juce::TextButton::buttonColourId, BlackshieldColours::steel());
+    laf.setColour(juce::TextButton::buttonOnColourId, BlackshieldColours::blood());
+    laf.setColour(juce::TextButton::textColourOffId, BlackshieldColours::bone());
+    laf.setColour(juce::TextButton::textColourOnId, BlackshieldColours::boneBright());
+    laf.setColour(juce::ComboBox::backgroundColourId, BlackshieldColours::steel());
+    laf.setColour(juce::ComboBox::textColourId, BlackshieldColours::bone());
+    laf.setColour(juce::ComboBox::outlineColourId, BlackshieldColours::ash());
+    laf.setColour(juce::ComboBox::arrowColourId, BlackshieldColours::bone());
+    laf.setColour(juce::PopupMenu::backgroundColourId, BlackshieldColours::steel());
+    laf.setColour(juce::PopupMenu::textColourId, BlackshieldColours::bone());
+    laf.setColour(juce::PopupMenu::highlightedBackgroundColourId, BlackshieldColours::blood());
+    laf.setColour(juce::PopupMenu::highlightedTextColourId, BlackshieldColours::boneBright());
+    laf.setColour(juce::TextEditor::backgroundColourId, BlackshieldColours::steel());
+    laf.setColour(juce::TextEditor::textColourId, BlackshieldColours::bone());
+    laf.setColour(juce::TextEditor::highlightColourId, BlackshieldColours::blood());
+    laf.setColour(juce::TextEditor::highlightedTextColourId, BlackshieldColours::boneBright());
+    laf.setColour(juce::TextEditor::outlineColourId, BlackshieldColours::ash());
+    laf.setColour(juce::Slider::textBoxTextColourId, BlackshieldColours::bone());
+    laf.setColour(juce::Slider::textBoxBackgroundColourId, BlackshieldColours::steel());
+    laf.setColour(juce::Slider::textBoxOutlineColourId, BlackshieldColours::ash());
+    laf.setColour(juce::ScrollBar::thumbColourId, BlackshieldColours::steelLight());
+    laf.setColour(juce::AlertWindow::backgroundColourId, BlackshieldColours::iron());
+    laf.setColour(juce::AlertWindow::textColourId, BlackshieldColours::bone());
+    laf.setColour(juce::TooltipWindow::backgroundColourId, BlackshieldColours::steel());
+    laf.setColour(juce::TooltipWindow::textColourId, BlackshieldColours::bone());
 
     // Title
     titleLabel_.setText("Open Synth", juce::dontSendNotification);

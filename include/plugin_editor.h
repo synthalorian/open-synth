@@ -10,23 +10,27 @@
 #include "user_preset_manager.h"
 #include "app_state_manager.h"
 #include "sample_player.h"
+#include "blackshield_colours.h"
 
 namespace opensynth {
 
-// ── Synthwave Color Palette ───────────────────────────────────────────────
+// ── Colour Palette ────────────────────────────────────────────────────────
+// Default scheme: Blackshield (blood + steel + bone). The legacy
+// Synthwave '84 brand palette lives in Synthwave84Colours
+// (blackshield_colours.h) and stays available for future theme switching.
 struct SynthColors {
-    static juce::Colour background()  { return juce::Colour(0xFF240037); }
-    static juce::Colour surface()     { return juce::Colour(0xFF1A0029); }
-    static juce::Colour card()        { return juce::Colour(0xFF2D0047); }
-    static juce::Colour neonPurple()  { return juce::Colour(0xFF8F00FF); }
-    static juce::Colour hotPink()     { return juce::Colour(0xFFFF7EDB); }
-    static juce::Colour magenta()     { return juce::Colour(0xFFFF00FF); }
-    static juce::Colour neonYellow()  { return juce::Colour(0xFFF3E70F); }
-    static juce::Colour cyan()        { return juce::Colour(0xFF00F0FF); }
-    static juce::Colour text()        { return juce::Colour(0xFFFFFFFF); }
-    static juce::Colour textDim()     { return juce::Colour(0x80FFFFFF); }
-    static juce::Colour gridLine()    { return juce::Colour(0x208F00FF); }
-    static juce::Colour danger()      { return juce::Colour(0xFFFF3333); }
+    static juce::Colour background()  { return BlackshieldColours::voidBlack(); }
+    static juce::Colour surface()     { return BlackshieldColours::iron(); }
+    static juce::Colour card()        { return BlackshieldColours::steel(); }
+    static juce::Colour neonPurple()  { return BlackshieldColours::blood(); }
+    static juce::Colour hotPink()     { return BlackshieldColours::steelBlueBright(); }
+    static juce::Colour magenta()     { return BlackshieldColours::blood(); }
+    static juce::Colour neonYellow()  { return BlackshieldColours::warGold(); }
+    static juce::Colour cyan()        { return BlackshieldColours::steelBlueBright(); }
+    static juce::Colour text()        { return BlackshieldColours::bone(); }
+    static juce::Colour textDim()     { return BlackshieldColours::ash(); }
+    static juce::Colour gridLine()    { return BlackshieldColours::ash().withAlpha(0x20 / 255.0f); }
+    static juce::Colour danger()      { return BlackshieldColours::blood(); }
 };
 
 // ── Custom Knob Component ─────────────────────────────────────────────────
