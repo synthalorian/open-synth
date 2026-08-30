@@ -14,7 +14,7 @@ JUCE 8 + C++20, CMake. UI direction: synthwave '84 is the brand here (this is th
 ## House Rules (non-negotiable)
 
 - **Authorship credit:** README/docs footer is `Made by synth with synthclaw 🎹🦞` — synth first, always. Never "heavy lifting by synthclaw", never sole-author credit.
-- **Theme:** plain dark theme is the DEFAULT for anything other people use. Synthwave '84 (#240037, #8F00FF, #FF7EDB, #FF00FF, #F3E70F) is strictly opt-in via config.
+- **Theme:** Blackshield (steel+blood: bg #101014, surface #16161C, text #D8D3C8, accent #C1121F) is the DEFAULT everywhere. Other palettes (incl. Synthwave '84) stay opt-in/selectable. See the blackshield-theme skill for the full token set.
 - **CLI naming:** the binary is the bare project name. Never a `-cli` suffix.
 - **Commits:** conventional commits (`feat:`, `fix:`, `chore:`...). Local commits are fine.
 - **NEVER:** push to a remote, create GitHub remotes, force-push, rewrite/delete tags, or touch `.env`/credential files.
