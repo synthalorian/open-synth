@@ -1,7 +1,7 @@
 # Open Synth
 
 [![Build](https://github.com/synthalorian/open-synth/actions/workflows/build.yml/badge.svg)](https://github.com/synthalorian/open-synth/actions/workflows/build.yml)
-[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![License](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
 [![C++20](https://img.shields.io/badge/standard-C%2B%2B20-blue)](README.md)
 
 ![Open Synth](assets/social_preview.png)
@@ -145,7 +145,7 @@ cmake --build . --config Release
 
 ## License
 
-MIT License — see [LICENSE](LICENSE).
+Apache License 2.0 — see [LICENSE](LICENSE).
 
 Bundled sample libraries are CC0 / public domain (see `samples/` submodule sources: freepats, sfzinstruments).
 
