@@ -151,11 +151,11 @@ Bundled sample libraries are CC0 / public domain (see `samples/` submodule sourc
 
 ## Credits
 
-Made by synth with synthclaw 🎹🦞 — built on the JUCE framework.
+Made by synth with blackclaw ⚫🦞 — built on the JUCE framework.
 
 ---
 
-*"This is the wave."* 🎹🦞
+*"This is the wave."* ⚫🦞
 
 ---
 
