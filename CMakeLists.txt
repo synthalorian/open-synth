@@ -58,7 +58,7 @@ endif()
 
 # ── Open Synth Plugin + Standalone ───────────────────────────────────────────
 juce_add_plugin(OpenSynth
-    COMPANY_NAME "Blackclaw Audio"
+    COMPANY_NAME "blackclaw Audio"
     PLUGIN_MANUFACTURER_CODE "SynS"
     PLUGIN_CODE "OpSy"
     FORMATS ${OPEN_SYNTH_FORMATS}
