@@ -58,12 +58,12 @@ endif()
 
 # ── Open Synth Plugin + Standalone ───────────────────────────────────────────
 juce_add_plugin(OpenSynth
-    COMPANY_NAME "blackclaw Audio"
+    COMPANY_NAME "Blackclaw Audio"
     PLUGIN_MANUFACTURER_CODE "SynS"
     PLUGIN_CODE "OpSy"
     FORMATS ${OPEN_SYNTH_FORMATS}
     PRODUCT_NAME "Open Synth"
-    BUNDLE_ID "com.blackclaw.opensynth"
+    BUNDLE_ID "com.synthalorian.opensynth"
     MICROPHONE_PERMISSION_ENABLED TRUE
     MICROPHONE_PERMISSION_TEXT "Open Synth needs microphone access for audio recording."
     # iOS specific
@@ -83,7 +83,7 @@ juce_add_plugin(OpenSynth
 # Add CLAP target (desktop only)
 if(NOT IS_IOS AND NOT IS_ANDROID)
     clap_juce_extensions_plugin(TARGET OpenSynth
-        CLAP_ID "audio.blackclaw.opensynth"
+        CLAP_ID "audio.synthalorian.opensynth"
         CLAP_FEATURES instrument synthesizer
     )
 endif()
