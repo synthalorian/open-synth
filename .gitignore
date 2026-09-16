@@ -26,3 +26,4 @@ macos/
 windows/
 assets/samples/
 .sandbox-tmp/
+libs/JUCE/
