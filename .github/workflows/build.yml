@@ -104,6 +104,15 @@ jobs:
             ./build/Release/user_preset_test.exe
           fi
 
+      - name: Run filter and wavetable tests
+        shell: bash
+        run: |
+          if [ -x ./build/filter_wavetable_test ]; then
+            ./build/filter_wavetable_test
+          else
+            ./build/Release/filter_wavetable_test.exe
+          fi
+
       - name: Version
         id: ver
         shell: bash

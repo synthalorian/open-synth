@@ -119,6 +119,9 @@ private:
     UnisonConfig unison_;
 
     mutable WavetableOscillator wtOsc_;
+    // Phase increment of the current process() call, used to pick the
+    // wavetable mip level. 0 means "full-band table" (generateWaveform alone).
+    mutable double wtIncrement_ = 0.0;
 
     float generateWaveform(float phase) const;
 };

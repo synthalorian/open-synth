@@ -456,3 +456,25 @@ target_compile_definitions(demo_render PRIVATE
     JUCE_USE_CURL=0
     JUCE_USE_FLAC=1
 )
+
+# ── Filter / wavetable regression tests ──────────────────────────────────────
+add_executable(filter_wavetable_test
+    tests/filter_wavetable_test.cpp
+    ${DSP_SOURCES}
+    src/instrument_realism.cpp
+    src/preset_data.cpp
+    src/synth_engine_wrapper.cpp
+)
+target_include_directories(filter_wavetable_test PRIVATE src dsp include)
+target_link_libraries(filter_wavetable_test PRIVATE
+    juce::juce_audio_basics
+    juce::juce_audio_formats
+    juce::juce_audio_processors
+    juce::juce_core
+    juce::juce_dsp
+)
+target_compile_definitions(filter_wavetable_test PRIVATE
+    JUCE_WEB_BROWSER=0
+    JUCE_USE_CURL=0
+    JUCE_USE_FLAC=1
+)

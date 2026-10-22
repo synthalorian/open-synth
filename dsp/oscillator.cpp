@@ -184,7 +184,7 @@ float Oscillator::generateWaveform(float phase) const {
     case OscWaveform::WT_SYNTH_LEAD:
     case OscWaveform::WT_PAD:
     case OscWaveform::WT_EPIANO: {
-        float sample = wtOsc_.getSampleAtPhase(phase);
+        float sample = wtOsc_.getSampleAtPhase(phase, wtIncrement_);
         return sample;
     }
 
@@ -200,16 +200,16 @@ float Oscillator::generateWaveform(float phase) const {
         return std::sin(2.0f * M_PI * phase);
 
     case OscWaveform::WT_PIANO: {
-        float base = wtOsc_.getSampleAtPhase(phase);
+        float base = wtOsc_.getSampleAtPhase(phase, wtIncrement_);
         // Inharmonicity: real piano strings are stiff, so overtones are slightly sharp.
         // Add a second partial at ~2.01x the fundamental with lower amplitude.
         float inharmonicPhase = phase * 2.01f;
         inharmonicPhase = inharmonicPhase - std::floor(inharmonicPhase);
-        float overtone = wtOsc_.getSampleAtPhase(inharmonicPhase) * 0.25f;
+        float overtone = wtOsc_.getSampleAtPhase(inharmonicPhase, wtIncrement_ * 2.01) * 0.25f;
         // Add a 3rd partial (slightly sharp as well)
         float overtone3Phase = phase * 3.02f;
         overtone3Phase = overtone3Phase - std::floor(overtone3Phase);
-        float overtone3 = wtOsc_.getSampleAtPhase(overtone3Phase) * 0.12f;
+        float overtone3 = wtOsc_.getSampleAtPhase(overtone3Phase, wtIncrement_ * 3.02) * 0.12f;
         return base + overtone + overtone3;
     }
     }
@@ -218,7 +218,8 @@ float Oscillator::generateWaveform(float phase) const {
 }
 
 float Oscillator::process(float phase, int voiceIndex, float freq, double sampleRate) const {
-    (void)sampleRate;
+    // Wavetable reads pick a band-limited mip level from the phase increment.
+    wtIncrement_ = sampleRate > 0.0 ? phaseIncrement(freq, voiceIndex, sampleRate) : 0.0;
     float sample = generateWaveform(phase);
 
     // Sub-oscillator (square or sine below)

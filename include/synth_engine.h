@@ -125,6 +125,8 @@ public:
     void setFilterCutoff(float hz) { parts_[0].filter.setCutoff(hz); }
     void setFilterResonance(float q) { parts_[0].filter.setResonance(q); }
     void setFilterEnvAmount(float a) { parts_[0].filter.setEnvAmount(a); }
+    // Cutoff shift in semitones at full envelope amount (default 5).
+    void setFilterEnvRange(float semis) { parts_[0].filter.setEnvRangeSemitones(semis); }
     void setFilterKeyTracking(float kt) { parts_[0].filter.setKeyTracking(kt); }
     void setFilterDrive(float d) { parts_[0].filter.setDrive(d); }
 

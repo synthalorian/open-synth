@@ -3,6 +3,7 @@
 #include <cmath>
 #include <cstring>
 #include <cstdio>
+#include <initializer_list>
 
 namespace opensynth {
 
@@ -486,7 +487,15 @@ static void ensureWavetablesInitialized() {
     generateVelocityLayers(57, kBagpipeAmps, 16, "Bagpipe");
     generateVelocityLayers(58, kFiddleAmps, 16, "Fiddle");
     generateVelocityLayers(59, kShanaiAmps, 16, "Shanai");
-    
+
+    // Per-octave band-limited levels so high notes do not alias. Layers that
+    // share a table (inharmonic entries) are built once.
+    for (auto& e : gWavetables) {
+        for (Wavetable* wt : {e.soft, e.medium, e.hard}) {
+            if (wt && wt->numMips == 0) wt->buildMips();
+        }
+    }
+
     gInitialized = true;
 }
 
