@@ -185,12 +185,12 @@ void SynthEngine::setupVoiceForNote(Voice* voice) {
         int wf1 = part.osc1.waveform();
         if (wf1 >= 18 && wf1 <= 23) {
             voice->physicalModel.setType(static_cast<PhysicalModelType>(wf1 - 17));
-            voice->physicalModel.noteOn(voice->baseFreq, voice->velocity);
+            voice->physicalModel.noteOn(voice->baseFreq, voice->targetVelocity);
         }
         int wf2 = part.osc2.waveform();
         if (wf2 >= 18 && wf2 <= 23) {
             voice->physicalModel.setType(static_cast<PhysicalModelType>(wf2 - 17));
-            voice->physicalModel.noteOn(voice->baseFreq, voice->velocity);
+            voice->physicalModel.noteOn(voice->baseFreq, voice->targetVelocity);
         }
         voice->realism.bodyType = part.realismBodyType;
         voice->realism.bodyMix = part.realismBodyMix;
@@ -199,7 +199,7 @@ void SynthEngine::setupVoiceForNote(Voice* voice) {
         voice->realism.attackCurve = part.realismAttackCurve;
         voice->realism.brightnessSens = part.realismBrightnessSens;
         if (part.realismSympatheticMix > 0.0f) {
-            sympatheticResonator_.noteOn(voice->baseFreq, voice->velocity);
+            sympatheticResonator_.noteOn(voice->baseFreq, voice->targetVelocity);
         }
     }
 }
@@ -484,6 +484,7 @@ void SynthEngine::process(AudioBuffer& output) {
             }
 
             // Apply amp envelope with velocity
+            voice->advanceVelocity(sampleRate_);
             float ampGain = ampEnv * voice->velocity;
             ampGain *= (1.0f + part.aftertouch * 0.5f); // aftertouch adds up to 50% gain
             // MPE per-note pressure adds up to 50% gain (independent per note)

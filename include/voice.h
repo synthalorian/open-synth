@@ -15,6 +15,28 @@ struct Voice {
     bool sustained = false;
     int midiNote = 69;
     float velocity = 1.0f;
+    // Velocity the voice is heading to. Equal to velocity except during the
+    // short ramp applied when a sounding voice is retriggered.
+    float targetVelocity = 1.0f;
+    float velocityStep = 0.0f;
+    int velocityRampRemaining = 0;
+    bool velocityRampPending = false;
+    static constexpr float kRetriggerVelocityRampSec = 0.003f;
+
+    // Advance the velocity ramp by one sample (call once per sample).
+    void advanceVelocity(double sampleRate) {
+        if (velocityRampPending) {
+            velocityRampPending = false;
+            int n = static_cast<int>(kRetriggerVelocityRampSec * sampleRate);
+            if (n < 1) n = 1;
+            velocityRampRemaining = n;
+            velocityStep = (targetVelocity - velocity) / static_cast<float>(n);
+        }
+        if (velocityRampRemaining > 0) {
+            if (--velocityRampRemaining == 0) velocity = targetVelocity;
+            else velocity += velocityStep;
+        }
+    }
     float baseFreq = 440.0f;
 
     // Oscillator phase accumulators (one per unison voice)

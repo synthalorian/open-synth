@@ -53,6 +53,9 @@ void Voice::beginSteal(int note, float vel, int part, int mpeChannel, int fadeSa
 void Voice::noteOn(int note, float vel) {
     midiNote = note;
     velocity = std::clamp(vel, 0.0f, 1.0f);
+    targetVelocity = velocity;
+    velocityRampRemaining = 0;
+    velocityRampPending = false;
     // MIDI note to frequency: f = 440 * 2^((note-69)/12)
     baseFreq = 440.0f * std::pow(2.0f, (note - 69) / 12.0f);
     active = true;
@@ -84,7 +87,9 @@ void Voice::retrigger(int note, float vel) {
         return;
     }
     midiNote = note;
-    velocity = std::clamp(vel, 0.0f, 1.0f);
+    // Ramp to the new velocity (about 3 ms) instead of stepping the level.
+    targetVelocity = std::clamp(vel, 0.0f, 1.0f);
+    velocityRampPending = true;
     baseFreq = 440.0f * std::pow(2.0f, (note - 69) / 12.0f);
     sustained = false;
     hasPending = false;
@@ -96,7 +101,7 @@ void Voice::retrigger(int note, float vel) {
     ampEnv.retrigger();
     filterEnv.retrigger();
     pitchEnv.retrigger();
-    realism.click.trigger(velocity, 15.0f, 48000.0);
+    realism.click.trigger(targetVelocity, 15.0f, 48000.0);
 }
 
 void Voice::noteOff() {

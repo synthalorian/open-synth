@@ -292,6 +292,46 @@ static void testRetrigger() {
     }
 }
 
+// ── Retrigger velocity ramp ─────────────────────────────────────────────────
+
+static void testRetriggerVelocityRamp() {
+    std::printf("[voice] retrigger ramps velocity over ~3 ms; fresh note-on is instant\n");
+    const double rates[] = {44100.0, 48000.0, 96000.0};
+    for (double sr : rates) {
+        VoiceAllocator a;
+        a.setSampleRate(sr);
+        Voice* v = a.noteOn(60, 0.1f);
+        char msg[160];
+        std::snprintf(msg, sizeof msg, "%.1f kHz: fresh note-on applies velocity instantly", sr / 1000.0);
+        check(v && v->velocity == 0.1f && v->targetVelocity == 0.1f, msg);
+        if (!v) continue;
+        v->ampEnv.setAttack(5.0f); v->ampEnv.setDecay(20.0f); v->ampEnv.setSustain(0.6f);
+        float prev = 0.0f;
+        const int settle = static_cast<int>(0.1 * sr);
+        for (int i = 0; i < settle; ++i) {
+            v->advanceVelocity(sr);
+            prev = v->ampEnv.process(sr) * v->velocity;
+        }
+        Voice* r = a.noteOn(60, 1.0f);
+        float maxStep = 0.0f;
+        int reached = -1;
+        const int len = static_cast<int>(0.02 * sr);
+        for (int i = 0; i < len && r; ++i) {
+            r->advanceVelocity(sr);
+            float g = r->ampEnv.process(sr) * r->velocity;
+            maxStep = std::max(maxStep, std::abs(g - prev));
+            prev = g;
+            if (reached < 0 && r->velocity == 1.0f) reached = i + 1;
+        }
+        const int expect = static_cast<int>(0.003 * sr);
+        std::printf("        %.1f kHz: retrigger 0.1 -> 1.0 max gain step %.4f, velocity settles in %d samples\n",
+                    sr / 1000.0, maxStep, reached);
+        std::snprintf(msg, sizeof msg, "%.1f kHz: retrigger velocity 0.1 -> 1.0 has no step (< 0.02) and settles in 3 ms",
+                      sr / 1000.0);
+        check(r == v && maxStep < 0.02f && std::abs(reached - expect) <= 1, msg);
+    }
+}
+
 // ── Pulse edge rounding ─────────────────────────────────────────────────────
 
 static void testPulseEdgeRounding() {
@@ -431,8 +471,10 @@ static std::vector<float> renderNaive(int which, double f0, double sr, size_t n,
 }
 
 static void testAliasing() {
-    std::printf("[oscillator] aliasing at f0 = 4987 Hz, 48 kHz\n");
-    const double sr = 48000.0;
+    // Triangle (BLAMP) thresholds are per rate, 0.5 dB under the measured
+    // improvement: 44.1k 3.5, 48k 4.9, 88.2k 4.6, 96k 2.9 dB.
+    const double rates[] = {44100.0, 48000.0, 88200.0, 96000.0};
+    const double triThreshold[] = {3.0, 4.4, 4.1, 2.4};
     const double f0 = 4987.0;
     const size_t n = 16384;
     struct Case { const char* name; int dart; int naive; float pw; double minGainDb; };
@@ -440,16 +482,22 @@ static void testAliasing() {
         {"saw", 1, 0, 0.5f, 10.0},
         {"square", 2, 1, 0.5f, 10.0},
         {"pulse 30%", 5, 3, 0.3f, 10.0},
-        {"triangle", 3, 2, 0.5f, 4.0},  // measured 4.9 dB
+        {"triangle", 3, 2, 0.5f, 0.0},
     };
-    for (const auto& c : cases) {
-        double before = aliasDb(renderNaive(c.naive, f0, sr, n, c.pw), f0, sr);
-        double after = aliasDb(renderOsc(c.dart, f0, sr, n, c.pw), f0, sr);
-        std::printf("        %-10s alias energy: naive %.1f dB, band-limited %.1f dB (%.1f dB better)\n",
-                    c.name, before, after, before - after);
-        char msg[96];
-        std::snprintf(msg, sizeof msg, "%s aliasing reduced by >= %.0f dB", c.name, c.minGainDb);
-        check(before - after >= c.minGainDb, msg);
+    for (int ri = 0; ri < 4; ++ri) {
+        const double sr = rates[ri];
+        std::printf("[oscillator] aliasing at f0 = 4987 Hz, %.1f kHz\n", sr / 1000.0);
+        for (Case c : cases) {
+            if (c.dart == 3) c.minGainDb = triThreshold[ri];
+            double before = aliasDb(renderNaive(c.naive, f0, sr, n, c.pw), f0, sr);
+            double after = aliasDb(renderOsc(c.dart, f0, sr, n, c.pw), f0, sr);
+            std::printf("        %-10s alias energy: naive %.1f dB, band-limited %.1f dB (%.1f dB better)\n",
+                        c.name, before, after, before - after);
+            char msg[96];
+            std::snprintf(msg, sizeof msg, "%.1f kHz: %s aliasing reduced by >= %.1f dB",
+                          sr / 1000.0, c.name, c.minGainDb);
+            check(before - after >= c.minGainDb, msg);
+        }
     }
 }
 
@@ -557,6 +605,7 @@ int main() {
     testAllocatorOldest();
     testEngineStealFade();
     testRetrigger();
+    testRetriggerVelocityRamp();
     testPulseEdgeRounding();
     testAliasing();
     testSubOscillator();
