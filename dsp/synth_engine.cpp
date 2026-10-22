@@ -74,6 +74,7 @@ namespace opensynth {
 
 SynthEngine::SynthEngine(double sampleRate, uint32_t blockSize)
     : sampleRate_(sampleRate), blockSize_(blockSize), drumKit_(sampleRate) {
+    allocator_.setSampleRate(sampleRate_);
     // Initialize parts: part 0 = MIDI ch 1, parts 1-15 = off by default
     for (int i = 0; i < MAX_PARTS; ++i) {
         parts_[i].midiChannel = (i == 0) ? 0 : -1;
@@ -176,19 +177,20 @@ void SynthEngine::noteOff(int midiNote, int channel) {
     rn.partMask = 0;
 }
 
-void SynthEngine::doNoteOn(int midiNote, float velocity, int partIdx, int mpeChannel) {
-    Voice* voice = allocator_.noteOn(midiNote, velocity, partIdx, mpeChannel);
-    if (voice) {
+void SynthEngine::setupVoiceForNote(Voice* voice) {
+    int partIdx = voice->partIndex;
+    if (partIdx < 0 || partIdx >= MAX_PARTS) partIdx = 0;
+    {
         SynthPart& part = parts_[partIdx];
         int wf1 = part.osc1.waveform();
         if (wf1 >= 18 && wf1 <= 23) {
             voice->physicalModel.setType(static_cast<PhysicalModelType>(wf1 - 17));
-            voice->physicalModel.noteOn(voice->baseFreq, voice->velocity);
+            voice->physicalModel.noteOn(voice->baseFreq, voice->targetVelocity);
         }
         int wf2 = part.osc2.waveform();
         if (wf2 >= 18 && wf2 <= 23) {
             voice->physicalModel.setType(static_cast<PhysicalModelType>(wf2 - 17));
-            voice->physicalModel.noteOn(voice->baseFreq, voice->velocity);
+            voice->physicalModel.noteOn(voice->baseFreq, voice->targetVelocity);
         }
         voice->realism.bodyType = part.realismBodyType;
         voice->realism.bodyMix = part.realismBodyMix;
@@ -197,8 +199,16 @@ void SynthEngine::doNoteOn(int midiNote, float velocity, int partIdx, int mpeCha
         voice->realism.attackCurve = part.realismAttackCurve;
         voice->realism.brightnessSens = part.realismBrightnessSens;
         if (part.realismSympatheticMix > 0.0f) {
-            sympatheticResonator_.noteOn(voice->baseFreq, voice->velocity);
+            sympatheticResonator_.noteOn(voice->baseFreq, voice->targetVelocity);
         }
+    }
+}
+
+void SynthEngine::doNoteOn(int midiNote, float velocity, int partIdx, int mpeChannel) {
+    Voice* voice = allocator_.noteOn(midiNote, velocity, partIdx, mpeChannel);
+    // A stolen voice is set up when its fade-out finishes (see process()).
+    if (voice && !voice->hasPending) {
+        setupVoiceForNote(voice);
     }
     // ROMpler samples fire on the main part only — in split mode the lower
     // zone is pure synth bass, not a second copy of the piano samples.
@@ -348,6 +358,19 @@ void SynthEngine::process(AudioBuffer& output) {
             Voice* voice = allocator_.voice(v);
             if (!voice->active) continue;
 
+            // Voice stealing: fade the old note, then start the queued one.
+            float stealGain = 1.0f;
+            if (voice->hasPending) {
+                if (voice->stealFadeRemaining <= 0) {
+                    allocator_.startPendingNote(*voice);
+                    setupVoiceForNote(voice);
+                } else {
+                    stealGain = static_cast<float>(voice->stealFadeRemaining) /
+                                static_cast<float>(voice->stealFadeTotal);
+                    --voice->stealFadeRemaining;
+                }
+            }
+
             // Look up the part for this voice
             int partIdx = voice->partIndex;
             if (partIdx < 0 || partIdx >= MAX_PARTS) partIdx = 0;
@@ -364,6 +387,11 @@ void SynthEngine::process(AudioBuffer& output) {
 
             // Check if voice is done
             if (voice->ampEnv.state() == Envelope::IDLE) {
+                if (voice->hasPending) {
+                    // Old note already silent: start the queued note next sample.
+                    voice->stealFadeRemaining = 0;
+                    continue;
+                }
                 voice->active = false;
                 continue;
             }
@@ -423,7 +451,7 @@ void SynthEngine::process(AudioBuffer& output) {
                         float inc = part.osc1.phaseIncrement(modFreq, uv, sampleRate_);
                         voice->osc1Phase[uv] += inc;
                         if (voice->osc1Phase[uv] >= 1.0f) voice->osc1Phase[uv] -= 1.0f;
-                        sample += part.osc1.process(voice->osc1Phase[uv], uv, modFreq, sampleRate_);
+                        sample += part.osc1.processVoice(voice->osc1Phase[uv], inc, uv, voice->osc1State);
                     }
                 }
 
@@ -435,7 +463,7 @@ void SynthEngine::process(AudioBuffer& output) {
                         float inc = part.osc2.phaseIncrement(modFreq, uv, sampleRate_);
                         voice->osc2Phase[uv] += inc;
                         if (voice->osc2Phase[uv] >= 1.0f) voice->osc2Phase[uv] -= 1.0f;
-                        sample += part.osc2.process(voice->osc2Phase[uv], uv, modFreq, sampleRate_);
+                        sample += part.osc2.processVoice(voice->osc2Phase[uv], inc, uv, voice->osc2State);
                     }
                 }
 
@@ -456,6 +484,7 @@ void SynthEngine::process(AudioBuffer& output) {
             }
 
             // Apply amp envelope with velocity
+            voice->advanceVelocity(sampleRate_);
             float ampGain = ampEnv * voice->velocity;
             ampGain *= (1.0f + part.aftertouch * 0.5f); // aftertouch adds up to 50% gain
             // MPE per-note pressure adds up to 50% gain (independent per note)
@@ -478,8 +507,8 @@ void SynthEngine::process(AudioBuffer& output) {
             // Apply part volume/pan
             float partPanL = std::cos((part.pan + 1.0f) * M_PI / 4.0f);
             float partPanR = std::sin((part.pan + 1.0f) * M_PI / 4.0f);
-            voiceLeft = filtered * ampGain * partPanL * part.volume * voiceMixScale;
-            voiceRight = filtered * ampGain * partPanR * part.volume * voiceMixScale;
+            voiceLeft = filtered * ampGain * stealGain * partPanL * part.volume * voiceMixScale;
+            voiceRight = filtered * ampGain * stealGain * partPanR * part.volume * voiceMixScale;
 
             leftOut += voiceLeft;
             rightOut += voiceRight;
@@ -617,18 +646,8 @@ void SynthEngine::applyParam(const ParamQueue::Entry& e) {
     case P::NOTE_ON:
         {
             Voice* voice = allocator_.noteOn(e.intData, e.floatData);
-            if (voice) {
-                SynthPart& voicePart = parts_[voice->partIndex];
-                int wf1 = voicePart.osc1.waveform();
-                if (wf1 >= 18 && wf1 <= 23) {
-                    voice->physicalModel.setType(static_cast<PhysicalModelType>(wf1 - 17));
-                    voice->physicalModel.noteOn(voice->baseFreq, voice->velocity);
-                }
-                int wf2 = voicePart.osc2.waveform();
-                if (wf2 >= 18 && wf2 <= 23) {
-                    voice->physicalModel.setType(static_cast<PhysicalModelType>(wf2 - 17));
-                    voice->physicalModel.noteOn(voice->baseFreq, voice->velocity);
-                }
+            if (voice && !voice->hasPending) {
+                setupVoiceForNote(voice);
             }
         }
         break;

@@ -347,6 +347,7 @@ private:
 
     // Performance-mode internals
     void doNoteOn(int midiNote, float velocity, int partIdx, int mpeChannel);
+    void setupVoiceForNote(Voice* voice);
     void doNoteOff(int midiNote, int partIdx, int mpeChannel);
     void configureSplitPart(); // Karplus bass patch on part 1
 

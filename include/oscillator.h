@@ -48,6 +48,17 @@ enum class SubOscMode : int {
     SINE_1OCT = 3,     // Sine wave, 1 octave below
 };
 
+/// Per-voice oscillator state that the stateless waveform code cannot hold:
+/// the sub-oscillator's own phase and brown-noise integrators.
+struct OscVoiceState {
+    float subPhase = 0.0f;
+    float brown[8] = {};
+    void reset() {
+        subPhase = 0.0f;
+        for (float& b : brown) b = 0.0f;
+    }
+};
+
 class UnisonConfig {
 public:
     int voiceCount = 1;        // 1-8, 1 = off
@@ -90,7 +101,12 @@ public:
 
     // Generate one sample for a given voice (0 = main, 1..N = unison)
     // freq = base frequency of the note this oscillator belongs to
+    // Uses an internal per-instance state for the sub oscillator and noise.
     float process(float phase, int voiceIndex, float freq, double sampleRate) const;
+
+    // Per-voice variant: phaseInc is the per-sample phase increment of this
+    // oscillator voice (used for band-limiting and the sub oscillator).
+    float processVoice(float phase, float phaseInc, int voiceIndex, OscVoiceState& state) const;
 
     float phaseIncrement(float midiNoteFreq, int voiceIndex, double sampleRate) const;
     float voiceDetuneCents(int voiceIndex) const;
@@ -119,8 +135,9 @@ private:
     UnisonConfig unison_;
 
     mutable WavetableOscillator wtOsc_;
+    mutable OscVoiceState fallbackState_;
 
-    float generateWaveform(float phase) const;
+    float generateWaveform(float phase, float dt, float& brownState) const;
 };
 
 } // namespace opensynth
