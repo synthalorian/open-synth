@@ -29,6 +29,13 @@ public:
 
     /// Set voice stealing priority mode.
     void setPriorityMode(VoicePriorityMode mode) { priorityMode_ = mode; }
+
+    /// Sets the steal fade length (about 3 ms at the given rate).
+    void setSampleRate(double sampleRate);
+    int stealFadeSamples() const { return stealFadeSamples_; }
+
+    /// Starts the note queued on a voice whose steal fade has finished.
+    void startPendingNote(Voice& v);
     VoicePriorityMode priorityMode() const { return priorityMode_; }
 
 private:
@@ -36,6 +43,12 @@ private:
     bool sustain_ = false;
     VoicePriorityMode priorityMode_ = VoicePriorityMode::LAST_NOTE;
     int roundRobinNext_ = 0;  // For ROUND_ROBIN mode
+    uint64_t noteCounter_ = 0;
+    int stealFadeSamples_ = 144;  // 3 ms at 48 kHz
+
+    static bool stealable(const Voice& v) { return v.active && !v.hasPending; }
+    static bool releasing(const Voice& v) { return stealable(v) && v.ampEnv.state() == Envelope::RELEASE; }
+    Voice* firstPendingOrZero();
 
     int findFreeVoice() const;
     Voice* stealVoice();

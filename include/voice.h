@@ -21,6 +21,10 @@ struct Voice {
     float osc1Phase[8] = {};
     float osc2Phase[8] = {};
 
+    // Per-voice sub-oscillator phase and noise state for each oscillator
+    OscVoiceState osc1State;
+    OscVoiceState osc2State;
+
     // Envelopes
     Envelope ampEnv;
     Envelope filterEnv;
@@ -50,6 +54,23 @@ struct Voice {
 
     // MPE per-note expression state
     MpeVoiceState mpe;
+
+    // Monotonic note-on order, used to find the oldest voice when stealing.
+    uint64_t startOrder = 0;
+
+    // Voice stealing: the old note fades out over stealFadeTotal samples,
+    // then the pending note starts. Avoids a hard reset (click) on steal.
+    bool hasPending = false;
+    int pendingNote = 69;
+    float pendingVelocity = 1.0f;
+    int pendingPart = 0;
+    int pendingMpeChannel = -1;
+    bool pendingReleased = false;
+    bool pendingSustained = false;
+    int stealFadeRemaining = 0;
+    int stealFadeTotal = 0;
+
+    void beginSteal(int note, float vel, int part, int mpeChannel, int fadeSamples);
 
     void reset();
     void noteOn(int note, float vel);

@@ -53,11 +53,16 @@ private:
     float level_ = 0.0f;
     float rate_ = 0.0f;
     float holdPhase_ = 0.0f;
+    float lastOut_ = 0.0f;       // most recent output value
+    float releaseStart_ = 0.0f;  // output level captured at noteOff
+    float releasePhase_ = 0.0f;  // 0..1 progress through release
+    bool releaseAfterAttack_ = false;  // noteOff arrived before any output
     EnvCurve attackCurve_ = EnvCurve::LINEAR;
     EnvCurve decayCurve_ = EnvCurve::LINEAR;
     EnvCurve releaseCurve_ = EnvCurve::LINEAR;
 
     float applyCurve(float linearPhase, EnvCurve curve) const;
+    float processStage(double sampleRate);
 };
 
 } // namespace opensynth

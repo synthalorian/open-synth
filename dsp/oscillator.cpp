@@ -88,8 +88,40 @@ void Oscillator::setUnisonMix(float mix) {
 }
 
 void Oscillator::reset() {
-    // No state to reset besides parameters which stay as set
+    fallbackState_.reset();
 }
+
+namespace {
+
+// PolyBLEP residual for a unit step at phase 0 (t in [0,1), dt = phase inc).
+inline float polyBlep(float t, float dt) {
+    if (t < dt) {
+        t /= dt;
+        return t + t - t * t - 1.0f;
+    }
+    if (t > 1.0f - dt) {
+        t = (t - 1.0f) / dt;
+        return t * t + t + t + 1.0f;
+    }
+    return 0.0f;
+}
+
+// PolyBLAMP residual for a unit slope change at phase 0 (integrated PolyBLEP).
+inline float polyBlamp(float t, float dt) {
+    if (t < dt) {
+        t = t / dt - 1.0f;
+        return -t * t * t / 3.0f;
+    }
+    if (t > 1.0f - dt) {
+        t = (t - 1.0f) / dt + 1.0f;
+        return t * t * t / 3.0f;
+    }
+    return 0.0f;
+}
+
+inline float wrap01(float x) { return x - std::floor(x); }
+
+} // namespace
 
 float Oscillator::voiceDetuneCents(int voiceIndex) const {
     if (voiceIndex == 0 || unison_.voiceCount <= 1) return 0.0f;
@@ -120,19 +152,38 @@ float Oscillator::phaseIncrement(float midiNoteFreq, int voiceIndex, double samp
     return (midiNoteFreq * octaveMult * ratio) / static_cast<float>(sampleRate);
 }
 
-float Oscillator::generateWaveform(float phase) const {
+float Oscillator::generateWaveform(float phase, float dt, float& brownState) const {
     // Wrap phase to [0, 1)
     phase = phase - std::floor(phase);
+    // Band-limiting needs 0 < dt <= 0.5; dt = 0 disables it.
+    dt = std::min(std::abs(dt), 0.5f);
 
     switch (static_cast<OscWaveform>(waveform_)) {
-    case OscWaveform::SAW:
-        return 2.0f * phase - 1.0f;
+    case OscWaveform::SAW: {
+        float v = 2.0f * phase - 1.0f;
+        if (dt > 0.0f) v -= polyBlep(phase, dt);
+        return v;
+    }
 
-    case OscWaveform::SQUARE:
-        return phase < 0.5f ? 1.0f : -1.0f;
+    case OscWaveform::SQUARE: {
+        float v = phase < 0.5f ? 1.0f : -1.0f;
+        if (dt > 0.0f) {
+            v += polyBlep(phase, dt);
+            v -= polyBlep(wrap01(phase + 0.5f), dt);
+        }
+        return v;
+    }
 
-    case OscWaveform::TRIANGLE:
-        return 4.0f * std::abs(phase - 0.5f) - 1.0f;
+    case OscWaveform::TRIANGLE: {
+        // Corners: peak at phase 0 (slope +4 -> -4) and trough at phase 0.5
+        // (slope -4 -> +4), slopes per unit phase. PolyBLAMP smooths both.
+        float v = 4.0f * std::abs(phase - 0.5f) - 1.0f;
+        if (dt > 0.0f) {
+            v -= 8.0f * dt * polyBlamp(phase, dt);
+            v += 8.0f * dt * polyBlamp(wrap01(phase + 0.5f), dt);
+        }
+        return v;
+    }
 
     case OscWaveform::SINE:
         return std::sin(2.0f * M_PI * phase);
@@ -161,7 +212,6 @@ float Oscillator::generateWaveform(float phase) const {
             float white = std::sin(phase * 12453.789f) * 43758.5453f;
             white = 2.0f * (white - std::floor(white)) - 1.0f;
             // Leaky integrator to approximate brown noise
-            static float brownState = 0.0f;
             brownState = brownState * 0.99f + white * 0.01f;
             return std::clamp(brownState * 5.0f, -1.0f, 1.0f);
         }
@@ -170,8 +220,14 @@ float Oscillator::generateWaveform(float phase) const {
         }
     }
 
-    case OscWaveform::PULSE:
-        return phase < pulseWidth_ ? 1.0f : -1.0f;
+    case OscWaveform::PULSE: {
+        float v = phase < pulseWidth_ ? 1.0f : -1.0f;
+        if (dt > 0.0f) {
+            v += polyBlep(phase, dt);
+            v -= polyBlep(wrap01(phase + 1.0f - pulseWidth_), dt);
+        }
+        return v;
+    }
 
     case OscWaveform::WT_GUITAR:
     case OscWaveform::WT_CHOIR:
@@ -218,37 +274,31 @@ float Oscillator::generateWaveform(float phase) const {
 }
 
 float Oscillator::process(float phase, int voiceIndex, float freq, double sampleRate) const {
-    (void)sampleRate;
-    float sample = generateWaveform(phase);
+    float dt = sampleRate > 0.0 ? phaseIncrement(freq, voiceIndex, sampleRate) : 0.0f;
+    return processVoice(phase, dt, voiceIndex, fallbackState_);
+}
 
-    // Sub-oscillator (square or sine below)
+float Oscillator::processVoice(float phase, float phaseInc, int voiceIndex, OscVoiceState& state) const {
+    const int bi = std::clamp(voiceIndex, 0, 7);
+    float sample = generateWaveform(phase, phaseInc, state.brown[bi]);
+
+    // Sub-oscillator: its own phase accumulator at f/2 or f/4, so square
+    // modes are proper bipolar waves (no DC).
     if (subOscMode_ != SubOscMode::OFF && voiceIndex == 0) {
-        float subDiv = 1.0f;
-        float subFreq = freq;
-        switch (subOscMode_) {
-        case SubOscMode::SQUARE_1OCT:
-            subDiv = 0.5f;
-            subFreq = freq * 0.5f;
-            break;
-        case SubOscMode::SQUARE_2OCT:
-            subDiv = 0.25f;
-            subFreq = freq * 0.25f;
-            break;
-        case SubOscMode::SINE_1OCT:
-            subDiv = 0.5f;
-            subFreq = freq * 0.5f;
-            break;
-        default: break;
-        }
-        // Simple sub-osc: use phase (already independent per voice)
-        float subPhase = phase * subDiv;
-        subPhase = subPhase - std::floor(subPhase);
+        float subDiv = subOscMode_ == SubOscMode::SQUARE_2OCT ? 0.25f : 0.5f;
+        float subDt = std::min(std::abs(phaseInc) * subDiv, 0.5f);
+        float subPhase = wrap01(state.subPhase);
         float subSample = 0.0f;
         if (subOscMode_ == SubOscMode::SINE_1OCT) {
-            subSample = std::sin(2.0f * M_PI * subPhase);
+            subSample = std::sin(2.0f * static_cast<float>(M_PI) * subPhase);
         } else {
             subSample = subPhase < 0.5f ? 1.0f : -1.0f;
+            if (subDt > 0.0f) {
+                subSample += polyBlep(subPhase, subDt);
+                subSample -= polyBlep(wrap01(subPhase + 0.5f), subDt);
+            }
         }
+        state.subPhase = wrap01(subPhase + std::abs(phaseInc) * subDiv);
         sample = sample * (1.0f - subOscVolume_ * 0.7f) + subSample * subOscVolume_ * 0.7f;
     }
 

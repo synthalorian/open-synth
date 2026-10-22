@@ -10,12 +10,55 @@ VoiceAllocator::VoiceAllocator() {
     }
 }
 
+void VoiceAllocator::setSampleRate(double sampleRate) {
+    stealFadeSamples_ = std::max(1, static_cast<int>(sampleRate * 0.003 + 0.5));
+}
+
+void VoiceAllocator::startPendingNote(Voice& v) {
+    if (!v.hasPending) return;
+    const int note = v.pendingNote;
+    const float vel = v.pendingVelocity;
+    const int part = v.pendingPart;
+    const int mpeChannel = v.pendingMpeChannel;
+    const bool released = v.pendingReleased;
+    const bool sustained = v.pendingSustained;
+    v.noteOn(note, vel);
+    v.partIndex = part;
+    if (mpeChannel >= 0) {
+        v.mpe.mpeEnabled = true;
+        v.mpe.mpeNoteChannel = mpeChannel;
+    }
+    if (sustained) {
+        v.sustained = true;
+    } else if (released) {
+        v.noteOff();
+    }
+}
+
+Voice* VoiceAllocator::firstPendingOrZero() {
+    for (auto& v : voices_) {
+        if (v.hasPending) return &v;
+    }
+    return &voices_[0];
+}
+
 Voice* VoiceAllocator::noteOn(int midiNote, float velocity, int partIndex, int mpeChannel) {
+    // A note already waiting on a steal fade: just update its velocity.
+    for (auto& v : voices_) {
+        if (v.hasPending && v.pendingNote == midiNote && v.pendingPart == partIndex &&
+            (mpeChannel < 0 || v.pendingMpeChannel == mpeChannel)) {
+            v.pendingVelocity = std::clamp(velocity, 0.0f, 1.0f);
+            v.pendingReleased = false;
+            v.pendingSustained = false;
+            return &v;
+        }
+    }
     // In MPE mode, check if note already active on this exact channel
     if (mpeChannel >= 0) {
         for (auto& v : voices_) {
-            if (v.active && v.midiNote == midiNote && v.mpe.mpeNoteChannel == mpeChannel) {
+            if (stealable(v) && v.midiNote == midiNote && v.mpe.mpeNoteChannel == mpeChannel) {
                 v.noteOn(midiNote, velocity);
+                v.startOrder = ++noteCounter_;
                 v.partIndex = partIndex;
                 v.mpe.mpeNoteChannel = mpeChannel;
                 return &v;
@@ -24,8 +67,9 @@ Voice* VoiceAllocator::noteOn(int midiNote, float velocity, int partIndex, int m
     } else {
         // Check if note already active on this part — retrigger
         for (auto& v : voices_) {
-            if (v.active && v.midiNote == midiNote && v.partIndex == partIndex) {
+            if (stealable(v) && v.midiNote == midiNote && v.partIndex == partIndex) {
                 v.noteOn(midiNote, velocity);
+                v.startOrder = ++noteCounter_;
                 v.partIndex = partIndex;
                 return &v;
             }
@@ -36,6 +80,14 @@ Voice* VoiceAllocator::noteOn(int midiNote, float velocity, int partIndex, int m
     int idx = findFreeVoice();
     if (idx < 0) {
         Voice* stolen = stealVoice();
+        stolen->startOrder = ++noteCounter_;
+        if (stolen->active) {
+            // Fade the old note out; the engine starts the new one when the
+            // fade completes (see startPendingNote).
+            stolen->beginSteal(midiNote, std::clamp(velocity, 0.0f, 1.0f), partIndex,
+                               mpeChannel, stealFadeSamples_);
+            return stolen;
+        }
         stolen->noteOn(midiNote, velocity);
         stolen->partIndex = partIndex;
         if (mpeChannel >= 0) {
@@ -46,6 +98,7 @@ Voice* VoiceAllocator::noteOn(int midiNote, float velocity, int partIndex, int m
     }
 
     voices_[idx].noteOn(midiNote, velocity);
+    voices_[idx].startOrder = ++noteCounter_;
     voices_[idx].partIndex = partIndex;
     if (mpeChannel >= 0) {
         voices_[idx].mpe.mpeEnabled = true;
@@ -55,8 +108,19 @@ Voice* VoiceAllocator::noteOn(int midiNote, float velocity, int partIndex, int m
 }
 
 void VoiceAllocator::noteOff(int midiNote, int partIndex, int mpeChannel) {
+    // A note still waiting for its steal fade is released once it starts.
     for (auto& v : voices_) {
-        if (v.active && v.midiNote == midiNote) {
+        if (v.hasPending && v.pendingNote == midiNote) {
+            if (partIndex >= 0 && v.pendingPart != partIndex) continue;
+            if (mpeChannel >= 0 && v.pendingMpeChannel != mpeChannel) continue;
+            if (sustain_) v.pendingSustained = true;
+            else v.pendingReleased = true;
+            return;
+        }
+    }
+    for (auto& v : voices_) {
+        // The old note of a voice being stolen is already fading out.
+        if (stealable(v) && v.midiNote == midiNote) {
             if (partIndex >= 0 && v.partIndex != partIndex) continue;
             if (mpeChannel >= 0 && v.mpe.mpeNoteChannel != mpeChannel) continue;
             if (sustain_) {
@@ -71,6 +135,12 @@ void VoiceAllocator::noteOff(int midiNote, int partIndex, int mpeChannel) {
 
 void VoiceAllocator::allNotesOff(int partIndex) {
     for (auto& v : voices_) {
+        if (v.hasPending) {
+            if (partIndex >= 0 && v.pendingPart != partIndex) continue;
+            v.pendingReleased = true;
+            v.pendingSustained = false;
+            continue;
+        }
         if (v.active) {
             if (partIndex >= 0 && v.partIndex != partIndex) continue;
             v.noteOff();
@@ -84,7 +154,10 @@ void VoiceAllocator::sustain(bool on) {
     if (!on) {
         // Release all sustained notes
         for (auto& v : voices_) {
-            if (v.active && v.sustained) {
+            if (v.hasPending && v.pendingSustained) {
+                v.pendingSustained = false;
+                v.pendingReleased = true;
+            } else if (stealable(v) && v.sustained) {
                 v.noteOff();
             }
         }
@@ -118,17 +191,16 @@ Voice* VoiceAllocator::stealVoice() {
 }
 
 Voice* VoiceAllocator::stealOldestVoice() {
-    // Steal the first voice that's in release, or else the first active voice.
+    // Prefer the oldest voice already in release, then the oldest active one.
+    Voice* best = nullptr;
     for (auto& v : voices_) {
-        if (v.active && v.ampEnv.state() == Envelope::RELEASE) {
-            return &v;
-        }
+        if (releasing(v) && (!best || v.startOrder < best->startOrder)) best = &v;
     }
-    // Fall back to first active voice
+    if (best) return best;
     for (auto& v : voices_) {
-        if (v.active) return &v;
+        if (stealable(v) && (!best || v.startOrder < best->startOrder)) best = &v;
     }
-    return &voices_[0];
+    return best ? best : firstPendingOrZero();
 }
 
 Voice* VoiceAllocator::stealLowestVoice() {
@@ -136,7 +208,7 @@ Voice* VoiceAllocator::stealLowestVoice() {
     int lowestNote = 128;
     // Prefer voices in release
     for (auto& v : voices_) {
-        if (v.active && v.ampEnv.state() == Envelope::RELEASE) {
+        if (releasing(v)) {
             if (v.midiNote < lowestNote) {
                 lowestNote = v.midiNote;
                 best = &v;
@@ -146,12 +218,12 @@ Voice* VoiceAllocator::stealLowestVoice() {
     if (best) return best;
     // Fall back: lowest active note
     for (auto& v : voices_) {
-        if (v.active && v.midiNote < lowestNote) {
+        if (stealable(v) && v.midiNote < lowestNote) {
             lowestNote = v.midiNote;
             best = &v;
         }
     }
-    return best ? best : &voices_[0];
+    return best ? best : firstPendingOrZero();
 }
 
 Voice* VoiceAllocator::stealHighestVoice() {
@@ -159,7 +231,7 @@ Voice* VoiceAllocator::stealHighestVoice() {
     int highestNote = -1;
     // Prefer voices in release
     for (auto& v : voices_) {
-        if (v.active && v.ampEnv.state() == Envelope::RELEASE) {
+        if (releasing(v)) {
             if (v.midiNote > highestNote) {
                 highestNote = v.midiNote;
                 best = &v;
@@ -169,19 +241,19 @@ Voice* VoiceAllocator::stealHighestVoice() {
     if (best) return best;
     // Fall back: highest active note
     for (auto& v : voices_) {
-        if (v.active && v.midiNote > highestNote) {
+        if (stealable(v) && v.midiNote > highestNote) {
             highestNote = v.midiNote;
             best = &v;
         }
     }
-    return best ? best : &voices_[0];
+    return best ? best : firstPendingOrZero();
 }
 
 Voice* VoiceAllocator::stealRoundRobin() {
     // Cycle through voices evenly; prefer ones in release first.
     for (int i = 0; i < MAX_VOICES; i++) {
         int idx = (roundRobinNext_ + i) % MAX_VOICES;
-        if (voices_[idx].active && voices_[idx].ampEnv.state() == Envelope::RELEASE) {
+        if (releasing(voices_[idx])) {
             roundRobinNext_ = (idx + 1) % MAX_VOICES;
             return &voices_[idx];
         }
@@ -189,13 +261,13 @@ Voice* VoiceAllocator::stealRoundRobin() {
     // Fall back: any active voice
     for (int i = 0; i < MAX_VOICES; i++) {
         int idx = (roundRobinNext_ + i) % MAX_VOICES;
-        if (voices_[idx].active) {
+        if (stealable(voices_[idx])) {
             roundRobinNext_ = (idx + 1) % MAX_VOICES;
             return &voices_[idx];
         }
     }
     roundRobinNext_ = 0;
-    return &voices_[0];
+    return firstPendingOrZero();
 }
 
 Voice* VoiceAllocator::stealQuietestVoice() {
@@ -203,13 +275,13 @@ Voice* VoiceAllocator::stealQuietestVoice() {
     float quietestLevel = 2.0f;
     // Prefer voices in release (they're already quiet)
     for (auto& v : voices_) {
-        if (v.active && v.ampEnv.state() == Envelope::RELEASE) {
+        if (releasing(v)) {
             return &v; // Any releasing voice is "quietest"
         }
     }
     // Fall back: lowest velocity * amplitude product
     for (auto& v : voices_) {
-        if (v.active) {
+        if (stealable(v)) {
             float loudness = v.velocity; // approximate
             if (loudness < quietestLevel) {
                 quietestLevel = loudness;
@@ -217,7 +289,7 @@ Voice* VoiceAllocator::stealQuietestVoice() {
             }
         }
     }
-    return best ? best : &voices_[0];
+    return best ? best : firstPendingOrZero();
 }
 
 } // namespace opensynth

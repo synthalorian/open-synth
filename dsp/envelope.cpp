@@ -16,6 +16,10 @@ void Envelope::setReleaseCurve(int c) { releaseCurve_ = static_cast<EnvCurve>(st
 void Envelope::reset() {
     state_ = IDLE;
     level_ = 0.0f;
+    lastOut_ = 0.0f;
+    releaseStart_ = 0.0f;
+    releasePhase_ = 0.0f;
+    releaseAfterAttack_ = false;
 }
 
 void Envelope::noteOn() {
@@ -25,12 +29,28 @@ void Envelope::noteOn() {
         state_ = ATTACK;
     }
     level_ = 0.0f;
+    lastOut_ = 0.0f;
+    releaseAfterAttack_ = false;
 }
 
 void Envelope::noteOff() {
-    if (state_ != IDLE) {
-        state_ = RELEASE;
+    if (state_ == IDLE || state_ == RELEASE) return;
+    // Release from wherever the envelope currently is (attack, hold, decay,
+    // sustain), not from the sustain level, so there is no step at noteOff.
+    if ((state_ == DELAY || state_ == ATTACK) && lastOut_ <= 0.0f) {
+        // Note-off before the envelope produced any output (e.g. note-on and
+        // note-off in the same block): play the attack, then release, so very
+        // short notes are still heard.
+        releaseAfterAttack_ = true;
+        return;
     }
+    releaseStart_ = lastOut_;
+    releasePhase_ = 0.0f;
+    if (releaseStart_ <= 0.0f) {
+        reset();
+        return;
+    }
+    state_ = RELEASE;
 }
 
 float Envelope::applyCurve(float linearPhase, EnvCurve curve) const {
@@ -49,6 +69,11 @@ float Envelope::applyCurve(float linearPhase, EnvCurve curve) const {
 }
 
 float Envelope::process(double sampleRate) {
+    lastOut_ = processStage(sampleRate);
+    return lastOut_;
+}
+
+float Envelope::processStage(double sampleRate) {
     if (state_ == IDLE) return 0.0f;
 
     switch (state_) {
@@ -66,6 +91,13 @@ float Envelope::process(double sampleRate) {
         level_ += rate_;
         if (level_ >= 1.0f) {
             level_ = 1.0f;
+            if (releaseAfterAttack_) {
+                releaseAfterAttack_ = false;
+                releaseStart_ = 1.0f;
+                releasePhase_ = 0.0f;
+                state_ = RELEASE;
+                return 1.0f;
+            }
             if (holdMs_ > 0.0f) {
                 state_ = HOLD;
                 holdPhase_ = 0.0f;
@@ -110,21 +142,19 @@ float Envelope::process(double sampleRate) {
     case SUSTAIN:
         return sustainLevel_;
 
-    case RELEASE:
-        rate_ = 1.0f / (releaseMs_ * 0.001f * sampleRate);
-        level_ -= rate_;
-        if (level_ <= 0.0f) {
+    case RELEASE: {
+        // Release time is independent of the starting level.
+        releasePhase_ += 1.0f / (releaseMs_ * 0.001f * static_cast<float>(sampleRate));
+        if (releasePhase_ >= 1.0f) {
+            releasePhase_ = 1.0f;
             level_ = 0.0f;
             state_ = IDLE;
+            return 0.0f;
         }
-        // level_ goes from sustainLevel_ down to 0
-        // Map to 0..1 curve phase: 0=start of release, 1=silence
-        {
-            float phase = sustainLevel_ > 0.0f ? 1.0f - (level_ / sustainLevel_) : 1.0f;
-            phase = std::clamp(phase, 0.0f, 1.0f);
-            float curved = applyCurve(phase, releaseCurve_);
-            return sustainLevel_ * (1.0f - curved);
-        }
+        float curved = applyCurve(releasePhase_, releaseCurve_);
+        level_ = releaseStart_ * (1.0f - curved);
+        return level_;
+    }
 
     default:
         break;

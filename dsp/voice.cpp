@@ -15,6 +15,8 @@ void Voice::reset() {
         osc1Phase[i] = 0.0f;
         osc2Phase[i] = 0.0f;
     }
+    osc1State.reset();
+    osc2State.reset();
     filterState.lp = 0.0f;
     filterState.bp = 0.0f;
     filterState.hp = 0.0f;
@@ -25,6 +27,27 @@ void Voice::reset() {
     filterEnv.reset();
     pitchEnv.reset();
     realism.reset();
+    hasPending = false;
+    pendingReleased = false;
+    pendingSustained = false;
+    stealFadeRemaining = 0;
+    stealFadeTotal = 0;
+}
+
+void Voice::beginSteal(int note, float vel, int part, int mpeChannel, int fadeSamples) {
+    // If a fade is already running, keep its position and just replace the
+    // pending note so the gain ramp never jumps back up.
+    if (!hasPending) {
+        stealFadeTotal = std::max(1, fadeSamples);
+        stealFadeRemaining = stealFadeTotal;
+    }
+    hasPending = true;
+    pendingNote = note;
+    pendingVelocity = vel;
+    pendingPart = part;
+    pendingMpeChannel = mpeChannel;
+    pendingReleased = false;
+    pendingSustained = false;
 }
 
 void Voice::noteOn(int note, float vel) {
@@ -34,11 +57,15 @@ void Voice::noteOn(int note, float vel) {
     baseFreq = 440.0f * std::pow(2.0f, (note - 69) / 12.0f);
     active = true;
     sustained = false;
+    hasPending = false;
+    stealFadeRemaining = 0;
     noteAge = 0.0f;
     for (int i = 0; i < 8; i++) {
         osc1Phase[i] = 0.0f;
         osc2Phase[i] = 0.0f;
     }
+    osc1State.reset();
+    osc2State.reset();
     // Reset filter state to prevent DC thump / static when stealing voices
     filterState.lp = 0.0f;
     filterState.bp = 0.0f;

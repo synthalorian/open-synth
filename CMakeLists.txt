@@ -367,6 +367,24 @@ target_compile_definitions(fx_tests PRIVATE
     JUCE_USE_CURL=0
 )
 
+# ── DSP regression tests (envelopes, voice stealing, band-limiting) ──────────
+add_executable(dsp_polish_test
+    tests/dsp_polish_test.cpp
+    ${DSP_SOURCES}
+    src/instrument_realism.cpp
+)
+target_include_directories(dsp_polish_test PRIVATE src dsp include)
+target_link_libraries(dsp_polish_test PRIVATE
+    juce::juce_audio_basics
+    juce::juce_audio_formats
+    juce::juce_core
+    juce::juce_dsp
+)
+target_compile_definitions(dsp_polish_test PRIVATE
+    JUCE_WEB_BROWSER=0
+    JUCE_USE_CURL=0
+)
+
 # ── Engine Render Test (noise floor repro) ───────────────────────────────────
 add_executable(engine_render_test
     tests/engine_render_test.cpp
