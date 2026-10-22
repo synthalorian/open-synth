@@ -15,7 +15,10 @@
 #include <cmath>
 #include <complex>
 #include <cstdio>
+#include <filesystem>
+#include <string>
 #include <fstream>
+#include <limits>
 #include <vector>
 
 using namespace opensynth;
@@ -371,10 +374,10 @@ static void testEnvRange() {
     // Engine presets: files without filter_env_range load with the default.
     SynthEngine e(48000.0, 512);
     e.setFilterEnvRange(30.0f);
-    const char* path = "/tmp/osp_env_range_test.preset";
+    const std::string path = (std::filesystem::temp_directory_path() / "osp_env_range_test.preset").string();
     { std::ofstream f(path); f << "filter_env_amount=0.5\n"; }
-    e.loadPreset(path);
-    std::remove(path);
+    e.loadPreset(path.c_str());
+    std::remove(path.c_str());
     check(std::fabs(e.part(0).filter.envRangeSemitones() - 5.0f) < 1e-6f,
           "loading a preset without filter_env_range restores the 5-semitone default");
 }
@@ -392,6 +395,10 @@ static double bandDb(const std::vector<float>& y, double sr, double lo) {
     return 10 * std::log10(e + 1e-30);
 }
 
+// True bounds with presets applied as the plugin applies them (see PR text).
+static constexpr double kPresetWorstDb = 1.0;
+static constexpr int kPresetOver05Max = 31;
+
 static void testPresetImpact() {
     std::printf("\nFactory preset impact of the output-tap fix (48 kHz, 110 Hz saw, env 0)\n");
     const double sr = 48000.0;
@@ -406,8 +413,11 @@ static void testPresetImpact() {
         const int type = (p.filterType >= 0 && p.filterType <= 3) ? p.filterType : 0;
         const float cut = std::clamp(p.filterCutoff, 20.0f, 20000.0f);
         if (cut >= 10000.0f) ++cutHi;
-        const float res = std::clamp(p.filterResonance, 0.0f, 0.75f);
-        const float drv = std::clamp(p.filterDrive, 0.0f, 0.8f);
+        // As the plugin applies them: PresetData writes the unclamped value to
+        // the parameter (src/preset_data.cpp) and the processor pushes it to
+        // the filter, whose setters clamp to [0, 1].
+        const float res = std::clamp(p.filterResonance, 0.0f, 1.0f);
+        const float drv = std::clamp(p.filterDrive, 0.0f, 1.0f);
         OldFilter of; of.type = type; of.cutoff = cut; of.resonance = res; of.drive = drv;
         StateVariableFilter nf; nf.setType(type); nf.setCutoff(cut); nf.setResonance(res); nf.setDrive(drv);
         FilterState st;
@@ -422,7 +432,7 @@ static void testPresetImpact() {
         const double dFull = std::fabs(bandDb(yo, sr, 0) - bandDb(yn, sr, 0));
         const double d5 = bandDb(yo, sr, 5000) - bandDb(yn, sr, 5000);
         const double d10 = bandDb(yo, sr, 10000) - bandDb(yn, sr, 10000);
-        if (dFull > 0.5) ++full05;
+        if (dFull > 0.5) { ++full05; std::printf("    > 0.5 dB: %-28s cutoff %7.0f res %.2f drive %.2f  %.2f dB\n", p.name, cut, res, drv, dFull); }
         if (dFull > 1.0) ++full1;
         if (d5 > 3.0) ++hi5_3;
         if (d10 > 3.0) ++hi10_3;
@@ -436,7 +446,74 @@ static void testPresetImpact() {
                 full05, full1, worstFull, worstFullName);
     std::printf("  old louder by > 3 dB above 5 kHz: %d, above 10 kHz: %d; worst above 10 kHz %.1f dB (%s)\n",
                 hi5_3, hi10_3, worstHi, worstHiName);
-    check(total > 0, "preset impact measured");
+    check(total == 5600, "all 5600 factory presets measured");
+    check(worstFull < kPresetWorstDb, "no factory preset's overall level moves by kPresetWorstDb or more");
+    check(full05 <= kPresetOver05Max, "at most kPresetOver05Max presets move by more than 0.5 dB");
+}
+
+// Mip crossfade: sweeping the pitch finely across every level switch at a
+// fixed phase must not step the output, and the fade stays alias-free.
+static void testMipCrossfade() {
+    std::printf("\nWavetable mip crossfade\n");
+    const double sr = 48000.0;
+    WavetableOscillator w;
+    w.setWavetable(getBuiltinWavetable(30 % getBuiltinWavetableCount()));
+    float worst = 0.0f, worstHard = 0.0f;
+    const Wavetable* wt = getBuiltinWavetable(30 % getBuiltinWavetableCount());
+    for (float ph = 0.0f; ph < 1.0f; ph += 1.0f / 64) {
+        float prev = 0.0f, prevHard = 0.0f;
+        bool first = true;
+        for (double f = 400.0; f < 15000.0; f *= 1.0005) {
+            const float y = w.getSampleAtPhase(ph, f / sr);
+            const float* t = wt->tableForIncrement(f / sr);
+            const double idx = (double)ph * wt->sampleCount;
+            const int i0 = (int)idx % wt->sampleCount, i1 = (i0 + 1) % wt->sampleCount;
+            const float frac = (float)(idx - std::floor(idx));
+            const float yh = t[i0] + (t[i1] - t[i0]) * frac;
+            if (!first) { worst = std::max(worst, std::fabs(y - prev)); worstHard = std::max(worstHard, std::fabs(yh - prevHard)); }
+            prev = y; prevHard = yh; first = false;
+        }
+    }
+    std::printf("  max step per 0.05%% pitch change: hard switch %.3f, crossfade %.4f\n", worstHard, worst);
+    check(worst < 0.02f && worst * 5.0f < worstHard, "mip level switches are crossfaded (no step)");
+
+    // Alias residual with the fade active (pitch inside a fade region).
+    float worstAlias = -1000.0f;
+    for (double f : {1350.0, 2700.0, 5400.0, 10800.0}) {
+        std::vector<float> x(65536);
+        WavetableOscillator o; o.setWavetable(wt);
+        float ph = 0.0f;
+        for (auto& v : x) { v = o.getSampleAtPhase(ph, f / sr); ph += (float)(f / sr); ph -= std::floor(ph); }
+        worstAlias = std::max(worstAlias, (float)aliasDb(x, f, sr));
+    }
+    std::printf("  worst alias inside fade regions: %.1f dB\n", worstAlias);
+    check(worstAlias <= -85.0f, "crossfaded reads stay alias-free");
+}
+
+static void testFilterRobustness() {
+    std::printf("\nFilter setters and denormals\n");
+    StateVariableFilter f;
+    f.setCutoff(1000.0f);
+    f.setCutoff(std::nanf(""));
+    f.setResonance(0.5f);
+    f.setResonance(std::nanf(""));
+    f.setDrive(std::numeric_limits<float>::infinity());
+    FilterState st;
+    float acc = 0.0f;
+    for (int i = 0; i < 4800; ++i) acc += std::fabs(f.process(i == 0 ? 1.0f : 0.0f, 0.0f, 48000.0, 69, st));
+    check(std::isfinite(acc) && acc > 0.0f && std::fabs(std::exp2(st.cutoffLog2) - 1000.0f) < 0.5f,
+          "non-finite setter values are ignored (filter keeps its previous settings)");
+
+    StateVariableFilter g;
+    g.setCutoff(200.0f); g.setResonance(0.9f);
+    FilterState s2;
+    int sub = 0;
+    for (int i = 0; i < 48000 * 30; ++i) {
+        g.process(i == 0 ? 1.0f : 0.0f, 0.0f, 48000.0, 69, s2);
+        if (std::fpclassify(s2.lp) == FP_SUBNORMAL || std::fpclassify(s2.bp) == FP_SUBNORMAL) ++sub;
+    }
+    std::printf("  impulse + 30 s silence: %d subnormal state samples\n", sub);
+    check(sub == 0, "filter state never goes subnormal without FTZ");
 }
 
 int main() {
@@ -446,6 +523,8 @@ int main() {
     testCutoffCap();
     testEnvRange();
     testPresetImpact();
+    testMipCrossfade();
+    testFilterRobustness();
     std::printf("\n%d/%d checks passed\n", gChecks - gFailures, gChecks);
     return gFailures == 0 ? 0 : 1;
 }

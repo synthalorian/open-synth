@@ -87,6 +87,29 @@ const float* Wavetable::tableForIncrement(double cyclesPerSample) const {
     return mips[numMips - 1];
 }
 
+const float* Wavetable::tablesForIncrement(double cyclesPerSample, const float*& next, float& nextWeight) const {
+    next = nullptr;
+    nextWeight = 0.0f;
+    if (numMips <= 1) return samples;
+    const double inc = std::fabs(cyclesPerSample);
+    if (!(inc > 0.0)) return samples;
+    const double allowed = 0.5 / inc;
+    for (int level = 0; level < numMips; ++level) {
+        const int maxHarm = (sampleCount / 2) >> level;
+        if (maxHarm <= allowed) {
+            // allowed is in [maxHarm, 2*maxHarm); fade toward level+1 over
+            // [maxHarm, kMipFadeRatio*maxHarm] so the switch has no step.
+            const double fadeTop = kMipFadeRatio * maxHarm;
+            if (level + 1 < numMips && allowed < fadeTop && mips[level + 1] != mips[level]) {
+                next = mips[level + 1];
+                nextWeight = static_cast<float>((fadeTop - allowed) / (fadeTop - maxHarm));
+            }
+            return mips[level];
+        }
+    }
+    return mips[numMips - 1];
+}
+
 WavetableOscillator::WavetableOscillator() = default;
 WavetableOscillator::~WavetableOscillator() = default;
 
@@ -120,8 +143,12 @@ float WavetableOscillator::getSampleAtPhase(float phase, double cyclesPerSample)
     }
     float p = phase - std::floor(phase);
     if (!std::isfinite(p)) return 0.0f;
-    const float* table = wavetable_->tableForIncrement(cyclesPerSample);
-    float sample = interpolate(table, static_cast<double>(p) * wavetable_->sampleCount);
+    const float* next = nullptr;
+    float w = 0.0f;
+    const float* table = wavetable_->tablesForIncrement(cyclesPerSample, next, w);
+    const double index = static_cast<double>(p) * wavetable_->sampleCount;
+    float sample = interpolate(table, index);
+    if (next) sample += (interpolate(next, index) - sample) * w;
     if (!std::isfinite(sample)) return 0.0f;
     return sample;
 }
@@ -148,7 +175,10 @@ float WavetableOscillator::getSample(double frequency, double sampleRate) {
         return 0.0f;
     }
 
-    float sample = interpolate(wavetable_->tableForIncrement(frequency / sampleRate), phase_);
+    const float* next = nullptr;
+    float w = 0.0f;
+    float sample = interpolate(wavetable_->tablesForIncrement(frequency / sampleRate, next, w), phase_);
+    if (next) sample += (interpolate(next, phase_) - sample) * w;
 
     // NaN/inf guard on output
     if (!std::isfinite(sample)) {

@@ -27,6 +27,14 @@ struct Wavetable {
     // so every kept harmonic stays below Nyquist.
     const float* tableForIncrement(double cyclesPerSample) const;
 
+    // Like tableForIncrement, but over the top kMipFadeRatio of each level's
+    // pitch range it also returns the next (darker) level and a weight for it,
+    // rising from 0 to 1 as the pitch reaches the switch point. Both tables
+    // are alias-free, and the read is continuous across level switches.
+    // `next` is null and `nextWeight` 0 outside the fade region.
+    static constexpr double kMipFadeRatio = 1.3;
+    const float* tablesForIncrement(double cyclesPerSample, const float*& next, float& nextWeight) const;
+
     void freeMips() {
         for (int i = 1; i < numMips; ++i) {
             bool shared = false;

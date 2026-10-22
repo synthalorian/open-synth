@@ -9,26 +9,32 @@ void StateVariableFilter::setType(int type) {
 }
 
 void StateVariableFilter::setCutoff(float hz) {
+    if (!std::isfinite(hz)) return;  // keep the previous cutoff
     cutoff_ = std::clamp(hz, 20.0f, 20000.0f);
 }
 
 void StateVariableFilter::setResonance(float q) {
+    if (!std::isfinite(q)) return;
     resonance_ = std::clamp(q, 0.0f, 1.0f);
 }
 
 void StateVariableFilter::setEnvAmount(float amount) {
+    if (!std::isfinite(amount)) return;
     envAmount_ = std::clamp(amount, -1.0f, 1.0f);
 }
 
 void StateVariableFilter::setKeyTracking(float amount) {
+    if (!std::isfinite(amount)) return;
     keyTracking_ = std::clamp(amount, 0.0f, 1.0f);
 }
 
 void StateVariableFilter::setDrive(float amount) {
+    if (!std::isfinite(amount)) return;
     drive_ = std::clamp(amount, 0.0f, 1.0f);
 }
 
 void StateVariableFilter::setEnvRangeSemitones(float semis) {
+    if (!std::isfinite(semis)) return;
     envRangeSemis_ = std::clamp(semis, 0.0f, 96.0f);
 }
 
@@ -135,6 +141,14 @@ float StateVariableFilter::process(float input, float envMod, double sampleRate,
         state.bp = 0.0f;
         state.hp = 0.0f;
     }
+
+    // Flush subnormal state so a decaying tail does not hit the slow
+    // denormal path in hosts without FTZ (the plugin has ScopedNoDenormals;
+    // the engine and FFI hosts do not).
+    constexpr float kTiny = 1e-20f;
+    if (std::fabs(state.lp) < kTiny) state.lp = 0.0f;
+    if (std::fabs(state.bp) < kTiny) state.bp = 0.0f;
+    if (std::fabs(state.hp) < kTiny) state.hp = 0.0f;
 
     if (!std::isfinite(v1) || !std::isfinite(v2)) return 0.0f;
 
