@@ -95,6 +95,15 @@ jobs:
             ./build/Release/fx_tests.exe
           fi
 
+      - name: Run DSP regression tests
+        shell: bash
+        run: |
+          if [ -x ./build/dsp_polish_test ]; then
+            ./build/dsp_polish_test
+          else
+            ./build/Release/dsp_polish_test.exe
+          fi
+
       - name: Run user preset tests
         shell: bash
         run: |
