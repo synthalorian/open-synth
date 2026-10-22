@@ -57,7 +57,7 @@ Voice* VoiceAllocator::noteOn(int midiNote, float velocity, int partIndex, int m
     if (mpeChannel >= 0) {
         for (auto& v : voices_) {
             if (stealable(v) && v.midiNote == midiNote && v.mpe.mpeNoteChannel == mpeChannel) {
-                v.noteOn(midiNote, velocity);
+                v.retrigger(midiNote, velocity);
                 v.startOrder = ++noteCounter_;
                 v.partIndex = partIndex;
                 v.mpe.mpeNoteChannel = mpeChannel;
@@ -68,7 +68,7 @@ Voice* VoiceAllocator::noteOn(int midiNote, float velocity, int partIndex, int m
         // Check if note already active on this part — retrigger
         for (auto& v : voices_) {
             if (stealable(v) && v.midiNote == midiNote && v.partIndex == partIndex) {
-                v.noteOn(midiNote, velocity);
+                v.retrigger(midiNote, velocity);
                 v.startOrder = ++noteCounter_;
                 v.partIndex = partIndex;
                 return &v;

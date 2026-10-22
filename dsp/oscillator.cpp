@@ -121,6 +121,16 @@ inline float polyBlamp(float t, float dt) {
 
 inline float wrap01(float x) { return x - std::floor(x); }
 
+// Phase elapsed since an edge at `edge` (both in [0, 1)). Unlike
+// wrap01(phase + 1 - edge), this cannot round up to 1.0 when phase sits just
+// past the edge: t >= 0 exactly when phase >= edge, which matches the naive
+// waveform's own comparison, so the BLEP correction always has the right sign.
+inline float phaseSinceEdge(float phase, float edge) {
+    float t = phase - edge;
+    if (t < 0.0f) t += 1.0f;
+    return t;
+}
+
 } // namespace
 
 float Oscillator::voiceDetuneCents(int voiceIndex) const {
@@ -153,8 +163,9 @@ float Oscillator::phaseIncrement(float midiNoteFreq, int voiceIndex, double samp
 }
 
 float Oscillator::generateWaveform(float phase, float dt, float& brownState) const {
-    // Wrap phase to [0, 1)
+    // Wrap phase to [0, 1) (floor of a tiny negative can round to 1.0)
     phase = phase - std::floor(phase);
+    if (phase >= 1.0f) phase = 0.0f;
     // Band-limiting needs 0 < dt <= 0.5; dt = 0 disables it.
     dt = std::min(std::abs(dt), 0.5f);
 
@@ -169,7 +180,7 @@ float Oscillator::generateWaveform(float phase, float dt, float& brownState) con
         float v = phase < 0.5f ? 1.0f : -1.0f;
         if (dt > 0.0f) {
             v += polyBlep(phase, dt);
-            v -= polyBlep(wrap01(phase + 0.5f), dt);
+            v -= polyBlep(phaseSinceEdge(phase, 0.5f), dt);
         }
         return v;
     }
@@ -180,7 +191,7 @@ float Oscillator::generateWaveform(float phase, float dt, float& brownState) con
         float v = 4.0f * std::abs(phase - 0.5f) - 1.0f;
         if (dt > 0.0f) {
             v -= 8.0f * dt * polyBlamp(phase, dt);
-            v += 8.0f * dt * polyBlamp(wrap01(phase + 0.5f), dt);
+            v += 8.0f * dt * polyBlamp(phaseSinceEdge(phase, 0.5f), dt);
         }
         return v;
     }
@@ -224,7 +235,7 @@ float Oscillator::generateWaveform(float phase, float dt, float& brownState) con
         float v = phase < pulseWidth_ ? 1.0f : -1.0f;
         if (dt > 0.0f) {
             v += polyBlep(phase, dt);
-            v -= polyBlep(wrap01(phase + 1.0f - pulseWidth_), dt);
+            v -= polyBlep(phaseSinceEdge(phase, pulseWidth_), dt);
         }
         return v;
     }
@@ -295,7 +306,7 @@ float Oscillator::processVoice(float phase, float phaseInc, int voiceIndex, OscV
             subSample = subPhase < 0.5f ? 1.0f : -1.0f;
             if (subDt > 0.0f) {
                 subSample += polyBlep(subPhase, subDt);
-                subSample -= polyBlep(wrap01(subPhase + 0.5f), subDt);
+                subSample -= polyBlep(phaseSinceEdge(subPhase, 0.5f), subDt);
             }
         }
         state.subPhase = wrap01(subPhase + std::abs(phaseInc) * subDiv);

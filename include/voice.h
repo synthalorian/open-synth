@@ -74,6 +74,10 @@ struct Voice {
 
     void reset();
     void noteOn(int note, float vel);
+    // Re-strike a voice that is already sounding this note: envelopes
+    // continue from their current level and oscillator/filter state is kept,
+    // so there is no click. Falls back to noteOn() for an idle voice.
+    void retrigger(int note, float vel);
     void noteOff();
 };
 

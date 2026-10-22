@@ -1,5 +1,6 @@
 #include "envelope.h"
 #include <algorithm>
+#include <cmath>
 
 namespace opensynth {
 
@@ -30,6 +31,26 @@ void Envelope::noteOn() {
     }
     level_ = 0.0f;
     lastOut_ = 0.0f;
+    releaseAfterAttack_ = false;
+}
+
+void Envelope::retrigger() {
+    if (state_ == IDLE || lastOut_ <= 0.0f) {
+        noteOn();
+        return;
+    }
+    // Attack output is applyCurve(level_); invert it so the first attack
+    // sample continues from lastOut_.
+    const float out = std::clamp(lastOut_, 0.0f, 1.0f);
+    float lin = out;
+    switch (attackCurve_) {
+    case EnvCurve::EXPONENTIAL: lin = 1.0f - std::cbrt(1.0f - out); break;  // inverse of 1-(1-x)^3
+    case EnvCurve::LOGARITHMIC: lin = std::pow(out, 1.0f / 0.33f); break;   // inverse of x^0.33
+    case EnvCurve::LINEAR:
+    default: break;
+    }
+    level_ = std::clamp(lin, 0.0f, 1.0f);
+    state_ = ATTACK;
     releaseAfterAttack_ = false;
 }
 

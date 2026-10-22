@@ -78,6 +78,27 @@ void Voice::noteOn(int note, float vel) {
     realism.click.trigger(velocity, 15.0f, 48000.0);
 }
 
+void Voice::retrigger(int note, float vel) {
+    if (!active || !ampEnv.isActive()) {
+        noteOn(note, vel);
+        return;
+    }
+    midiNote = note;
+    velocity = std::clamp(vel, 0.0f, 1.0f);
+    baseFreq = 440.0f * std::pow(2.0f, (note - 69) / 12.0f);
+    sustained = false;
+    hasPending = false;
+    stealFadeRemaining = 0;
+    noteAge = 0.0f;
+    // Physical models are re-excited by the engine; clear the old delay line
+    // as noteOn() does so their behaviour is unchanged.
+    physicalModel.reset();
+    ampEnv.retrigger();
+    filterEnv.retrigger();
+    pitchEnv.retrigger();
+    realism.click.trigger(velocity, 15.0f, 48000.0);
+}
+
 void Voice::noteOff() {
     sustained = false;
     ampEnv.noteOff();

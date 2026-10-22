@@ -145,8 +145,8 @@ static void testAllocatorOldest() {
 
 // Renders an engine with 128 sustained sine voices; optionally steals one at
 // stealFrame. Returns the left channel.
-static std::vector<float> renderStealScene(bool doSteal, int fadeOverrideRate, int stealFrame, int frames) {
-    const double sr = 48000.0;
+static std::vector<float> renderStealScene(bool doSteal, int fadeOverrideRate, int stealFrame, int frames,
+                                           double sr = 48000.0) {
     const int block = 64;
     auto eng = std::make_unique<SynthEngine>(sr, block);
     eng->setMasterVolume(0.25f);  // keep the output soft clipper near-linear
@@ -198,19 +198,151 @@ static void testEngineStealFade() {
     std::printf("[voices] engine steal is click-free\n");
     const int stealFrame = 4800;
     const int frames = 9600;
-    auto ref = renderStealScene(false, 0, stealFrame, frames);
-    auto faded = renderStealScene(true, 0, stealFrame, frames);
-    auto hard = renderStealScene(true, 1, stealFrame, frames);  // 1-sample fade = old hard reset
-    // Steady-state step size of the stolen note's own waveform, for scale.
-    // Window: the 3 ms fade plus the new note's onset. Later, the 128-voice
-    // mix through the output soft clipper adds unrelated intermodulation.
-    const int window = 200;
-    float fadedKink = maxKinkAround(ref, faded, stealFrame - 4, stealFrame + window);
-    float hardKink = maxKinkAround(ref, hard, stealFrame - 4, stealFrame + window);
-    std::printf("        max discontinuity (2nd difference) of the stolen voice: hard reset %.5f,"
-                " 3 ms fade %.5f (%.1fx lower)\n", hardKink, fadedKink,
-                fadedKink > 0.0f ? hardKink / fadedKink : 0.0f);
-    check(hardKink > 0.0f && fadedKink < 0.1f * hardKink, "fade cuts the steal discontinuity by more than 10x");
+    for (double sr : {44100.0, 48000.0, 96000.0}) {
+        // The hard-reset step depends on where the old note's waveform is at
+        // the steal, so try several steal points and compare the worst cases.
+        auto ref = renderStealScene(false, 0, stealFrame, frames, sr);
+        const int window = static_cast<int>(200.0 * sr / 48000.0);
+        float fadedKink = 0.0f, hardKink = 0.0f;
+        for (int k = 0; k < 6; ++k) {
+            const int at = stealFrame + 64 * k;
+            auto faded = renderStealScene(true, 0, at, frames, sr);
+            auto hard = renderStealScene(true, 1, at, frames, sr);  // 1-sample fade = old hard reset
+            fadedKink = std::max(fadedKink, maxKinkAround(ref, faded, at - 4, at + window));
+            hardKink = std::max(hardKink, maxKinkAround(ref, hard, at - 4, at + window));
+        }
+        std::printf("        %.1f kHz: max discontinuity (2nd difference) of the stolen voice over 6 steal points:"
+                    " hard reset %.5f, 3 ms fade %.5f (%.1fx lower)\n", sr / 1000.0, hardKink, fadedKink,
+                    fadedKink > 0.0f ? hardKink / fadedKink : 0.0f);
+        char msg[128];
+        std::snprintf(msg, sizeof msg, "%.1f kHz: fade cuts the steal discontinuity by more than 10x", sr / 1000.0);
+        check(hardKink > 0.0f && fadedKink < 0.1f * hardKink, msg);
+
+        VoiceAllocator a;
+        a.setSampleRate(sr);
+        for (int n = 0; n < VoiceAllocator::MAX_VOICES; ++n) a.noteOn(n, 1.0f);
+        Voice* v = a.noteOn(60, 1.0f, 1);  // other part, so it steals
+        const int expect = static_cast<int>(std::lround(0.003 * sr));
+        std::snprintf(msg, sizeof msg, "%.1f kHz: steal fade is 3 ms (%d samples)", sr / 1000.0, expect);
+        check(v && std::abs(v->stealFadeTotal - expect) <= 1, msg);
+    }
+}
+
+// ── Retrigger ───────────────────────────────────────────────────────────────
+
+static void testRetrigger() {
+    std::printf("[envelope] retrigger of a held note continues from the current level\n");
+    const double sr = 48000.0;
+    const char* curveNames[] = {"linear", "exponential", "logarithmic"};
+    for (int curve = 0; curve < 3; ++curve) {
+        Envelope e;
+        e.setAttack(10.0f);
+        e.setDecay(50.0f);
+        e.setSustain(0.6f);
+        e.setRelease(100.0f);
+        e.setAttackCurve(curve);
+        e.noteOn();
+        float prev = 0.0f;
+        for (int i = 0; i < 9600; ++i) prev = e.process(sr);  // at sustain
+        e.retrigger();
+        float maxStep = 0.0f, peak = 0.0f;
+        for (int i = 0; i < 2400; ++i) {
+            float v = e.process(sr);
+            maxStep = std::max(maxStep, std::abs(v - prev));
+            peak = std::max(peak, v);
+            prev = v;
+        }
+        char msg[128];
+        std::snprintf(msg, sizeof msg, "%s attack: no step on retrigger (max step %.4f), re-attacks to 1.0",
+                      curveNames[curve], maxStep);
+        // A 10 ms attack moves at most ~1/480 per sample on the linear curve;
+        // the curved shapes are steeper at one end (exp: 3x at the start).
+        check(maxStep < 0.01f && peak > 0.999f, msg);
+    }
+
+    // Retrigger during release resumes the attack from the release level.
+    {
+        Envelope e;
+        e.setAttack(5.0f); e.setDecay(5.0f); e.setSustain(0.8f); e.setRelease(200.0f);
+        e.noteOn();
+        float prev = 0.0f;
+        for (int i = 0; i < 2400; ++i) prev = e.process(sr);
+        e.noteOff();
+        for (int i = 0; i < 2400; ++i) prev = e.process(sr);
+        e.retrigger();
+        float v = e.process(sr);
+        check(std::abs(v - prev) < 0.01f && prev > 0.1f, "retrigger during release continues from the release level");
+    }
+
+    // Through the allocator: same note on a sounding voice.
+    {
+        VoiceAllocator a;
+        a.setSampleRate(sr);
+        Voice* v = a.noteOn(60, 1.0f);
+        v->ampEnv.setAttack(5.0f); v->ampEnv.setDecay(20.0f); v->ampEnv.setSustain(0.6f);
+        float prev = 0.0f;
+        for (int i = 0; i < 4800; ++i) prev = v->ampEnv.process(sr);
+        v->osc1Phase[0] = 0.37f;
+        Voice* r = a.noteOn(60, 1.0f);
+        float next = r ? r->ampEnv.process(sr) : -1.0f;
+        std::printf("        allocator retrigger step: %.4f (was %.4f with a reset to 0)\n",
+                    std::abs(next - prev), prev);
+        check(r == v && std::abs(next - prev) < 0.01f, "allocator retrigger reuses the voice without an amplitude step");
+        check(r && r->osc1Phase[0] == 0.37f, "retrigger keeps the oscillator phase (no waveform jump)");
+    }
+}
+
+// ── Pulse edge rounding ─────────────────────────────────────────────────────
+
+static void testPulseEdgeRounding() {
+    std::printf("[osc] BLEP edges never overshoot when phase lands on the edge\n");
+    // Regression: wrap01(phase + 1 - pw) rounded to 1.0 just past the edge,
+    // giving a one-sample spike to |2.0| (seen at pw 0.02, 20 Hz).
+    const double sr = 48000.0;
+    float worst = 0.0f;
+    float worstPw = 0.0f, worstF = 0.0f;
+    const float freqs[] = {20.0f, 27.5f, 110.0f, 1000.0f};
+    for (int wf : {1, 5}) {  // square, pulse (Dart ids)
+        for (float pw = 0.01f; pw < 0.995f; pw += 0.01f) {
+            for (float f : freqs) {
+                Oscillator o;
+                o.setWaveform(wf);
+                o.setVolume(1.0f);
+                o.setPulseWidth(pw);
+                o.setSubOscMode(1);  // square sub, exercises its edge too
+                o.setSubOscVolume(0.5f);
+                OscVoiceState st;
+                const float inc = f / static_cast<float>(sr);
+                float phase = 0.0f;
+                for (int i = 0; i < 48000; ++i) {
+                    float v = std::abs(o.processVoice(phase, inc, 0, st));
+                    if (v > worst) { worst = v; worstPw = pw; worstF = f; }
+                    phase += inc;
+                    if (phase >= 1.0f) phase -= 1.0f;
+                }
+            }
+        }
+    }
+    std::printf("        peak |output| over square/pulse, pw 0.01-0.99, 20 Hz-1 kHz: %.4f (pw %.2f, %.1f Hz)\n",
+                worst, worstPw, worstF);
+    check(worst <= 1.05f, "no overshoot spikes (|out| <= 1.05)");
+
+    // The exact reported case, sample by sample around every edge.
+    Oscillator o;
+    o.setWaveform(5);
+    o.setVolume(1.0f);
+    o.setPulseWidth(0.02f);
+    OscVoiceState st;
+    const float inc = 20.0f / static_cast<float>(sr);
+    float phase = 0.0f, peak = 0.0f;
+    for (int i = 0; i < 48000 * 5; ++i) {
+        peak = std::max(peak, std::abs(o.processVoice(phase, inc, 0, st)));
+        phase += inc;
+        if (phase >= 1.0f) phase -= 1.0f;
+    }
+    char msg[96];
+    std::snprintf(msg, sizeof msg, "pulse pw 0.02 at 20 Hz: peak %.4f <= 1.0", peak);
+    check(peak <= 1.0f + 1e-6f, msg);
 }
 
 // ── Oscillator band-limiting ────────────────────────────────────────────────
@@ -308,7 +440,7 @@ static void testAliasing() {
         {"saw", 1, 0, 0.5f, 10.0},
         {"square", 2, 1, 0.5f, 10.0},
         {"pulse 30%", 5, 3, 0.3f, 10.0},
-        {"triangle", 3, 2, 0.5f, 3.0},
+        {"triangle", 3, 2, 0.5f, 4.0},  // measured 4.9 dB
     };
     for (const auto& c : cases) {
         double before = aliasDb(renderNaive(c.naive, f0, sr, n, c.pw), f0, sr);
@@ -424,6 +556,8 @@ int main() {
     testEnvelopeCurvedRelease();
     testAllocatorOldest();
     testEngineStealFade();
+    testRetrigger();
+    testPulseEdgeRounding();
     testAliasing();
     testSubOscillator();
     testBrownNoiseState();

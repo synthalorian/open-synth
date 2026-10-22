@@ -29,6 +29,10 @@ public:
 
     void reset();
     void noteOn();
+    // Legato-style retrigger of a sounding envelope: re-enters the attack
+    // from the current output level instead of 0 (no delay stage), so a
+    // repeated note does not click. Same as noteOn() when idle.
+    void retrigger();
     void noteOff();
     float process(double sampleRate);
 
