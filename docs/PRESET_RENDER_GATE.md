@@ -54,7 +54,9 @@ does without samples). That is deterministic, and the baseline is rendered this 
 The baseline stores the loaded zone count per preset. When a run loads a different
 number of zones than the baseline (e.g. tag builds, or a dev checkout with submodules),
 that preset's level is **not compared** and it is counted under "Level not compared"
-in the summary; the silent/NaN/clip checks still apply.
+in the summary; the silent/NaN/clip checks still apply. Without `--require-samples`,
+this is an environment mismatch and does not fail the gate. With `--require-samples`,
+any zone-count mismatch fails the preset instead.
 
 ## Regenerating the baseline
 
@@ -76,8 +78,12 @@ merges.
 
 Tag builds fetch every sample submodule, so they run the gate with
 `--require-samples --baseline tests/baselines/preset_levels_samples.tsv`.
-`--require-samples` fails any sampled preset that loads 0 sample zones, and the
-second baseline (rendered with all 1370 sampled presets loading their samples)
+`--require-samples` fails any sampled preset that loads 0 sample zones, and any
+preset whose loaded zone count differs from its baseline. The summary reports
+zone-count failures separately, excluding sampled presets with 0 zones because
+they are already counted by the missing-samples check. Each adds a failure reason
+and causes exit 1. Level checks remain skipped for mismatched zone counts.
+The second baseline (rendered with all 1370 sampled presets loading their samples)
 keeps their levels under the same 1 dB check. Regenerate it intentionally with:
 
     git submodule update --init --recursive

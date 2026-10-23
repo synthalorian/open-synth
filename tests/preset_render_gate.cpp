@@ -243,7 +243,8 @@ int usage()
     std::fprintf(stderr,
         "usage: preset_render_gate [--baseline FILE] [--summary FILE] [--results FILE]\n"
         "                          [--clip-peak X] [--silence-peak X] [--tolerance-db X]\n"
-        "                          [--update-baseline] [--require-samples]\n");
+        "                          [--update-baseline] [--require-samples]\n"
+        "  --require-samples  Fail sampled presets with 0 zones and any baseline zone-count mismatch.\n");
     return 2;
 }
 
@@ -288,7 +289,7 @@ int main(int argc, char** argv)
     const double seconds = std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count();
 
     int nSilent = 0, nNonFinite = 0, nClip = 0, nLevel = 0, nMissing = 0, nEnvMismatch = 0;
-    int nWantSamples = 0, nWithSamples = 0, nNoSamples = 0;
+    int nWantSamples = 0, nWithSamples = 0, nNoSamples = 0, nZoneMismatch = 0;
     for (auto& r : results) {
         if (r.wantsSamples) { ++nWantSamples; if (r.zones > 0) ++nWithSamples; }
         if (opt.requireSamples && r.wantsSamples && r.zones == 0) {
@@ -312,8 +313,15 @@ int main(int argc, char** argv)
             ++nMissing;
         } else if (it->second.zones != r.zones) {
             // Different sample library than the baseline was rendered with:
-            // the level is not comparable, so it is reported but not gated.
+            // the level is not comparable. Gate the mismatch only when samples
+            // are required; zero-zone sampled presets already fail above.
             ++nEnvMismatch;
+            if (opt.requireSamples && !(r.wantsSamples && r.zones == 0)) {
+                r.reasons.push_back("sample zone count " + std::to_string(r.zones)
+                                    + " != baseline " + std::to_string(it->second.zones)
+                                    + " (--require-samples)");
+                ++nZoneMismatch;
+            }
         } else {
             r.levelChecked = true;
             const bool bothSilent = r.rmsDb <= -120.0 && it->second.rmsDb <= -120.0;
@@ -369,13 +377,16 @@ int main(int argc, char** argv)
       << "| NaN/Inf | " << nNonFinite << " |\n"
       << "| Clipping (peak > " << fmt("%g", opt.clipPeak) << ") | " << nClip << " |\n";
     if (opt.requireSamples)
-        s << "| Sampled preset with 0 zones (--require-samples) | " << nNoSamples << " |\n";
+        s << "| Sampled preset with 0 zones (--require-samples) | " << nNoSamples << " |\n"
+          << "| Sample zone count differs from baseline (--require-samples; excludes sampled presets with 0 zones) | "
+          << nZoneMismatch << " |\n";
     if (!opt.updateBaseline)
         s << "| RMS moved > " << fmt("%g", opt.toleranceDb) << " dB | " << nLevel << " |\n"
           << "| Missing from baseline | " << nMissing << " |\n"
           << "| Stale baseline ids (no such preset) | " << stale.size() << " |\n"
           << "| Level compared against baseline | " << (results.size() - nMissing - nEnvMismatch) << " |\n"
-          << "| Level NOT compared — skipped, sample zones differ from baseline (not a failure) | "
+          << "| Level NOT compared — skipped, sample zones differ from baseline ("
+          << (opt.requireSamples ? "failure with --require-samples" : "not a failure") << ") | "
           << nEnvMismatch << " |\n";
     s << "| **Failing presets** | **" << failing.size() << "** |\n\n"
       << "Sampled presets: " << nWantSamples << ", rendered with their sample library: " << nWithSamples
