@@ -1,6 +1,7 @@
 #include "preset_data.h"
 #include "synth_engine_wrapper.h"
 #include "synth_engine.h"
+#include "sample_player.h"
 #include <juce_core/juce_core.h>
 
 namespace opensynth {
@@ -142,6 +143,58 @@ juce::File getSampleManifestPath(const char* id)
     if (manifest.existsAsFile()) return manifest;
 
     return exeDir.getChildFile("samples/manifests").getChildFile(fileName);
+}
+
+// Legacy single-sample fallback when a preset has no loadable manifest.
+static void loadSampleForPreset(const PresetData& p, SamplePlayer& player)
+{
+    // Use the preset's sampleManifestId if available
+    if (p.sampleManifestId[0] != '\0') {
+        juce::File manifestFile = getSampleManifestPath(p.sampleManifestId);
+        if (manifestFile.existsAsFile()) {
+            player.clear();
+            if (player.loadMultiSample(manifestFile.getFullPathName().toStdString())) {
+                return;
+            }
+        }
+    }
+
+    // Fallback: try legacy path samples/<category>/<name>.wav
+    juce::File sampleDir = juce::File::getSpecialLocation(juce::File::currentExecutableFile)
+                               .getParentDirectory()
+                               .getChildFile("samples")
+                               .getChildFile(p.category);
+    juce::String safeName = juce::String(p.name).replaceCharacter(' ', '_');
+    juce::File sampleFile = sampleDir.getChildFile(safeName + ".wav");
+
+    if (sampleFile.existsAsFile()) {
+        player.clear();
+        player.loadSample(sampleFile.getFullPathName().toStdString(), 60, 0, 127);
+    }
+}
+
+void configureSamplePlayerForPreset(const PresetData& p, SynthEngineWrapper& synth)
+{
+    auto* engine = synth.getEngine();
+    if (!engine) return;
+
+    // If sampleMix > 0, we need a sample player
+    if (p.sampleMix > 0.0f) {
+        if (!engine->getSamplePlayer()) {
+            auto sp = std::make_unique<SamplePlayer>();
+            sp->prepare(engine->getSampleRate());
+            engine->setSamplePlayer(std::move(sp));
+        }
+        engine->getSamplePlayer()->setMixLevel(p.sampleMix);
+        // Try to load a matching sample from the factory library
+        loadSampleForPreset(p, *engine->getSamplePlayer());
+    } else {
+        // Disable sample player for pure synth presets
+        if (engine->getSamplePlayer()) {
+            engine->getSamplePlayer()->setMixLevel(0.0f);
+            engine->getSamplePlayer()->clear();
+        }
+    }
 }
 
 void applyPresetToAPVTS(const PresetData& p, juce::AudioProcessorValueTreeState& apvts)

@@ -672,8 +672,6 @@ private:
     void loadFavoritePreset(int index);
     void loadPresetByIndex(int index);
     void loadPresetByID(const juce::String& id);
-    void configureSamplePlayerForPreset(const PresetData& p);
-    void loadSampleForPreset(const PresetData& p, SamplePlayer& player);
     void saveCurrentPreset();
     void showUndoFeedback(const juce::String& text);
 
