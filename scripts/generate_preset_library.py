@@ -18,21 +18,28 @@ OUTPUT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))
 random.seed(42)
 
 # ── Waveform constants ───────────────────────────────────────────────────────
+# Values are the osc waveform ids the engine expects (Oscillator::setWaveform /
+# dartToInternal in dsp/oscillator.cpp): 0 sine, 1 saw, 2 square, 3 triangle,
+# 4 noise, 5 pulse, 6-17 wavetables, 18-23 physical models.
 SINE = 0
-TRIANGLE = 1
-SAW = 2
-SQUARE = 3
-PULSE = 4
-NOISE = 5
+SAW = 1
+SQUARE = 2
+TRIANGLE = 3
+NOISE = 4
+PULSE = 5
+# TODO: SUB, FM and WAVETABLE have no matching engine waveform id (sub osc and FM
+# are separate preset fields; wavetables are per instrument, ids 6-17). They keep
+# their old values, which the engine renders as WT_PIANO (6), WT_GUITAR (7) and
+# WT_CHOIR (8). Choosing the right ids needs a sound-design decision.
 SUB = 6
 FM = 7
 WAVETABLE = 8
-PM_KARPLUS = 9
-PM_KARPLUS_BRIGHT = 10
-PM_KARPLUS_BASS = 11
-PM_MODAL_MALLET = 12
-PM_MODAL_VIBRAPHONE = 13
-PM_MODAL_STEEL = 14
+PM_KARPLUS = 18
+PM_KARPLUS_BRIGHT = 19
+PM_KARPLUS_BASS = 20
+PM_MODAL_MALLET = 21
+PM_MODAL_VIBRAPHONE = 22
+PM_MODAL_STEEL = 23
 
 # ── Category synthesis profiles ──────────────────────────────────────────────
 # Each category defines a complete sonic signature.
