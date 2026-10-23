@@ -157,11 +157,13 @@ void SynthEngineWrapper::setOsc1Waveform(int w) { if (engine_) engine_->setOsc1W
 void SynthEngineWrapper::setOsc1Octave(int oct) { if (engine_) engine_->setOsc1Octave(oct); }
 void SynthEngineWrapper::setOsc1Detune(float cents) { if (engine_) engine_->setOsc1Detune(cents); }
 void SynthEngineWrapper::setOsc1Volume(float vol) { if (engine_) engine_->setOsc1Volume(vol); }
+void SynthEngineWrapper::setOsc1PulseWidth(float pw) { if (engine_) engine_->setOsc1PulseWidth(pw); }
 
 void SynthEngineWrapper::setOsc2Waveform(int w) { if (engine_) engine_->setOsc2Waveform(w); }
 void SynthEngineWrapper::setOsc2Octave(int oct) { if (engine_) engine_->setOsc2Octave(oct); }
 void SynthEngineWrapper::setOsc2Detune(float cents) { if (engine_) engine_->setOsc2Detune(cents); }
 void SynthEngineWrapper::setOsc2Volume(float vol) { if (engine_) engine_->setOsc2Volume(vol); }
+void SynthEngineWrapper::setOsc2PulseWidth(float pw) { if (engine_) engine_->setOsc2PulseWidth(pw); }
 void SynthEngineWrapper::setOscMix(float mix) { if (engine_) engine_->setOscMix(mix); }
 
 void SynthEngineWrapper::setFilterCutoff(float hz) { if (engine_) engine_->setFilterCutoff(hz); }

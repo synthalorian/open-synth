@@ -18,12 +18,14 @@ void applyPresetToEngine(const PresetData& p, SynthEngineWrapper& e)
     e.setOsc1Octave(p.osc1Octave);
     e.setOsc1Detune(p.osc1Detune);
     e.setOsc1Volume(clamp(p.osc1Volume, 0.0f, 1.0f));
+    e.setOsc1PulseWidth(clamp(p.osc1PulseWidth, 0.05f, 0.95f));
 
     // Osc 2
     e.setOsc2Waveform(p.osc2Waveform);
     e.setOsc2Octave(p.osc2Octave);
     e.setOsc2Detune(p.osc2Detune);
     e.setOsc2Volume(clamp(p.osc2Volume, 0.0f, 1.0f));
+    e.setOsc2PulseWidth(clamp(p.osc2PulseWidth, 0.05f, 0.95f));
     e.setOscMix(clamp(p.oscMix, 0.0f, 1.0f));
 
     // Filter — clamp resonance to prevent ear-bleed
@@ -163,11 +165,13 @@ void applyPresetToAPVTS(const PresetData& p, juce::AudioProcessorValueTreeState&
     setInt("osc1Octave", p.osc1Octave);
     setFloat("osc1Detune", p.osc1Detune);
     setFloat("osc1Volume", p.osc1Volume);
+    setFloat("osc1PulseWidth", p.osc1PulseWidth);
 
     setInt("osc2Waveform", p.osc2Waveform);
     setInt("osc2Octave", p.osc2Octave);
     setFloat("osc2Detune", p.osc2Detune);
     setFloat("osc2Volume", p.osc2Volume);
+    setFloat("osc2PulseWidth", p.osc2PulseWidth);
     setFloat("oscMix", p.oscMix);
 
     setFloat("filterCutoff", p.filterCutoff);

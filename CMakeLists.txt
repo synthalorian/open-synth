@@ -474,3 +474,17 @@ target_compile_definitions(demo_render PRIVATE
     JUCE_USE_CURL=0
     JUCE_USE_FLAC=1
 )
+
+# Pulse-width integration and spectral regression tests.
+add_executable(pulse_width_test tests/pulse_width_test.cpp)
+target_include_directories(pulse_width_test PRIVATE src dsp include)
+target_link_libraries(pulse_width_test PRIVATE
+    OpenSynth juce::juce_gui_basics juce::juce_audio_processors)
+target_compile_definitions(pulse_width_test PRIVATE JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0)
+
+enable_testing()
+foreach(test_target IN ITEMS fx_tests dsp_polish_test preset_browser_test user_preset_test pulse_width_test)
+    add_test(NAME ${test_target} COMMAND ${test_target})
+    set_tests_properties(${test_target} PROPERTIES
+        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}" TIMEOUT 180)
+endforeach()
