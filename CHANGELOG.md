@@ -4,6 +4,30 @@ All notable changes to Open Synth are documented here.
 
 ## [Unreleased]
 
+## [2.3.0] — 2026-10-23
+
+### Added
+- **Per-oscillator pulse width** (#14): new automatable parameters `osc1PulseWidth` and `osc2PulseWidth` (0.05–0.95, default 0.5), with a PW knob in each oscillator panel that is enabled when the waveform is Pulse. The new parameters are appended to the end of the parameter layout, so existing host parameter indices do not change. User presets, plugin state and engine presets store the value; presets saved without it load at 0.5, which sounds the same as before.
+- **Preset render gate in CI** (#13): `preset_render_gate` renders all 5,600 factory presets on Linux, Windows and macOS and fails on silence, NaN/Inf, clipping, or an RMS change of more than 1 dB against `tests/baselines/preset_levels.tsv`. Release tag builds also fetch the sample libraries, run with `--require-samples` and compare against `tests/baselines/preset_levels_samples.tsv`. See `docs/PRESET_RENDER_GATE.md`.
+- `pulse_width_test`, and the existing test executables are now registered with CTest.
+
+### Fixed
+- **Clicks** (#11): note-off now releases from the envelope's current level, a stolen voice fades out over 3 ms before the new note starts, oldest-note stealing picks the voice that actually started first, and retriggering a note that is still sounding no longer restarts it from zero. Velocity changes on retrigger are ramped.
+- **Aliasing** (#11): saw, square and pulse use PolyBLEP and triangle uses PolyBLAMP, which cuts alias energy by roughly 12 dB on saw, square and pulse at high pitches. A one-sample spike at narrow pulse widths is gone, the square sub-oscillator modes are now true bipolar waves (they used to produce DC), and brown-noise state is per voice.
+- **Waveform menu** (#14): the oscillator waveform menu now lists all 24 waveforms in parameter order. Before, choosing "Pulse" selected Noise.
+- **PWM Lead presets** (#15): juno-2575 PWM Lead, juno-2576 PWM Lead Bright and juno-2577 PWM Lead Dark played noise instead of a pulse wave. They now use the pulse wave, so they sound different from 2.2.0. The waveform mapping comment in `preset_data.h` now matches the engine.
+
+### Known limitations
+- The pulse-width knobs are not in the oscillator parameter groups, so hosts list them separately from the other oscillator controls.
+- There is no pulse-width modulation: pulse width cannot be an LFO or envelope destination yet.
+- The macOS Audio Unit has not been tested in a host.
+- The sample-level preset baseline (`preset_levels_samples.tsv`) was rendered on Linux only.
+- Other PWM Lead presets (juno-2578 to juno-2583) still play noise instead of a pulse wave.
+- The preset library generator script uses waveform numbers that do not match the engine, so several generated factory presets use a different waveform than their names suggest.
+
+### Downloads are unsigned
+Windows SmartScreen: click **More info**, then **Run anyway**. macOS Gatekeeper: right-click the .pkg and choose **Open**, or run `xattr -dr com.apple.quarantine` on the installed bundles. See the README for details. Check downloads with `sha256sum -c SHA256SUMS --ignore-missing`.
+
 ## [2.2.0] — 2026-10-12
 
 ### Fixed
