@@ -34,12 +34,16 @@ PULSE = 5
 SUB = 6
 FM = 7
 WAVETABLE = 8
-PM_KARPLUS = 18
-PM_KARPLUS_BRIGHT = 19
-PM_KARPLUS_BASS = 20
-PM_MODAL_MALLET = 21
-PM_MODAL_VIBRAPHONE = 22
-PM_MODAL_STEEL = 23
+# TODO: the PM_* names correspond to engine ids 18-23, but the old values 9-14
+# are kept (they render as WT_BRASS..WT_SYNTH_BASS). Switching to 18-23 makes
+# ~58 factory presets (Celesta, Music Box, guitars...) render near-silent in the
+# offline render gate, so that change needs its own investigation.
+PM_KARPLUS = 9
+PM_KARPLUS_BRIGHT = 10
+PM_KARPLUS_BASS = 11
+PM_MODAL_MALLET = 12
+PM_MODAL_VIBRAPHONE = 13
+PM_MODAL_STEEL = 14
 
 # ── Category synthesis profiles ──────────────────────────────────────────────
 # Each category defines a complete sonic signature.
