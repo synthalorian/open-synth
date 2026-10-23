@@ -350,6 +350,10 @@ void SynthEngine::process(AudioBuffer& output) {
     float lfo2Val = parts_[0].lfo2.process();
 
     for (uint32_t frame = 0; frame < numFrames; frame++) {
+        for (auto& part : parts_) {
+            part.osc1.advancePulseWidth(sampleRate_);
+            part.osc2.advancePulseWidth(sampleRate_);
+        }
         float leftOut = 0.0f;
         float rightOut = 0.0f;
 
@@ -1235,6 +1239,10 @@ int SynthEngine::loadPreset(const char* path) {
     std::ifstream file(path);
     if (!file.is_open()) return -1;
     // Simple preset loading — parse key=value pairs
+    // Keys added after the format shipped: older files lack them, so reset
+    // to the default first (a missing pulse width loads as 0.5).
+    setOsc1PulseWidth(0.5f);
+    setOsc2PulseWidth(0.5f);
     std::string line;
     while (std::getline(file, line)) {
         // Preset format: param_name=value
@@ -1280,6 +1288,8 @@ int SynthEngine::loadPreset(const char* path) {
             // skip invalid lines
         }
     }
+    parts_[0].osc1.reset();
+    parts_[0].osc2.reset();
     return 0;
 }
 

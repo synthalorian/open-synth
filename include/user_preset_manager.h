@@ -47,6 +47,7 @@ public:
     static int applyParameters(const juce::var& values,
                                const juce::Array<juce::AudioProcessorParameter*>& params);
     static juce::String getParameterKey(const juce::AudioProcessorParameter& param);
+    static bool resetsToDefaultWhenMissing(const juce::String& paramID);
 
     // Get user presets directory
     static juce::File getPresetsDirectory();
