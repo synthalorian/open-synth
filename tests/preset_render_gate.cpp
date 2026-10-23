@@ -8,6 +8,7 @@
 //                      [--results <all-presets.tsv>]
 //                      [--clip-peak 1.0] [--silence-peak 0.0001]
 //                      [--tolerance-db 1.0] [--update-baseline]
+//                      [--require-samples]
 //
 // See docs/PRESET_RENDER_GATE.md for the render protocol and how to
 // regenerate the baseline (scripts/update_preset_baseline.sh).
@@ -53,6 +54,7 @@ struct Options {
     double silencePeak   = 1e-4;
     double toleranceDb   = 1.0;
     bool updateBaseline  = false;
+    bool requireSamples  = false;
 };
 
 struct BaselineEntry {
@@ -225,12 +227,23 @@ void writeTable(std::ostream& o, const std::vector<Result>& results, bool withSt
     }
 }
 
+bool parsePositive(const std::string& flag, const char* text, double& out)
+{
+    double v = 0.0;
+    if (!parseDouble(text, v) || v <= 0.0) {
+        std::fprintf(stderr, "error: %s must be a finite number > 0 (got '%s')\n", flag.c_str(), text);
+        return false;
+    }
+    out = v;
+    return true;
+}
+
 int usage()
 {
     std::fprintf(stderr,
         "usage: preset_render_gate [--baseline FILE] [--summary FILE] [--results FILE]\n"
         "                          [--clip-peak X] [--silence-peak X] [--tolerance-db X]\n"
-        "                          [--update-baseline]\n");
+        "                          [--update-baseline] [--require-samples]\n");
     return 2;
 }
 
@@ -244,12 +257,13 @@ int main(int argc, char** argv)
         auto next = [&]() -> const char* { return i + 1 < argc ? argv[++i] : nullptr; };
         const char* v = nullptr;
         if (a == "--update-baseline") opt.updateBaseline = true;
+        else if (a == "--require-samples") opt.requireSamples = true;
         else if (a == "--baseline" && (v = next())) opt.baseline = v;
         else if (a == "--summary" && (v = next())) opt.summary = v;
         else if (a == "--results" && (v = next())) opt.results = v;
-        else if (a == "--clip-peak" && (v = next())) opt.clipPeak = std::atof(v);
-        else if (a == "--silence-peak" && (v = next())) opt.silencePeak = std::atof(v);
-        else if (a == "--tolerance-db" && (v = next())) opt.toleranceDb = std::atof(v);
+        else if (a == "--clip-peak" && (v = next())) { if (!parsePositive(a, v, opt.clipPeak)) return 2; }
+        else if (a == "--silence-peak" && (v = next())) { if (!parsePositive(a, v, opt.silencePeak)) return 2; }
+        else if (a == "--tolerance-db" && (v = next())) { if (!parsePositive(a, v, opt.toleranceDb)) return 2; }
         else return usage();
     }
 
@@ -274,9 +288,13 @@ int main(int argc, char** argv)
     const double seconds = std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count();
 
     int nSilent = 0, nNonFinite = 0, nClip = 0, nLevel = 0, nMissing = 0, nEnvMismatch = 0;
-    int nWantSamples = 0, nWithSamples = 0;
+    int nWantSamples = 0, nWithSamples = 0, nNoSamples = 0;
     for (auto& r : results) {
         if (r.wantsSamples) { ++nWantSamples; if (r.zones > 0) ++nWithSamples; }
+        if (opt.requireSamples && r.wantsSamples && r.zones == 0) {
+            r.reasons.push_back("sampled preset loaded 0 sample zones (--require-samples)");
+            ++nNoSamples;
+        }
         if (r.nonFinite) { r.reasons.push_back("NaN/Inf in output"); ++nNonFinite; }
         if (r.peak < opt.silencePeak) {
             r.reasons.push_back("silent (peak " + fmt("%.1f", r.peakDb) + " dBFS)");
@@ -308,6 +326,15 @@ int main(int argc, char** argv)
         }
     }
 
+    // Baseline ids that no longer correspond to a factory preset.
+    std::vector<std::string> stale;
+    if (!opt.updateBaseline) {
+        std::map<std::string, bool> seen;
+        for (const auto& r : results) seen[r.preset->id] = true;
+        for (const auto& [id, e] : baseline)
+            if (!seen.count(id)) stale.push_back(id);
+    }
+
     std::vector<const Result*> failing;
     for (const auto& r : results)
         if (!r.reasons.empty()) failing.push_back(&r);
@@ -320,11 +347,15 @@ int main(int argc, char** argv)
                "# Protocol: 48 kHz, 512-frame blocks, notes 60/64/67 vel 100, 0.5 s hold + 0.25 s tail,\n"
                "# output limiter bypassed, srand(1). zones = sample zones loaded (0 = no sample library).\n";
         writeTable(out, results, false);
+        out.flush();
+        if (!out) { std::fprintf(stderr, "error: failed writing %s\n", opt.baseline.c_str()); return 2; }
     }
 
     if (!opt.results.empty()) {
         std::ofstream out(opt.results, std::ios::binary);
         writeTable(out, results, true);
+        out.flush();
+        if (!out) { std::fprintf(stderr, "error: failed writing results %s\n", opt.results.c_str()); return 2; }
     }
 
     // ── Summary ──
@@ -337,9 +368,12 @@ int main(int argc, char** argv)
       << "| Silent (peak < " << fmt("%g", opt.silencePeak) << ") | " << nSilent << " |\n"
       << "| NaN/Inf | " << nNonFinite << " |\n"
       << "| Clipping (peak > " << fmt("%g", opt.clipPeak) << ") | " << nClip << " |\n";
+    if (opt.requireSamples)
+        s << "| Sampled preset with 0 zones (--require-samples) | " << nNoSamples << " |\n";
     if (!opt.updateBaseline)
         s << "| RMS moved > " << fmt("%g", opt.toleranceDb) << " dB | " << nLevel << " |\n"
           << "| Missing from baseline | " << nMissing << " |\n"
+          << "| Stale baseline ids (no such preset) | " << stale.size() << " |\n"
           << "| Level compared against baseline | " << (results.size() - nMissing - nEnvMismatch) << " |\n"
           << "| Level NOT compared — skipped, sample zones differ from baseline (not a failure) | "
           << nEnvMismatch << " |\n";
@@ -347,6 +381,12 @@ int main(int argc, char** argv)
       << "Sampled presets: " << nWantSamples << ", rendered with their sample library: " << nWithSamples
       << ", without (synth layer only): " << (nWantSamples - nWithSamples) << "\n\n"
       << "Render time: " << fmt("%.1f", seconds) << " s\n\n";
+    if (!stale.empty()) {
+        s << "## Stale baseline ids\n\nThese ids are in the baseline but are not factory presets; "
+             "regenerate the baseline.\n\n";
+        for (const auto& id : stale) s << "- " << id << "\n";
+        s << "\n";
+    }
     if (!failing.empty()) {
         s << "## Failing presets\n\n| # | id | name | category | rms dBFS | peak dBFS | reasons |\n|---|---|---|---|---|---|---|\n";
         for (const auto* r : failing) {
@@ -359,6 +399,8 @@ int main(int argc, char** argv)
     if (!opt.summary.empty()) {
         std::ofstream out(opt.summary, std::ios::binary);
         out << s.str();
+        out.flush();
+        if (!out) { std::fprintf(stderr, "error: failed writing summary %s\n", opt.summary.c_str()); return 2; }
     }
     std::fputs(s.str().c_str(), stdout);
 
@@ -371,9 +413,12 @@ int main(int argc, char** argv)
                         failing.size());
         return failing.empty() ? 0 : 1;
     }
-    std::printf("\n%s: %zu failing preset(s)", failing.empty() ? "PASS" : "FAIL", failing.size());
+    const bool ok = failing.empty() && stale.empty();
+    for (const auto& id : stale) std::fprintf(stderr, "error: stale baseline id '%s'\n", id.c_str());
+    std::printf("\n%s: %zu failing preset(s), %zu stale baseline id(s)", ok ? "PASS" : "FAIL",
+                failing.size(), stale.size());
     if (nEnvMismatch > 0)
         std::printf(", %d preset(s) level-skipped (sample zones differ from baseline)", nEnvMismatch);
     std::printf("\n");
-    return failing.empty() ? 0 : 1;
+    return ok ? 0 : 1;
 }

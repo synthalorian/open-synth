@@ -71,3 +71,23 @@ checked out, so the baseline matches CI.
 
 PR #12 (filter output change) will most likely need a baseline regeneration after it
 merges.
+
+## Tag builds: with-samples baseline and `--require-samples`
+
+Tag builds fetch every sample submodule, so they run the gate with
+`--require-samples --baseline tests/baselines/preset_levels_samples.tsv`.
+`--require-samples` fails any sampled preset that loads 0 sample zones, and the
+second baseline (rendered with all 1370 sampled presets loading their samples)
+keeps their levels under the same 1 dB check. Regenerate it intentionally with:
+
+    git submodule update --init --recursive
+    scripts/update_preset_baseline.sh --with-samples
+    git submodule deinit -f samples/*   # before regenerating the default baseline
+
+After a DSP change such as PR #12, regenerate **both** baselines.
+
+## Other validation
+
+- `--tolerance-db`, `--clip-peak` and `--silence-peak` must be finite and > 0 (exit 2 otherwise).
+- Baseline ids that are no longer factory presets ("stale") are listed in the summary and fail the gate.
+- Failure to write the baseline, `--results` or `--summary` file exits 2.

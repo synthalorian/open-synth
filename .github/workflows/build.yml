@@ -120,6 +120,11 @@ jobs:
         shell: bash
         run: |
           args="--summary build/preset_render_gate_summary.md --results build/preset_render_gate_results.tsv"
+          # Tag builds fetch the sample libraries: gate against the with-samples
+          # baseline and fail any sampled preset that loads no sample zones.
+          if [[ "$GITHUB_REF" == refs/tags/* ]]; then
+            args="$args --require-samples --baseline tests/baselines/preset_levels_samples.tsv"
+          fi
           rc=0
           if [ -x ./build/preset_render_gate ]; then
             ./build/preset_render_gate $args || rc=$?
@@ -288,6 +293,8 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           path: dist
+          # Release packages only; excludes the preset-render-gate-* reports.
+          pattern: open-synth-*
           merge-multiple: true
       - name: Checksums
         run: |
