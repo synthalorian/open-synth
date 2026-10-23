@@ -180,9 +180,11 @@ juce::AudioProcessorValueTreeState::ParameterLayout OpenSynthProcessor::createPa
         layout.add(std::move(mpeGroup));
     }
 
-    // Append new parameters to preserve existing host parameter indices.
-    layout.add(std::make_unique<juce::AudioParameterFloat>("osc1PulseWidth", "Pulse Width", juce::NormalisableRange<float>(0.05f, 0.95f, 0.01f), 0.5f));
-    layout.add(std::make_unique<juce::AudioParameterFloat>("osc2PulseWidth", "Pulse Width", juce::NormalisableRange<float>(0.05f, 0.95f, 0.01f), 0.5f));
+    // Appended at the end (not in the osc groups) so flattened parameter indices
+    // of existing params stay unchanged for index-based hosts; version hint 2
+    // keeps AU ordering; names carry the oscillator number since they are ungrouped.
+    layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"osc1PulseWidth", 2}, "Osc 1 Pulse Width", juce::NormalisableRange<float>(0.05f, 0.95f, 0.01f), 0.5f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{"osc2PulseWidth", 2}, "Osc 2 Pulse Width", juce::NormalisableRange<float>(0.05f, 0.95f, 0.01f), 0.5f));
 
     return layout;
 }

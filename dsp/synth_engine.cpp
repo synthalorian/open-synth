@@ -350,6 +350,10 @@ void SynthEngine::process(AudioBuffer& output) {
     float lfo2Val = parts_[0].lfo2.process();
 
     for (uint32_t frame = 0; frame < numFrames; frame++) {
+        for (auto& part : parts_) {
+            part.osc1.advancePulseWidth(sampleRate_);
+            part.osc2.advancePulseWidth(sampleRate_);
+        }
         float leftOut = 0.0f;
         float rightOut = 0.0f;
 
@@ -1284,6 +1288,8 @@ int SynthEngine::loadPreset(const char* path) {
             // skip invalid lines
         }
     }
+    parts_[0].osc1.reset();
+    parts_[0].osc2.reset();
     return 0;
 }
 
