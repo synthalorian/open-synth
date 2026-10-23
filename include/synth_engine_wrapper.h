@@ -27,11 +27,13 @@ public:
     void setOsc1Octave(int oct);
     void setOsc1Detune(float cents);
     void setOsc1Volume(float vol);
+    void setOsc1PulseWidth(float pw);
 
     void setOsc2Waveform(int w);
     void setOsc2Octave(int oct);
     void setOsc2Detune(float cents);
     void setOsc2Volume(float vol);
+    void setOsc2PulseWidth(float pw);
     void setOscMix(float mix);
 
     void setFilterCutoff(float hz);

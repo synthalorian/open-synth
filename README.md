@@ -181,7 +181,10 @@ cd build
 ./sample_static_test ../samples/manifests/splendid-grand-piano.json  # manifest load + clean audio
 ./fx_tests                             # 1,021 FX engine unit tests
 ./preset_browser_test                  # instrument browser UI logic (headless)
+cd .. && ./build/preset_render_gate     # every factory preset: silence/NaN/clip/level vs baseline
 ```
+`preset_render_gate` runs from the repo root; see [docs/PRESET_RENDER_GATE.md](docs/PRESET_RENDER_GATE.md) for the render protocol and
+when (and when not) to regenerate its baseline with `scripts/update_preset_baseline.sh`.
 
 ### Rendering the demo
 

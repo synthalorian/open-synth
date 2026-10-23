@@ -75,6 +75,8 @@ public:
     void setOctave(int oct);
     void setDetune(float cents);
     void setPulseWidth(float pw);
+    // Advance once per sample, before rendering all notes/unison voices.
+    void advancePulseWidth(double sampleRate) const;
     void setVolume(float vol);
 
     // Noise
@@ -104,7 +106,8 @@ public:
     // Uses an internal per-instance state for the sub oscillator and noise.
     float process(float phase, int voiceIndex, float freq, double sampleRate) const;
 
-    // Per-voice variant: phaseInc is the per-sample phase increment of this
+    // Call advancePulseWidth once per sample before this per-voice variant.
+    // phaseInc is the per-sample phase increment of this
     // oscillator voice (used for band-limiting and the sub oscillator).
     float processVoice(float phase, float phaseInc, int voiceIndex, OscVoiceState& state) const;
 
@@ -115,7 +118,7 @@ public:
     int waveform() const { return waveform_; }
     int octave() const { return octave_; }
     float detune() const { return detune_; }
-    float pulseWidth() const { return pulseWidth_; }
+    float pulseWidth() const { return pulseWidthTarget_; }
     float volume() const { return volume_; }
     const UnisonConfig& unison() const { return unison_; }
 
@@ -125,7 +128,10 @@ private:
     int waveform_ = 0;
     int octave_ = 0;
     float detune_ = 0.0f;
-    float pulseWidth_ = 0.5f;
+    mutable float pulseWidth_ = 0.5f;
+    float pulseWidthTarget_ = 0.5f;
+    mutable float pulseWidthStep_ = 0.0f;
+    mutable int pulseWidthSamplesRemaining_ = 0;
     float volume_ = 0.8f;
     NoiseType noiseType_ = NoiseType::WHITE;
     SubOscMode subOscMode_ = SubOscMode::OFF;
