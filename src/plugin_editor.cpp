@@ -93,18 +93,23 @@ void SynthKnob::resized() {}
 
 OscPanel::OscPanel(juce::AudioProcessorValueTreeState& apvts, int oscIndex)
     : apvts_(apvts), oscIndex_(oscIndex),
-      waveformKnob_("Wave", SynthColors::neonPurple()),
       octaveKnob_("Octave", SynthColors::neonPurple()),
       detuneKnob_("Detune", SynthColors::hotPink()),
-      volumeKnob_("Volume", SynthColors::neonYellow())
+      volumeKnob_("Volume", SynthColors::neonYellow()),
+      pulseWidthKnob_("PW", SynthColors::hotPink())
 {
-    addAndMakeVisible(waveformKnob_);
     addAndMakeVisible(octaveKnob_);
     addAndMakeVisible(detuneKnob_);
     addAndMakeVisible(volumeKnob_);
+    addAndMakeVisible(pulseWidthKnob_);
 
-    waveformSelector_.addItemList({"Sine", "Triangle", "Saw", "Square", "Pulse",
-        "Noise", "Sub", "FM", "Wavetable", "Physical Model"}, 1);
+    // One item per waveform parameter value (0-23, engine/Dart ids), so the
+    // ComboBoxAttachment maps item index == parameter value.
+    waveformSelector_.addItemList({"Sine", "Saw", "Square", "Triangle", "Noise", "Pulse",
+        "WT Piano", "WT Guitar", "WT Choir", "WT Brass", "WT Strings", "WT Woodwind",
+        "WT Organ", "WT Bell", "WT Synth Bass", "WT Synth Lead", "WT Pad", "WT E.Piano",
+        "PM Karplus", "PM Karplus Bright", "PM Karplus Bass", "PM Mallet",
+        "PM Vibraphone", "PM Steel"}, 1);
     addAndMakeVisible(waveformSelector_);
 
     juce::String prefix = oscIndex == 1 ? "osc1" : "osc2";
@@ -116,6 +121,18 @@ OscPanel::OscPanel(juce::AudioProcessorValueTreeState& apvts, int oscIndex)
         apvts_, prefix + "Detune", detuneKnob_);
     volumeAttach_ = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
         apvts_, prefix + "Volume", volumeKnob_);
+    pulseWidthAttach_ = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+        apvts_, prefix + "PulseWidth", pulseWidthKnob_);
+
+    if (auto* wave = apvts_.getParameter(prefix + "Waveform"))
+    {
+        waveformWatcher_ = std::make_unique<juce::ParameterAttachment>(*wave, [this](float w) {
+            const bool isPulse = juce::roundToInt(w) == 5;  // Dart pulse id
+            pulseWidthKnob_.setEnabled(isPulse);
+            pulseWidthKnob_.setAlpha(isPulse ? 1.0f : 0.35f);
+        });
+        waveformWatcher_->sendInitialUpdate();
+    }
 }
 
 void OscPanel::paint(juce::Graphics& g)
@@ -138,13 +155,14 @@ void OscPanel::paint(juce::Graphics& g)
 
 void OscPanel::resized()
 {
-    int knobSize = 56, gap = 8;
-    waveformSelector_.setBounds(12, 36, 100, 24);
+    int gap = 8;
+    int knobSize = juce::jlimit(40, 56, (getWidth() - 24 - 3 * gap) / 4);
+    waveformSelector_.setBounds(12, 36, 140, 24);
     int x = 12, y = 68;
-    waveformKnob_.setBounds(x, y, knobSize, knobSize + 16); x += knobSize + gap;
     octaveKnob_.setBounds(x, y, knobSize, knobSize + 16); x += knobSize + gap;
     detuneKnob_.setBounds(x, y, knobSize, knobSize + 16); x += knobSize + gap;
-    volumeKnob_.setBounds(x, y, knobSize, knobSize + 16);
+    volumeKnob_.setBounds(x, y, knobSize, knobSize + 16); x += knobSize + gap;
+    pulseWidthKnob_.setBounds(x, y, knobSize, knobSize + 16);
 }
 
 // ── FilterPanel ─────────────────────────────────────────────────────────────
@@ -2029,61 +2047,9 @@ void OpenSynthEditor::loadPresetByID(const juce::String& id)
             // Push to engine (immediate audio update)
             applyPresetToEngine(p, processor_.getSynth());
             // Configure sample player for acoustic presets
-            configureSamplePlayerForPreset(p);
+            configureSamplePlayerForPreset(p, processor_.getSynth());
             break;
         }
-    }
-}
-
-void OpenSynthEditor::configureSamplePlayerForPreset(const PresetData& p)
-{
-    auto& synth = processor_.getSynth();
-    auto* engine = synth.getEngine();
-    if (!engine) return;
-
-    // If sampleMix > 0, we need a sample player
-    if (p.sampleMix > 0.0f) {
-        if (!engine->getSamplePlayer()) {
-            auto sp = std::make_unique<SamplePlayer>();
-            sp->prepare(engine->getSampleRate());
-            engine->setSamplePlayer(std::move(sp));
-        }
-        engine->getSamplePlayer()->setMixLevel(p.sampleMix);
-        // Try to load a matching sample from the factory library
-        loadSampleForPreset(p, *engine->getSamplePlayer());
-    } else {
-        // Disable sample player for pure synth presets
-        if (engine->getSamplePlayer()) {
-            engine->getSamplePlayer()->setMixLevel(0.0f);
-            engine->getSamplePlayer()->clear();
-        }
-    }
-}
-
-void OpenSynthEditor::loadSampleForPreset(const PresetData& p, SamplePlayer& player)
-{
-    // Use the preset's sampleManifestId if available
-    if (p.sampleManifestId[0] != '\0') {
-        juce::File manifestFile = getSampleManifestPath(p.sampleManifestId);
-        if (manifestFile.existsAsFile()) {
-            player.clear();
-            if (player.loadMultiSample(manifestFile.getFullPathName().toStdString())) {
-                return;
-            }
-        }
-    }
-
-    // Fallback: try legacy path samples/<category>/<name>.wav
-    juce::File sampleDir = juce::File::getSpecialLocation(juce::File::currentExecutableFile)
-                               .getParentDirectory()
-                               .getChildFile("samples")
-                               .getChildFile(p.category);
-    juce::String safeName = juce::String(p.name).replaceCharacter(' ', '_');
-    juce::File sampleFile = sampleDir.getChildFile(safeName + ".wav");
-
-    if (sampleFile.existsAsFile()) {
-        player.clear();
-        player.loadSample(sampleFile.getFullPathName().toStdString(), 60, 0, 127);
     }
 }
 
