@@ -1235,6 +1235,10 @@ int SynthEngine::loadPreset(const char* path) {
     std::ifstream file(path);
     if (!file.is_open()) return -1;
     // Simple preset loading — parse key=value pairs
+    // Keys added after the format shipped: older files lack them, so reset
+    // to the default first (a missing pulse width loads as 0.5).
+    setOsc1PulseWidth(0.5f);
+    setOsc2PulseWidth(0.5f);
     std::string line;
     while (std::getline(file, line)) {
         // Preset format: param_name=value

@@ -59,10 +59,12 @@ private:
     juce::AudioProcessorValueTreeState& apvts_;
     int oscIndex_;
 
-    SynthKnob waveformKnob_, octaveKnob_, detuneKnob_, volumeKnob_;
+    SynthKnob octaveKnob_, detuneKnob_, volumeKnob_, pulseWidthKnob_;
     juce::ComboBox waveformSelector_;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> waveformAttach_;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> octaveAttach_, detuneAttach_, volumeAttach_;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> octaveAttach_, detuneAttach_, volumeAttach_, pulseWidthAttach_;
+    // Enables the pulse width knob only while the waveform is Pulse
+    std::unique_ptr<juce::ParameterAttachment> waveformWatcher_;
 };
 
 // ── Filter Panel ──────────────────────────────────────────────────────────

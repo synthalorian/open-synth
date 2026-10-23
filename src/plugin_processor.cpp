@@ -180,6 +180,10 @@ juce::AudioProcessorValueTreeState::ParameterLayout OpenSynthProcessor::createPa
         layout.add(std::move(mpeGroup));
     }
 
+    // Append new parameters to preserve existing host parameter indices.
+    layout.add(std::make_unique<juce::AudioParameterFloat>("osc1PulseWidth", "Pulse Width", juce::NormalisableRange<float>(0.05f, 0.95f, 0.01f), 0.5f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>("osc2PulseWidth", "Pulse Width", juce::NormalisableRange<float>(0.05f, 0.95f, 0.01f), 0.5f));
+
     return layout;
 }
 
@@ -226,11 +230,13 @@ void OpenSynthProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::Mi
     synth_.setOsc1Octave(*apvts_.getRawParameterValue("osc1Octave"));
     synth_.setOsc1Detune(*apvts_.getRawParameterValue("osc1Detune"));
     synth_.setOsc1Volume(*apvts_.getRawParameterValue("osc1Volume"));
+    synth_.setOsc1PulseWidth(*apvts_.getRawParameterValue("osc1PulseWidth"));
 
     synth_.setOsc2Waveform(*apvts_.getRawParameterValue("osc2Waveform"));
     synth_.setOsc2Octave(*apvts_.getRawParameterValue("osc2Octave"));
     synth_.setOsc2Detune(*apvts_.getRawParameterValue("osc2Detune"));
     synth_.setOsc2Volume(*apvts_.getRawParameterValue("osc2Volume"));
+    synth_.setOsc2PulseWidth(*apvts_.getRawParameterValue("osc2PulseWidth"));
     synth_.setOscMix(*apvts_.getRawParameterValue("oscMix"));
 
     synth_.setFilterCutoff(*apvts_.getRawParameterValue("filterCutoff"));
@@ -417,12 +423,30 @@ void OpenSynthProcessor::getStateInformation(juce::MemoryBlock& destData)
     copyXmlToBinary(*xml, destData);
 }
 
+// Old host and .osj states predate pulse-width parameters. Insert their
+// defaults before replacing the tree so a previously edited width cannot leak in.
+static juce::ValueTree presetStateWithPulseWidthDefaults(const juce::XmlElement& xml)
+{
+    auto state = juce::ValueTree::fromXml(xml);
+    for (const auto* id : {"osc1PulseWidth", "osc2PulseWidth"})
+    {
+        if (!state.getChildWithProperty("id", id).isValid())
+        {
+            juce::ValueTree param("PARAM");
+            param.setProperty("id", id, nullptr);
+            param.setProperty("value", 0.5f, nullptr);
+            state.addChild(param, -1, nullptr);
+        }
+    }
+    return state;
+}
+
 void OpenSynthProcessor::setStateInformation(const void* data, int sizeInBytes)
 {
     std::unique_ptr<juce::XmlElement> xmlState(getXmlFromBinary(data, sizeInBytes));
     if (xmlState != nullptr)
         if (xmlState->hasTagName(apvts_.state.getType()))
-            apvts_.replaceState(juce::ValueTree::fromXml(*xmlState));
+            apvts_.replaceState(presetStateWithPulseWidthDefaults(*xmlState));
 }
 
 juce::File OpenSynthProcessor::getUserPresetsDir() const
@@ -460,7 +484,7 @@ bool OpenSynthProcessor::loadUserPreset(const juce::String& name)
     auto xml = juce::XmlDocument::parse(file);
     if (xml != nullptr && xml->hasTagName(apvts_.state.getType()))
     {
-        apvts_.replaceState(juce::ValueTree::fromXml(*xml));
+        apvts_.replaceState(presetStateWithPulseWidthDefaults(*xml));
         return true;
     }
     return false;
