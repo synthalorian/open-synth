@@ -18,15 +18,26 @@ OUTPUT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))
 random.seed(42)
 
 # ── Waveform constants ───────────────────────────────────────────────────────
+# Values are the osc waveform ids the engine expects (Oscillator::setWaveform /
+# dartToInternal in dsp/oscillator.cpp): 0 sine, 1 saw, 2 square, 3 triangle,
+# 4 noise, 5 pulse, 6-17 wavetables, 18-23 physical models.
 SINE = 0
-TRIANGLE = 1
-SAW = 2
-SQUARE = 3
-PULSE = 4
-NOISE = 5
+SAW = 1
+SQUARE = 2
+TRIANGLE = 3
+NOISE = 4
+PULSE = 5
+# TODO: SUB, FM and WAVETABLE have no matching engine waveform id (sub osc and FM
+# are separate preset fields; wavetables are per instrument, ids 6-17). They keep
+# their old values, which the engine renders as WT_PIANO (6), WT_GUITAR (7) and
+# WT_CHOIR (8). Choosing the right ids needs a sound-design decision.
 SUB = 6
 FM = 7
 WAVETABLE = 8
+# TODO: the PM_* names correspond to engine ids 18-23, but the old values 9-14
+# are kept (they render as WT_BRASS..WT_SYNTH_BASS). Switching to 18-23 makes
+# ~58 factory presets (Celesta, Music Box, guitars...) render near-silent in the
+# offline render gate, so that change needs its own investigation.
 PM_KARPLUS = 9
 PM_KARPLUS_BRIGHT = 10
 PM_KARPLUS_BASS = 11
