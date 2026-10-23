@@ -280,6 +280,7 @@ jobs:
         with:
           name: open-synth-${{ matrix.name }}
           path: dist/
+          if-no-files-found: error
           retention-days: 14
           compression-level: 0
 
@@ -300,6 +301,15 @@ jobs:
         run: |
           cp docs/media/open-synth-demo.mp3 docs/media/open-synth-demo.ogg dist/ 2>/dev/null || true
           cd dist && sha256sum * > SHA256SUMS && cat SHA256SUMS
+      - name: Verify release packages are present
+        run: |
+          shopt -s nullglob
+          missing=0
+          for pat in 'open-synth-*-linux-x86_64.tar.gz' 'open-synth-*-x86_64.AppImage' 'open-synth-*.dmg' 'open-synth-*-windows-x64-setup.exe'; do
+            files=(dist/$pat)
+            if (( ${#files[@]} == 0 )); then echo "::error::missing release asset dist/$pat"; missing=1; else echo "found: ${files[*]}"; fi
+          done
+          exit $missing
       - name: Create release and upload assets
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
