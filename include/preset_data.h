@@ -187,6 +187,11 @@ struct PresetData {
 class SynthEngineWrapper;
 void applyPresetToEngine(const PresetData& preset, SynthEngineWrapper& engine);
 
+// Sample-layer setup for a factory preset: creates the sample player if the
+// preset mixes samples in, loads its manifest (or legacy single sample), or
+// clears it for pure synth presets. Call after applyPresetToEngine().
+void configureSamplePlayerForPreset(const PresetData& preset, SynthEngineWrapper& engine);
+
 // APVTS applier — updates all parameters in the value tree so the UI reflects the preset.
 void applyPresetToAPVTS(const PresetData& preset, juce::AudioProcessorValueTreeState& apvts);
 

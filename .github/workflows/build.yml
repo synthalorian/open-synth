@@ -113,6 +113,38 @@ jobs:
             ./build/Release/user_preset_test.exe
           fi
 
+      - name: Run preset render gate
+        # Renders every factory preset; fails on silent/NaN/clipping output or
+        # an RMS move > 1 dB vs tests/baselines/preset_levels.tsv.
+        # See docs/PRESET_RENDER_GATE.md.
+        shell: bash
+        run: |
+          args="--summary build/preset_render_gate_summary.md --results build/preset_render_gate_results.tsv"
+          # Tag builds fetch the sample libraries: gate against the with-samples
+          # baseline and fail any sampled preset that loads no sample zones.
+          if [[ "$GITHUB_REF" == refs/tags/* ]]; then
+            args="$args --require-samples --baseline tests/baselines/preset_levels_samples.tsv"
+          fi
+          rc=0
+          if [ -x ./build/preset_render_gate ]; then
+            ./build/preset_render_gate $args || rc=$?
+          else
+            ./build/Release/preset_render_gate.exe $args || rc=$?
+          fi
+          cat build/preset_render_gate_summary.md >> "$GITHUB_STEP_SUMMARY" || true
+          exit $rc
+
+      - name: Upload preset render gate report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: preset-render-gate-${{ matrix.name }}
+          path: |
+            build/preset_render_gate_summary.md
+            build/preset_render_gate_results.tsv
+          if-no-files-found: ignore
+          retention-days: 14
+
       - name: Version
         id: ver
         shell: bash
@@ -261,6 +293,8 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           path: dist
+          # Release packages only; excludes the preset-render-gate-* reports.
+          pattern: open-synth-*
           merge-multiple: true
       - name: Checksums
         run: |

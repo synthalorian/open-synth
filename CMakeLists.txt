@@ -453,6 +453,21 @@ target_compile_definitions(user_preset_test PRIVATE
     JUCE_USE_CURL=0
 )
 
+# ── Preset Render Gate (every factory preset: silence/NaN/clip/level) ──────
+add_executable(preset_render_gate
+    tests/preset_render_gate.cpp
+)
+target_include_directories(preset_render_gate PRIVATE src dsp include)
+target_link_libraries(preset_render_gate PRIVATE
+    OpenSynth
+    juce::juce_gui_basics
+    juce::juce_audio_processors
+)
+target_compile_definitions(preset_render_gate PRIVATE
+    JUCE_WEB_BROWSER=0
+    JUCE_USE_CURL=0
+)
+
 # ── Offline demo renderer (headless) ─────────────────────────────────────────
 add_executable(demo_render
     tools/demo_render.cpp

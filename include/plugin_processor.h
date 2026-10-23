@@ -48,6 +48,10 @@ public:
 
     void handleMidiCC(int ccNumber, float value);
 
+    // Offline measurement (preset_render_gate) reads the signal before the
+    // output safety limiter so hot presets are not masked by it.
+    void setOutputLimiterEnabled(bool enabled) { limiterEnabled_ = enabled; }
+
     // Inject MIDI from on-screen keyboard or other UI sources
     void injectMidiMessage(const juce::MidiMessage& msg);
 
