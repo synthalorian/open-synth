@@ -18,6 +18,7 @@
 #include "sample_player.h"
 #include "synth_engine.h"
 #include <chrono>
+#include <cerrno>
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
@@ -144,23 +145,67 @@ Result renderPreset(int index)
     return r;
 }
 
-bool loadBaseline(const std::string& path, std::map<std::string, BaselineEntry>& out)
+// Strict numeric field parsers: the whole field must be consumed and the
+// value finite, so a corrupt baseline cannot silently turn into 0 / NaN.
+bool parseDouble(const std::string& field, double& out)
+{
+    if (field.empty()) return false;
+    char* end = nullptr;
+    errno = 0;
+    const double v = std::strtod(field.c_str(), &end);
+    if (errno != 0 || end != field.c_str() + field.size() || !std::isfinite(v)) return false;
+    out = v;
+    return true;
+}
+
+bool parseInt(const std::string& field, int& out)
+{
+    if (field.empty()) return false;
+    char* end = nullptr;
+    errno = 0;
+    const long v = std::strtol(field.c_str(), &end, 10);
+    if (errno != 0 || end != field.c_str() + field.size() || v < 0 || v > 1000000) return false;
+    out = static_cast<int>(v);
+    return true;
+}
+
+// Returns an empty string on success, otherwise a human-readable error.
+std::string loadBaseline(const std::string& path, std::map<std::string, BaselineEntry>& out)
 {
     std::ifstream in(path);
-    if (!in) return false;
+    if (!in) return "cannot read baseline " + path + " (run from the repo root, or create it with "
+                     "scripts/update_preset_baseline.sh)";
+    std::map<std::string, int> firstLine;
     std::string line;
+    int lineNo = 0;
     while (std::getline(in, line)) {
+        ++lineNo;
         if (!line.empty() && line.back() == '\r') line.pop_back();
         if (line.empty() || line[0] == '#' || line.rfind("id\t", 0) == 0) continue;
+        const std::string where = path + ":" + std::to_string(lineNo) + ": ";
         std::vector<std::string> cols;
         std::stringstream ss(line);
         std::string c;
         while (std::getline(ss, c, '\t')) cols.push_back(c);
-        if (cols.size() < 5) continue;
         // id, name, category, zones, rms_dbfs, peak_dbfs
-        out[cols[0]] = { std::atoi(cols[3].c_str()), std::atof(cols[4].c_str()) };
+        if (cols.size() < 6)
+            return where + "expected 6 tab-separated columns, got " + std::to_string(cols.size());
+        if (cols[0].empty()) return where + "empty preset id";
+        BaselineEntry e;
+        double peakDb = 0.0;
+        if (!parseInt(cols[3], e.zones))
+            return where + "zones field '" + cols[3] + "' is not a non-negative integer";
+        if (!parseDouble(cols[4], e.rmsDb))
+            return where + "rms_dbfs field '" + cols[4] + "' is not a finite number";
+        if (!parseDouble(cols[5], peakDb))
+            return where + "peak_dbfs field '" + cols[5] + "' is not a finite number";
+        const auto [it, inserted] = firstLine.emplace(cols[0], lineNo);
+        if (!inserted)
+            return where + "duplicate preset id '" + cols[0] + "' (first seen on line "
+                   + std::to_string(it->second) + ")";
+        out[cols[0]] = e;
     }
-    return true;
+    return {};
 }
 
 void writeTable(std::ostream& o, const std::vector<Result>& results, bool withStatus)
@@ -211,10 +256,12 @@ int main(int argc, char** argv)
     juce::ScopedJuceInitialiser_GUI init;
 
     std::map<std::string, BaselineEntry> baseline;
-    if (!opt.updateBaseline && !loadBaseline(opt.baseline, baseline)) {
-        std::fprintf(stderr, "cannot read baseline %s (run from the repo root, or create it with "
-                             "scripts/update_preset_baseline.sh)\n", opt.baseline.c_str());
-        return 2;
+    if (!opt.updateBaseline) {
+        const std::string err = loadBaseline(opt.baseline, baseline);
+        if (!err.empty()) {
+            std::fprintf(stderr, "error: %s\n", err.c_str());
+            return 2;
+        }
     }
 
     const auto t0 = std::chrono::steady_clock::now();
@@ -293,7 +340,9 @@ int main(int argc, char** argv)
     if (!opt.updateBaseline)
         s << "| RMS moved > " << fmt("%g", opt.toleranceDb) << " dB | " << nLevel << " |\n"
           << "| Missing from baseline | " << nMissing << " |\n"
-          << "| Level not compared (sample zones differ from baseline) | " << nEnvMismatch << " |\n";
+          << "| Level compared against baseline | " << (results.size() - nMissing - nEnvMismatch) << " |\n"
+          << "| Level NOT compared — skipped, sample zones differ from baseline (not a failure) | "
+          << nEnvMismatch << " |\n";
     s << "| **Failing presets** | **" << failing.size() << "** |\n\n"
       << "Sampled presets: " << nWantSamples << ", rendered with their sample library: " << nWithSamples
       << ", without (synth layer only): " << (nWantSamples - nWithSamples) << "\n\n"
@@ -315,8 +364,16 @@ int main(int argc, char** argv)
 
     if (opt.updateBaseline) {
         std::printf("\nWrote %s. Review the diff before committing.\n", opt.baseline.c_str());
-        return 0;
+        // The baseline only records levels; silent/NaN/clipping presets are
+        // still bugs, so updating must not turn a red gate green.
+        if (!failing.empty())
+            std::printf("FAIL: %zu preset(s) fail silent/NaN/Inf/clip checks (baseline written anyway)\n",
+                        failing.size());
+        return failing.empty() ? 0 : 1;
     }
-    std::printf("\n%s: %zu failing preset(s)\n", failing.empty() ? "PASS" : "FAIL", failing.size());
+    std::printf("\n%s: %zu failing preset(s)", failing.empty() ? "PASS" : "FAIL", failing.size());
+    if (nEnvMismatch > 0)
+        std::printf(", %d preset(s) level-skipped (sample zones differ from baseline)", nEnvMismatch);
+    std::printf("\n");
     return failing.empty() ? 0 : 1;
 }
