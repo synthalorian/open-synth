@@ -1,0 +1,167 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# Release workflow template (shared style)
+#
+# Builds per-platform assets for a tag, verifies them, writes SHA256SUMS and
+# attaches everything to a DRAFT GitHub release. It never publishes a release
+# and never creates tags — a human reviews the draft and publishes it.
+#
+# Copy to .github/workflows/release.yml and fill in every "ADAPT" marker.
+# ──────────────────────────────────────────────────────────────────────────────
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Existing tag to (re)build and attach assets for (e.g. v1.2.3)'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+# One release run per tag at a time; never cancel a half-uploaded release.
+concurrency:
+  group: release-${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+  cancel-in-progress: false
+
+env:
+  # Tag being released: the pushed tag, or the dispatch input.
+  RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+
+jobs:
+  # ADAPT: optional pre-release gates (tests, lint, audit). Either add a job
+  # here or call your CI as a reusable workflow, then list it in build.needs.
+  #
+  # gates:
+  #   uses: ./.github/workflows/ci.yml
+  #   permissions:
+  #     contents: read
+
+  build:
+    name: Build (${{ matrix.name }})
+    # ADAPT: needs: [gates]
+    strategy:
+      fail-fast: false
+      matrix:
+        # ADAPT: one entry per platform; set runner + whatever your build needs.
+        include:
+          - name: linux
+            os: ubuntu-latest
+          - name: macos
+            os: macos-latest
+          - name: windows
+            os: windows-latest
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Validate tag
+        shell: bash
+        run: |
+          if [[ ! "$RELEASE_TAG" =~ ^v[0-9A-Za-z._+-]+$ ]]; then
+            echo "::error::Invalid release tag: '$RELEASE_TAG'"
+            exit 1
+          fi
+
+      - uses: actions/checkout@v4
+        with:
+          ref: refs/tags/${{ env.RELEASE_TAG }}
+
+      # ADAPT: toolchain setup + build commands for your project.
+      - name: Build
+        shell: bash
+        run: |
+          echo "ADAPT: build for ${{ matrix.name }}"
+          exit 1
+
+      # ADAPT: copy the release assets for this platform into dist/ (flat,
+      # keeping the exact file names users/install scripts expect).
+      - name: Stage assets
+        shell: bash
+        run: |
+          mkdir -p dist
+          echo "ADAPT: cp <build outputs> dist/"
+          ls -la dist
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-${{ matrix.name }}
+          path: dist/*
+          if-no-files-found: error
+
+  release:
+    name: Draft GitHub release
+    needs: [build]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: release-*
+          path: dist
+          merge-multiple: true
+
+      - name: Verify expected assets
+        shell: bash
+        working-directory: dist
+        run: |
+          shopt -s nullglob
+          VERSION="${RELEASE_TAG#v}"
+          # ADAPT: one glob or exact name per required asset. Fails unless at least one
+          # non-empty file matches.
+          expected=(
+            "*-${VERSION}-linux*"
+            "*-${VERSION}-macos*"
+            "*-${VERSION}-windows*"
+          )
+          missing=0
+          for pattern in "${expected[@]}"; do
+            matches=()
+            for f in $pattern; do [ -s "$f" ] && matches+=("$f"); done
+            if (( ${#matches[@]} == 0 )); then
+              echo "::error::Missing expected asset: $pattern"
+              missing=1
+            else
+              printf 'ok  %-40s %s\n' "$pattern" "${matches[*]}"
+            fi
+          done
+          ls -la
+          exit "$missing"
+
+      - name: Generate and verify SHA256SUMS
+        shell: bash
+        working-directory: dist
+        run: |
+          rm -f SHA256SUMS
+          find . -maxdepth 1 -type f ! -name SHA256SUMS -printf '%f\n' | LC_ALL=C sort \
+            | xargs -r -d '\n' sha256sum > SHA256SUMS
+          cat SHA256SUMS
+          sha256sum -c SHA256SUMS
+
+      - name: Attach assets to draft release
+        shell: bash
+        working-directory: dist
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            if [ "$(gh release view "$RELEASE_TAG" --json isDraft --jq .isDraft)" != "true" ]; then
+              echo "::error::Release $RELEASE_TAG is already published; refusing to replace its assets."
+              exit 1
+            fi
+            echo "Draft release $RELEASE_TAG exists; uploading assets (clobber)."
+            gh release upload "$RELEASE_TAG" ./* --clobber
+          else
+            echo "Creating draft release $RELEASE_TAG."
+            # ADAPT: release notes source (--generate-notes / --notes-file).
+            gh release create "$RELEASE_TAG" ./* \
+              --draft \
+              --verify-tag \
+              --title "$RELEASE_TAG" \
+              --generate-notes
+          fi
