@@ -17,9 +17,7 @@ void Voice::reset() {
     }
     osc1State.reset();
     osc2State.reset();
-    filterState.lp = 0.0f;
-    filterState.bp = 0.0f;
-    filterState.hp = 0.0f;
+    filterState = FilterState{};
     noteAge = 0.0f;
     lfo1Phase = 0.0;
     lfo2Phase = 0.0;
@@ -70,9 +68,7 @@ void Voice::noteOn(int note, float vel) {
     osc1State.reset();
     osc2State.reset();
     // Reset filter state to prevent DC thump / static when stealing voices
-    filterState.lp = 0.0f;
-    filterState.bp = 0.0f;
-    filterState.hp = 0.0f;
+    filterState = FilterState{};
     // Reset physical model so old delay-line data doesn't leak
     physicalModel.reset();
     ampEnv.noteOn();

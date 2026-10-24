@@ -9,70 +9,113 @@ void StateVariableFilter::setType(int type) {
 }
 
 void StateVariableFilter::setCutoff(float hz) {
+    if (!std::isfinite(hz)) return;  // keep the previous cutoff
     cutoff_ = std::clamp(hz, 20.0f, 20000.0f);
 }
 
 void StateVariableFilter::setResonance(float q) {
+    if (!std::isfinite(q)) return;
     resonance_ = std::clamp(q, 0.0f, 1.0f);
 }
 
 void StateVariableFilter::setEnvAmount(float amount) {
+    if (!std::isfinite(amount)) return;
     envAmount_ = std::clamp(amount, -1.0f, 1.0f);
 }
 
 void StateVariableFilter::setKeyTracking(float amount) {
+    if (!std::isfinite(amount)) return;
     keyTracking_ = std::clamp(amount, 0.0f, 1.0f);
 }
 
 void StateVariableFilter::setDrive(float amount) {
+    if (!std::isfinite(amount)) return;
     drive_ = std::clamp(amount, 0.0f, 1.0f);
+}
+
+void StateVariableFilter::setEnvRangeSemitones(float semis) {
+    if (!std::isfinite(semis)) return;
+    envRangeSemis_ = std::clamp(semis, 0.0f, 96.0f);
 }
 
 void StateVariableFilter::reset() {
     lp_ = 0.0f;
     bp_ = 0.0f;
     hp_ = 0.0f;
+    state_ = FilterState{};
 }
 
-static float applyDrive(float sample, float amount) {
-    if (amount < 0.01f) return sample;
+// Drive below this is a clean bypass (unchanged from the original curve).
+static constexpr float kDriveOnThreshold = 0.01f;
+
+static float saturate(float sample, float amount) {
     // Soft saturation: tanh with increasing drive
     float driven = sample * (1.0f + amount * 4.0f);
     return std::tanh(driven) / std::tanh(1.0f + amount * 4.0f);
 }
 
+// mix crossfades bypass -> saturator so crossing the on-threshold does not
+// step the gain (the saturator has ~+2.5 dB small-signal gain at 0.01).
+static float applyDrive(float sample, float amount, float mix) {
+    if (mix <= 0.0f) return sample;
+    const float wet = saturate(sample, std::max(amount, kDriveOnThreshold));
+    if (mix >= 1.0f) return wet;
+    return sample + (wet - sample) * mix;
+}
+
 float StateVariableFilter::process(float input, float envMod, double sampleRate, int midiNote) {
-    FilterState tmp{lp_, bp_, hp_};
-    float out = process(input, envMod, sampleRate, midiNote, tmp);
-    lp_ = tmp.lp;
-    bp_ = tmp.bp;
-    hp_ = tmp.hp;
+    float out = process(input, envMod, sampleRate, midiNote, state_);
+    lp_ = state_.lp;
+    bp_ = state_.bp;
+    hp_ = state_.hp;
     return out;
 }
 
 float StateVariableFilter::process(float input, float envMod, double sampleRate, int midiNote, FilterState& state) {
-    // Apply key tracking: cutoff shifts with MIDI note
+    if (sampleRate <= 0.0) return input;
+
+    // One-pole parameter smoothing, per voice (state), so knob moves and
+    // automation do not zipper. Cutoff is smoothed in the log domain.
+    if (sampleRate != smoothSr_) {
+        smoothSr_ = sampleRate;
+        smoothCoef_ = std::exp(-1.0f / (kSmoothingMs * 0.001f * static_cast<float>(sampleRate)));
+    }
+    const float targetLog2 = std::log2(cutoff_);
+    const float targetMix = drive_ >= kDriveOnThreshold ? 1.0f : 0.0f;
+    if (!state.primed || !std::isfinite(state.cutoffLog2)) {
+        state.cutoffLog2 = targetLog2;
+        state.resonance = resonance_;
+        state.drive = drive_;
+        state.driveMix = targetMix;
+        state.primed = true;
+    } else {
+        const float c = smoothCoef_;
+        state.cutoffLog2 = targetLog2 + (state.cutoffLog2 - targetLog2) * c;
+        state.resonance = resonance_ + (state.resonance - resonance_) * c;
+        state.drive = drive_ + (state.drive - drive_) * c;
+        state.driveMix = targetMix + (state.driveMix - targetMix) * c;
+        if (std::fabs(state.driveMix - targetMix) < 1e-5f) state.driveMix = targetMix;
+    }
+    const float resonance = state.resonance;
+
+    // Key tracking: cutoff shifts with MIDI note (69 = A440)
     float keyOffset = 0.0f;
     if (keyTracking_ > 0.0f) {
-        // 69 = A440, each semitone = factor of 2^(1/12)
         keyOffset = (midiNote - 69) * keyTracking_;
     }
 
-    // Apply envelope modulation to cutoff
-    float cutoff = cutoff_ * std::pow(2.0f, (envMod * envAmount_ * 5.0f + keyOffset) / 12.0f);
-    cutoff = std::clamp(cutoff, 20.0f, 20000.0f);
+    // Envelope modulation and key tracking, in semitones
+    const float semis = envMod * envAmount_ * envRangeSemis_ + keyOffset;
+    float cutoff = std::exp2(state.cutoffLog2 + semis / 12.0f);
+    const float maxCutoff = kMaxCutoffRatio * static_cast<float>(sampleRate);
+    cutoff = std::clamp(cutoff, 20.0f, std::max(20.0f, maxCutoff));
 
     // Pre-filter drive
-    float sample = applyDrive(input, drive_);
+    float sample = applyDrive(input, state.drive, state.driveMix);
 
-    // Compute g and clamp to stable region
-    // TPT (Zavalishin) SVF: stable for ANY cutoff up to Nyquist.
-    // The previous Chamberlin form (f = 2sin(πf/fs)) goes unstable above
-    // sr/6 (8kHz @ 48k) — any preset with cutoff > 8kHz exploded the filter
-    // state into railed square-wave noise (the "static" bug).
-    float g = std::tan(M_PI * cutoff / (float)sampleRate);
-    g = std::clamp(g, 0.0f, 10.0f); // tan() blows up at Nyquist; 10 is plenty
-    float k = 2.0f - 2.0f * std::clamp(resonance_, 0.0f, 0.99f); // k = 2 - 2R
+    // TPT (Zavalishin) SVF: stable for any cutoff below Nyquist.
+    float g = std::tan(static_cast<float>(M_PI) * cutoff / static_cast<float>(sampleRate));
+    float k = 2.0f - 2.0f * std::clamp(resonance, 0.0f, 0.99f); // k = 2 - 2R
 
     // NaN/inf guard — if state is corrupted, reset it before processing
     if (!std::isfinite(state.lp) || !std::isfinite(state.bp) || !std::isfinite(state.hp)) {
@@ -99,22 +142,32 @@ float StateVariableFilter::process(float input, float envMod, double sampleRate,
         state.hp = 0.0f;
     }
 
+    // Flush subnormal state so a decaying tail does not hit the slow
+    // denormal path in hosts without FTZ (the plugin has ScopedNoDenormals;
+    // the engine and FFI hosts do not).
+    constexpr float kTiny = 1e-20f;
+    if (std::fabs(state.lp) < kTiny) state.lp = 0.0f;
+    if (std::fabs(state.bp) < kTiny) state.bp = 0.0f;
+    if (std::fabs(state.hp) < kTiny) state.hp = 0.0f;
+
+    if (!std::isfinite(v1) || !std::isfinite(v2)) return 0.0f;
+
+    // Outputs are the TPT taps v2 (LP) and v1 (BP), not the integrator
+    // states, which carry an extra 1/(1+z^-1)-shaped error near Nyquist.
     switch (static_cast<FilterType>(type_)) {
-    case FilterType::LOW_PASS:   return state.lp;
+    case FilterType::LOW_PASS:   return v2;
     case FilterType::HIGH_PASS:  return state.hp;
-    case FilterType::BAND_PASS:  return state.bp;
-    case FilterType::NOTCH:      return state.lp + state.hp;
-    case FilterType::LOW_SHELF:  return input + (state.lp - input) * resonance_; // simple shelf approximation
-    case FilterType::HIGH_SHELF: return input + (state.hp - input) * resonance_;
-    case FilterType::PEAKING_EQ: return input + state.bp * resonance_;
+    case FilterType::BAND_PASS:  return v1;
+    case FilterType::NOTCH:      return v2 + state.hp;
+    case FilterType::LOW_SHELF:  return input + (v2 - input) * resonance; // simple shelf approximation
+    case FilterType::HIGH_SHELF: return input + (state.hp - input) * resonance;
+    case FilterType::PEAKING_EQ: return input + v1 * resonance;
     }
-    return state.lp;
+    return v2;
 }
 
 void StateVariableFilter::reset(FilterState& state) {
-    state.lp = 0.0f;
-    state.bp = 0.0f;
-    state.hp = 0.0f;
+    state = FilterState{};
 }
 
 } // namespace opensynth

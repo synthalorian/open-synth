@@ -135,6 +135,15 @@ jobs:
             ./build/Release/user_preset_test.exe
           fi
 
+      - name: Run filter and wavetable tests
+        shell: bash
+        run: |
+          if [ -x ./build/filter_wavetable_test ]; then
+            ./build/filter_wavetable_test
+          else
+            ./build/Release/filter_wavetable_test.exe
+          fi
+
       - name: Run preset render gate
         # Renders every factory preset; fails on silent/NaN/clipping output or
         # an RMS move > 1 dB vs tests/baselines/preset_levels.tsv.

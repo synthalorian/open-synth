@@ -104,9 +104,7 @@ void SynthEngine::reset() {
     for (int v = 0; v < VoiceAllocator::MAX_VOICES; v++) {
         Voice* voice = allocator_.voice(v);
         if (voice) {
-            voice->filterState.lp = 0.0f;
-            voice->filterState.bp = 0.0f;
-            voice->filterState.hp = 0.0f;
+            voice->filterState = FilterState{};
             voice->noteAge = 0.0f;
         }
     }
@@ -1238,6 +1236,8 @@ void SynthEngine::setCompressorMakeupGain(float g) {
 int SynthEngine::loadPreset(const char* path) {
     std::ifstream file(path);
     if (!file.is_open()) return -1;
+    // Presets saved before filter_env_range existed use the historical range.
+    setFilterEnvRange(StateVariableFilter::kDefaultEnvRangeSemitones);
     // Simple preset loading — parse key=value pairs
     // Keys added after the format shipped: older files lack them, so reset
     // to the default first (a missing pulse width loads as 0.5).
@@ -1267,6 +1267,7 @@ int SynthEngine::loadPreset(const char* path) {
             else if (key == "filter_cutoff") setFilterCutoff(std::stof(val));
             else if (key == "filter_resonance") setFilterResonance(std::stof(val));
             else if (key == "filter_env_amount") setFilterEnvAmount(std::stof(val));
+            else if (key == "filter_env_range") setFilterEnvRange(std::stof(val));
             else if (key == "amp_attack") setAmpAttack(std::stof(val));
             else if (key == "amp_decay") setAmpDecay(std::stof(val));
             else if (key == "amp_sustain") setAmpSustain(std::stof(val));
@@ -1330,6 +1331,7 @@ int SynthEngine::savePreset(const char* path) const {
     file << "filter_cutoff=" << parts_[0].filter.cutoff() << "\n";
     file << "filter_resonance=" << parts_[0].filter.resonance() << "\n";
     file << "filter_env_amount=" << parts_[0].filter.envAmount() << "\n";
+    file << "filter_env_range=" << parts_[0].filter.envRangeSemitones() << "\n";
 
     // Amplifier envelope
     file << "amp_attack=" << parts_[0].ampAttack << "\n";
