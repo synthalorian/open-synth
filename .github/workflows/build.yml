@@ -3,23 +3,36 @@ name: Build
 on:
   push:
     branches: [master]
-    tags: ['v*']
   pull_request:
   workflow_dispatch:
+  # Tag builds run through release.yml, which calls this workflow with the tag
+  # and then drafts the GitHub release from the uploaded open-synth-* artifacts.
+  workflow_call:
+    inputs:
+      ref:
+        description: 'Fully-qualified ref to build (e.g. refs/tags/v1.2.3); empty = the triggering ref'
+        required: false
+        type: string
+        default: ''
 
-# Cancel superseded runs on the same ref
+# Cancel superseded runs on the same ref. Release builds (workflow_call) are
+# never cancelled; their group also differs from the caller's, so no deadlock.
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ inputs.ref || github.ref }}
+  cancel-in-progress: ${{ !inputs.ref }}
 
 permissions:
-  contents: write  # needed to create releases + upload assets on tag builds
+  contents: read
 
 jobs:
   build:
     name: ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
     env:
+      # Ref being built. Tag-only steps (sample submodules, with-samples render
+      # gate, version check) key off this, not GITHUB_REF, so they also run when
+      # release.yml is dispatched from a branch for an existing tag.
+      BUILD_REF: ${{ inputs.ref || github.ref }}
       HAS_WIN_CERT: ${{ secrets.WINDOWS_CERT_PFX != '' }}
       HAS_APPLE_CERT: ${{ secrets.APPLE_DEVELOPER_ID_CERT_P12 != '' }}
     strategy:
@@ -46,10 +59,19 @@ jobs:
               build/OpenSynth_artefacts/Release/CLAP/Open Synth.clap
 
     steps:
+      - name: Validate ref input
+        if: inputs.ref != ''
+        shell: bash
+        run: |
+          if [[ "$BUILD_REF" != refs/* ]]; then
+            echo "::error::ref input must be fully qualified (refs/tags/...), got '$BUILD_REF'"; exit 1
+          fi
+
       - uses: actions/checkout@v4
         # Only JUCE is needed to build. The sample-library submodules
         # (~1.2GB) are fetched separately for tag builds below.
         with:
+          ref: ${{ inputs.ref }}
           submodules: false
 
       - name: Fetch JUCE 8.0.12
@@ -63,7 +85,7 @@ jobs:
         run: git submodule update --init --recursive libs/clap-juce-extensions
 
       - name: Init sample submodules (tag builds only)
-        if: startsWith(github.ref, 'refs/tags/')
+        if: startsWith(env.BUILD_REF, 'refs/tags/')
         run: git submodule update --init --recursive
 
       - name: Install Linux dependencies
@@ -131,7 +153,7 @@ jobs:
           args="--summary build/preset_render_gate_summary.md --results build/preset_render_gate_results.tsv"
           # Tag builds fetch the sample libraries: gate against the with-samples
           # baseline and fail any sampled preset that loads no sample zones.
-          if [[ "$GITHUB_REF" == refs/tags/* ]]; then
+          if [[ "$BUILD_REF" == refs/tags/* ]]; then
             args="$args --require-samples --baseline tests/baselines/preset_levels_samples.tsv"
           fi
           rc=0
@@ -160,8 +182,9 @@ jobs:
         run: |
           v=$(sed -n 's/^project(OpenSynth VERSION \([0-9.]*\)).*/\1/p' CMakeLists.txt)
           echo "version=$v" >> "$GITHUB_OUTPUT"
-          if [[ "$GITHUB_REF" == refs/tags/v* && "${GITHUB_REF_NAME#v}" != "$v" ]]; then
-            echo "::error::Tag $GITHUB_REF_NAME does not match CMake version $v"; exit 1
+          tag="${BUILD_REF#refs/tags/}"
+          if [[ "$BUILD_REF" == refs/tags/v* && "${tag#v}" != "$v" ]]; then
+            echo "::error::Tag $tag does not match CMake version $v"; exit 1
           fi
 
       # ── Linux: tar.gz with install script + AppImage for the standalone ──
@@ -292,38 +315,3 @@ jobs:
           if-no-files-found: error
           retention-days: 14
           compression-level: 0
-
-  release:
-    name: Publish release
-    if: startsWith(github.ref, 'refs/tags/')
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
-        with:
-          path: dist
-          # Release packages only; excludes the preset-render-gate-* reports.
-          pattern: open-synth-*
-          merge-multiple: true
-      - name: Checksums
-        run: |
-          cp docs/media/open-synth-demo.mp3 docs/media/open-synth-demo.ogg dist/ 2>/dev/null || true
-          cd dist && sha256sum * > SHA256SUMS && cat SHA256SUMS
-      - name: Verify release packages are present
-        run: |
-          shopt -s nullglob
-          missing=0
-          for pat in 'open-synth-*-linux-x86_64.tar.gz' 'open-synth-*-x86_64.AppImage' 'open-synth-*.dmg' 'open-synth-*-windows-x64-setup.exe'; do
-            files=(dist/$pat)
-            if (( ${#files[@]} == 0 )); then echo "::error::missing release asset dist/$pat"; missing=1; else echo "found: ${files[*]}"; fi
-          done
-          exit $missing
-      - name: Create release and upload assets
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          notes=$(awk -v h="## [${GITHUB_REF_NAME#v}]" 'index($0, h) == 1 {f=1; next} /^## \[/ {f=0} f' CHANGELOG.md)
-          gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1 || \
-            gh release create "$GITHUB_REF_NAME" --title "Open Synth $GITHUB_REF_NAME" --notes "$notes"
-          gh release upload "$GITHUB_REF_NAME" dist/* --clobber
