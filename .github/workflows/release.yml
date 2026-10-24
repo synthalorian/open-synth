@@ -1,0 +1,141 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# Release workflow template (shared style)
+#
+# Builds per-platform assets for a tag, verifies them, writes SHA256SUMS and
+# attaches everything to a DRAFT GitHub release. It never publishes a release
+# and never creates tags — a human reviews the draft and publishes it.
+#
+# Copy to .github/workflows/release.yml and fill in every "ADAPT" marker.
+# ──────────────────────────────────────────────────────────────────────────────
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Existing tag to (re)build and attach assets for (e.g. v1.2.3)'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+# One release run per tag at a time; never cancel a half-uploaded release.
+concurrency:
+  group: release-${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+  cancel-in-progress: false
+
+env:
+  # Tag being released: the pushed tag, or the dispatch input.
+  RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+
+jobs:
+  # ADAPT: reuse all existing platform builds, tests, signing and packaging.
+  validate:
+    name: Validate existing tag
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate tag
+        shell: bash
+        run: |
+          if [[ ! "$RELEASE_TAG" =~ ^v[0-9A-Za-z._+-]+$ ]]; then
+            echo "::error::Invalid release tag: '$RELEASE_TAG'"
+            exit 1
+          fi
+      - uses: actions/checkout@v4
+        with:
+          ref: refs/tags/${{ env.RELEASE_TAG }}
+
+  build:
+    needs: [validate]
+    uses: ./.github/workflows/build.yml
+    with:
+      ref: refs/tags/${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+    secrets: inherit
+
+  release:
+    name: Draft GitHub release
+    needs: [build]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: refs/tags/${{ env.RELEASE_TAG }}
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: open-synth-*
+          path: dist
+          merge-multiple: true
+
+      # ADAPT: preserve optional demo media from previous releases.
+      - name: Copy demo media
+        shell: bash
+        run: |
+          cp docs/media/open-synth-demo.mp3 docs/media/open-synth-demo.ogg dist/ 2>/dev/null || true
+
+      - name: Verify expected assets
+        shell: bash
+        working-directory: dist
+        run: |
+          shopt -s nullglob
+          # ADAPT: one glob or exact name per required asset. Fails unless at least one
+          # non-empty file matches.
+          expected=(
+            "open-synth-*-linux-x86_64.tar.gz"
+            "open-synth-*.dmg"
+            "open-synth-*-windows-x64-setup.exe"
+            "open-synth-*-x86_64.AppImage"
+          )
+          missing=0
+          for pattern in "${expected[@]}"; do
+            matches=()
+            for f in $pattern; do [ -s "$f" ] && matches+=("$f"); done
+            if (( ${#matches[@]} == 0 )); then
+              echo "::error::Missing expected asset: $pattern"
+              missing=1
+            else
+              printf 'ok  %-40s %s\n' "$pattern" "${matches[*]}"
+            fi
+          done
+          ls -la
+          exit "$missing"
+
+      - name: Generate and verify SHA256SUMS
+        shell: bash
+        working-directory: dist
+        run: |
+          rm -f SHA256SUMS
+          find . -maxdepth 1 -type f ! -name SHA256SUMS -printf '%f\n' | LC_ALL=C sort \
+            | xargs -r -d '\n' sha256sum > SHA256SUMS
+          cat SHA256SUMS
+          sha256sum -c SHA256SUMS
+
+      - name: Attach assets to draft release
+        shell: bash
+        working-directory: dist
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            if [ "$(gh release view "$RELEASE_TAG" --json isDraft --jq .isDraft)" != "true" ]; then
+              echo "::error::Release $RELEASE_TAG is already published; refusing to replace its assets."
+              exit 1
+            fi
+            echo "Draft release $RELEASE_TAG exists; uploading assets (clobber)."
+            gh release upload "$RELEASE_TAG" ./* --clobber
+          else
+            echo "Creating draft release $RELEASE_TAG."
+            # ADAPT: release notes come from the tagged CHANGELOG.
+            awk -v h="## [${RELEASE_TAG#v}]" 'index($0, h) == 1 {f=1; next} /^## \[/ {f=0} f' ../CHANGELOG.md > "$RUNNER_TEMP/release-notes.md"
+            gh release create "$RELEASE_TAG" ./* \
+              --draft \
+              --verify-tag \
+              --title "Open Synth $RELEASE_TAG" \
+              --notes-file "$RUNNER_TEMP/release-notes.md"
+          fi
