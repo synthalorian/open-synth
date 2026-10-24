@@ -1,6 +1,7 @@
 #include "preset_data.h"
 #include "synth_engine_wrapper.h"
 #include "synth_engine.h"
+#include "sample_player.h"
 #include <juce_core/juce_core.h>
 
 namespace opensynth {
@@ -18,12 +19,14 @@ void applyPresetToEngine(const PresetData& p, SynthEngineWrapper& e)
     e.setOsc1Octave(p.osc1Octave);
     e.setOsc1Detune(p.osc1Detune);
     e.setOsc1Volume(clamp(p.osc1Volume, 0.0f, 1.0f));
+    e.setOsc1PulseWidth(clamp(p.osc1PulseWidth, 0.05f, 0.95f));
 
     // Osc 2
     e.setOsc2Waveform(p.osc2Waveform);
     e.setOsc2Octave(p.osc2Octave);
     e.setOsc2Detune(p.osc2Detune);
     e.setOsc2Volume(clamp(p.osc2Volume, 0.0f, 1.0f));
+    e.setOsc2PulseWidth(clamp(p.osc2PulseWidth, 0.05f, 0.95f));
     e.setOscMix(clamp(p.oscMix, 0.0f, 1.0f));
 
     // Filter — clamp resonance to prevent ear-bleed
@@ -144,6 +147,58 @@ juce::File getSampleManifestPath(const char* id)
     return exeDir.getChildFile("samples/manifests").getChildFile(fileName);
 }
 
+// Legacy single-sample fallback when a preset has no loadable manifest.
+static void loadSampleForPreset(const PresetData& p, SamplePlayer& player)
+{
+    // Use the preset's sampleManifestId if available
+    if (p.sampleManifestId[0] != '\0') {
+        juce::File manifestFile = getSampleManifestPath(p.sampleManifestId);
+        if (manifestFile.existsAsFile()) {
+            player.clear();
+            if (player.loadMultiSample(manifestFile.getFullPathName().toStdString())) {
+                return;
+            }
+        }
+    }
+
+    // Fallback: try legacy path samples/<category>/<name>.wav
+    juce::File sampleDir = juce::File::getSpecialLocation(juce::File::currentExecutableFile)
+                               .getParentDirectory()
+                               .getChildFile("samples")
+                               .getChildFile(p.category);
+    juce::String safeName = juce::String(p.name).replaceCharacter(' ', '_');
+    juce::File sampleFile = sampleDir.getChildFile(safeName + ".wav");
+
+    if (sampleFile.existsAsFile()) {
+        player.clear();
+        player.loadSample(sampleFile.getFullPathName().toStdString(), 60, 0, 127);
+    }
+}
+
+void configureSamplePlayerForPreset(const PresetData& p, SynthEngineWrapper& synth)
+{
+    auto* engine = synth.getEngine();
+    if (!engine) return;
+
+    // If sampleMix > 0, we need a sample player
+    if (p.sampleMix > 0.0f) {
+        if (!engine->getSamplePlayer()) {
+            auto sp = std::make_unique<SamplePlayer>();
+            sp->prepare(engine->getSampleRate());
+            engine->setSamplePlayer(std::move(sp));
+        }
+        engine->getSamplePlayer()->setMixLevel(p.sampleMix);
+        // Try to load a matching sample from the factory library
+        loadSampleForPreset(p, *engine->getSamplePlayer());
+    } else {
+        // Disable sample player for pure synth presets
+        if (engine->getSamplePlayer()) {
+            engine->getSamplePlayer()->setMixLevel(0.0f);
+            engine->getSamplePlayer()->clear();
+        }
+    }
+}
+
 void applyPresetToAPVTS(const PresetData& p, juce::AudioProcessorValueTreeState& apvts)
 {
     auto setFloat = [&](const juce::String& id, float v) {
@@ -163,11 +218,13 @@ void applyPresetToAPVTS(const PresetData& p, juce::AudioProcessorValueTreeState&
     setInt("osc1Octave", p.osc1Octave);
     setFloat("osc1Detune", p.osc1Detune);
     setFloat("osc1Volume", p.osc1Volume);
+    setFloat("osc1PulseWidth", p.osc1PulseWidth);
 
     setInt("osc2Waveform", p.osc2Waveform);
     setInt("osc2Octave", p.osc2Octave);
     setFloat("osc2Detune", p.osc2Detune);
     setFloat("osc2Volume", p.osc2Volume);
+    setFloat("osc2PulseWidth", p.osc2PulseWidth);
     setFloat("oscMix", p.oscMix);
 
     setFloat("filterCutoff", p.filterCutoff);

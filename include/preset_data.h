@@ -14,7 +14,7 @@ struct PresetData {
     const char* category;
 
     // Oscillator 1
-    int   osc1Waveform = 0;      // 0=sine, 1=tri, 2=saw, 3=square, 4=pulse, 5=noise, 6=sub, 7=fm, 8=wavetable, 9=pmKarplus, 10=pmKarplusBright, 11=pmKarplusBass, 12=pmModalMallet, 13=pmModalVibraphone, 14=pmModalSteel
+    int   osc1Waveform = 0;      // 0=sine, 1=saw, 2=square, 3=triangle, 4=noise, 5=pulse, 6-17=wavetables (6 piano,7 guitar,8 choir,9 brass,10 strings,11 woodwind,12 organ,13 bell,14 synth bass,15 synth lead,16 pad,17 epiano), 18-23=physical models (18 karplus,19 karplus bright,20 karplus bass,21 modal mallet,22 modal vibraphone,23 modal steel)
     int   osc1Octave = 0;        // -2 .. +2
     float osc1Detune = 0.0f;     // cents
     float osc1PulseWidth = 0.5f;
@@ -30,7 +30,7 @@ struct PresetData {
     float osc1UnisonMix = 0.0f;
 
     // Oscillator 2
-    int   osc2Waveform = 0;
+    int   osc2Waveform = 0;      // same mapping as osc1Waveform
     int   osc2Octave = 0;
     float osc2Detune = 0.0f;
     float osc2PulseWidth = 0.5f;
@@ -186,6 +186,11 @@ struct PresetData {
 // Given a PresetData, pushes every field into the engine via the wrapper.
 class SynthEngineWrapper;
 void applyPresetToEngine(const PresetData& preset, SynthEngineWrapper& engine);
+
+// Sample-layer setup for a factory preset: creates the sample player if the
+// preset mixes samples in, loads its manifest (or legacy single sample), or
+// clears it for pure synth presets. Call after applyPresetToEngine().
+void configureSamplePlayerForPreset(const PresetData& preset, SynthEngineWrapper& engine);
 
 // APVTS applier — updates all parameters in the value tree so the UI reflects the preset.
 void applyPresetToAPVTS(const PresetData& preset, juce::AudioProcessorValueTreeState& apvts);

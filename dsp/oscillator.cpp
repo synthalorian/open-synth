@@ -66,7 +66,24 @@ void Oscillator::setWaveform(int w) {
 
 void Oscillator::setOctave(int oct) { octave_ = std::clamp(oct, -2, 2); }
 void Oscillator::setDetune(float cents) { detune_ = std::clamp(cents, -100.0f, 100.0f); }
-void Oscillator::setPulseWidth(float pw) { pulseWidth_ = std::clamp(pw, 0.01f, 0.99f); }
+void Oscillator::setPulseWidth(float pw) {
+    const float target = std::clamp(pw, 0.01f, 0.99f);
+    if (target == pulseWidthTarget_) return;
+    pulseWidthTarget_ = target;
+    pulseWidthSamplesRemaining_ = -1; // Start the ramp at the render sample rate.
+}
+
+void Oscillator::advancePulseWidth(double sampleRate) const {
+    if (pulseWidth_ == pulseWidthTarget_) return;
+    if (pulseWidthSamplesRemaining_ < 0) {
+        pulseWidthSamplesRemaining_ = std::max(1, static_cast<int>(sampleRate * 0.01));
+        pulseWidthStep_ = (pulseWidthTarget_ - pulseWidth_) / pulseWidthSamplesRemaining_;
+    }
+    if (--pulseWidthSamplesRemaining_ <= 0)
+        pulseWidth_ = pulseWidthTarget_;
+    else
+        pulseWidth_ += pulseWidthStep_;
+}
 void Oscillator::setVolume(float vol) { volume_ = std::clamp(vol, 0.0f, 1.0f); }
 
 void Oscillator::setNoiseType(int nt) { noiseType_ = static_cast<NoiseType>(std::clamp(nt, 0, 2)); }
@@ -88,6 +105,8 @@ void Oscillator::setUnisonMix(float mix) {
 }
 
 void Oscillator::reset() {
+    pulseWidth_ = pulseWidthTarget_;
+    pulseWidthSamplesRemaining_ = 0;
     fallbackState_.reset();
 }
 
@@ -237,7 +256,8 @@ float Oscillator::generateWaveform(float phase, float dt, float& brownState) con
             v += polyBlep(phase, dt);
             v -= polyBlep(phaseSinceEdge(phase, pulseWidth_), dt);
         }
-        return v;
+        const float dc = 2.0f * pulseWidth_ - 1.0f; // Exactly zero at 0.5.
+        return dc == 0.0f ? v : v - dc;
     }
 
     case OscWaveform::WT_GUITAR:
@@ -285,6 +305,7 @@ float Oscillator::generateWaveform(float phase, float dt, float& brownState) con
 }
 
 float Oscillator::process(float phase, int voiceIndex, float freq, double sampleRate) const {
+    if (voiceIndex == 0) advancePulseWidth(sampleRate);
     float dt = sampleRate > 0.0 ? phaseIncrement(freq, voiceIndex, sampleRate) : 0.0f;
     return processVoice(phase, dt, voiceIndex, fallbackState_);
 }

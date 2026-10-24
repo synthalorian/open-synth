@@ -51,6 +51,14 @@ UserPresetManager::UserPresetManager(const juce::File& presetsDirectory)
     presetsDirectory_.createDirectory();
 }
 
+// Parameters added after presets shipped. Presets saved before they existed
+// lack the key and must load them at their default (which reproduces the old
+// sound), not keep whatever value is currently set.
+bool UserPresetManager::resetsToDefaultWhenMissing(const juce::String& paramID)
+{
+    return paramID == "osc1PulseWidth" || paramID == "osc2PulseWidth";
+}
+
 juce::String UserPresetManager::getParameterKey(const juce::AudioProcessorParameter& param)
 {
     if (auto* withId = dynamic_cast<const juce::AudioProcessorParameterWithID*>(&param))
@@ -93,6 +101,10 @@ int UserPresetManager::applyParameters(const juce::var& values,
             float v = juce::jlimit(0.0f, 1.0f, static_cast<float>(obj->getProperty(key)));
             param->setValueNotifyingHost(v);
             ++applied;
+        }
+        else if (resetsToDefaultWhenMissing(getParameterKey(*param)))
+        {
+            param->setValueNotifyingHost(param->getDefaultValue());
         }
     }
     return applied;
