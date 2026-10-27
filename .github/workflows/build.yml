@@ -167,7 +167,7 @@ jobs:
 
       - name: Upload preset render gate report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: preset-render-gate-${{ matrix.name }}
           path: |
@@ -308,7 +308,7 @@ jobs:
           packaging/macos/build_pkg.sh "$V" build/OpenSynth_artefacts/Release dist
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: open-synth-${{ matrix.name }}
           path: dist/
