@@ -67,7 +67,7 @@ jobs:
             echo "::error::ref input must be fully qualified (refs/tags/...), got '$BUILD_REF'"; exit 1
           fi
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         # Only JUCE is needed to build. The sample-library submodules
         # (~1.2GB) are fetched separately for tag builds below.
         with:
