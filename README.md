@@ -1,6 +1,6 @@
 # Open Synth
 
-[![Build](https://github.com/Blackshield-Company/open-synth/actions/workflows/build.yml/badge.svg)](https://github.com/Blackshield-Company/open-synth/actions/workflows/build.yml)
+[![Build](https://github.com/synthalorian/open-synth/actions/workflows/build.yml/badge.svg)](https://github.com/synthalorian/open-synth/actions/workflows/build.yml)
 [![License](https://img.shields.io/badge/license-AGPL--3.0--only-blue)](LICENSE)
 [![C++20](https://img.shields.io/badge/standard-C%2B%2B20-blue)](README.md)
 
